@@ -5,6 +5,7 @@ specifiers:
   apollo-server: ^3.6.7
   apollo-server-core: ^3.6.7
   apollo-server-express: ^3.6.7
+  bcryptjs: ^2.4.3
   dotenv: ^16.0.0
   express: ^4.17.3
   graphql: ^16.3.0
@@ -17,6 +18,7 @@ dependencies:
   apollo-server: 3.6.7_graphql@16.3.0
   apollo-server-core: 3.6.7_graphql@16.3.0
   apollo-server-express: 3.6.7_express@4.17.3+graphql@16.3.0
+  bcryptjs: 2.4.3
   dotenv: 16.0.0
   express: 4.17.3
   graphql: 16.3.0
@@ -388,6 +390,10 @@ packages:
 
   /base64-js/1.5.1:
     resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==}
+    dev: false
+
+  /bcryptjs/2.4.3:
+    resolution: {integrity: sha1-mrVie5PmBiH/fNrF2pczAn3x0Ms=}
     dev: false
 
   /body-parser/1.19.2:
