@@ -1,4 +1,3 @@
-// may cause explosion
 const chainMiddlewares = (...middlewares) => {
     return (root, args, context) =>
         middlewares.reduce((promise, middleware) => {

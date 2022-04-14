@@ -1,6 +1,6 @@
 const { AuthenticationError } = require('apollo-server');
 
-const authRequired = (root, args, context) => {
+const authRequired = (_root, _args, context) => {
     if (!context.currentUser) {
         throw new AuthenticationError('Not authenticated');
     }
