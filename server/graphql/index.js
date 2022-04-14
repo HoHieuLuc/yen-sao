@@ -9,6 +9,10 @@ const {
 const {
     typeDefs: Token
 } = require('./schema/token');
+const {
+    typeDefs: File,
+    resolvers: fileResolvers
+} = require('./schema/file');
 
 const defaultSchema = gql`
     type Query {
@@ -21,8 +25,8 @@ const defaultSchema = gql`
 `;
 
 const schema = makeExecutableSchema({
-    typeDefs: [defaultSchema, User, Token],
-    resolvers: merge(userResolvers)
+    typeDefs: [defaultSchema, User, Token, File],
+    resolvers: merge(userResolvers, fileResolvers)
 });
 
 module.exports = schema;

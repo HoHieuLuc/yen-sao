@@ -1,6 +1,9 @@
 const { ApolloServer } = require('apollo-server-express');
+const { graphqlUploadExpress } = require('graphql-upload');
 const express = require('express');
 const http = require('http');
+const cors = require('cors');
+const path = require('path');
 
 const { PORT } = require('./utils/config');
 const connectDB = require('./db/connect');
@@ -26,10 +29,14 @@ const start = async () => {
     });
 
     await server.start();
+    app.use(cors());
+    app.use(graphqlUploadExpress());
+    app.use('/public', express.static(path.join(__dirname, 'public')));
 
     server.applyMiddleware({
         app,
-        path: '/gql'
+        path: '/gql',
+        cors: true
     });
 
     httpServer.listen(PORT, () => {
