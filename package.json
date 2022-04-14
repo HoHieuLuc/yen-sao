@@ -1,26 +1,28 @@
 {
-  "name": "yen-sao",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint --ext .js",
-    "server": "nodemon server/index.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/HoHieuLuc/yen-sao.git"
-  },
-  "author": "luc",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/HoHieuLuc/yen-sao/issues"
-  },
-  "homepage": "https://github.com/HoHieuLuc/yen-sao#readme",
-  "devDependencies": {
-    "eslint": "^8.12.0",
-    "eslint-plugin-react": "^7.29.4",
-    "nodemon": "^2.0.15"
-  }
+    "name": "yen-sao",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo try \"npm run test:server\" && exit 1",
+        "lint": "eslint --ext .js",
+        "server": "nodemon server/index.js",
+        "test:server": "jest server --verbose --runInBand --forceExit"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/HoHieuLuc/yen-sao.git"
+    },
+    "author": "luc",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/HoHieuLuc/yen-sao/issues"
+    },
+    "homepage": "https://github.com/HoHieuLuc/yen-sao#readme",
+    "devDependencies": {
+        "eslint": "^8.12.0",
+        "eslint-plugin-jest": "^26.1.4",
+        "jest": "^27.5.1",
+        "nodemon": "^2.0.15"
+    }
 }
