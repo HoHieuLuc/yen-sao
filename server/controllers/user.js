@@ -7,12 +7,12 @@ const { JWT_SECRET } = require('../utils/config');
 const login = async (username, password) => {
     const user = await User.findOne({ username });
     if (!user) {
-        throw new AuthenticationError('Invalid credentials');
+        throw new AuthenticationError('Sai tài khoản hoặc mật khẩu');
     }
 
     const isPasswordCorrect = await user.comparePassword(password);
     if (!isPasswordCorrect) {
-        throw new AuthenticationError('Invalid credentials');
+        throw new AuthenticationError('Sai tài khoản hoặc mật khẩu');
     }
 
     const token = user.createJWT();
@@ -48,7 +48,7 @@ const getCurrentUser = async (authHeader) => {
             const currentUser = await User.findById(payload.id, '-password');
             return { currentUser };
         } catch (error) {
-            throw new AuthenticationError('Invalid token');
+            throw new AuthenticationError('Token không hợp lệ');
         }
     }
 };

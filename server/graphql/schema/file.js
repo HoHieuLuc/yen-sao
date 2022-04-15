@@ -1,9 +1,8 @@
 const { gql } = require('apollo-server-express');
 const { GraphQLUpload } = require('graphql-upload');
-const { finished } = require('stream/promises');
-const path = require('path');
-const fs = require('fs');
-const { nanoid } = require('nanoid');
+const chainMiddlewares = require('../../middlewares/index');
+const authRequired = require('../../middlewares/authentication');
+const { singleUpload } = require('../../controllers/upload');
 
 const typeDefs = gql`
     scalar Upload
@@ -14,12 +13,8 @@ const typeDefs = gql`
         encoding: String!
     }
 
-    type Query {
-        testUpload: Boolean!
-    }
-
-    type Mutation {
-        singleUpload(file: Upload!): File!
+    extend type Mutation {
+        singleUpload(file: Upload!): String
     }
 `;
 
@@ -27,21 +22,9 @@ const resolvers = {
     Upload: GraphQLUpload,
 
     Mutation: {
-        singleUpload: async (root, { file }) => {
-            const { createReadStream, filename, mimetype, encoding } = await file;
-
-            const stream = createReadStream();
-            const pathName = path.join(
-                __dirname,
-                `../../public/uploads/${nanoid(12)}.${filename}`
-            );
-
-            const out = fs.createWriteStream(pathName);
-            stream.pipe(out);
-            await finished(out);
-
-            return { filename, mimetype, encoding };
-        }
+        singleUpload: chainMiddlewares(authRequired, (_, {file}) => {
+            return singleUpload(file);
+        })
     }
 };
 
