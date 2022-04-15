@@ -1,5 +1,3 @@
-// import { useMutation } from '@apollo/client';
-// import { SINGLE_UPLOAD } from './graphql/queries/upload';
 import { useEffect } from 'react';
 import { LoadingOverlay } from '@mantine/core';
 import Admin from './components/Admin/Admin';
@@ -10,7 +8,12 @@ import { ME } from './graphql/queries/auth';
 import Logout from './components/Auth/Logout';
 
 const App = () => {
-    const [getCurrentUser, currentUser] = useLazyQuery(ME);
+    const [getCurrentUser, currentUser] = useLazyQuery(ME, {
+        onError: () => {
+            localStorage.removeItem('token');
+            location.reload();
+        }
+    });
 
     useEffect(() => {
         getCurrentUser();
@@ -20,7 +23,7 @@ const App = () => {
         (
             <LoadingOverlay
                 loaderProps={{ size: 'sm', color: 'pink', variant: 'bars' }}
-                overlayOpacity={0.5}
+                overlayOpacity={1}
                 overlayColor="#c5c5c5"
                 visible={true}
                 zIndex={999}

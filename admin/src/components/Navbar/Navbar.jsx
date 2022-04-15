@@ -1,8 +1,8 @@
-import React from 'react';
 import {
     Navbar,
     ScrollArea,
-    Divider
+    Divider,
+    Text
 } from '@mantine/core';
 import NavLinks from './NavLinks';
 import NavLink from './NavLink';
@@ -13,9 +13,19 @@ const AppNavbar = ({ opened }) => {
     const client = useApolloClient();
     const { me } = client.readQuery({ query: ME });
     return (
-        <Navbar p="sm" hiddenBreakpoint="sm" hidden={!opened} width={{ sm: 200, lg: 300 }}>
+        <Navbar
+            p="sm"
+            hiddenBreakpoint="sm"
+            hidden={!opened}
+            width={{ sm: 200, lg: 300 }}
+            style={{
+                zIndex: opened ? 100 : 0
+            }}
+        >
             <Navbar.Section>
-                Xin chào {me.fullname}
+                <Text>
+                    Xin chào {me.fullname}
+                </Text>
             </Navbar.Section>
             <Divider my='xs' />
             <Navbar.Section grow component={ScrollArea} mx="-xs" px="xs">

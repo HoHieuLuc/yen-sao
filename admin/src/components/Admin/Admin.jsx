@@ -22,7 +22,7 @@ const Admin = () => {
                 <AppHeader theme={theme} opened={opened} setOpened={setOpened} />
             }
         >
-            <AppSection />
+            <AppSection/>
         </AppShell>
     );
 };

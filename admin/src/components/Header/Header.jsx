@@ -21,7 +21,7 @@ const AppHeader = ({ theme, opened, setOpened }) => {
                         mr="xl"
                     />
                 </MediaQuery>
-                <Text color={'white'} component={Link} to='/dashboard'><h2>{appConfig.title}</h2></Text>
+                <Text color='white' component={Link} to='/dashboard'><h2>{appConfig.title}</h2></Text>
             </div>
         </Header>
     );
