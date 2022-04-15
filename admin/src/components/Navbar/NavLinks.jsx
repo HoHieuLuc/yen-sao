@@ -10,7 +10,7 @@ const NavLinks = () => {
             key={link.to}
             to={link.to}
             title={link.title}
-            active={location.pathname === link.to}
+            active={link.to.includes(location.pathname)}
             size='md'
         />
     ));
