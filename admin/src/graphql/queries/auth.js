@@ -9,8 +9,9 @@ export const LOGIN = gql`
 `;
 
 export const ME = gql`
-    query {
+    query Me {
         me {
+            id
             role
             fullname
             username
