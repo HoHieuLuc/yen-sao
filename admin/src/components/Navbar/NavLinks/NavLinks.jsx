@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import appConfig from '../../config';
+import appConfig from '../../../config';
 import NavLink from './NavLink';
 import { SimpleGrid } from '@mantine/core';
 
