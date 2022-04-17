@@ -6,18 +6,13 @@
         "jest/globals": true
     },
     "extends": [
-        "eslint:recommended",
-        "plugin:react/recommended"
+        "eslint:recommended"
     ],
     "parserOptions": {
-        "ecmaFeatures": {
-            "jsx": true
-        },
         "ecmaVersion": "latest",
         "sourceType": "module"
     },
     "plugins": [
-        "react",
         "jest"
     ],
     "rules": {
@@ -45,22 +40,6 @@
         "jest/no-focused-tests": "error",
         "jest/no-identical-title": "error",
         "jest/prefer-to-have-length": "warn",
-        "jest/valid-expect": "error",
-        "react/react-in-jsx-scope": "off",
-        "react/jsx-filename-extension": [
-            1,
-            {
-                "extensions": [
-                    ".js",
-                    ".jsx"
-                ]
-            }
-        ],
-        "react/prop-types": "off"
-    },
-    "settings": {
-        "react": {
-            "version": "detect"
-        }
+        "jest/valid-expect": "error"
     }
 }
