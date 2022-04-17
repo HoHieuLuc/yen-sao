@@ -4,8 +4,8 @@ import {
     Divider,
     Text
 } from '@mantine/core';
-import NavLinks from './NavLinks';
-import NavLink from './NavLink';
+import NavLinks from './NavLinks/NavLinks';
+import NavLink from './NavLinks/NavLink';
 import { useApolloClient } from '@apollo/client';
 import { ME } from '../../graphql/queries/auth';
 
