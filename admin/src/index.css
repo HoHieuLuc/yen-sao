@@ -13,15 +13,3 @@ body {
     flex-direction: column;
     justify-content: center;
 }
-
-.rich-text-editor .ql-align-center > img {
-    margin: auto;
-}
-
-.rich-text-editor .ql-align-right > img {
-    margin-left: auto;
-}
-
-.collapse-item {
-    border-left: 1px solid #e6e6e6;
-}
