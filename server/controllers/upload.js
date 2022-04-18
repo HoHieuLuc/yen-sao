@@ -5,7 +5,6 @@ const { nanoid } = require('nanoid');
 
 const singleUpload = async (file) => {
     const { createReadStream, filename } = await file;
-
     const stream = createReadStream();
     const newFilename = `${nanoid()}-${filename}`;
     const pathName = path.join(

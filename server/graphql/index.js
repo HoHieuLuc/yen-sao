@@ -17,6 +17,13 @@ const {
     typeDefs: Post,
     resolvers: postResolvers
 } = require('./schema/post');
+const {
+    typeDefs: Paginatable
+} = require('./schema/paginate');
+const {
+    typeDefs: dateScalar,
+    resolvers: dateResolvers
+} = require('./scalar/date');
 
 const defaultSchema = gql`
     type Query {
@@ -29,8 +36,13 @@ const defaultSchema = gql`
 `;
 
 const schema = makeExecutableSchema({
-    typeDefs: [defaultSchema, User, Token, File, Post],
-    resolvers: merge(userResolvers, fileResolvers, postResolvers)
+    typeDefs: [defaultSchema, dateScalar, Paginatable, User, Token, File, Post],
+    resolvers: merge(
+        dateResolvers,
+        userResolvers,
+        fileResolvers,
+        postResolvers
+    )
 });
 
 module.exports = schema;
