@@ -1,14 +1,16 @@
 import { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { useForm } from '@mantine/form';
-import appConfig from '../../config';
+import appConfig from '../../../config';
 
 import { RichTextEditor } from '@mantine/rte';
 import { Group, Button, TextInput } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 
-import { CREATE_POST } from '../../graphql/queries/post';
-import { SINGLE_UPLOAD } from '../../graphql/queries/upload';
+import { CREATE_POST } from '../../../graphql/queries/post';
+import { SINGLE_UPLOAD } from '../../../graphql/queries/upload';
+
+import useStyles from './NewPost.styles';
 
 const NewPost = () => {
     const [content, setContent] = useState('');
@@ -29,6 +31,8 @@ const NewPost = () => {
         }
     });
 
+    const { classes } = useStyles();
+
     const handleImageUpload = async (file) => {
         const { data } = await uploadImage({
             variables: {
@@ -38,7 +42,7 @@ const NewPost = () => {
         return `${appConfig.apiURL}${data.singleUpload}`;
     };
 
-    const handleCreatePost = async (values) => {
+    const handleCreatePost = (values) => {
         createPost({
             variables: {
                 ...values,
@@ -61,10 +65,14 @@ const NewPost = () => {
                 sticky={true}
                 stickyOffset={50}
                 onImageUpload={handleImageUpload}
-                className='rich-text-editor'
+                className={classes.rte}
             />
             <Group position='right' mt='md'>
-                <Button type='submit' loading={loading}>Xác nhận</Button>
+                <Button
+                    type='submit'
+                    loading={loading}
+                    disabled={content.replace(/<(.|\n)*?>/g, '').trim().length === 0}
+                >Xác nhận</Button>
             </Group>
         </form>
     );
