@@ -25,6 +25,10 @@ const start = async () => {
         context: async ({ req }) => {
             const authHeader = req ? req.headers.authorization : null;
             return getCurrentUser(authHeader);
+        },
+        formatError: (error) => {
+            console.log(error);
+            return error;
         }
     });
 
