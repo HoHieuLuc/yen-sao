@@ -1,4 +1,5 @@
-import NewPost from '../components/Post/NewPost';
+import NewPost from '../components/Post/NewPost/NewPost';
+import PostsList from '../components/Post/PostsList/PostsList';
 
 const appConfig = {
     title: 'Yến sào MS.Tưởng',
@@ -15,7 +16,7 @@ const appConfig = {
                 {
                     to: '/danh-sach-bai-viet',
                     title: 'Danh sách bài viết',
-                    element: <div>Danh sách bài viết</div>
+                    element: <PostsList />
                 },
                 {
                     to: '/sixth',

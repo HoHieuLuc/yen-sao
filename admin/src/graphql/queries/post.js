@@ -11,3 +11,25 @@ export const CREATE_POST = gql`
         }
     }
 `;
+
+export const POSTS_LIST = gql`
+    query PostsList($page: Int!, $limit: Int!) {
+        allPosts(page: $page, limit: $limit) {
+            posts {
+                id
+                title
+                createdBy {
+                    id
+                    username
+                }
+                createdAt
+                updatedAt
+            }
+            pageInfo {
+                page
+                totalPages
+                limit
+                }
+            }
+        }
+`;

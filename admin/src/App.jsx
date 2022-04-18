@@ -1,18 +1,29 @@
 import { useEffect } from 'react';
-import { LoadingOverlay } from '@mantine/core';
+import { Routes, Route, Navigate } from 'react-router-dom';
+
 import Admin from './components/Admin/Admin';
 import Login from './components/Auth/Login';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import Logout from './components/Auth/Logout';
+import { LoadingOverlay } from '@mantine/core';
+
 import { useLazyQuery } from '@apollo/client';
 import { ME } from './graphql/queries/auth';
-import Logout from './components/Auth/Logout';
+import { showNotification } from '@mantine/notifications';
 
 const App = () => {
     const [getCurrentUser, currentUser] = useLazyQuery(ME, {
-        onError: () => {
+        onError: (error) => {
+            if (error.networkError.message === 'Failed to fetch') {
+                showNotification({
+                    title: 'Thông báo',
+                    message: 'Không thể kết nối đến máy chủ',
+                    color: 'red',
+                });
+                return;
+            }
             localStorage.removeItem('token');
             location.reload();
-        }
+        },
     });
 
     useEffect(() => {
@@ -24,7 +35,6 @@ const App = () => {
             <LoadingOverlay
                 loaderProps={{ size: 'sm', color: 'pink', variant: 'bars' }}
                 overlayOpacity={1}
-                overlayColor="#c5c5c5"
                 visible={true}
                 zIndex={999}
             />
@@ -40,7 +50,7 @@ const App = () => {
                     path='/login'
                     element={!currentUser.data.me ?
                         <Login getCurrentUser={getCurrentUser} /> :
-                        <Navigate replace to='/dashboard' />}
+                        <Navigate replace to='/' />}
                 />
                 <Route
                     path='/logout'

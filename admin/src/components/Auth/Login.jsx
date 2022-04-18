@@ -1,8 +1,9 @@
 import {
     TextInput,
+    PasswordInput,
     Button,
     Container,
-    Group
+    Group,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useMutation } from '@apollo/client';
@@ -43,23 +44,26 @@ const Login = ({ getCurrentUser }) => {
     };
 
     return (
-        <Container className='vertical-center'>
-            <form onSubmit={loginForm.onSubmit(handleLogin)}>
-                <TextInput
-                    label='Tên đăng nhập'
-                    placeholder='Nhập tên đăng nhập'
-                    {...loginForm.getInputProps('username')}
-                />
-                <TextInput
-                    label='Mật khẩu'
-                    placeholder='Nhập mật khẩu'
-                    type='password'
-                    {...loginForm.getInputProps('password')}
-                />
-                <Group position='right' mt='md'>
-                    <Button type='submit' loading={loginLoading}>Đăng nhập</Button>
-                </Group>
-            </form>
+        <Container
+            fluid
+        >
+            <Container className='vertical-center'>
+                <form onSubmit={loginForm.onSubmit(handleLogin)}>
+                    <TextInput
+                        label='Tên đăng nhập'
+                        placeholder='Nhập tên đăng nhập'
+                        {...loginForm.getInputProps('username')}
+                    />
+                    <PasswordInput
+                        label='Mật khẩu'
+                        placeholder='Nhập mật khẩu'
+                        {...loginForm.getInputProps('password')}
+                    />
+                    <Group position='right' mt='md'>
+                        <Button type='submit' loading={loginLoading}>Đăng nhập</Button>
+                    </Group>
+                </form>
+            </Container>
         </Container>
     );
 };
