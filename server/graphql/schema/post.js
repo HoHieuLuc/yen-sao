@@ -1,7 +1,7 @@
 const { gql } = require('apollo-server');
 const chainMiddlewares = require('../../middlewares');
 const authRequired = require('../../middlewares/authentication');
-const { createPost } = require('../../controllers/post');
+const { createPost, getAllPost } = require('../../controllers/post');
 
 const typeDefs = gql`
     type Post {
@@ -9,8 +9,20 @@ const typeDefs = gql`
         title: String!
         content: String!
         createdBy: User!
-        createdAt: String!
-        updatedAt: String!
+        createdAt: Date!
+        updatedAt: Date!
+    }
+
+    type PaginatePost {
+        posts: [Post!]!
+        pageInfo: Paginatable!
+    }
+
+    extend type Query {
+        allPosts(
+            page: Int!
+            limit: Int!
+        ): PaginatePost
     }
 
     extend type Mutation {
@@ -22,6 +34,13 @@ const typeDefs = gql`
 `;
 
 const resolvers = {
+    PaginatePost: {
+        posts: (root) => root.docs,
+        pageInfo: (root) => root,
+    },
+    Query: {
+        allPosts: async (_, { page, limit }) => getAllPost(page, limit)
+    },
     Mutation: {
         createPost: chainMiddlewares(authRequired, (_, args, { currentUser }) => {
             return createPost(args, currentUser.id);

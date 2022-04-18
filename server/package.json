@@ -4,12 +4,12 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "test": "jest --verbose --runInBand --forceExit"
+        "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "luc",
     "license": "ISC",
     "dependencies": {
-        "@graphql-tools/schema": "^8.3.7",
+        "@graphql-tools/schema": "^8.3.9",
         "apollo-server": "^3.6.7",
         "apollo-server-core": "^3.6.7",
         "apollo-server-express": "^3.6.7",
@@ -21,7 +21,8 @@
         "graphql-upload": "^13.0.0",
         "jsonwebtoken": "^8.5.1",
         "lodash": "^4.17.21",
-        "mongoose": "^6.2.10",
+        "mongoose": "^6.3.0",
+        "mongoose-paginate-v2": "^1.6.3",
         "nanoid": "^3.3.2"
     }
 }
