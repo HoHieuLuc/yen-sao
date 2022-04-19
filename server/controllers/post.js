@@ -1,7 +1,16 @@
 const { UserInputError } = require('apollo-server');
 const Post = require('../models/Post');
 
-const getAllPost = async (page, limit) => {
+const getPost = async (postId) => {
+    try {
+        const post = await Post.findById(postId).populate('createdBy');
+        return post;
+    } catch (error) {
+        throw new UserInputError(error.message);
+    }
+};
+
+const getAllPosts = async (page, limit) => {
     const options = {
         page,
         limit,
@@ -27,5 +36,6 @@ const createPost = async (newPost, userId) => {
 
 module.exports = {
     createPost,
-    getAllPost
+    getAllPosts,
+    getPost
 };
