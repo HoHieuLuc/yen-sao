@@ -36,7 +36,7 @@ const AppHeader = ({ theme, opened, setOpened }) => {
                     variant="outline"
                     color={dark ? 'yellow' : 'blue'}
                     onClick={() => toggleColorScheme()}
-                    title="Toggle color scheme"
+                    title="Thay đổi màu nền"
                     ml='auto'
                     size='md'
                 >

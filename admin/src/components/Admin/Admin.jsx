@@ -5,7 +5,7 @@ import {
 } from '@mantine/core';
 import AppNavbar from '../Navbar/Navbar';
 import AppHeader from '../Header/Header';
-import AppSection from '../Section/Section';
+import AppSection from '../Routes/Section';
 
 const Admin = () => {
     const theme = useMantineTheme();

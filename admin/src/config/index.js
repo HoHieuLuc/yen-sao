@@ -1,35 +1,37 @@
 import NewPost from '../components/Post/NewPost/NewPost';
+import PostDetails from '../components/Post/PostDetails/PostDetails';
 import PostsList from '../components/Post/PostsList/PostsList';
 
 const appConfig = {
     title: 'Yến sào MS.Tưởng',
     apiURL: 'http://localhost:4000',
-    navLinks: [
+    links: [
         {
             title: 'Bài viết',
+            subLinksPattern: '/bai-viet',
             subLinks: [
                 {
-                    to: '/them-bai-viet',
+                    to: '/bai-viet/them',
                     title: 'Thêm bài viết mới',
-                    element: <NewPost />
+                    element: <NewPost />,
                 },
                 {
-                    to: '/danh-sach-bai-viet',
+                    to: '/bai-viet',
                     title: 'Danh sách bài viết',
-                    element: <PostsList />
+                    element: <PostsList />,
                 },
                 {
-                    to: '/sixth',
-                    title: 'sixth',
-                    element: <div>sixth</div>
+                    to: '/bai-viet/:id',
+                    element: <PostDetails />,
+                    isNotNavLink: true
                 }
             ]
         },
         {
-            to: '/second',
             title: 'second',
+            to: '/second',
             element: <div>second</div>
-        },
+        }
     ]
 };
 

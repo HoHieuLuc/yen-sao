@@ -44,9 +44,7 @@ const Login = ({ getCurrentUser }) => {
     };
 
     return (
-        <Container
-            fluid
-        >
+        <Container fluid>
             <Container className='vertical-center'>
                 <form onSubmit={loginForm.onSubmit(handleLogin)}>
                     <TextInput
