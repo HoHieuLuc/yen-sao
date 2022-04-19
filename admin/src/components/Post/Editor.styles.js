@@ -3,14 +3,14 @@ import { createStyles } from '@mantine/core';
 export default createStyles(
     () => ({
         rte: {
-            ['.ql-align-center']: {
+            '.ql-align-center': {
                 img: {
                     margin: 'auto'
                 }
             },
-            ['.ql-align-right']: {
+            '.ql-align-right': {
                 img: {
-                    marginLeft: 'auto'
+                    marginLeft: 'auto',
                 }
             },
             p: {

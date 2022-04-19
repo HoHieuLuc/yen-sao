@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 
-import { Table, Pagination, Center, LoadingOverlay } from '@mantine/core';
+import { Table, Pagination, Center, LoadingOverlay, Anchor } from '@mantine/core';
 import { POSTS_LIST } from '../../../graphql/queries/post';
 import useStyle from './PostsList.styles';
 import { Tooltip } from '@mantine/core';
@@ -27,9 +27,11 @@ const PostsList = () => {
 
     const postElements = allPosts.map((post) => (
         <tr key={post.id}>
-            <td>
+            <td className={classes.tableRow}>
                 <Tooltip
                     withArrow
+                    wrapLines
+                    width='15em'
                     label={post.title}
                     transition='fade'
                     transitionDuration={200}
@@ -38,7 +40,9 @@ const PostsList = () => {
                     position='top'
                     placement='start'
                 >
-                    {post.title}
+                    <Anchor component={Link} to={`/bai-viet/${post.id}`} className={classes.item}>
+                        {post.title}
+                    </Anchor>
                 </Tooltip>
             </td>
             <td>{post.createdBy.username}</td>
@@ -50,7 +54,7 @@ const PostsList = () => {
     return (
         <div style={{ position: 'relative', height: '100%' }}>
             <LoadingOverlay visible={loading} />
-            <Table striped highlightOnHover className={classes.fixedTable}>
+            <Table striped highlightOnHover>
                 <thead>
                     <tr>
                         <th>Tiêu đề</th>
@@ -63,14 +67,16 @@ const PostsList = () => {
                     {postElements}
                 </tbody>
             </Table>
-            {(postsResult && postsResult.allPosts.pageInfo) && (<Center mt='sm'>
-                <Pagination
-                    total={parseInt(postsResult.allPosts.pageInfo.totalPages)}
-                    siblings={1}
-                    page={currentPage}
-                    onChange={handlePageChange}
-                />
-            </Center>)}
+            {postsResult && (
+                <Center mt='sm'>
+                    <Pagination
+                        total={parseInt(postsResult.allPosts.pageInfo.totalPages)}
+                        siblings={1}
+                        page={currentPage}
+                        onChange={handlePageChange}
+                    />
+                </Center>
+            )}
         </div>
     );
 };
