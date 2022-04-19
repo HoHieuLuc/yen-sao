@@ -33,3 +33,19 @@ export const POSTS_LIST = gql`
             }
         }
 `;
+
+export const GET_SINGLE_POST = gql`
+    query SinglePost($singlePostId: String!) {
+        singlePost(id: $singlePostId) {
+            id
+            title
+            content
+            createdBy {
+                id
+                fullname
+            }
+            createdAt
+            updatedAt
+        }
+    }
+`;
