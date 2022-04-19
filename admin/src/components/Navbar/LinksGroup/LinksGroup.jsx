@@ -1,29 +1,27 @@
 import React, { useState } from 'react';
-import { Group, Box, Collapse, ThemeIcon, Button } from '@mantine/core';
+import { Group, Box, Collapse, ThemeIcon, Button, SimpleGrid } from '@mantine/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
-import { Link, useLocation } from 'react-router-dom';
+import NavLink from '../NavLinks/NavLink';
 import useStyles from './LinksGroup.styles';
 
-export function LinksGroup({ title, initiallyOpened, links }) {
+const LinksGroup = ({ title, initiallyOpened, links }) => {
     const { classes } = useStyles();
-    const location = useLocation();
     const [opened, setOpened] = useState(initiallyOpened || false);
     const hasLinks = Array.isArray(links);
 
-    const items = (hasLinks ? links : []).map((link) => (
-        <Button
-            key={link.title}
-            fullWidth
-            component={Link}
-            to={link.to}
-            size='md'
-            style={{ display: 'flex', alignItems: 'start' }}
-            variant={location.pathname.includes(link.to) ? 'filled' : 'subtle'}
-        >
-            {link.title}
-        </Button>
-    ));
+    const items = (hasLinks ? links : []).map((link) => {
+        if (link.isNotNavLink) {
+            return null;
+        }
+        return (
+            <NavLink
+                key={link.title}
+                {...link}
+                size='md'
+            />
+        );
+    });
 
     return (
         <>
@@ -54,7 +52,15 @@ export function LinksGroup({ title, initiallyOpened, links }) {
                     )}
                 </Group>
             </Box>
-            {hasLinks ? <Collapse in={opened} className={classes.links}>{items}</Collapse> : null}
+            {hasLinks &&
+                <Collapse in={opened} className={classes.links}>
+                    <SimpleGrid cols={1} spacing={4}>
+                        {items}
+                    </SimpleGrid>
+                </Collapse>
+            }
         </>
     );
-}
+};
+
+export default LinksGroup;

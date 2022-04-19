@@ -2,14 +2,14 @@ import { createStyles } from '@mantine/core';
 
 export default createStyles(
     () => ({
-        fixedTable: {
-            tableLayout: 'fixed',
+        tableRow: {
+            width: '15em'
         },
         item: {
             whiteSpace: 'nowrap',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
-            width: '100%'
-        }
+            width: '15em'
+        },
     })
 );

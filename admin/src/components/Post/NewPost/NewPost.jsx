@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { useForm } from '@mantine/form';
 import appConfig from '../../../config';
@@ -10,10 +9,9 @@ import { showNotification } from '@mantine/notifications';
 import { CREATE_POST } from '../../../graphql/queries/post';
 import { SINGLE_UPLOAD } from '../../../graphql/queries/upload';
 
-import useStyles from './NewPost.styles';
+import useStyles from '../Editor.styles';
 
 const NewPost = () => {
-    const [content, setContent] = useState('');
     const [uploadImage] = useMutation(SINGLE_UPLOAD);
     const [createPost, { loading }] = useMutation(CREATE_POST, {
         onCompleted: () => showNotification({
@@ -24,7 +22,8 @@ const NewPost = () => {
 
     const postForm = useForm({
         initialValues: {
-            title: ''
+            title: '',
+            content: ''
         },
         validate: {
             title: (value) => value ? null : 'Vui lòng nhập tiêu đề'
@@ -43,10 +42,16 @@ const NewPost = () => {
     };
 
     const handleCreatePost = (values) => {
+        if (values.content.replace(/<(.|\n)*?>/g, '').trim().length === 0) {
+            return showNotification({
+                title: 'Thông báo',
+                message: 'Vui lòng nhập nội dung bài viết',
+                color: 'red'
+            });
+        } 
         createPost({
             variables: {
                 ...values,
-                content
             }
         });
     };
@@ -60,8 +65,7 @@ const NewPost = () => {
                 {...postForm.getInputProps('title')}
             />
             <RichTextEditor
-                value={content}
-                onChange={setContent}
+                {...postForm.getInputProps('content')}
                 sticky={true}
                 stickyOffset={50}
                 onImageUpload={handleImageUpload}
@@ -71,7 +75,6 @@ const NewPost = () => {
                 <Button
                     type='submit'
                     loading={loading}
-                    disabled={content.replace(/<(.|\n)*?>/g, '').trim().length === 0}
                 >Xác nhận</Button>
             </Group>
         </form>
