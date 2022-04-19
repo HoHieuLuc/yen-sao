@@ -13,3 +13,9 @@ body {
     flex-direction: column;
     justify-content: center;
 }
+
+.overflow-break-word {
+    width: '100%';
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
