@@ -3,12 +3,16 @@ const { merge } = require('lodash');
 const { gql } = require('apollo-server');
 
 const {
-    typeDefs: User,
-    resolvers: userResolvers
-} = require('./schema/user');
+    typeDefs: dateScalar,
+    resolvers: dateResolvers
+} = require('./scalar/date');
 const {
     typeDefs: Token
 } = require('./schema/token');
+const {
+    typeDefs: User,
+    resolvers: userResolvers
+} = require('./schema/user');
 const {
     typeDefs: File,
     resolvers: fileResolvers
@@ -21,9 +25,17 @@ const {
     typeDefs: Paginatable
 } = require('./schema/paginate');
 const {
-    typeDefs: dateScalar,
-    resolvers: dateResolvers
-} = require('./scalar/date');
+    typeDefs: SanPham,
+    resolvers: sanPhamResolvers
+} = require('./schema/san-pham');
+const {
+    typeDefs: LoaiSanPham,
+    resolvers: loaiSanPhamResolvers
+} = require('./schema/loai-san-pham');
+const {
+    typeDefs: PhieuNhap,
+    resolvers: phieuNhapResolvers
+} = require('./schema/phieu-nhap');
 
 const defaultSchema = gql`
     type Query {
@@ -36,12 +48,26 @@ const defaultSchema = gql`
 `;
 
 const schema = makeExecutableSchema({
-    typeDefs: [defaultSchema, dateScalar, Paginatable, User, Token, File, Post],
+    typeDefs: [
+        defaultSchema,
+        dateScalar,
+        Paginatable,
+        User,
+        Token,
+        File,
+        Post,
+        SanPham,
+        LoaiSanPham,
+        PhieuNhap
+    ],
     resolvers: merge(
         dateResolvers,
         userResolvers,
         fileResolvers,
-        postResolvers
+        postResolvers,
+        sanPhamResolvers,
+        loaiSanPhamResolvers,
+        phieuNhapResolvers
     )
 });
 
