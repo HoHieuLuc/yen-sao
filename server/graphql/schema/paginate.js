@@ -1,7 +1,7 @@
 const { gql } = require('apollo-server');
 
 const typeDefs = gql`
-    type Paginatable {
+    type PageInfo {
         page: Int!
         totalPages: Int!
         limit: Int!
