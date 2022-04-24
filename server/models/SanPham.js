@@ -12,7 +12,8 @@ const sanPham = mongoose.Schema(
         soLuong: {
             type: Number,
             required: true,
-            min: 0
+            min: 0,
+            default: 0
         },
         donGia: {
             type: Number,
@@ -26,7 +27,7 @@ const sanPham = mongoose.Schema(
         anhSanPham: {
             type: [String],
         },
-        loaiSanPham: {
+        maLoaiSanPham: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'LoaiSanPham',
             required: true,

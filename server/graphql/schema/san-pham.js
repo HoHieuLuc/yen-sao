@@ -1,5 +1,5 @@
 const { gql } = require('apollo-server');
-const { createSanPham, getAllSanPhams } = require('../../controllers/san-pham.controller');
+const sanPhamController = require('../../controllers/san-pham.controller');
 const chainMiddlewares = require('../../middlewares');
 const authRequired = require('../../middlewares/authentication');
 
@@ -9,14 +9,14 @@ const sanPham = `
     donGia: Int!
     moTa: String
     anhSanPham: [String!]!
-    createdAt: Date!
-    updatedAt: Date!
 `;
 
 const typeDefs = gql`
     type SanPham {
         id: ID!
         ${sanPham}
+        createdAt: Date!
+        updatedAt: Date!
         loaiSanPham: LoaiSanPham
     }
 
@@ -26,35 +26,65 @@ const typeDefs = gql`
     }
 
     input SanPhamInput {
-        ${sanPham}
-        maLoaiSanPham: ID!
+        tenSanPham: String
+        soLuong: Int
+        donGia: Int
+        moTa: String
+        anhSanPham: [String!]
+        maLoaiSanPham: ID
     }
-
-    extend type Query {
-        allSanPhams(
+    
+    type SanPhamQueries {
+        all(
             page: Int!,
             limit: Int!
         ): SanPhamsByPage!
+        byID(id: ID!): SanPham
+    }
+
+    extend type Query {
+        sanPham: SanPhamQueries
+    }
+
+    type SanPhamMutations {
+        create(payload: SanPhamInput!): SanPham
+        update(
+            id: ID!,
+            payload: SanPhamInput!
+        ): SanPham
     }
 
     extend type Mutation {
-        createSanPham(sanPham: SanPhamInput!): SanPham
+        sanPham: SanPhamMutations
     }
 `;
 
 const resolvers = {
+    SanPham: {
+        loaiSanPham: (root) => root.maLoaiSanPham
+    },
     SanPhamsByPage: {
         sanPhams: (root) => root.docs,
         pageInfo: (root) => root
     },
     Query: {
-        allSanPhams: async (_, { page, limit }) => getAllSanPhams(page, limit),
+        sanPham: () => ({})
+    },
+    SanPhamQueries: {
+        all: async (_, { page, limit }) => sanPhamController.getAll(page, limit),
+        byID: async (_, { id }) => sanPhamController.getById(id)
     },
     Mutation: {
-        createSanPham: chainMiddlewares(authRequired, (_, { sanPham }) => {
-            return createSanPham(sanPham);
-        })
-    }
+        sanPham: () => ({})
+    },
+    SanPhamMutations: {
+        create: chainMiddlewares(authRequired,
+            (_, { payload }) => sanPhamController.create(payload)
+        ),
+        update: chainMiddlewares(authRequired,
+            (_, { id, payload }) => sanPhamController.update(id, payload)
+        )
+    },
 };
 
 module.exports = {
