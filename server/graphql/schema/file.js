@@ -2,7 +2,7 @@ const { gql } = require('apollo-server-express');
 const { GraphQLUpload } = require('graphql-upload');
 const chainMiddlewares = require('../../middlewares/index');
 const authRequired = require('../../middlewares/authentication');
-const { singleUpload } = require('../../controllers/upload');
+const { singleUpload } = require('../../controllers/upload.controller');
 
 const typeDefs = gql`
     scalar Upload
