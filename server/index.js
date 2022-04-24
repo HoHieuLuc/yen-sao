@@ -14,7 +14,7 @@ connectDB().then(() => {
 });
 
 const schema = require('./graphql');
-const { getCurrentUser } = require('./controllers/user');
+const { getCurrentUser } = require('./controllers/user.controller');
 
 const start = async () => {
     const app = express();

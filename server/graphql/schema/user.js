@@ -1,5 +1,5 @@
 const { gql } = require('apollo-server');
-const { createUser, login } = require('../../controllers/user');
+const userController = require('../../controllers/user.controller');
 const chainMiddlewares = require('../../middlewares');
 const authRequired = require('../../middlewares/authentication');
 
@@ -12,13 +12,16 @@ const typeDefs = gql`
         role: String!
     }
 
-    extend type Query {
+    type UserQueries {
         me: User
-        test: String
     }
 
-    extend type Mutation {
-        createUser(
+    extend type Query {
+        user: UserQueries
+    }
+
+    type UserMutations {
+        create(
             username: String!,
             password: String!,
             email: String!,
@@ -30,23 +33,29 @@ const typeDefs = gql`
             password: String!
         ): Token
     }
+
+    extend type Mutation {
+        user: UserMutations
+    }
 `;
 
 const resolvers = {
     Query: {
+        user: () => ({})
+    },
+    UserQueries: {
         me: (_root, _args, context) => {
             return context.currentUser;
         },
-        // test chainMiddlewares
-        test: chainMiddlewares(authRequired, () => 'ok')
     },
     Mutation: {
-        createUser: async (_root, args) => {
-            return createUser(args);
-        },
-        login: async (_root, { username, password }) => {
-            return login(username, password);
-        }
+        user: () => ({})
+    },
+    UserMutations: {
+        create: chainMiddlewares(authRequired,
+            (_, args) => userController.create(args)
+        ),
+        login: async (_, { username, password }) => userController.login(username, password)
     }
 };
 
