@@ -9,7 +9,7 @@ const loaiSanPham = mongoose.Schema({
     moTa: {
         type: String,
         trim: true
-    },
+    }
 });
 
 module.exports = mongoose.model('LoaiSanPham', loaiSanPham);
