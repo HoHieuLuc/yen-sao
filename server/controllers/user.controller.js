@@ -1,6 +1,5 @@
 const { UserInputError, AuthenticationError } = require('apollo-server');
 const User = require('../models/User');
-const Test = require('../models/Test');
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = require('../utils/config');
 
@@ -21,22 +20,14 @@ const login = async (username, password) => {
     };
 };
 
-const createUser = async (newUser) => {
-    const session = await Test.startSession();
+const create = async (newUser) => {
     try {
-        session.startTransaction();
-        const user = await User.create([newUser], { session });
-        await Test.create([{ value: 12 }], { session });
-        await session.commitTransaction();
-        console.log(user);
-        return user[0];
+        const user = await User.create(newUser);
+        return user;
     } catch (error) {
-        await session.abortTransaction();
         throw new UserInputError(error.message, {
             invalidArgs: newUser
         });
-    } finally {
-        session.endSession();
     }
 };
 
@@ -54,7 +45,7 @@ const getCurrentUser = async (authHeader) => {
 };
 
 module.exports = {
-    createUser,
+    create,
     login,
     getCurrentUser
 };
