@@ -3,7 +3,7 @@ const { checkIfDuplicateExists } = require('../utils/functions');
 const PhieuNhap = require('../models/PhieuNhap');
 const SanPham = require('../models/SanPham');
 
-const getAllPhieuNhaps = async (page = 1, limit = 10) => {
+const getAll = async (page = 1, limit = 10) => {
     const paginateOptions = {
         page,
         limit,
@@ -14,7 +14,7 @@ const getAllPhieuNhaps = async (page = 1, limit = 10) => {
     return phieuNhaps;
 };
 
-const getPhieuNhapById = async (id) => {
+const getById = async (id) => {
     try {
         const populateOptions = [
             {
@@ -47,7 +47,7 @@ const buildUpdateProductQuantityBulkOps = (chiTietPhieuNhap, type) => {
     }));
 };
 
-const createPhieuNhap = async (chiTietPhieuNhap, nguoiNhap) => {
+const create = async (chiTietPhieuNhap, nguoiNhap) => {
     const arrayOfSanPhamIds = chiTietPhieuNhap.map(({ maSanPham }) => maSanPham);
     if (checkIfDuplicateExists(arrayOfSanPhamIds)) {
         throw new UserInputError('Sản phẩm trong 1 phiếu nhập không được trùng nhau');
@@ -75,7 +75,7 @@ const createPhieuNhap = async (chiTietPhieuNhap, nguoiNhap) => {
     }
 };
 
-const editPhieuNhap = async (phieuNhapId, chiTietPhieuNhap) => {
+const update = async (phieuNhapId, chiTietPhieuNhap) => {
     const arrayOfSanPhamIds = chiTietPhieuNhap.map(({ maSanPham }) => maSanPham);
     if (checkIfDuplicateExists(arrayOfSanPhamIds)) {
         throw new UserInputError('Sản phẩm trong 1 phiếu nhập không được trùng nhau');
@@ -121,7 +121,7 @@ const editPhieuNhap = async (phieuNhapId, chiTietPhieuNhap) => {
     }
 };
 
-const deletePhieuNhap = async (phieuNhapId) => {
+const remove = async (phieuNhapId) => {
     try {
         const phieuNhap = await PhieuNhap.findById(phieuNhapId);
         if (!phieuNhap) {
@@ -147,9 +147,9 @@ const deletePhieuNhap = async (phieuNhapId) => {
 };
 
 module.exports = {
-    getPhieuNhapById,
-    getAllPhieuNhaps,
-    createPhieuNhap,
-    editPhieuNhap,
-    deletePhieuNhap
+    getById,
+    getAll,
+    create,
+    update,
+    remove
 };

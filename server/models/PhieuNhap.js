@@ -33,7 +33,7 @@ const phieuNhap = mongoose.Schema(
                 soLuongNhap: {
                     type: Number,
                     required: true,
-                    min: 0
+                    min: 1
                 },
                 donGiaNhap: {
                     type: Number,

@@ -1,5 +1,5 @@
 const { gql } = require('apollo-server');
-const { createPhieuNhap, getAllPhieuNhaps, getPhieuNhapById, editPhieuNhap, deletePhieuNhap } = require('../../controllers/phieu-nhap.controller');
+const phieuNhapController = require('../../controllers/phieu-nhap.controller');
 const chainMiddlewares = require('../../middlewares');
 const authRequired = require('../../middlewares/authentication');
 
@@ -38,27 +38,35 @@ const typeDefs = gql`
         donGiaNhap: Int!
     }
 
-    extend type Query {
-        allPhieuNhaps(
+    type PhieuNhapQueries {
+        all(
             page: Int!,
             limit: Int!
         ): PhieuNhapsByPage!
-        phieuNhapByID(
+        byID(
+            id: ID!
+        ): PhieuNhap
+    }
+
+    extend type Query {
+        phieuNhap: PhieuNhapQueries
+    }
+
+    type PhieuNhapMutations {
+        create(
+            payload: [PhieuNhapInput!]!
+        ): PhieuNhap
+        update(
+            id: ID!,
+            payload: [PhieuNhapInput!]!
+        ): PhieuNhap
+        delete(
             id: ID!
         ): PhieuNhap
     }
 
     extend type Mutation {
-        createPhieuNhap(
-            chiTietPhieuNhap: [PhieuNhapInput!]!
-        ): PhieuNhap
-        editPhieuNhap(
-            phieuNhapId: ID!,
-            chiTietPhieuNhap: [PhieuNhapInput!]!
-        ): PhieuNhap
-        deletePhieuNhap(
-            phieuNhapId: ID!
-        ): PhieuNhap
+        phieuNhap: PhieuNhapMutations
     }
 `;
 
@@ -71,24 +79,30 @@ const resolvers = {
         sanPham: (root) => root.maSanPham
     },
     Query: {
-        allPhieuNhaps: chainMiddlewares(authRequired,
-            (_, { page, limit }) => getAllPhieuNhaps(page, limit)),
-        phieuNhapByID: chainMiddlewares(authRequired,
-            (_, { id }) => getPhieuNhapById(id))
+        phieuNhap: () => ({})
+    },
+    PhieuNhapQueries: {
+        all: chainMiddlewares(authRequired,
+            (_, { page, limit }) => phieuNhapController.getAll(page, limit)),
+        byID: chainMiddlewares(authRequired,
+            (_, { id }) => phieuNhapController.getById(id)),
     },
     Mutation: {
-        createPhieuNhap: chainMiddlewares(authRequired,
-            (_, { chiTietPhieuNhap }, { currentUser }) =>
-                createPhieuNhap(chiTietPhieuNhap, currentUser.id)
+        phieuNhap: () => ({})
+    },
+    PhieuNhapMutations: {
+        create: chainMiddlewares(authRequired,
+            (_, { payload }, { currentUser }) =>
+                phieuNhapController.create(payload, currentUser.id)
         ),
-        editPhieuNhap: chainMiddlewares(authRequired,
-            (_, { phieuNhapId, chiTietPhieuNhap }, { currentUser }) =>
-                editPhieuNhap(phieuNhapId, chiTietPhieuNhap, currentUser.id)
+        update: chainMiddlewares(authRequired,
+            (_, { id, payload }) =>
+                phieuNhapController.update(id, payload)
         ),
-        deletePhieuNhap: chainMiddlewares(authRequired,
-            (_, { phieuNhapId }) => deletePhieuNhap(phieuNhapId)
-        )
-    }
+        delete: chainMiddlewares(authRequired,
+            (_, { id }) => phieuNhapController.remove(id)
+        ),
+    },
 };
 
 module.exports = {
