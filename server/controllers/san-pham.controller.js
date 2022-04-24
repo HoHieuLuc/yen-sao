@@ -1,31 +1,51 @@
 const { UserInputError } = require('apollo-server');
 const SanPham = require('../models/SanPham');
 
-const getAllSanPhams = async (page, limit) => {
+const getAll = async (page, limit) => {
     const options = {
         page,
         limit,
-        populate: 'loaiSanPham',
+        populate: 'maLoaiSanPham',
         sort: '-updatedAt'
     };
     const sanPhams = await SanPham.paginate({}, options);
     return sanPhams;
 };
 
-const createSanPham = async (sanPham) => {
+const getById = async (id) => {
     try {
-        const newSanPham = await SanPham.create({
-            ...sanPham,
-            loaiSanPham: sanPham.maLoaiSanPham
-        });
-        const addedSanPham = await SanPham.findById(newSanPham._id).populate('loaiSanPham');
-        return addedSanPham;
+        const sanPham = await SanPham.findById(id).populate('maLoaiSanPham');
+        return sanPham;
+    } catch (error) {
+        throw new UserInputError(error.message);
+    }
+};
+
+const create = async (sanPhamData) => {
+    try {
+        const sanPham = await SanPham.create(sanPhamData);
+        return SanPham.findById(sanPham._id).populate('maLoaiSanPham');
+    } catch (error) {
+        throw new UserInputError(error.message);
+    }
+};
+
+const update = async (id, sanPhamData) => {
+    try {
+        const sanPham = await SanPham.findByIdAndUpdate(
+            id,
+            sanPhamData,
+            { new: true, runValidators: true }
+        ).populate('maLoaiSanPham');
+        return sanPham;
     } catch (error) {
         throw new UserInputError(error.message);
     }
 };
 
 module.exports = {
-    createSanPham,
-    getAllSanPhams
+    getById,
+    getAll,
+    create,
+    update,
 };
