@@ -13,16 +13,16 @@ const typeDefs = gql`
         updatedAt: Date!
     }
 
-    type PaginatePost {
+    type PostByPage {
         posts: [Post!]!
-        pageInfo: Paginatable!
+        pageInfo: PageInfo!
     }
 
     extend type Query {
         allPosts(
             page: Int!
             limit: Int!
-        ): PaginatePost
+        ): PostByPage
         singlePost(id: String!): Post
     }
 
@@ -35,7 +35,7 @@ const typeDefs = gql`
 `;
 
 const resolvers = {
-    PaginatePost: {
+    PostByPage: {
         posts: (root) => root.docs,
         pageInfo: (root) => root,
     },
