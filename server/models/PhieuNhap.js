@@ -48,9 +48,12 @@ const phieuNhap = mongoose.Schema(
     }
 );
 
-phieuNhap.pre('save', async function () {
+phieuNhap.pre('save', function (next) {
     const { chiTiet } = this;
-    this.tongTien = chiTiet.reduce((sum, { soLuongNhap, donGiaNhap }) => sum + soLuongNhap * donGiaNhap, 0); 
+    this.tongTien = chiTiet.reduce(
+        (sum, { soLuongNhap, donGiaNhap }) => sum + soLuongNhap * donGiaNhap, 0
+    );
+    next();
 });
 
 phieuNhap.plugin(mongoosePaginate);
