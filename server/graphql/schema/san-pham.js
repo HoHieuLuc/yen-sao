@@ -1,7 +1,9 @@
 const { gql } = require('apollo-server');
-const sanPhamController = require('../../controllers/san-pham.controller');
 const chainMiddlewares = require('../../middlewares');
 const authRequired = require('../../middlewares/authentication');
+const sanPhamController = require('../../controllers/san-pham.controller');
+const loaiSanPhamController = require('../../controllers/loai-san-pham.controller');
+const { isMongooseModel } = require('../../utils/functions');
 
 const sanPham = `
     tenSanPham: String!
@@ -61,7 +63,11 @@ const typeDefs = gql`
 
 const resolvers = {
     SanPham: {
-        loaiSanPham: (root) => root.maLoaiSanPham
+        loaiSanPham: (root) => {
+            return isMongooseModel(root.maLoaiSanPham)
+                ? root.maLoaiSanPham
+                : loaiSanPhamController.getById(root.maLoaiSanPham);
+        }
     },
     SanPhamsByPage: {
         sanPhams: (root) => root.docs,
