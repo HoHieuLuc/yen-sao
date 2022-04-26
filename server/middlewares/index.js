@@ -1,7 +1,7 @@
 const chainMiddlewares = (...middlewares) => {
-    return (root, args, context) =>
+    return (root, args, context, info) =>
         middlewares.reduce((promise, middleware) => {
-            return promise.then(() => middleware(root, args, context));
+            return promise.then(() => middleware(root, args, context, info));
         }, Promise.resolve());
 };
 
