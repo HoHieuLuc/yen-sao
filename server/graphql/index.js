@@ -36,6 +36,11 @@ const {
     typeDefs: PhieuNhap,
     resolvers: phieuNhapResolvers
 } = require('./schema/phieu-nhap');
+const {
+    typeDefs: PhieuXuat,
+    resolvers: phieuXuatResolvers
+} = require('./schema/phieu-xuat');
+
 
 const defaultSchema = gql`
     type Query {
@@ -58,7 +63,8 @@ const schema = makeExecutableSchema({
         Post,
         SanPham,
         LoaiSanPham,
-        PhieuNhap
+        PhieuNhap,
+        PhieuXuat
     ],
     resolvers: merge(
         dateResolvers,
@@ -67,7 +73,8 @@ const schema = makeExecutableSchema({
         postResolvers,
         sanPhamResolvers,
         loaiSanPhamResolvers,
-        phieuNhapResolvers
+        phieuNhapResolvers,
+        phieuXuatResolvers
     )
 });
 
