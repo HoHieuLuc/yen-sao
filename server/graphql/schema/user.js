@@ -44,7 +44,7 @@ const resolvers = {
         user: () => ({})
     },
     UserQueries: {
-        me: (_root, _args, context) => {
+        me: (_, __, context) => {
             return context.currentUser;
         },
     },
