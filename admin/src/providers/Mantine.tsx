@@ -1,15 +1,19 @@
-import { MantineProvider, ColorSchemeProvider } from '@mantine/core';
+import { MantineProvider, ColorSchemeProvider, ColorScheme } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
 import { useLocalStorage } from '@mantine/hooks';
 
-const MyMantineProvider = ({ children }) => {
-    const [colorScheme, setColorScheme] = useLocalStorage({
+interface Props {
+    children: JSX.Element;
+}
+
+const MyMantineProvider = ({ children }: Props) => {
+    const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
         key: 'mantine-color-scheme',
         defaultValue: 'light',
         getInitialValueInEffect: true,
     });
 
-    const toggleColorScheme = (value) =>
+    const toggleColorScheme = (value: ColorScheme) =>
         setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
 
     return (

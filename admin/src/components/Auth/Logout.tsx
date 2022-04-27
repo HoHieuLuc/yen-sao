@@ -6,7 +6,7 @@ const Logout = () => {
     const client = useApolloClient();
     useEffect(() => {
         localStorage.removeItem('token');
-        client.resetStore();
+        void client.resetStore();
     }, []);
     return (
         <LoadingOverlay

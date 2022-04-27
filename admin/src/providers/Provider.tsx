@@ -4,7 +4,11 @@ import client from '../graphql/client';
 import { BrowserRouter } from 'react-router-dom';
 import MyMantineProvider from './Mantine';
 
-const Provider = ({ children }) => {
+interface Props {
+    children: JSX.Element;
+}
+
+const Provider = ({ children }: Props) => {
     return (
         <BrowserRouter>
             <ApolloProvider client={client}>

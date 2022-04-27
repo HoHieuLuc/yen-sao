@@ -29,9 +29,9 @@ export const POSTS_LIST = gql`
                 page
                 totalPages
                 limit
-                }
             }
         }
+    }
 `;
 
 export const GET_SINGLE_POST = gql`
