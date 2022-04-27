@@ -81,15 +81,15 @@ const resolvers = {
         byID: async (_, { id }) => sanPhamController.getById(id)
     },
     Mutation: {
-        sanPham: () => ({})
+        sanPham: chainMiddlewares(authRequired,
+            () => ({})
+        ),
     },
     SanPhamMutations: {
-        create: chainMiddlewares(authRequired,
-            (_, { payload }) => sanPhamController.create(payload)
-        ),
-        update: chainMiddlewares(authRequired,
-            (_, { id, payload }) => sanPhamController.update(id, payload)
-        )
+        create: async (_, { payload }) =>
+            sanPhamController.create(payload),
+        update: async (_, { id, payload }) =>
+            sanPhamController.update(id, payload),
     },
 };
 

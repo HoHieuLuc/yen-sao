@@ -13,18 +13,25 @@ const typeDefs = gql`
         encoding: String!
     }
 
-    extend type Mutation {
+    type UploadMutations {
         singleUpload(file: Upload!): String
+    }
+
+    extend type Mutation {
+        upload: UploadMutations
     }
 `;
 
 const resolvers = {
     Upload: GraphQLUpload,
-
     Mutation: {
-        singleUpload: chainMiddlewares(authRequired, (_, {file}) => {
-            return singleUpload(file);
-        })
+        upload: chainMiddlewares(authRequired,
+            () => ({})
+        ),
+    },
+    UploadMutations: {
+        singleUpload: async (_, { file }) =>
+            singleUpload(file),
     }
 };
 
