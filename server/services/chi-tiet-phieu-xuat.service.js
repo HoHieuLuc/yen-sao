@@ -46,18 +46,20 @@ const create = async (idPhieuXuat, chiTietPhieuXuat) => {
         await phieuXuat.save();
 
         await session.commitTransaction();
-        await session.endSession();
 
-        return phieuXuat.populate(populateOptions);
+        const updatedPhieuXuat = await phieuXuat.populate(populateOptions);
+
+        return updatedPhieuXuat;
     } catch (error) {
         await session.abortTransaction();
-        await session.endSession();
         throw new UserInputError(error.message);
+    } finally {
+        await session.endSession();
     }
 };
 
 /* 
-- Tăng số lượng sản phẩm trong kho dựa theo số lượng xuất
+- Phục hồi số lượng sản phẩm trong kho dựa theo số lượng xuất
 - Giảm số lượng sản phẩm trong kho khi chi tiết xuất bị thay đổi
 - Nếu số lượng sau khi giảm < 0 thì hủy transaction và báo lỗi
 */
@@ -147,22 +149,26 @@ const remove = async (idPhieuXuat, idChiTietPhieuXuat) => {
             ({ _id }) => _id.toString() === idChiTietPhieuXuat
         );
 
-        // tăng số lượng sản phẩm trong kho
-        await SanPham.findByIdAndUpdate(
+        // phục hồi số lượng sản phẩm trong kho
+        const updatedSanPham = await SanPham.findByIdAndUpdate(
             sanPhamCanUpdate.maSanPham,
             {
                 $inc: {
                     soLuong: sanPhamCanUpdate.soLuongXuat
                 }
             },
-            { runValidators: true }
+            { new: true, runValidators: true }
         );
 
         phieuXuat.chiTiet.id(idChiTietPhieuXuat).remove();
 
         await phieuXuat.save();
+        const updatedPhieuXuat = await phieuXuat.populate(populateOptions);
 
-        return phieuXuat.populate(populateOptions);
+        return {
+            phieuXuat: updatedPhieuXuat,
+            sanPhamBiThayDoi: updatedSanPham
+        };
     } catch (error) {
         throw new UserInputError(error.message);
     }

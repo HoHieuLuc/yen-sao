@@ -79,7 +79,7 @@ const typeDefs = gql`
         delete(
             idPhieuXuat: ID!
             idChiTiet: ID!
-        ): PhieuXuat
+        ): ChiTietPhieuXuatMutationsResponse
     }
 
     extend type Mutation {

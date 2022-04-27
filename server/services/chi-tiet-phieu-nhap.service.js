@@ -13,10 +13,12 @@ const populateOptions = [
 ];
 
 const create = async (idPhieuNhap, chiTietPhieuNhap) => {
+    const session = await SanPham.startSession();
+    session.startTransaction();
     try {
-        const phieuNhap = await PhieuNhap.findById(idPhieuNhap);
+        const phieuNhap = await PhieuNhap.findById(idPhieuNhap).session(session);
 
-        if(!phieuNhap) {
+        if (!phieuNhap) {
             throw new UserInputError('Phiếu nhập không tồn tại');
         }
 
@@ -28,7 +30,7 @@ const create = async (idPhieuNhap, chiTietPhieuNhap) => {
                     soLuong: chiTietPhieuNhap.soLuongNhap
                 }
             },
-            { runValidators: true }
+            { runValidators: true, session }
         );
 
         if (!sanPhamCanUpdate) {
@@ -38,9 +40,16 @@ const create = async (idPhieuNhap, chiTietPhieuNhap) => {
         phieuNhap.chiTiet.push(chiTietPhieuNhap);
         await phieuNhap.save();
 
-        return phieuNhap.populate(populateOptions);
+        await session.commitTransaction();
+
+        const updatedPhieuNhap = await phieuNhap.populate(populateOptions);
+
+        return updatedPhieuNhap;
     } catch (error) {
+        await session.abortTransaction();
         throw new UserInputError(error.message);
+    } finally {
+        await session.endSession();
     }
 };
 
@@ -101,7 +110,7 @@ const update = async (idPhieuNhap, idChiTietPhieuNhap, chiTietPhieuNhap) => {
         const arrayOfSanPhamIds = phieuNhap.chiTiet.map(
             ({ maSanPham }) => maSanPham.toString()
         );
-        if(checkIfDuplicateExists(arrayOfSanPhamIds)) {
+        if (checkIfDuplicateExists(arrayOfSanPhamIds)) {
             throw new UserInputError('Sản phẩm trong 1 phiếu nhập không được trùng nhau');
         }
 
@@ -154,9 +163,14 @@ const remove = async (idPhieuNhap, idChiTietPhieuNhap) => {
         }
 
         phieuNhap.chiTiet.id(idChiTietPhieuNhap).remove();
+        await phieuNhap.save();
 
         await session.commitTransaction();
-        return phieuNhap.populate(populateOptions);
+        const updatedPhieuNhap = await phieuNhap.populate(populateOptions);
+        return {
+            phieuNhap: updatedPhieuNhap,
+            sanPhamBiThayDoi: updatedSanPham // cần phải return để client tự update cache
+        };
     } catch (error) {
         await session.abortTransaction();
         throw new UserInputError(error.message);
