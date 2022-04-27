@@ -1,16 +1,46 @@
 import { useQuery } from '@apollo/client';
 import { Link, useSearchParams } from 'react-router-dom';
 
-import { Table, Pagination, Center, LoadingOverlay, Anchor } from '@mantine/core';
+import { Table, Pagination, Center, LoadingOverlay, Anchor, Tooltip } from '@mantine/core';
 import { POSTS_LIST } from '../../../graphql/queries/post';
 import useStyle from './PostsList.styles';
-import { Tooltip } from '@mantine/core';
+
+interface Post {
+    id: string;
+    title: string;
+    createdAt: number;
+    updatedAt: number;
+    createdBy: CreatedBy;
+}
+
+interface CreatedBy {
+    id: string;
+    username: string;
+}
+
+interface PageVars {
+    page: number;
+    limit: number;
+}
+
+interface PageInfo extends PageVars {
+    totalPages: number;
+}
+
+interface AllPosts {
+    allPosts: {
+        posts: Array<Post>;
+        pageInfo: PageInfo;
+    };
+}
 
 const PostsList = () => {
     const [searchParams, setSearchParams] = useSearchParams();
-    const currentPage = parseInt(searchParams.get('page')) || 1;
+    const currentPage = parseInt(searchParams.get('page') || '1');
     const limit = 10;
-    const { data: postsResult, loading } = useQuery(POSTS_LIST, {
+    const { data: postsResult, loading } = useQuery<
+        AllPosts, PageVars
+    >(POSTS_LIST, {
         variables: {
             page: currentPage,
             limit
@@ -19,8 +49,9 @@ const PostsList = () => {
     });
     const { classes } = useStyle();
 
-    const handlePageChange = (page) => {
-        setSearchParams({ page });
+    const handlePageChange = (page: number) => {
+        const _page = page.toString();
+        setSearchParams({ _page });
     };
 
     const allPosts = postsResult ? postsResult.allPosts.posts : [];
@@ -31,7 +62,7 @@ const PostsList = () => {
                 <Tooltip
                     withArrow
                     wrapLines
-                    width='15em'
+                    width={300}
                     label={post.title}
                     transition='fade'
                     transitionDuration={200}
@@ -70,7 +101,7 @@ const PostsList = () => {
             {postsResult && (
                 <Center mt='sm'>
                     <Pagination
-                        total={parseInt(postsResult.allPosts.pageInfo.totalPages)}
+                        total={postsResult.allPosts.pageInfo.totalPages}
                         siblings={1}
                         page={currentPage}
                         onChange={handlePageChange}

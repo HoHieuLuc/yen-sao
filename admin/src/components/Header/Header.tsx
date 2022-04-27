@@ -5,7 +5,8 @@ import {
     MediaQuery,
     Burger,
     useMantineColorScheme,
-    ActionIcon
+    ActionIcon,
+    MantineTheme
 } from '@mantine/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSun, faMoon } from '@fortawesome/free-solid-svg-icons';
@@ -13,7 +14,14 @@ import { Link } from 'react-router-dom';
 
 import appConfig from '../../config';
 
-const AppHeader = ({ theme, opened, setOpened }) => {
+interface Props {
+    theme: MantineTheme;
+    opened: boolean;
+    setOpened: (o: boolean) => void;
+}
+
+const AppHeader = ({ theme, opened, setOpened }: Props) => {
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     const { colorScheme, toggleColorScheme } = useMantineColorScheme();
     const dark = colorScheme === 'dark';
 
@@ -23,7 +31,7 @@ const AppHeader = ({ theme, opened, setOpened }) => {
                 <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
                     <Burger
                         opened={opened}
-                        onClick={() => setOpened((o) => !o)}
+                        onClick={() => setOpened(!opened)}
                         size="sm"
                         color={theme.colors.gray[6]}
                         mr="xl"

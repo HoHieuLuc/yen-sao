@@ -13,10 +13,22 @@ import useGoBack from '../../../hooks/useGoBack';
 
 import useStyles from '../Editor.styles';
 
+interface PostDetails {
+    id: string;
+    title: string;
+    content: string;
+    createdBy: {
+        id: string;
+        fullname: string;
+    };
+    createdAt: number;
+    updatedAt: number;
+}
+
 const PostDetails = () => {
     const { id } = useParams();
     const goBack = useGoBack('/bai-viet');
-    const { data: post, loading, error } = useQuery(GET_SINGLE_POST, {
+    const { data: post, loading, error } = useQuery<{ singlePost: PostDetails }>(GET_SINGLE_POST, {
         variables: {
             singlePostId: id
         }
@@ -38,7 +50,7 @@ const PostDetails = () => {
                             overflowWrap: 'break-word',
                             whiteSpace: 'break-spaces'
                         }}>
-                            {post.singlePost.title}
+                            {post?.singlePost.title}
                         </div>
                     }
                 </Anchor>
@@ -56,6 +68,7 @@ const PostDetails = () => {
                     value={post.singlePost.content}
                     readOnly
                     className={classes.rte}
+                    onChange={() => void(0)}
                 />
             </>)}
         </div>

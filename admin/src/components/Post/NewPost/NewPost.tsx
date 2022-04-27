@@ -11,9 +11,20 @@ import { SINGLE_UPLOAD } from '../../../graphql/queries/upload';
 
 import useStyles from '../Editor.styles';
 
+interface SingleUpload {
+    singleUpload: string;
+}
+
+interface PostVars {
+    title: string;
+    content: string;
+}
+
 const NewPost = () => {
-    const [uploadImage] = useMutation(SINGLE_UPLOAD);
-    const [createPost, { loading }] = useMutation(CREATE_POST, {
+    const [uploadImage] = useMutation<{ upload: SingleUpload }>(SINGLE_UPLOAD);
+    const [createPost, { loading }] = useMutation<
+        never, PostVars
+    >(CREATE_POST, {
         onCompleted: () => showNotification({
             title: 'Thông báo',
             message: 'Đăng bài viết thành công',
@@ -30,26 +41,36 @@ const NewPost = () => {
         }
     });
 
+    type PostFormValues = typeof postForm.values;
+
     const { classes } = useStyles();
 
-    const handleImageUpload = async (file) => {
+    const handleImageUpload = async (file: File) => {
         const { data } = await uploadImage({
             variables: {
                 file
             }
         });
-        return `${appConfig.apiURL}${data.singleUpload}`;
+        if (!data) {
+            showNotification({
+                title: 'Thông báo',
+                message: 'Đăng ảnh thất bại',
+                color: 'red'
+            });
+            return '';
+        }
+        return `${appConfig.apiURL}${data.upload.singleUpload}`;
     };
 
-    const handleCreatePost = (values) => {
+    const handleCreatePost = (values: PostFormValues) => {
         if (values.content.replace(/<(.|\n)*?>/g, '').trim().length === 0) {
             return showNotification({
                 title: 'Thông báo',
                 message: 'Vui lòng nhập nội dung bài viết',
                 color: 'red'
             });
-        } 
-        createPost({
+        }
+        void createPost({
             variables: {
                 ...values,
             }

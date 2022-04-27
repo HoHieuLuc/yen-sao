@@ -4,8 +4,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import NavLink from '../NavLinks/NavLink';
 import useStyles from './LinksGroup.styles';
+import { AppLink } from '../../../config/types';
 
-const LinksGroup = ({ title, initiallyOpened, links }) => {
+interface Props {
+    title: string;
+    initiallyOpened?: boolean;
+    links: Array<AppLink>;
+}
+
+const LinksGroup = ({ title, initiallyOpened, links }: Props) => {
     const { classes } = useStyles();
     const [opened, setOpened] = useState(initiallyOpened || false);
     const hasLinks = Array.isArray(links);
@@ -28,8 +35,11 @@ const LinksGroup = ({ title, initiallyOpened, links }) => {
             <Box onClick={() => setOpened((o) => !o)} className={classes.control}>
                 <Group position="apart" spacing={0}>
                     <Box
-                        size='md'
-                        sx={{ display: 'flex', alignItems: 'center' }}
+                        sx={(theme) => ({
+                            display: 'flex',
+                            alignItems: 'center',
+                            blockSize: theme.fontSizes.md,
+                        })}
                     >
                         <Button
                             fullWidth
@@ -40,7 +50,7 @@ const LinksGroup = ({ title, initiallyOpened, links }) => {
                         </Button>
                     </Box>
                     {hasLinks && (
-                        <ThemeIcon variant='subtle'>
+                        <ThemeIcon variant='light'>
                             <FontAwesomeIcon
                                 className={classes.chevron}
                                 icon={faAngleRight}
