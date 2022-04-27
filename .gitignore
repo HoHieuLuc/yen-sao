@@ -3,3 +3,5 @@
 *tests
 
 /server/public/uploads/*
+
+!.gitkeep
