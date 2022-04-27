@@ -30,7 +30,7 @@ const create = async (idPhieuNhap, chiTietPhieuNhap) => {
                     soLuong: chiTietPhieuNhap.soLuongNhap
                 }
             },
-            { runValidators: true, session }
+            { new: true, runValidators: true, session }
         );
 
         if (!sanPhamCanUpdate) {
