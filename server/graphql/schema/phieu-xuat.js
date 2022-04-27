@@ -108,44 +108,41 @@ const resolvers = {
         sanPham: (root) => root.maSanPham
     },
     Query: {
-        phieuXuat: () => ({})
+        phieuXuat: chainMiddlewares(authRequired,
+            () => ({})
+        ),
     },
     PhieuXuatQueries: {
-        all: chainMiddlewares(authRequired,
-            (_, { page, limit }) => phieuXuatController.getAll(page, limit)),
-        byID: chainMiddlewares(authRequired,
-            (_, { id }) => phieuXuatController.getById(id)),
+        all: async (_, { page, limit }) =>
+            phieuXuatController.getAll(page, limit),
+        byID: async (_, { id }) =>
+            phieuXuatController.getById(id),
     },
     Mutation: {
-        phieuXuat: () => ({}),
-        chiTietPhieuXuat: () => ({})
+        phieuXuat: chainMiddlewares(authRequired,
+            () => ({})
+        ),
+        chiTietPhieuXuat: chainMiddlewares(authRequired,
+            () => ({})
+        ),
     },
     PhieuXuatMutations: {
-        create: chainMiddlewares(authRequired,
-            (_, { payload }, { currentUser }) =>
-                phieuXuatController.create(payload, currentUser.id)
-        ),
-        delete: chainMiddlewares(authRequired,
-            (_, { id }) => phieuXuatController.remove(id)
-        ),
+        create: async (_, { payload }, { currentUser }) =>
+            phieuXuatController.create(payload, currentUser.id),
+        delete: async (_, { id }) =>
+            phieuXuatController.remove(id)
     },
     ChiTietPhieuXuatMutations: {
-        create: chainMiddlewares(authRequired,
-            (_, { idPhieuXuat, payload }) =>
-                chiTietPhieuXuatController.create(idPhieuXuat, payload)
-        ),
-        update: chainMiddlewares(authRequired,
-            (_, { idPhieuXuat, idChiTiet, payload }) =>
-                chiTietPhieuXuatController.update(
-                    idPhieuXuat,
-                    idChiTiet,
-                    payload,
-                )
-        ),
-        delete: chainMiddlewares(authRequired,
-            (_, { idPhieuXuat, idChiTiet }) =>
-                chiTietPhieuXuatController.remove(idPhieuXuat, idChiTiet)
-        ),
+        create: async (_, { idPhieuXuat, payload }) =>
+            chiTietPhieuXuatController.create(idPhieuXuat, payload),
+        update: async (_, { idPhieuXuat, idChiTiet, payload }) =>
+            chiTietPhieuXuatController.update(
+                idPhieuXuat,
+                idChiTiet,
+                payload,
+            ),
+        delete: async (_, { idPhieuXuat, idChiTiet }) =>
+            chiTietPhieuXuatController.remove(idPhieuXuat, idChiTiet),
     }
 };
 

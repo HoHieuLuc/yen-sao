@@ -51,28 +51,25 @@ const resolvers = {
         loaiSanPhams: (root) => root.docs,
         pageInfo: (root) => root
     },
+    Query: {
+        loaiSanPham: () => ({})
+    },
     LoaiSanPhamQueries: {
         all: async (_, { page, limit }) => loaiSanPhamController.getAll(page, limit),
         byID: async (_, { id }) => loaiSanPhamController.getById(id)
     },
-    Query: {
-        loaiSanPham: () => ({})
+    Mutation: {
+        loaiSanPham: chainMiddlewares(authRequired,
+            () => ({})
+        ),
     },
     LoaiSanPhamMutations: {
-        create: chainMiddlewares(authRequired,
-            (_, { payload }) =>
-                loaiSanPhamController.create(payload)
-        ),
-        update: chainMiddlewares(authRequired,
-            (_, { id, payload }) =>
-                loaiSanPhamController.update(id, payload)
-        ),
-        delete: chainMiddlewares(authRequired,
-            (_, {id}) => loaiSanPhamController.remove(id)
-        )
-    },
-    Mutation: {
-        loaiSanPham: () => ({})
+        create: async (_, { payload }) =>
+            loaiSanPhamController.create(payload),
+        update: async (_, { id, payload }) =>
+            loaiSanPhamController.update(id, payload),
+        delete: async (_, { id }) =>
+            loaiSanPhamController.remove(id)
     },
 };
 
