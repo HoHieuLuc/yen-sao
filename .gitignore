@@ -4,4 +4,4 @@
 
 /server/public/uploads/*
 
-!.gitkeep
+!/server/public/uploads/.gitkeep
