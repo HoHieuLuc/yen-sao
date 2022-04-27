@@ -35,7 +35,8 @@ const getById = async (id) => {
 };
 
 const buildUpdateProductQuantityBulkOps = (chiTietPhieuXuat, isCreate = true) => {
-    // create: giảm, ngược lại tăng
+    // tạo phiếu xuất: giảm số lượng tồn
+    // xóa phiếu xuất: tăng (phục hồi) số lượng tồn
     const multiplyConst = isCreate ? -1 : 1;
     return chiTietPhieuXuat.map(({ maSanPham, soLuongXuat }) => ({
         updateOne: {
@@ -63,14 +64,12 @@ const create = async (chiTietPhieuXuat, nguoiXuat) => {
             true
         );
 
-        console.log(updateProductQuantityBulkOps);
-
         const bulkResult = await SanPham.bulkWrite(
             updateProductQuantityBulkOps,
             { session }
         );
 
-        // số lượng sản phẩm bị chỉnh sửa phải bằng số lượng được xuất được xuất
+        // số lượng sản phẩm bị chỉnh sửa phải bằng số lượng sản phẩm được xuất
         // thì mới không bị lỗi hết hàng
         if (bulkResult.result.nModified !== chiTietPhieuXuat.length) {
             throw new UserInputError('Số lượng sản phẩm không đủ để xuất');
@@ -83,13 +82,14 @@ const create = async (chiTietPhieuXuat, nguoiXuat) => {
 
         await phieuXuat.save({ session });
         await session.commitTransaction();
-        await session.endSession();
 
-        return phieuXuat.populate(populateOptions);
+        const createdPhieuXuat = await phieuXuat.populate(populateOptions);
+        return createdPhieuXuat;
     } catch (error) {
         await session.abortTransaction();
-        await session.endSession();
         throw new UserInputError(error.message);
+    } finally {
+        await session.endSession();
     }
 };
 

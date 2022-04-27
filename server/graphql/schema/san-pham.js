@@ -63,7 +63,7 @@ const typeDefs = gql`
 
 const resolvers = {
     SanPham: {
-        loaiSanPham: (root) => {
+        loaiSanPham: async (root) => {
             return isMongooseModel(root.maLoaiSanPham)
                 ? root.maLoaiSanPham
                 : loaiSanPhamController.getById(root.maLoaiSanPham);
