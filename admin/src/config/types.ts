@@ -1,11 +1,7 @@
 interface BaseLink {
     title: string;
     isNotNavLink?: boolean;
-}
-
-export enum LinkTypes {
-    'nav',
-    'menu'
+    type: 'nav' | 'menu' | 'hidden';
 }
 
 export interface NavLink extends BaseLink {
@@ -17,17 +13,17 @@ export interface NavLink extends BaseLink {
 export interface NavMenu extends BaseLink {
     type: 'menu';
     subLinksPattern: string;
-    subLinks: Array<AppLink>
+    subLinks: Array<AppMenuLink>
 }
 
 export interface HiddenLink extends BaseLink {
     type: 'hidden';
     to: string;
     element: JSX.Element;
-    isNotNavLink: boolean;
 }
 
 export type AppLink = NavLink | NavMenu | HiddenLink;
+export type AppMenuLink = NavLink | HiddenLink;
 
 export interface AppConfig {
     title: string;
