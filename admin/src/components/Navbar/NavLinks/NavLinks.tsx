@@ -1,4 +1,3 @@
-import React from 'react';
 import appConfig from '../../../config';
 import NavLink from './NavLink';
 import { SimpleGrid } from '@mantine/core';
@@ -7,7 +6,7 @@ const NavLinks = () => {
     return (
         <SimpleGrid cols={1} spacing={4}>
             {appConfig.links.map(link => {
-                if (link.isNotNavLink) {
+                if (link.type === 'hidden') {
                     return null;
                 }
                 return (

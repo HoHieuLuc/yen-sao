@@ -51,7 +51,7 @@ const PostsList = () => {
 
     const handlePageChange = (page: number) => {
         const _page = page.toString();
-        setSearchParams({ _page });
+        setSearchParams({ page: _page });
     };
 
     const allPosts = postsResult ? postsResult.allPosts.posts : [];

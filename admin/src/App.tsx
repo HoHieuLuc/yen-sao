@@ -10,14 +10,10 @@ import { useLazyQuery } from '@apollo/client';
 import { ME } from './graphql/queries/auth';
 import { showNotification } from '@mantine/notifications';
 
+import { User } from './types';
+
 export interface CurrentUser {
-    me: {
-        id: string;
-        username: string;
-        email: string;
-        role: string;
-        fullname: string;
-    }
+    me: User;
 }
 
 const App = () => {
