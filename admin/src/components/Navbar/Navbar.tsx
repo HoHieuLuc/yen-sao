@@ -23,7 +23,7 @@ const AppNavbar = ({ opened }: Props) => {
             p="sm"
             hiddenBreakpoint="sm"
             hidden={!opened}
-            width={{ sm: 200, lg: 300 }}
+            width={{ sm: 300, lg: 300 }}
             style={{
                 zIndex: opened ? 100 : 0
             }}

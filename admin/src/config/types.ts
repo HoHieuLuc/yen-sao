@@ -1,6 +1,5 @@
 interface BaseLink {
     title: string;
-    isNotNavLink?: boolean;
     type: 'nav' | 'menu' | 'hidden';
 }
 

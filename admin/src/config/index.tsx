@@ -1,3 +1,5 @@
+import CreateLoaiSanPham from '../components/LoaiSanPham/Create/CreateLoaiSanPham';
+import LoaiSanPhamList from '../components/LoaiSanPham/List/LoaiSanPhamList';
 import NewPost from '../components/Post/NewPost/NewPost';
 import PostDetails from '../components/Post/PostDetails/PostDetails';
 import PostsList from '../components/Post/PostsList/PostsList';
@@ -28,7 +30,6 @@ const appConfig: AppConfig = {
                     type: 'hidden',
                     to: '/bai-viet/:id',
                     element: <PostDetails />,
-                    isNotNavLink: true,
                     title: 'Chi tiết bài viết',
                 }
             ]
@@ -38,6 +39,25 @@ const appConfig: AppConfig = {
             title: 'second',
             to: '/second',
             element: <div>second</div>
+        },
+        {
+            type: 'menu',
+            title: 'Loại sản phẩm',
+            subLinksPattern: '/loai-san-pham',
+            subLinks: [
+                {
+                    title: 'Danh sách',
+                    type: 'nav',
+                    to: '/loai-san-pham',
+                    element: <LoaiSanPhamList />
+                },
+                {
+                    title: 'Thêm mới',
+                    type: 'nav',
+                    to: '/loai-san-pham/them',
+                    element: <CreateLoaiSanPham />
+                }
+            ]
         }
     ]
 };
