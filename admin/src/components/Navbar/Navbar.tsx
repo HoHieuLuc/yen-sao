@@ -8,7 +8,7 @@ import NavLinks from './NavLinks/NavLinks';
 import NavLink from './NavLinks/NavLink';
 import { useApolloClient } from '@apollo/client';
 import { ME } from '../../graphql/queries/auth';
-import { CurrentUser } from '../../App';
+import { User } from '../../types';
 
 interface Props {
     opened: boolean;
@@ -17,7 +17,7 @@ interface Props {
 const AppNavbar = ({ opened }: Props) => {
     const client = useApolloClient();
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const { user: { me } } = client.readQuery<{ user: CurrentUser }>({ query: ME })!;
+    const { user: { me } } = client.readQuery<{ user: { me: User } }>({ query: ME })!;
     return (
         <Navbar
             p="sm"

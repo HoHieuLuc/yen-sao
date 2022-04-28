@@ -1,5 +1,5 @@
 import { Button, MantineSize } from '@mantine/core';
-import { Link, useLocation, useResolvedPath, useMatch } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import LinksGroup from '../LinksGroup/LinksGroup';
 import { AppLink } from '../../../config/types';
 
@@ -27,12 +27,13 @@ const NavLink = ({ title, to, size, color, subLinks, subLinksPattern }: Props) =
             />
         );
     }
-    const resolved = useResolvedPath(to || '');
-    const match = useMatch({ path: resolved.pathname, end: true });
+    // const resolved = useResolvedPath(to || '');
+    // const match = useMatch({ path: resolved.pathname, end: true });
     return (
         <Button
             fullWidth
-            variant={match ? 'filled' : 'subtle'}
+            //variant={match ? 'filled' : 'subtle'}
+            variant='subtle'
             component={Link}
             to={to || ''}
             size={size}

@@ -1,4 +1,3 @@
-import React from 'react';
 import {
     Header,
     Text,
@@ -17,7 +16,7 @@ import appConfig from '../../config';
 interface Props {
     theme: MantineTheme;
     opened: boolean;
-    setOpened: (o: boolean) => void;
+    setOpened: (_o: boolean) => void;
 }
 
 const AppHeader = ({ theme, opened, setOpened }: Props) => {

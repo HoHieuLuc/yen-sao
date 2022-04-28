@@ -6,7 +6,6 @@ import {
     Text
 } from '@mantine/core';
 import RichTextEditor from '@mantine/rte';
-import React from 'react';
 import { useParams } from 'react-router-dom';
 import { GET_SINGLE_POST } from '../../../graphql/queries/post';
 import useGoBack from '../../../hooks/useGoBack';
