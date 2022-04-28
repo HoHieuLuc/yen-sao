@@ -13,7 +13,6 @@ const Admin = () => {
     return (
         <AppShell
             navbarOffsetBreakpoint="sm"
-            asideOffsetBreakpoint="sm"
             fixed
             navbar={
                 <AppNavbar opened={opened} />

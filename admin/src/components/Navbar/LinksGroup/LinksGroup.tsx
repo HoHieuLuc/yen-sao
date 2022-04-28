@@ -18,7 +18,7 @@ const LinksGroup = ({ title, initiallyOpened, links }: Props) => {
     const hasLinks = Array.isArray(links);
 
     const items = (hasLinks ? links : []).map((link) => {
-        if (link.isNotNavLink) {
+        if (link.type === 'hidden') {
             return null;
         }
         return (

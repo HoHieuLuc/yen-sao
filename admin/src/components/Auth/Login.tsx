@@ -52,7 +52,7 @@ const Login = ({ getCurrentUser }: Props) => {
         },
         onCompleted: (data) => {
             localStorage.setItem('token', data.user.login.value);
-            client.resetStore().then(() => void getCurrentUser()).catch(void(0));
+            client.resetStore().then(() => getCurrentUser()).catch(void(0));
         }
     });
 

@@ -1,4 +1,5 @@
 import { MantineProvider, ColorSchemeProvider, ColorScheme } from '@mantine/core';
+import { ModalsProvider } from '@mantine/modals';
 import { NotificationsProvider } from '@mantine/notifications';
 import { useLocalStorage } from '@mantine/hooks';
 
@@ -26,7 +27,9 @@ const MyMantineProvider = ({ children }: Props) => {
                 withGlobalStyles
             >
                 <NotificationsProvider autoClose={5000} zIndex={9999}>
-                    {children}
+                    <ModalsProvider>
+                        {children}
+                    </ModalsProvider>
                 </NotificationsProvider>
             </MantineProvider>
         </ColorSchemeProvider>
