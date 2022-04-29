@@ -1,9 +1,9 @@
 import { gql } from '@apollo/client';
 
 export const ALL_LOAI_SAN_PHAMS = gql`
-    query AllLoaiSanPhams($page: Int!, $limit: Int!) {
+    query AllLoaiSanPhams($page: Int!, $limit: Int!, $search: String) {
         loaiSanPham {
-            all(page: $page, limit: $limit) {
+            all(page: $page, limit: $limit, search: $search) {
                 loaiSanPhams {
                     id
                     tenLoaiSanPham
