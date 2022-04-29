@@ -33,12 +33,13 @@ const LinksGroup = ({ title, initiallyOpened, links }: Props) => {
     return (
         <>
             <Box onClick={() => setOpened((o) => !o)} className={classes.control}>
-                <Group position="apart" spacing={0}>
+                <Group position="apart" spacing={1}>
                     <Box
                         sx={(theme) => ({
                             display: 'flex',
                             alignItems: 'center',
                             blockSize: theme.fontSizes.md,
+                            height: '100%',
                         })}
                     >
                         <Button
@@ -50,7 +51,10 @@ const LinksGroup = ({ title, initiallyOpened, links }: Props) => {
                         </Button>
                     </Box>
                     {hasLinks && (
-                        <ThemeIcon variant='light'>
+                        <ThemeIcon sx={(theme) => ({
+                            backgroundColor: 'transparent',
+                            color: theme.colorScheme === 'dark' ? 'white' : theme.primaryColor,
+                        })}>
                             <FontAwesomeIcon
                                 className={classes.chevron}
                                 icon={faAngleRight}
