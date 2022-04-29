@@ -2,7 +2,7 @@ const { gql } = require('apollo-server-express');
 const { GraphQLUpload } = require('graphql-upload');
 const chainMiddlewares = require('../../middlewares/index');
 const authRequired = require('../../middlewares/authentication');
-const { singleUpload } = require('../../controllers/upload.controller');
+const uploadController = require('../../controllers/upload.controller');
 
 const typeDefs = gql`
     scalar Upload
@@ -15,6 +15,7 @@ const typeDefs = gql`
 
     type UploadMutations {
         singleUpload(file: Upload!): String
+        multiUpload(files: [Upload!]!): [String]
     }
 
     extend type Mutation {
@@ -31,7 +32,9 @@ const resolvers = {
     },
     UploadMutations: {
         singleUpload: async (_, { file }) =>
-            singleUpload(file),
+            uploadController.singleUpload(file),
+        multiUpload: async (_, { files }) =>
+            uploadController.multiUpload(files),
     }
 };
 
