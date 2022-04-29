@@ -23,7 +23,8 @@ const typeDefs = gql`
     type LoaiSanPhamQueries {
         all(
             page: Int!,
-            limit: Int!
+            limit: Int!,
+            search: String
         ): LoaiSanPhamsByPage!
         byID(id: ID!): LoaiSanPham
     }
@@ -55,7 +56,7 @@ const resolvers = {
         loaiSanPham: () => ({})
     },
     LoaiSanPhamQueries: {
-        all: async (_, { page, limit }) => loaiSanPhamController.getAll(page, limit),
+        all: async (_, { page, limit, search }) => loaiSanPhamController.getAll(page, limit, search),
         byID: async (_, { id }) => loaiSanPhamController.getById(id)
     },
     Mutation: {
