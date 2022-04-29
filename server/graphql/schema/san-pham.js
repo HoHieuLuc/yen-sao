@@ -32,7 +32,7 @@ const typeDefs = gql`
         soLuong: Int
         donGia: Int
         moTa: String
-        anhSanPham: [String!]
+        anhSanPham: [String!]!
         maLoaiSanPham: ID
     }
     
