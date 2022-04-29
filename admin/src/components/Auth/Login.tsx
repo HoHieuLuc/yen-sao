@@ -8,8 +8,8 @@ import {
 import { useForm } from '@mantine/form';
 import { useMutation, LazyQueryExecFunction, OperationVariables, useApolloClient } from '@apollo/client';
 import { LOGIN } from '../../graphql/queries/auth';
-import { showNotification } from '@mantine/notifications';
 import { CurrentUser } from '../../App';
+import { showErrorNotification } from '../../events';
 
 interface LoginData {
     login: {
@@ -44,11 +44,7 @@ const Login = ({ getCurrentUser }: Props) => {
     >(LOGIN, {
         onError: (error) => {
             console.log(error);
-            showNotification({
-                title: 'Thông báo',
-                message: error.message,
-                color: 'red',
-            });
+            showErrorNotification(error.message);
         },
         onCompleted: (data) => {
             localStorage.setItem('token', data.user.login.value);
