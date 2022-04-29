@@ -1,6 +1,6 @@
 import { useMutation, useApolloClient } from '@apollo/client';
 import { Box, Button, Group, Text } from '@mantine/core';
-import { showNotification } from '@mantine/notifications';
+import { showErrorNotification, showSuccessNotification } from '../../../events';
 import { DELETE_LOAI_SAN_PHAM } from '../../../graphql/queries';
 import { LoaiSanPham } from '../../../types';
 
@@ -21,10 +21,9 @@ const DeleteLoaiSanPham = ({ loaiSanPham, closeModal }: Props) => {
         LoaiSanPhamData, { id: string }
     >(DELETE_LOAI_SAN_PHAM, {
         onCompleted: (data) => {
-            showNotification({
-                title: 'Thông báo',
-                message: `Xóa loại sản phẩm ${data.loaiSanPham.delete.tenLoaiSanPham} thành công`,
-            });
+            showSuccessNotification(
+                `Xóa loại sản phẩm ${data.loaiSanPham.delete.tenLoaiSanPham} thành công`
+            );
             client.cache.evict({
                 id: 'ROOT_QUERY',
                 fieldName: 'loaiSanPham',
@@ -32,11 +31,7 @@ const DeleteLoaiSanPham = ({ loaiSanPham, closeModal }: Props) => {
             closeModal();
         },
         onError: (error) => {
-            showNotification({
-                title: 'Thông báo',
-                message: error.message,
-                color: 'red',
-            });
+            showErrorNotification(error.message);
         }
     });
 

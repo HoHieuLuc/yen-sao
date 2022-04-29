@@ -1,6 +1,6 @@
 import { useMutation } from '@apollo/client';
 
-import { showNotification } from '@mantine/notifications';
+import { showErrorNotification, showSuccessNotification } from '../../../events';
 import { UPDATE_LOAI_SAN_PHAM } from '../../../graphql/queries';
 import { LoaiSanPham } from '../../../types';
 import LoaiSanPhamForm from '../Form/LoaiSanPhamForm';
@@ -19,18 +19,11 @@ const EditLoaiSanPham = ({ id, tenLoaiSanPham, moTa, closeModal }: Props) => {
         never, LoaiSanPhamVars
     >(UPDATE_LOAI_SAN_PHAM, {
         onCompleted: () => {
-            showNotification({
-                title: 'Thông báo',
-                message: 'Cập nhật loại sản phẩm thành công',
-            });
+            showSuccessNotification('Cập nhật loại sản phẩm thành công');
             closeModal();
         },
         onError: (error) => {
-            showNotification({
-                title: 'Thông báo',
-                message: error.message,
-                color: 'red',
-            });
+            showErrorNotification(error.message);
         }
     });
 
