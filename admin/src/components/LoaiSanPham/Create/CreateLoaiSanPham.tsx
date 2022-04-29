@@ -1,5 +1,5 @@
 import { useApolloClient, useMutation } from '@apollo/client';
-import { showNotification } from '@mantine/notifications';
+import { showErrorNotification, showSuccessNotification } from '../../../events';
 import { CREATE_LOAI_SAN_PHAM } from '../../../graphql/queries';
 import { LoaiSanPham } from '../../../types';
 import LoaiSanPhamForm from '../Form/LoaiSanPhamForm';
@@ -12,31 +12,25 @@ const CreateLoaiSanPham = () => {
         never, { payload: LoaiSanPhamVars }
     >(CREATE_LOAI_SAN_PHAM, {
         onCompleted: () => {
-            showNotification({
-                title: 'Thông báo',
-                message: 'Tạo loại sản phẩm thành công',
-            });
+            showSuccessNotification('Thêm loại sản phẩm thành công');
             client.cache.evict({
                 id: 'ROOT_QUERY',
                 fieldName: 'loaiSanPham',
             });
         },
-        onError: (error) => showNotification({
-            title: 'Thông báo',
-            message: error.message,
-            color: 'red'
-        })
+        onError: (error) => showErrorNotification(error.message)
     });
 
     const handleSubmit = (values: LoaiSanPhamVars, callback: () => void) => {
-        createLoaiSanPham({
+        void createLoaiSanPham({
             variables: {
                 payload: {
                     tenLoaiSanPham: values.tenLoaiSanPham,
                     moTa: values.moTa
                 }
-            }
-        }).then(() => callback()).catch(void (0));
+            },
+            onCompleted: callback
+        });
     };
 
     return (
