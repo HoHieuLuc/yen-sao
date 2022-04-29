@@ -7,3 +7,11 @@ export const SINGLE_UPLOAD = gql`
         }
     }
 `;
+
+export const MULTI_UPLOAD = gql`
+    mutation MultiUpload($files: [Upload!]!) {
+        upload {
+            multiUpload(files: $files)
+        }
+    }
+`;
