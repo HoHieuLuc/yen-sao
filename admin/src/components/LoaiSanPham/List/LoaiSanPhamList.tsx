@@ -1,21 +1,23 @@
 import { useQuery } from '@apollo/client';
 import { useSearchParams } from 'react-router-dom';
 import { useModals } from '@mantine/modals';
+import { FormEvent, useState } from 'react';
 
 import {
     Center,
     Grid,
     Pagination,
+    TextInput,
 } from '@mantine/core';
-
-import { LoaiSanPham, PageInfo, PaginateVars } from '../../../types';
-import { ALL_LOAI_SAN_PHAMS } from '../../../graphql/queries';
-
-import ErrorPage from '../../Errors/ErrorPage';
-import LoadingWrapper from '../../Wrapper/LoadingWrapper';
+import ErrorPage from '../../Utils/Errors/ErrorPage';
+import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
 import EditLoaiSanPham from '../Edit/EditLoaiSanPham';
 import LoaiSanPhamItem from './LoaiSanPhamItem';
 import DeleteLoaiSanPham from '../Delete/DeleteLoaiSanPham';
+import SearchIcon from '../../Utils/Icons/SearchIcon';
+
+import { LoaiSanPham, PageInfo, PaginateVars } from '../../../types';
+import { ALL_LOAI_SAN_PHAMS } from '../../../graphql/queries';
 
 interface LoaiSanPhamsData {
     loaiSanPham: {
@@ -26,15 +28,21 @@ interface LoaiSanPhamsData {
     }
 }
 
+interface SearchVars extends PaginateVars {
+    search: string;
+}
+
 const LoaiSanPhamList = () => {
     const [searchParams, setSearchParams] = useSearchParams();
+    const [search, setSearch] = useState(searchParams.get('search') || '');
     const currentPage = parseInt(searchParams.get('page') || '1');
     const { data, loading, error } = useQuery<
-        LoaiSanPhamsData, PaginateVars
+        LoaiSanPhamsData, SearchVars
     >(ALL_LOAI_SAN_PHAMS, {
         variables: {
             page: currentPage,
             limit: 6,
+            search: searchParams.get('search') || '',
         }
     });
 
@@ -54,7 +62,7 @@ const LoaiSanPhamList = () => {
     const openDeleteModal = (loaiSanPham: LoaiSanPham) => {
         const modalId = modals.openModal({
             title: <h3>Xóa loại sản phẩm</h3>,
-            children: <DeleteLoaiSanPham 
+            children: <DeleteLoaiSanPham
                 loaiSanPham={loaiSanPham}
                 closeModal={() => modals.closeModal(modalId)}
             />
@@ -64,6 +72,13 @@ const LoaiSanPhamList = () => {
     const handlePageChange = (page: number) => {
         setSearchParams({
             page: page.toString()
+        });
+    };
+
+    const handleSearch = (event: FormEvent) => {
+        event.preventDefault();
+        setSearchParams({
+            search,
         });
     };
 
@@ -85,7 +100,16 @@ const LoaiSanPhamList = () => {
     return (
         <LoadingWrapper loading={loading}>
             <>
-                <Grid align='stretch'>
+                <form onSubmit={handleSearch}>
+                    <TextInput
+                        label='Tìm kiếm'
+                        placeholder='Tên loại sản phẩm'
+                        rightSection={<SearchIcon />}
+                        value={search}
+                        onChange={(event) => setSearch(event.target.value)}
+                    />
+                </form>
+                <Grid align='stretch' mt='sm'>
                     {loaiSanPhamElements}
                 </Grid>
                 {data && <Center mt='sm'>

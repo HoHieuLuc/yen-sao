@@ -1,6 +1,6 @@
 import { ActionIcon, Grid, Group, Paper, ScrollArea, Text } from '@mantine/core';
 import { LoaiSanPham } from '../../../types';
-import Icon from '../../Icons/Icon';
+import Icon from '../../Utils/Icons/Icon';
 
 interface Props {
     loaiSanPham: LoaiSanPham;
