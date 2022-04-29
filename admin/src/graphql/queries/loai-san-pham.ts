@@ -42,3 +42,15 @@ export const UPDATE_LOAI_SAN_PHAM = gql`
         }
     }
 `;
+
+export const DELETE_LOAI_SAN_PHAM = gql`
+    mutation DeleteLoaiSanPham($id: ID!) {
+        loaiSanPham {
+            delete(id: $id) {
+                id
+                tenLoaiSanPham
+                moTa
+            }
+        }
+    }
+`;
