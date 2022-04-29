@@ -6,6 +6,7 @@ specifiers:
   '@fortawesome/free-solid-svg-icons': ^6.1.1
   '@fortawesome/react-fontawesome': ^0.1.18
   '@mantine/core': ^4.2.1
+  '@mantine/dropzone': ^4.2.1
   '@mantine/form': ^4.2.1
   '@mantine/hooks': ^4.2.1
   '@mantine/modals': ^4.2.1
@@ -38,6 +39,7 @@ dependencies:
   '@fortawesome/free-solid-svg-icons': 6.1.1
   '@fortawesome/react-fontawesome': 0.1.18_3a4aa64e1b793e119583fa1b1a3cd25b
   '@mantine/core': 4.2.1_bc0ec67a4d7bef1e3f9ab85742043059
+  '@mantine/dropzone': 4.2.1_4bb7a15a5d03673e78e171419b644d2d
   '@mantine/form': 4.2.1_react@18.1.0
   '@mantine/hooks': 4.2.1_react@18.1.0
   '@mantine/modals': 4.2.1_4bb7a15a5d03673e78e171419b644d2d
@@ -2011,6 +2013,21 @@ packages:
       - '@types/react'
     dev: false
 
+  /@mantine/dropzone/4.2.1_4bb7a15a5d03673e78e171419b644d2d:
+    resolution: {integrity: sha512-MT3BPfw+2MteGTIrm1EoAdKDhpQ5kE5POs87njNWhbav82grE4JHmtCCj8Na4U3+e6O6ic3uh+ofK048lY7aDg==}
+    peerDependencies:
+      '@mantine/core': 4.2.1
+      '@mantine/hooks': 4.2.1
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      '@mantine/core': 4.2.1_bc0ec67a4d7bef1e3f9ab85742043059
+      '@mantine/hooks': 4.2.1_react@18.1.0
+      react: 18.1.0
+      react-dom: 18.1.0_react@18.1.0
+      react-dropzone: 11.7.1_react@18.1.0
+    dev: false
+
   /@mantine/form/4.2.1_react@18.1.0:
     resolution: {integrity: sha512-uB9v666mMCIxBJCdE+13KI5g2gNX25qevqwBwxVYnvwKVT/fuQE+lO2TRvfBQfk4PgEzmFgsm/YSG0q6bBE5cA==}
     peerDependencies:
@@ -3464,6 +3481,11 @@ packages:
     resolution: {integrity: sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==}
     engines: {node: '>= 4.5.0'}
     hasBin: true
+    dev: false
+
+  /attr-accept/2.2.2:
+    resolution: {integrity: sha512-7prDjvt9HmqiZ0cl5CRjtS84sEyhsHP2coDkaZKRKVfCDo9s7iw7ChVmar78Gu9pC4SoR/28wFu/G5JJhTnqEg==}
+    engines: {node: '>=4'}
     dev: false
 
   /autoprefixer/10.4.5_postcss@8.4.12:
@@ -5276,6 +5298,13 @@ packages:
       schema-utils: 3.1.1
       webpack: 5.72.0
     dev: true
+
+  /file-selector/0.4.0:
+    resolution: {integrity: sha512-iACCiXeMYOvZqlF1kTiYINzgepRBymz1wwjiuup9u9nayhb6g4fSwiyJ/6adli+EPwrWtpgQAh2PoS7HukEGEg==}
+    engines: {node: '>= 10'}
+    dependencies:
+      tslib: 2.4.0
+    dev: false
 
   /filelist/1.0.3:
     resolution: {integrity: sha512-LwjCsruLWQULGYKy7TX0OPtrL9kLpojOFKc5VCTxdFTV7w5zbsgqVKfnkKG7Qgjtq50gKfO56hJv88OfcGb70Q==}
@@ -8491,6 +8520,18 @@ packages:
       loose-envify: 1.4.0
       react: 18.1.0
       scheduler: 0.22.0
+    dev: false
+
+  /react-dropzone/11.7.1_react@18.1.0:
+    resolution: {integrity: sha512-zxCMwhfPy1olUEbw3FLNPLhAm/HnaYH5aELIEglRbqabizKAdHs0h+WuyOpmA+v1JXn0++fpQDdNfUagWt5hJQ==}
+    engines: {node: '>= 10.13'}
+    peerDependencies:
+      react: '>= 16.8'
+    dependencies:
+      attr-accept: 2.2.2
+      file-selector: 0.4.0
+      prop-types: 15.8.1
+      react: 18.1.0
     dev: false
 
   /react-error-overlay/6.0.11:

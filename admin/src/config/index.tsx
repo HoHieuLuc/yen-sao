@@ -3,6 +3,7 @@ import LoaiSanPhamList from '../components/LoaiSanPham/List/LoaiSanPhamList';
 import NewPost from '../components/Post/NewPost/NewPost';
 import PostDetails from '../components/Post/PostDetails/PostDetails';
 import PostsList from '../components/Post/PostsList/PostsList';
+import CreateSanPham from '../components/SanPham/Create/CreateSanPham';
 import { AppConfig } from './types';
 
 const appConfig: AppConfig = {
@@ -56,6 +57,19 @@ const appConfig: AppConfig = {
                     type: 'nav',
                     to: '/loai-san-pham/them',
                     element: <CreateLoaiSanPham />
+                }
+            ]
+        },
+        {
+            type: 'menu',
+            title: 'Sản phẩm',
+            subLinksPattern: '/san-pham',
+            subLinks: [
+                {
+                    title: 'Thêm mới',
+                    type: 'nav',
+                    to: '/san-pham/them',
+                    element: <CreateSanPham />
                 }
             ]
         }

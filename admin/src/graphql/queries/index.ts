@@ -4,3 +4,8 @@ export {
     UPDATE_LOAI_SAN_PHAM,
     DELETE_LOAI_SAN_PHAM
 } from './loai-san-pham';
+
+export {
+    SINGLE_UPLOAD,
+    MULTI_UPLOAD
+} from './upload';
