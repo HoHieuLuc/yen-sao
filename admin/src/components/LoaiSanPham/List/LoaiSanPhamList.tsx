@@ -3,24 +3,19 @@ import { useSearchParams } from 'react-router-dom';
 import { useModals } from '@mantine/modals';
 
 import {
-    ActionIcon,
     Center,
     Grid,
-    Group,
     Pagination,
-    Paper,
-    ScrollArea,
-    Text
 } from '@mantine/core';
-
 
 import { LoaiSanPham, PageInfo, PaginateVars } from '../../../types';
 import { ALL_LOAI_SAN_PHAMS } from '../../../graphql/queries';
 
 import ErrorPage from '../../Errors/ErrorPage';
 import LoadingWrapper from '../../Wrapper/LoadingWrapper';
-import EditIcon from '../../Icons/EditIcon';
 import EditLoaiSanPham from '../Edit/EditLoaiSanPham';
+import LoaiSanPhamItem from './LoaiSanPhamItem';
+import DeleteLoaiSanPham from '../Delete/DeleteLoaiSanPham';
 
 interface LoaiSanPhamsData {
     loaiSanPham: {
@@ -43,17 +38,26 @@ const LoaiSanPhamList = () => {
         }
     });
 
-    const editModal = useModals();
+    const modals = useModals();
 
     const openEditModal = (loaiSanPham: LoaiSanPham) => {
-        const modalId = editModal.openModal({
+        const modalId = modals.openModal({
             title: 'Chỉnh sửa',
-            children: <>
+            children:
                 <EditLoaiSanPham
                     {...loaiSanPham}
-                    closeModal={() => editModal.closeModal(modalId)}
+                    closeModal={() => modals.closeModal(modalId)}
                 />
-            </>
+        });
+    };
+
+    const openDeleteModal = (loaiSanPham: LoaiSanPham) => {
+        const modalId = modals.openModal({
+            title: <h3>Xóa loại sản phẩm</h3>,
+            children: <DeleteLoaiSanPham 
+                loaiSanPham={loaiSanPham}
+                closeModal={() => modals.closeModal(modalId)}
+            />
         });
     };
 
@@ -69,23 +73,12 @@ const LoaiSanPhamList = () => {
 
     const loaiSanPhamElements = data?.loaiSanPham.all.loaiSanPhams.map(
         (loaiSanPham) => (
-            <Grid.Col sm={12} lg={6} xl={4} key={loaiSanPham.id}>
-                <Paper shadow='md' p='md' withBorder>
-                    <Text weight='bold'>{loaiSanPham.tenLoaiSanPham}</Text>
-                    <ScrollArea style={{ height: '6em' }} offsetScrollbars>
-                        <Text style={{ whiteSpace: 'pre-wrap' }}>{loaiSanPham.moTa}</Text>
-                    </ScrollArea>
-                    <Group position='right' mt='xs'>
-                        <ActionIcon
-                            variant='outline'
-                            color='green'
-                            onClick={() => openEditModal(loaiSanPham)}
-                        >
-                            <EditIcon />
-                        </ActionIcon>
-                    </Group>
-                </Paper>
-            </Grid.Col>
+            <LoaiSanPhamItem
+                key={loaiSanPham.id}
+                loaiSanPham={loaiSanPham}
+                openEditModal={openEditModal}
+                openDeleteModal={openDeleteModal}
+            />
         )
     );
 
