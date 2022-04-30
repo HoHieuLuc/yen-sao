@@ -15,25 +15,23 @@ export interface SanPhamFormVars {
 
 interface Props {
     loading: boolean;
+    initialValues?: SanPhamFormVars;
     handleSubmit: (values: SanPhamFormVars, callback: () => void) => void;
 }
 
-const SanPhamForm = ({ loading, handleSubmit }: Props) => {
+const SanPhamForm = ({ loading, initialValues, handleSubmit }: Props) => {
     const sanPhamForm = useForm<SanPhamFormVars>({
         initialValues: {
-            tenSanPham: '',
-            soLuong: 0,
-            donGia: 0,
-            moTa: '',
-            anhSanPham: [],
-            maLoaiSanPham: ''
+            tenSanPham: initialValues?.tenSanPham || '',
+            soLuong: initialValues?.soLuong || 0,
+            donGia: initialValues?.donGia || 0,
+            moTa: initialValues?.moTa || '',
+            anhSanPham: initialValues?.anhSanPham || [],
+            maLoaiSanPham: initialValues?.maLoaiSanPham || ''
         },
         validate: {
             tenSanPham: (value) => value ? null : 'Tên sản phẩm không được để trống',
             moTa: (value) => value ? null : 'Mô tả không được để trống',
-            anhSanPham: (value) => value.length > 0
-                ? null
-                : showErrorNotification('Vui lòng chọn ít nhất 1 ảnh'),
             maLoaiSanPham: (value) => value ? null : 'Vui lòng chọn loại sản phẩm'
         },
     });
@@ -49,9 +47,10 @@ const SanPhamForm = ({ loading, handleSubmit }: Props) => {
         );
     };
 
-
-
     const submit = (values: SanPhamFormVars) => {
+        if (values.anhSanPham.length === 0) {
+            return showErrorNotification('Vui lòng chọn ít nhất 1 ảnh');
+        }
         handleSubmit(values, () => {
             sanPhamForm.reset();
         });
@@ -95,7 +94,7 @@ const SanPhamForm = ({ loading, handleSubmit }: Props) => {
                     setLoaiSanPhamId={(value) => sanPhamForm.setFieldValue('maLoaiSanPham', value)}
                     error={sanPhamForm.errors.maLoaiSanPham}
                 />
-                <Accordion>
+                <Accordion mt={'xs'}>
                     <Accordion.Item label='Đăng ảnh'>
                         <ImageDropzone
                             images={sanPhamForm.values.anhSanPham}

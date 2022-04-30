@@ -36,12 +36,24 @@ const AppHeader = ({ theme, opened, setOpened }: Props) => {
                         mr="xl"
                     />
                 </MediaQuery>
-                <Text color='white' component={Link} to='/'>
-                    <h2>{appConfig.title}</h2>
+                <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
+                    <Text color='white' component={Link} to='/'>
+                        <h2>{appConfig.title}</h2>
+                    </Text>
+                </MediaQuery>
+                <Text
+                    ml='auto'
+                    color='white'
+                    component='a'
+                    rel='noreferrer'
+                    href='https://studio.apollographql.com/sandbox/explorer?endpoint=http%3A%2F%2Flocalhost%3A4000%2Fgql'
+                    target='_blank'
+                >
+                    <h2>Studio (REMOVE IN PROD)</h2>
                 </Text>
                 <ActionIcon
-                    variant="outline"
-                    color={dark ? 'yellow' : 'blue'}
+                    variant={dark ? 'outline' : 'filled'}
+                    color={dark ? 'yellow' : 'violet'}
                     onClick={() => toggleColorScheme()}
                     title="Thay đổi màu nền"
                     ml='auto'

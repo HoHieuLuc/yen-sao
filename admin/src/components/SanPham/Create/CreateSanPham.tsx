@@ -1,13 +1,13 @@
 import { useApolloClient, useMutation } from '@apollo/client';
 import { showErrorNotification, showSuccessNotification } from '../../../events';
-import { CREATE_SAN_PHAM } from '../../../graphql/queries/san-pham';
+import { sanPhamQuery } from '../../../graphql/queries';
 import SanPhamForm, { SanPhamFormVars } from '../Form/SanPhamForm';
 
 const CreateSanPham = () => {
     const client = useApolloClient();
     const [createSanPham, { loading }] = useMutation<
         never, { payload: SanPhamFormVars }
-    >(CREATE_SAN_PHAM, {
+    >(sanPhamQuery.CREATE, {
         onCompleted: () => {
             showSuccessNotification('Thêm sản phẩm thành công');
             client.cache.evict({

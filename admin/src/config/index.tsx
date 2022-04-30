@@ -4,6 +4,9 @@ import NewPost from '../components/Post/NewPost/NewPost';
 import PostDetails from '../components/Post/PostDetails/PostDetails';
 import PostsList from '../components/Post/PostsList/PostsList';
 import CreateSanPham from '../components/SanPham/Create/CreateSanPham';
+import SanPhamDetails from '../components/SanPham/Details/SanPhamDetails';
+import EditSanPham from '../components/SanPham/Edit/EditSanPham';
+import SanPhamList from '../components/SanPham/List/SanPhamList';
 import { AppConfig } from './types';
 
 const appConfig: AppConfig = {
@@ -66,10 +69,28 @@ const appConfig: AppConfig = {
             subLinksPattern: '/san-pham',
             subLinks: [
                 {
+                    title: 'Danh sách',
+                    type: 'nav',
+                    to: '/san-pham',
+                    element: <SanPhamList />
+                },
+                {
                     title: 'Thêm mới',
                     type: 'nav',
                     to: '/san-pham/them',
                     element: <CreateSanPham />
+                },
+                {
+                    title: 'Sửa',
+                    type: 'hidden',
+                    to: '/san-pham/:id/sua',
+                    element: <EditSanPham />
+                },
+                {
+                    title: 'Chi tiết',
+                    type: 'hidden',
+                    to: '/san-pham/:id',
+                    element: <SanPhamDetails />
                 }
             ]
         }
