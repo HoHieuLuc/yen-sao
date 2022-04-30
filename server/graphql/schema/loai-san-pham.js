@@ -11,7 +11,7 @@ const typeDefs = gql`
     }
 
     type LoaiSanPhamsByPage {
-        loaiSanPhams: [LoaiSanPham!]!
+        docs: [LoaiSanPham!]!
         pageInfo: PageInfo!
     }
 
@@ -49,7 +49,6 @@ const typeDefs = gql`
 
 const resolvers = {
     LoaiSanPhamsByPage: {
-        loaiSanPhams: (root) => root.docs,
         pageInfo: (root) => root
     },
     Query: {

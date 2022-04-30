@@ -23,7 +23,7 @@ const typeDefs = gql`
     }
 
     type SanPhamsByPage {
-        sanPhams: [SanPham!]!
+        docs: [SanPham!]!
         pageInfo: PageInfo!
     }
 
@@ -39,7 +39,8 @@ const typeDefs = gql`
     type SanPhamQueries {
         all(
             page: Int!,
-            limit: Int!
+            limit: Int!,
+            search: String,
         ): SanPhamsByPage!
         byID(id: ID!): SanPham
     }
@@ -70,14 +71,13 @@ const resolvers = {
         }
     },
     SanPhamsByPage: {
-        sanPhams: (root) => root.docs,
         pageInfo: (root) => root
     },
     Query: {
         sanPham: () => ({})
     },
     SanPhamQueries: {
-        all: async (_, { page, limit }) => sanPhamController.getAll(page, limit),
+        all: async (_, { page, limit, search }) => sanPhamController.getAll(page, limit, search),
         byID: async (_, { id }) => sanPhamController.getById(id)
     },
     Mutation: {
