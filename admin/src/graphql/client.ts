@@ -24,6 +24,9 @@ const cache = new InMemoryCache({
             fields: {
                 loaiSanPham: {
                     merge: true,
+                },
+                sanPham: {
+                    merge: true
                 }
             }
         }
