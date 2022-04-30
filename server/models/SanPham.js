@@ -29,7 +29,7 @@ const sanPham = mongoose.Schema(
             required: true,
             validate: {
                 validator: function (v) {
-                    return v.length > 0 || v.length <= 3;
+                    return v.length > 0 && v.length <= 3;
                 },
                 message: 'Ảnh sản phẩm phải có ít nhất 1 ảnh và nhiều nhất 3 ảnh'
             }

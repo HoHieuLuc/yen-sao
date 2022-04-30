@@ -10,7 +10,7 @@ const getAll = async (page, limit, search) => {
     };
     return LoaiSanPham.paginate({
         tenLoaiSanPham: {
-            $regex: search || '',
+            $regex: search,
             $options: 'i'
         }
     }, options);

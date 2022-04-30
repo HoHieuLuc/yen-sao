@@ -1,7 +1,8 @@
 const sanPhamService = require('../services/san-pham.service');
+const { escapeRegExp } = require('../utils/functions');
 
-const getAll = async (page = 1, limit = 10) => {
-    return sanPhamService.getAll(page, limit);
+const getAll = async (page = 1, limit = 10, search = '') => {
+    return sanPhamService.getAll(page, limit, escapeRegExp(search));
 };
 
 const getById = async (id) => {
@@ -9,6 +10,7 @@ const getById = async (id) => {
 };
 
 const create = async (sanPhamData) => {
+    console.log(sanPhamData);
     return sanPhamService.create(sanPhamData);
 };
 

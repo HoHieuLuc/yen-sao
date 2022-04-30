@@ -6,7 +6,12 @@ const isMongooseModel = (obj) => {
     return obj.constructor.name.toLowerCase() === 'model';
 };
 
+const escapeRegExp = (string = '') => {
+    return (string || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+};
+
 module.exports = {
     checkIfDuplicateExists,
-    isMongooseModel
+    isMongooseModel,
+    escapeRegExp
 };

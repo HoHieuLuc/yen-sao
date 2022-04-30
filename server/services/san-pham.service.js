@@ -1,14 +1,19 @@
 const { UserInputError } = require('apollo-server');
 const SanPham = require('../models/SanPham');
 
-const getAll = async (page, limit) => {
+const getAll = async (page, limit, search) => {
     const options = {
         page,
         limit,
         populate: 'maLoaiSanPham',
         sort: '-updatedAt'
     };
-    const sanPhams = await SanPham.paginate({}, options);
+    const sanPhams = await SanPham.paginate({
+        tenSanPham: { 
+            $regex: search, 
+            $options: 'i' 
+        },
+    }, options);
     return sanPhams;
 };
 
