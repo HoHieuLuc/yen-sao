@@ -1,16 +1,18 @@
-import { Tooltip } from '@mantine/core';
+import { ActionIcon, DefaultMantineColor, Tooltip } from '@mantine/core';
+import { Link } from 'react-router-dom';
 import DeleteIcon from './DeleteIcon';
 import EditIcon from './EditIcon';
 import InfoIcon from './InfoIcon';
 
-type IconTypes = 'delete' | 'edit' | 'info';
 
 interface Props {
     label: string;
-    iconType: IconTypes
+    to: string;
+    color?: DefaultMantineColor;
+    iconType: 'delete' | 'edit' | 'info';
 }
 
-const Icon = ({ label, iconType }: Props) => {
+const LinkIcon = ({ label, to, color, iconType }: Props) => {
     let icon = null;
     switch (iconType) {
         case 'delete':
@@ -30,9 +32,15 @@ const Icon = ({ label, iconType }: Props) => {
             label={label}
             withArrow
         >
-            {icon}
+            <ActionIcon
+                component={Link}
+                to={to}
+                color={color}
+            >
+                {icon}
+            </ActionIcon>
         </Tooltip>
     );
 };
 
-export default Icon;
+export default LinkIcon;
