@@ -19,7 +19,6 @@ interface SearchVars extends PaginateVars {
 }
 
 interface Props {
-    inititalTenLoaiSanPham?: string;
     loaiSanPhamId: string;
     setLoaiSanPhamId: (loaiSanPhamId: string) => void;
     error: ReactNode;
