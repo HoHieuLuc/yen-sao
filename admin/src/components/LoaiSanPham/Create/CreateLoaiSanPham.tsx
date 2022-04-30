@@ -1,6 +1,6 @@
 import { useApolloClient, useMutation } from '@apollo/client';
 import { showErrorNotification, showSuccessNotification } from '../../../events';
-import { CREATE_LOAI_SAN_PHAM } from '../../../graphql/queries';
+import { loaiSanPhamQuery } from '../../../graphql/queries';
 import { LoaiSanPham } from '../../../types';
 import LoaiSanPhamForm from '../Form/LoaiSanPhamForm';
 
@@ -10,7 +10,7 @@ const CreateLoaiSanPham = () => {
     const client = useApolloClient();
     const [createLoaiSanPham, { loading }] = useMutation<
         never, { payload: LoaiSanPhamVars }
-    >(CREATE_LOAI_SAN_PHAM, {
+    >(loaiSanPhamQuery.CREATE, {
         onCompleted: () => {
             showSuccessNotification('Thêm loại sản phẩm thành công');
             client.cache.evict({
@@ -34,7 +34,7 @@ const CreateLoaiSanPham = () => {
     };
 
     return (
-        <LoaiSanPhamForm 
+        <LoaiSanPhamForm
             handleSubmit={handleSubmit}
             loading={loading}
             id=''

@@ -1,10 +1,10 @@
 import { gql } from '@apollo/client';
 
-export const ALL_LOAI_SAN_PHAMS = gql`
+const ALL = gql`
     query AllLoaiSanPhams($page: Int!, $limit: Int!, $search: String) {
         loaiSanPham {
             all(page: $page, limit: $limit, search: $search) {
-                loaiSanPhams {
+                docs {
                     id
                     tenLoaiSanPham
                     moTa
@@ -19,7 +19,7 @@ export const ALL_LOAI_SAN_PHAMS = gql`
     }
 `;
 
-export const CREATE_LOAI_SAN_PHAM = gql`
+const CREATE = gql`
     mutation CreateLoaiSanPham($payload: LoaiSanPhamInput!) {
         loaiSanPham {
             create(payload: $payload) {
@@ -31,7 +31,7 @@ export const CREATE_LOAI_SAN_PHAM = gql`
     }
 `;
 
-export const UPDATE_LOAI_SAN_PHAM = gql`
+const UPDATE = gql`
     mutation UpdateLoaiSanPham($id: ID!, $payload: LoaiSanPhamInput!) {
         loaiSanPham {
             update(id: $id, payload: $payload) {
@@ -43,7 +43,7 @@ export const UPDATE_LOAI_SAN_PHAM = gql`
     }
 `;
 
-export const DELETE_LOAI_SAN_PHAM = gql`
+const DELETE = gql`
     mutation DeleteLoaiSanPham($id: ID!) {
         loaiSanPham {
             delete(id: $id) {
@@ -54,3 +54,10 @@ export const DELETE_LOAI_SAN_PHAM = gql`
         }
     }
 `;
+
+export const loaiSanPhamQuery = {
+    ALL,
+    CREATE,
+    UPDATE,
+    DELETE
+};
