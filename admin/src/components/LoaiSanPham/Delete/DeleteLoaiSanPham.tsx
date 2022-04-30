@@ -1,7 +1,7 @@
 import { useMutation, useApolloClient } from '@apollo/client';
 import { Box, Button, Group, Text } from '@mantine/core';
 import { showErrorNotification, showSuccessNotification } from '../../../events';
-import { DELETE_LOAI_SAN_PHAM } from '../../../graphql/queries';
+import { loaiSanPhamQuery } from '../../../graphql/queries';
 import { LoaiSanPham } from '../../../types';
 
 interface Props {
@@ -19,7 +19,7 @@ const DeleteLoaiSanPham = ({ loaiSanPham, closeModal }: Props) => {
     const client = useApolloClient();
     const [deleteLoaiSanPham, { loading }] = useMutation<
         LoaiSanPhamData, { id: string }
-    >(DELETE_LOAI_SAN_PHAM, {
+    >(loaiSanPhamQuery.DELETE, {
         onCompleted: (data) => {
             showSuccessNotification(
                 `Xóa loại sản phẩm ${data.loaiSanPham.delete.tenLoaiSanPham} thành công`

@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/client';
 
 import { showErrorNotification, showSuccessNotification } from '../../../events';
-import { UPDATE_LOAI_SAN_PHAM } from '../../../graphql/queries';
+import { loaiSanPhamQuery } from '../../../graphql/queries';
 import { LoaiSanPham } from '../../../types';
 import LoaiSanPhamForm from '../Form/LoaiSanPhamForm';
 
@@ -17,7 +17,7 @@ interface LoaiSanPhamVars {
 const EditLoaiSanPham = ({ id, tenLoaiSanPham, moTa, closeModal }: Props) => {
     const [updateLoaiSanPham, { loading }] = useMutation<
         never, LoaiSanPhamVars
-    >(UPDATE_LOAI_SAN_PHAM, {
+    >(loaiSanPhamQuery.UPDATE, {
         onCompleted: () => {
             showSuccessNotification('Cập nhật loại sản phẩm thành công');
             closeModal();
