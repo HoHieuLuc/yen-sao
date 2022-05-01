@@ -28,7 +28,7 @@ const typeDefs = gql`
     }
 
     type PhieuNhapsByPage {
-        phieuNhaps: [PhieuNhap!]!
+        docs: [PhieuNhap!]!
         pageInfo: PageInfo!
     }
 
@@ -90,18 +90,9 @@ const typeDefs = gql`
 
 const resolvers = {
     PhieuNhap: {
-        chiTiet: (root) => {
-            // khi phiếu nhập được populate với sản phẩm (khi xem chi tiết 1 phiếu nhập)
-            // thì trả về chi tiết phiếu nhập
-            // khi phân trang phiếu nhập thì chi tiết phiếu nhập sẽ trống
-            return (root.chiTiet.length > 0 && isMongooseModel(root.chiTiet[0]?.maSanPham))
-                ? root.chiTiet
-                : [];
-        },
         soMatHangNhap: (root) => root.chiTiet.length
     },
     PhieuNhapsByPage: {
-        phieuNhaps: (root) => root.docs,
         pageInfo: (root) => root
     },
     ChiTietPhieuNhap: {
