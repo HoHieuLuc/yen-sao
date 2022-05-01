@@ -1,4 +1,5 @@
 const { ApolloServer } = require('apollo-server-express');
+const { ApolloServerPluginDrainHttpServer } = require('apollo-server-core');
 const { graphqlUploadExpress } = require('graphql-upload');
 const express = require('express');
 const http = require('http');
@@ -29,7 +30,8 @@ const start = async () => {
         formatError: (error) => {
             console.log(error);
             return error;
-        }
+        },
+        plugins: [ApolloServerPluginDrainHttpServer({ httpServer })]
     });
 
     await server.start();

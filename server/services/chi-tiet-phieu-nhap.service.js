@@ -21,10 +21,6 @@ const create = async (idPhieuNhap, chiTietPhieuNhap) => {
     try {
         const phieuNhap = await PhieuNhap.findById(idPhieuNhap).session(session);
 
-        if (!phieuNhap) {
-            throw new UserInputError('Phiếu nhập không tồn tại');
-        }
-
         // cập nhật số lượng sản phẩm
         const sanPhamCanUpdate = await SanPham.findByIdAndUpdate(
             chiTietPhieuNhap.maSanPham,
@@ -90,7 +86,7 @@ const update = async (idPhieuNhap, idChiTietPhieuNhap, chiTietPhieuNhap) => {
     try {
         // cập nhật chi tiết phiếu nhập
         // options không có new để lấy lại chi tiết trước khi cập nhật
-        const chiTietToUpdate = await ChiTietPhieuNhap.findByIdAndUpdate(
+        const chiTietToBeUpdated = await ChiTietPhieuNhap.findByIdAndUpdate(
             idChiTietPhieuNhap,
             chiTietPhieuNhap,
             { runValidators: true, session }
@@ -107,12 +103,13 @@ const update = async (idPhieuNhap, idChiTietPhieuNhap, chiTietPhieuNhap) => {
             { runValidators: true, session }
         );
 
-        // giảm số lượng sản phẩm trong kho
+        // phục hồi (giảm) số lượng sản phẩm trong kho
+        // đối với sản phẩm trong chi tiết bị cập nhật
         const updatedSanPham = await SanPham.findByIdAndUpdate(
-            chiTietToUpdate.maSanPham,
+            chiTietToBeUpdated.maSanPham,
             {
                 $inc: {
-                    soLuong: -chiTietToUpdate.soLuongNhap
+                    soLuong: -chiTietToBeUpdated.soLuongNhap
                 }
             },
             { new: true, runValidators: true, session }
@@ -178,9 +175,7 @@ const remove = async (idPhieuNhap, idChiTietPhieuNhap) => {
 
         await ChiTietPhieuNhap.findByIdAndDelete(idChiTietPhieuNhap);
 
-        phieuNhap.chiTiet = phieuNhap.chiTiet.filter(
-            ({ _id }) => _id.toString() !== idChiTietPhieuNhap
-        );
+        phieuNhap.chiTiet.pull(idChiTietPhieuNhap);
         await phieuNhap.save();
 
         await session.commitTransaction();
