@@ -14,12 +14,16 @@ const create = async (idPhieuXuat, chiTietPhieuXuat) => {
 
     // nếu tìm thấy phiếu xuất và sản phẩm trong phiếu xuất
     // thì tức là sản phẩm đó đã tồn tại trong phiếu xuất
-    const phieuXuat = await PhieuXuat.findOne({
-        _id: idPhieuXuat,
-        'chiTiet.maSanPham': chiTietPhieuXuat.maSanPham
-    });
+    const phieuXuat = await PhieuXuat.findById(idPhieuXuat).populate('chiTiet');
 
-    if (phieuXuat) {
+    if (!phieuXuat) {
+        throw new UserInputError('Phiếu xuất không tồn tại');
+    }
+    const chiTietPhieuXuatExist = phieuXuat.chiTiet.find(
+        item => item.maSanPham.toString() === chiTietPhieuXuat.maSanPham
+    );
+
+    if (chiTietPhieuXuatExist) {
         throw new UserInputError('Sản phẩm trong 1 phiếu xuất không được trùng nhau');
     }
 
