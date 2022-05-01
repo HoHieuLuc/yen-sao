@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate-v2');
-const SanPham = require('./SanPham');
+const ChiTietPhieuXuat = require('./ChiTietPhieuXuat');
 
 const phieuXuat = mongoose.Schema(
     {
@@ -18,28 +18,9 @@ const phieuXuat = mongoose.Schema(
         },
         chiTiet: [
             {
-                maSanPham: {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: 'SanPham',
-                    required: true,
-                    validate: {
-                        validator: async (v) => {
-                            const sanPham = await SanPham.findById(v);
-                            return !!sanPham;
-                        },
-                        message: 'Sản phẩm không tồn tại'
-                    }
-                },
-                soLuongXuat: {
-                    type: Number,
-                    required: true,
-                    min: 1
-                },
-                donGiaXuat: {
-                    type: Number,
-                    required: true,
-                    min: 0
-                }
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'ChiTietPhieuXuat',
+                required: true,
             }
         ],
     },
@@ -48,13 +29,17 @@ const phieuXuat = mongoose.Schema(
     }
 );
 
-phieuXuat.pre('save', function (next) {
-    const { chiTiet } = this;
-    this.tongTien = chiTiet.reduce(
+phieuXuat.pre('save', async function () {
+    const allChiTiets = await ChiTietPhieuXuat.find({
+        _id: {
+            $in: this.chiTiet
+        }
+    });
+    this.tongTien = allChiTiets.reduce(
         (sum, { soLuongXuat, donGiaXuat }) => sum + soLuongXuat * donGiaXuat, 0
     );
-    next();
 });
+
 
 phieuXuat.plugin(mongoosePaginate);
 
