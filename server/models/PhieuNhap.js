@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate-v2');
-const SanPham = require('./SanPham');
+const ChiTietPhieuNhap = require('./ChiTietPhieuNhap');
 
 const phieuNhap = mongoose.Schema(
     {
@@ -18,28 +18,9 @@ const phieuNhap = mongoose.Schema(
         },
         chiTiet: [
             {
-                maSanPham: {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: 'SanPham',
-                    required: true,
-                    validate: {
-                        validator: async (v) => {
-                            const sanPham = await SanPham.findById(v);
-                            return !!sanPham;
-                        },
-                        message: 'Sản phẩm không tồn tại'
-                    }
-                },
-                soLuongNhap: {
-                    type: Number,
-                    required: true,
-                    min: 1
-                },
-                donGiaNhap: {
-                    type: Number,
-                    required: true,
-                    min: 0
-                }
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'ChiTietPhieuNhap',
+                required: true,
             }
         ],
     },
@@ -48,12 +29,15 @@ const phieuNhap = mongoose.Schema(
     }
 );
 
-phieuNhap.pre('save', function (next) {
-    const { chiTiet } = this;
-    this.tongTien = chiTiet.reduce(
+phieuNhap.pre('save', async function () {
+    const allChiTiets = await ChiTietPhieuNhap.find({
+        _id: {
+            $in: this.chiTiet
+        }
+    });
+    this.tongTien = allChiTiets.reduce(
         (sum, { soLuongNhap, donGiaNhap }) => sum + soLuongNhap * donGiaNhap, 0
     );
-    next();
 });
 
 phieuNhap.plugin(mongoosePaginate);
