@@ -1,29 +1,34 @@
 const { UserInputError } = require('apollo-server');
 const PhieuXuat = require('../models/PhieuXuat');
 const SanPham = require('../models/SanPham');
-
-const getAll = async (page, limit) => {
-    const paginateOptions = {
-        page,
-        limit,
-        populate: 'nguoiXuat',
-        sort: '-createdAt'
-    };
-    const phieuXuats = await PhieuXuat.paginate({}, paginateOptions);
-    return phieuXuats;
-};
+const ChiTietPhieuXuat = require('../models/ChiTietPhieuXuat');
 
 const populateOptions = [
     {
-        path: 'chiTiet.maSanPham',
+        path: 'chiTiet',
         populate: {
-            path: 'maLoaiSanPham'
+            path: 'maSanPham',
+            populate: {
+                path: 'maLoaiSanPham'
+            }
         }
     },
     {
         path: 'nguoiXuat'
     }
 ];
+
+const getAll = async (page, limit) => {
+    const paginateOptions = {
+        page,
+        limit,
+        populate: populateOptions,
+        sort: '-createdAt'
+    };
+    const phieuXuats = await PhieuXuat.paginate({}, paginateOptions);
+    return phieuXuats;
+};
+
 
 const getById = async (id) => {
     try {
@@ -44,7 +49,7 @@ const buildUpdateProductQuantityBulkOps = (chiTietPhieuXuat, isCreate = true) =>
                 _id: maSanPham,
                 soLuong: {
                     // số lượng tồn lớn hơn số lượng xuất mới cập nhật
-                    $gte: isCreate ? soLuongXuat : 0 
+                    $gte: isCreate ? soLuongXuat : 0
                 }
             },
             update: {
@@ -58,6 +63,11 @@ const create = async (chiTietPhieuXuat, nguoiXuat) => {
     const session = await SanPham.startSession();
     session.startTransaction();
     try {
+        const createdChiTietPhieuXuats = await ChiTietPhieuXuat.insertMany(
+            chiTietPhieuXuat,
+            { session }
+        );
+
         // Update số lượng cho từng sản phẩm sau khi xuất
         const updateProductQuantityBulkOps = buildUpdateProductQuantityBulkOps(
             chiTietPhieuXuat,
@@ -74,14 +84,16 @@ const create = async (chiTietPhieuXuat, nguoiXuat) => {
         if (bulkResult.result.nModified !== chiTietPhieuXuat.length) {
             throw new UserInputError('Số lượng sản phẩm không đủ để xuất');
         }
+        await session.commitTransaction();
+
+        const chiTiet = createdChiTietPhieuXuats.map(({ _id }) => _id);
 
         const phieuXuat = new PhieuXuat({
             nguoiXuat,
-            chiTiet: chiTietPhieuXuat
+            chiTiet
         });
 
-        await phieuXuat.save({ session });
-        await session.commitTransaction();
+        await phieuXuat.save();
 
         const createdPhieuXuat = await phieuXuat.populate(populateOptions);
         return createdPhieuXuat;
@@ -95,10 +107,11 @@ const create = async (chiTietPhieuXuat, nguoiXuat) => {
 
 const remove = async (phieuXuatId) => {
     try {
-        const phieuXuat = await PhieuXuat.findById(phieuXuatId);
+        const phieuXuat = await PhieuXuat.findById(phieuXuatId).populate('chiTiet');
         if (!phieuXuat) {
             throw new UserInputError('Phiếu xuất không tồn tại');
         }
+
         // cập nhật lại số lượng sản phẩm khi xóa phiếu xuất
         const sanPhamsBulkOps = buildUpdateProductQuantityBulkOps(
             phieuXuat.chiTiet,
@@ -108,6 +121,8 @@ const remove = async (phieuXuatId) => {
 
         const deletedPhieuXuat = await PhieuXuat.findByIdAndDelete(phieuXuatId)
             .populate(populateOptions);
+
+        await ChiTietPhieuXuat.deleteMany({ _id: { $in: phieuXuat.chiTiet } });
 
         return deletedPhieuXuat;
     } catch (error) {
