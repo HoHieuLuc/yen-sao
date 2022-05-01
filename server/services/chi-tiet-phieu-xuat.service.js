@@ -1,11 +1,14 @@
 const { UserInputError } = require('apollo-server');
+const ChiTietPhieuXuat = require('../models/ChiTietPhieuXuat');
 const PhieuXuat = require('../models/PhieuXuat');
 const SanPham = require('../models/SanPham');
-const { checkIfDuplicateExists } = require('../utils/functions');
 
 const populateOptions = [
     {
-        path: 'chiTiet.maSanPham',
+        path: 'chiTiet',
+        populate: {
+            path: 'maSanPham',
+        }
     },
     {
         path: 'nguoiXuat'
@@ -17,10 +20,6 @@ const create = async (idPhieuXuat, chiTietPhieuXuat) => {
     session.startTransaction();
     try {
         const phieuXuat = await PhieuXuat.findById(idPhieuXuat).session(session);
-
-        if (!phieuXuat) {
-            throw new UserInputError('Phiếu xuất không tồn tại');
-        }
 
         // giảm số lượng sản phẩm khi xuất
         const sanPhamCanUpdate = await SanPham.findByIdAndUpdate(
@@ -42,7 +41,10 @@ const create = async (idPhieuXuat, chiTietPhieuXuat) => {
             throw new UserInputError('Số lượng sản phẩm không đủ để xuất hàng');
         }
 
-        phieuXuat.chiTiet.push(chiTietPhieuXuat);
+        const createdChiTietPhieuXuat = new ChiTietPhieuXuat(chiTietPhieuXuat);
+        await createdChiTietPhieuXuat.save();
+
+        phieuXuat.chiTiet.push(createdChiTietPhieuXuat._id);
         await phieuXuat.save();
 
         await session.commitTransaction();
@@ -64,35 +66,51 @@ const create = async (idPhieuXuat, chiTietPhieuXuat) => {
 - Nếu số lượng sau khi giảm < 0 thì hủy transaction và báo lỗi
 */
 const update = async (idPhieuXuat, idChiTietPhieuXuat, chiTietPhieuXuat) => {
+    const phieuXuat = await PhieuXuat.findOne({
+        _id: idPhieuXuat,
+        chiTiet: idChiTietPhieuXuat
+    }).populate('chiTiet');
+
+    if (!phieuXuat) {
+        throw new UserInputError('Phiếu xuất không tồn tại');
+    }
+
+    const chiTietPhieuXuatExist = phieuXuat.chiTiet.find(
+        item => (
+            item.maSanPham.toString() === chiTietPhieuXuat.maSanPham
+            && item._id.toString() !== idChiTietPhieuXuat
+        )
+    );
+
+    if (chiTietPhieuXuatExist) {
+        throw new UserInputError('Sản phẩm trong 1 phiếu xuất không được trùng nhau');
+    }
+
     const session = await SanPham.startSession();
     session.startTransaction();
     try {
-        const phieuXuat = await PhieuXuat.findOne({
-            _id: idPhieuXuat,
-            'chiTiet._id': idChiTietPhieuXuat
-        }).session(session);
-
-        if (!phieuXuat) {
-            // phiếu xuất hoặc chi tiết phiếu xuất không tồn tại
-            throw new UserInputError('Phiếu xuất không tồn tại');
-        }
-
-        // tăng số lượng sản phẩm trong kho
-        const sanPhamCanUpdate = phieuXuat.chiTiet.find(
-            ({ _id }) => _id.toString() === idChiTietPhieuXuat
-        );
-
-        await SanPham.findByIdAndUpdate(
-            sanPhamCanUpdate.maSanPham,
-            {
-                $inc: {
-                    soLuong: sanPhamCanUpdate.soLuongXuat
-                }
-            },
+        // cập nhật chi tiết phiếu xuất
+        // options không có new để lấy lại chi tiết trước khi cập nhật
+        const chiTietToBeUpdated = await ChiTietPhieuXuat.findByIdAndUpdate(
+            idChiTietPhieuXuat,
+            chiTietPhieuXuat,
             { runValidators: true, session }
         );
 
-        // giảm số lượng sản phẩm trong kho
+        // phục hồi (tăng) số lượng sản phẩm trong kho
+        // đối với sản phẩm trong chi tiết bị cập nhật
+        const restoredSanPham = await SanPham.findByIdAndUpdate(
+            chiTietToBeUpdated.maSanPham,
+            {
+                $inc: {
+                    soLuong: chiTietToBeUpdated.soLuongXuat
+                }
+            },
+            { new: true, runValidators: true, session }
+        );
+
+        // giảm số lượng sản phẩm trong kho 
+        // đối với sản phẩm xuất
         const updatedSanPham = await SanPham.findByIdAndUpdate(
             chiTietPhieuXuat.maSanPham,
             {
@@ -103,27 +121,19 @@ const update = async (idPhieuXuat, idChiTietPhieuXuat, chiTietPhieuXuat) => {
             { new: true, runValidators: true, session }
         );
 
-        // sau khi giảm số lượng nếu thấy sản phẩm < 0 thì hủy transaction
+        // sau khi giảm số lượng nếu thấy số lượng sản phẩm < 0 thì hủy transaction
         if (updatedSanPham.soLuong < 0) {
             throw new UserInputError('Số lượng sản phẩm trong kho không đủ');
         }
 
-        phieuXuat.chiTiet.id(idChiTietPhieuXuat).set(chiTietPhieuXuat);
-        await phieuXuat.save();
-
-        // sản phẩm trong 1 phiếu xuất không được trùng nhau
-        const arrayOfSanPhamIds = phieuXuat.chiTiet.map(
-            ({ maSanPham }) => maSanPham.toString()
-        );
-        if (checkIfDuplicateExists(arrayOfSanPhamIds)) {
-            throw new UserInputError('Sản phẩm trong 1 phiếu xuất không được trùng nhau');
-        }
-
         await session.commitTransaction();
+
+        await phieuXuat.save(); // trigger middleware cập nhật tổng tiền
+
         const updatedPhieuXuat = await phieuXuat.populate(populateOptions);
         return {
             phieuXuat: updatedPhieuXuat,
-            sanPhamBiThayDoi: updatedSanPham // cần phải return để client tự update cache
+            sanPhamBiThayDoi: restoredSanPham // cần phải return để client tự update cache
         };
     } catch (error) {
         await session.abortTransaction();
@@ -137,8 +147,8 @@ const remove = async (idPhieuXuat, idChiTietPhieuXuat) => {
     try {
         const phieuXuat = await PhieuXuat.findOne({
             _id: idPhieuXuat,
-            'chiTiet._id': idChiTietPhieuXuat
-        });
+            chiTiet: idChiTietPhieuXuat
+        }).populate('chiTiet');
 
         if (!phieuXuat) {
             // phiếu xuất hoặc chi tiết phiếu xuất không tồn tại
@@ -150,7 +160,7 @@ const remove = async (idPhieuXuat, idChiTietPhieuXuat) => {
         );
 
         // phục hồi số lượng sản phẩm trong kho
-        const updatedSanPham = await SanPham.findByIdAndUpdate(
+        const restoredSanPham = await SanPham.findByIdAndUpdate(
             sanPhamCanUpdate.maSanPham,
             {
                 $inc: {
@@ -160,14 +170,16 @@ const remove = async (idPhieuXuat, idChiTietPhieuXuat) => {
             { new: true, runValidators: true }
         );
 
-        phieuXuat.chiTiet.id(idChiTietPhieuXuat).remove();
+        await ChiTietPhieuXuat.findByIdAndDelete(idChiTietPhieuXuat);
+
+        phieuXuat.chiTiet.pull(idChiTietPhieuXuat);
 
         await phieuXuat.save();
         const updatedPhieuXuat = await phieuXuat.populate(populateOptions);
 
         return {
             phieuXuat: updatedPhieuXuat,
-            sanPhamBiThayDoi: updatedSanPham
+            sanPhamBiThayDoi: restoredSanPham
         };
     } catch (error) {
         throw new UserInputError(error.message);

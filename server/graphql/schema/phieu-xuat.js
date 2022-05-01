@@ -3,7 +3,6 @@ const chainMiddlewares = require('../../middlewares');
 const authRequired = require('../../middlewares/authentication');
 const phieuXuatController = require('../../controllers/phieu-xuat.controller');
 const chiTietPhieuXuatController = require('../../controllers/chi-tiet-phieu-xuat.controller');
-const { isMongooseModel } = require('../../utils/functions');
 
 const phieuXuat = `
     id: ID!
@@ -28,7 +27,7 @@ const typeDefs = gql`
     }
 
     type PhieuXuatsByPage {
-        phieuXuats: [PhieuXuat!]!
+        docs: [PhieuXuat!]!
         pageInfo: PageInfo!
     }
 
@@ -90,18 +89,9 @@ const typeDefs = gql`
 
 const resolvers = {
     PhieuXuat: {
-        chiTiet: (root) => {
-            // - khi phiếu xuất được populate với sản phẩm (khi xem chi tiết 1 phiếu xuất)
-            // thì trả về chi tiết phiếu xuất
-            // - khi phân trang phiếu xuất thì chi tiết phiếu xuất sẽ trống
-            return (root.chiTiet.length > 0 && isMongooseModel(root.chiTiet[0]?.maSanPham))
-                ? root.chiTiet
-                : [];
-        },
         soMatHangXuat: (root) => root.chiTiet.length
     },
     PhieuXuatsByPage: {
-        phieuXuats: (root) => root.docs,
         pageInfo: (root) => root
     },
     ChiTietPhieuXuat: {
