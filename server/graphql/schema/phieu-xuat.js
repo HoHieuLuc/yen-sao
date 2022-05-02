@@ -21,6 +21,7 @@ const typeDefs = gql`
 
     type ChiTietPhieuXuat {
         id: ID!
+        maPhieuXuat: String!
         sanPham: SanPham
         soLuongXuat: Int!
         donGiaXuat: Int!
