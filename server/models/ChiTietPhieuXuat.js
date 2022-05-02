@@ -1,19 +1,16 @@
 const mongoose = require('mongoose');
-const SanPham = require('./SanPham');
 
 const chiTietPhieuXuat = mongoose.Schema(
     {
+        maPhieuXuat: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'PhieuXuat',
+            required: true
+        },
         maSanPham: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'SanPham',
-            required: true,
-            validate: {
-                validator: async (v) => {
-                    const sanPham = await SanPham.findById(v);
-                    return !!sanPham;
-                },
-                message: 'Sản phẩm không tồn tại'
-            }
+            required: true
         },
         soLuongXuat: {
             type: Number,
