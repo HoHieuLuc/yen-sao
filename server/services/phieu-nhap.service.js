@@ -60,8 +60,18 @@ const create = async (chiTietPhieuNhap, nguoiNhap) => {
     const session = await SanPham.startSession();
     session.startTransaction();
     try {
+        const phieuNhap = new PhieuNhap({
+            nguoiNhap,
+            chiTiet: []
+        });
+
+        await phieuNhap.save({ session });
+
         const createdChiTietPhieuNhaps = await ChiTietPhieuNhap.insertMany(
-            chiTietPhieuNhap,
+            chiTietPhieuNhap.map((chiTiet) => ({
+                maPhieuNhap: phieuNhap._id,
+                ...chiTiet
+            })),
             { session }
         );
 
@@ -76,12 +86,8 @@ const create = async (chiTietPhieuNhap, nguoiNhap) => {
         // Tạo phiếu nhập
         const chiTiet = createdChiTietPhieuNhaps.map(({ _id }) => _id);
 
-        const phieuNhap = new PhieuNhap({
-            nguoiNhap,
-            chiTiet
-        });
-
-        await phieuNhap.save();
+        phieuNhap.chiTiet = chiTiet;
+        await phieuNhap.save({ session: null });
 
         return phieuNhap.populate(populateOptions);
     } catch (error) {
@@ -96,7 +102,11 @@ const remove = async (phieuNhapId) => {
     const session = await SanPham.startSession();
     session.startTransaction();
     try {
-        const phieuNhap = await PhieuNhap.findById(phieuNhapId).populate('chiTiet');
+        const phieuNhap = await PhieuNhap.findByIdAndDelete(
+            phieuNhapId,
+            { session }
+        ).populate('chiTiet');
+
         if (!phieuNhap) {
             throw new UserInputError('Phiếu nhập không tồn tại');
         }
@@ -115,9 +125,7 @@ const remove = async (phieuNhapId) => {
             throw new UserInputError('Số lượng sản phẩm không đủ để xóa phiếu nhập');
         }
 
-        const deletedPhieuNhap = await PhieuNhap.findByIdAndDelete(
-            phieuNhapId,
-            { session })
+        const deletedPhieuNhap = await phieuNhap
             .populate(populateOptions);
 
         await ChiTietPhieuNhap.deleteMany(

@@ -18,9 +18,24 @@ const populateOptions = [
 const create = async (idPhieuNhap, chiTietPhieuNhap) => {
     const session = await SanPham.startSession();
     session.startTransaction();
+
+    // nếu tìm thấy phiếu nhập và sản phẩm trong chi tiết phiếu nhập
+    // thì tức là sản phẩm đó đã tồn tại trong phiếu nhập
+    const chiTietPhieuNhapExist = await ChiTietPhieuNhap.findOne({
+        maPhieuNhap: idPhieuNhap,
+        maSanPham: chiTietPhieuNhap.maSanPham
+    });
+
+    if (chiTietPhieuNhapExist) {
+        throw new UserInputError('Sản phẩm trong 1 phiếu nhập không được trùng nhau');
+    }
     try {
         const phieuNhap = await PhieuNhap.findById(idPhieuNhap).session(session);
 
+        if (!phieuNhap) {
+            throw new UserInputError('Phiếu nhập không tồn tại');
+        }
+    
         // cập nhật số lượng sản phẩm
         const sanPhamCanUpdate = await SanPham.findByIdAndUpdate(
             chiTietPhieuNhap.maSanPham,
@@ -36,7 +51,10 @@ const create = async (idPhieuNhap, chiTietPhieuNhap) => {
             throw new UserInputError('Sản phẩm không tồn tại');
         }
 
-        const createdChiTietPhieuNhap = new ChiTietPhieuNhap(chiTietPhieuNhap);
+        const createdChiTietPhieuNhap = new ChiTietPhieuNhap({
+            maPhieuNhap: idPhieuNhap,
+            ...chiTietPhieuNhap,
+        });
         await createdChiTietPhieuNhap.save();
 
         phieuNhap.chiTiet.push(createdChiTietPhieuNhap._id);
