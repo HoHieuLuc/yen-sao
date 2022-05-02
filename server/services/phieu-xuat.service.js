@@ -29,7 +29,6 @@ const getAll = async (page, limit) => {
     return phieuXuats;
 };
 
-
 const getById = async (id) => {
     try {
         const phieuXuat = await PhieuXuat.findById(id).populate(populateOptions);
@@ -62,9 +61,19 @@ const buildUpdateProductQuantityBulkOps = (chiTietPhieuXuat, isCreate = true) =>
 const create = async (chiTietPhieuXuat, nguoiXuat) => {
     const session = await SanPham.startSession();
     session.startTransaction();
-    try {
+    try {        
+        const phieuXuat = new PhieuXuat({
+            nguoiXuat,
+            chiTiet: []
+        });
+
+        await phieuXuat.save({ session });
+
         const createdChiTietPhieuXuats = await ChiTietPhieuXuat.insertMany(
-            chiTietPhieuXuat,
+            chiTietPhieuXuat.map(chiTiet => ({
+                maPhieuXuat: phieuXuat._id,
+                ...chiTiet
+            })),
             { session }
         );
 
@@ -88,12 +97,8 @@ const create = async (chiTietPhieuXuat, nguoiXuat) => {
 
         const chiTiet = createdChiTietPhieuXuats.map(({ _id }) => _id);
 
-        const phieuXuat = new PhieuXuat({
-            nguoiXuat,
-            chiTiet
-        });
-
-        await phieuXuat.save();
+        phieuXuat.chiTiet = chiTiet;
+        await phieuXuat.save({ session: null });
 
         const createdPhieuXuat = await phieuXuat.populate(populateOptions);
         return createdPhieuXuat;
@@ -106,8 +111,14 @@ const create = async (chiTietPhieuXuat, nguoiXuat) => {
 };
 
 const remove = async (phieuXuatId) => {
+    const session = await SanPham.startSession();
+    session.startTransaction();
     try {
-        const phieuXuat = await PhieuXuat.findById(phieuXuatId).populate('chiTiet');
+        const phieuXuat = await PhieuXuat.findByIdAndDelete(
+            phieuXuatId,
+            { session }
+        ).populate('chiTiet');
+
         if (!phieuXuat) {
             throw new UserInputError('Phiếu xuất không tồn tại');
         }
@@ -117,16 +128,23 @@ const remove = async (phieuXuatId) => {
             phieuXuat.chiTiet,
             false
         );
-        await SanPham.bulkWrite(sanPhamsBulkOps);
+        await SanPham.bulkWrite(sanPhamsBulkOps, { session });
 
-        const deletedPhieuXuat = await PhieuXuat.findByIdAndDelete(phieuXuatId)
-            .populate(populateOptions);
+        const deletedPhieuXuat = await phieuXuat.populate(populateOptions);
 
-        await ChiTietPhieuXuat.deleteMany({ _id: { $in: phieuXuat.chiTiet } });
+        await ChiTietPhieuXuat.deleteMany(
+            { _id: { $in: phieuXuat.chiTiet } },
+            { session }
+        );
+
+        await session.commitTransaction();
 
         return deletedPhieuXuat;
     } catch (error) {
+        await session.abortTransaction();
         throw new UserInputError(error.message);
+    } finally {
+        await session.endSession();
     }
 };
 
