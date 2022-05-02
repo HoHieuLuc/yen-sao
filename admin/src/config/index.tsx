@@ -1,5 +1,8 @@
 import CreateLoaiSanPham from '../components/LoaiSanPham/Create/CreateLoaiSanPham';
 import LoaiSanPhamList from '../components/LoaiSanPham/List/LoaiSanPhamList';
+import CreatePhieuNhap from '../components/PhieuNhap/Create/CreatePhieuNhap';
+import PhieuNhapDetails from '../components/PhieuNhap/Details/PhieuNhapDetails';
+import PhieuNhapList from '../components/PhieuNhap/List/PhieuNhapList';
 import NewPost from '../components/Post/NewPost/NewPost';
 import PostDetails from '../components/Post/PostDetails/PostDetails';
 import PostsList from '../components/Post/PostsList/PostsList';
@@ -37,12 +40,6 @@ const appConfig: AppConfig = {
                     title: 'Chi tiết bài viết',
                 }
             ]
-        },
-        {
-            type: 'nav',
-            title: 'second',
-            to: '/second',
-            element: <div>second</div>
         },
         {
             type: 'menu',
@@ -91,6 +88,31 @@ const appConfig: AppConfig = {
                     type: 'hidden',
                     to: '/san-pham/:id',
                     element: <SanPhamDetails />
+                }
+            ]
+        },
+        {
+            type: 'menu',
+            title: 'Nhập hàng',
+            subLinksPattern: '/phieu-nhap',
+            subLinks: [
+                {
+                    type: 'nav',
+                    title: 'Danh sách',
+                    to: '/phieu-nhap',
+                    element: <PhieuNhapList />
+                },
+                {
+                    type: 'nav',
+                    title: 'Tạo phiếu nhập',
+                    to: '/phieu-nhap/them',
+                    element: <CreatePhieuNhap />
+                },
+                {
+                    type: 'hidden',
+                    title: 'Chi tiết phiếu nhập',
+                    to: '/phieu-nhap/:id',
+                    element: <PhieuNhapDetails />
                 }
             ]
         }
