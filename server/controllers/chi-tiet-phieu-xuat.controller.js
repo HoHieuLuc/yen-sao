@@ -12,8 +12,6 @@ const create = async (idPhieuXuat, chiTietPhieuXuat) => {
         throw new UserInputError('Mã sản phẩm không hợp lệ');
     }
 
-    // nếu tìm thấy phiếu xuất và sản phẩm trong phiếu xuất
-    // thì tức là sản phẩm đó đã tồn tại trong phiếu xuất
     const phieuXuat = await PhieuXuat.findById(idPhieuXuat).populate('chiTiet');
 
     if (!phieuXuat) {
