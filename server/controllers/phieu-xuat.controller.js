@@ -1,6 +1,7 @@
 const { UserInputError } = require('apollo-server');
 const { checkIfDuplicateExists } = require('../utils/functions');
 const phieuXuatService = require('../services/phieu-xuat.service');
+const sanPhamService = require('../services/san-pham.service');
 
 const getAll = async (page = 1, limit = 10) => {
     return phieuXuatService.getAll(page, limit);
@@ -16,7 +17,8 @@ const create = async (chiTietPhieuXuat, nguoiXuat) => {
     if (checkIfDuplicateExists(arrayOfSanPhamIds)) {
         throw new UserInputError('Sản phẩm trong 1 phiếu xuất không được trùng nhau');
     }
-
+    await sanPhamService.checkIfExist(arrayOfSanPhamIds);
+    
     return phieuXuatService.create(chiTietPhieuXuat, nguoiXuat);
 };
 

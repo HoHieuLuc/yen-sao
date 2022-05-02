@@ -48,9 +48,21 @@ const update = async (id, sanPhamData) => {
     }
 };
 
+const checkIfExist = async (arrayOfIds = []) => {
+    try {
+        const sanPhams = await SanPham.find({ _id: { $in: arrayOfIds } });
+        if (sanPhams.length !== arrayOfIds.length) {
+            throw new UserInputError('Sản phẩm không tồn tại');
+        }
+    } catch (error) {
+        throw new UserInputError(error.message);
+    }
+};
+
 module.exports = {
     getById,
     getAll,
     create,
     update,
+    checkIfExist
 };
