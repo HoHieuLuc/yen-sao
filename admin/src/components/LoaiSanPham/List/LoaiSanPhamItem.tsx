@@ -8,7 +8,7 @@ interface Props {
     openDeleteModal: (loaiSanPham: LoaiSanPham) => void;
 }
 
-const LoaiSanPhamItem = ({ loaiSanPham, openEditModal, openDeleteModal: openConfirmModal }: Props) => {
+const LoaiSanPhamItem = ({ loaiSanPham, openEditModal, openDeleteModal }: Props) => {
     return (
         <Grid.Col sm={12} lg={6} xl={4}>
             <Paper shadow='md' p='md' withBorder>
@@ -27,7 +27,7 @@ const LoaiSanPhamItem = ({ loaiSanPham, openEditModal, openDeleteModal: openConf
                     <ActionIcon
                         variant='outline'
                         color='red'
-                        onClick={() => openConfirmModal(loaiSanPham)}
+                        onClick={() => openDeleteModal(loaiSanPham)}
                     >
                         <Icon label='Xóa' iconType='delete' />
                     </ActionIcon>
