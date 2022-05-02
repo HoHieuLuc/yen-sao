@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 const ALL = gql`
-    query AllPhieuNhap($page: Int!, $limit: Int!) {
+    query AllPhieuNhaps($page: Int!, $limit: Int!) {
         phieuNhap {
             all(page: $page, limit: $limit) {
                 docs {
@@ -25,7 +25,7 @@ const ALL = gql`
 `;
 
 const BY_ID = gql`
-    query Query($id: ID!) {
+    query PhieuNhapByID($id: ID!) {
         phieuNhap {
             byID(id: $id) {
                 id
