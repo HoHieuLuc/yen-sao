@@ -67,7 +67,7 @@ const CREATE = gql`
     }
 `;
 
-export const UPDATE = gql`
+const UPDATE = gql`
     mutation UpdateSanPham($id: ID!, $payload: SanPhamInput!) {
         sanPham {
             update(id: $id, payload: $payload) {
