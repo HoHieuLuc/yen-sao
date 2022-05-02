@@ -1,7 +1,6 @@
 import { useQuery } from '@apollo/client';
-import { useSearchParams } from 'react-router-dom';
 import { useModals } from '@mantine/modals';
-import { useDebouncedSearchParams } from '../../../hooks';
+import { useDebouncedSearchParams, usePagination } from '../../../hooks';
 
 import {
     Center,
@@ -34,10 +33,8 @@ interface SearchVars extends PaginateVars {
 }
 
 const LoaiSanPhamList = () => {
-    const [searchParams, setSearchParams] = useSearchParams();
     const { search, debouncedSearch, setSearch } = useDebouncedSearchParams(300);
-
-    const currentPage = parseInt(searchParams.get('page') || '1');
+    const { currentPage, handlePageChange } = usePagination();
 
     const { data, loading, error } = useQuery<
         LoaiSanPhamsData, SearchVars
@@ -72,11 +69,6 @@ const LoaiSanPhamList = () => {
         });
     };
 
-    const handlePageChange = (page: number) => {
-        searchParams.set('page', page.toString());
-        setSearchParams(searchParams);
-    };
-
     if (error) {
         return <ErrorPage />;
     }
@@ -93,7 +85,7 @@ const LoaiSanPhamList = () => {
     );
 
     return (
-        <LoadingWrapper loading={loading}><>
+        <LoadingWrapper loading={loading}>
             <TextInput
                 label='Tìm kiếm'
                 placeholder='Tên loại sản phẩm'
@@ -112,7 +104,7 @@ const LoaiSanPhamList = () => {
                     onChange={handlePageChange}
                 />
             </Center>}
-        </></LoadingWrapper>
+        </LoadingWrapper>
     );
 };
 
