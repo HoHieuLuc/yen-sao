@@ -2,7 +2,7 @@ import { useQuery } from '@apollo/client';
 import { Box, Center, Grid, Paper, Text, Title } from '@mantine/core';
 import { useParams } from 'react-router-dom';
 import { sanPhamQuery } from '../../../graphql/queries';
-import { SanPham } from '../../../types/san-pham';
+import { SanPham } from '../../../types';
 import NotFound from '../../Utils/Errors/NotFound';
 import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
 import ImageDisplay from './ImageDisplay';
