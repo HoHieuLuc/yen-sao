@@ -51,9 +51,7 @@ const SanPhamForm = ({ loading, initialValues, handleSubmit }: Props) => {
         if (values.anhSanPham.length === 0) {
             return showErrorNotification('Vui lòng chọn ít nhất 1 ảnh');
         }
-        handleSubmit(values, () => {
-            sanPhamForm.reset();
-        });
+        handleSubmit(values, () => sanPhamForm.reset());
     };
 
     return (
@@ -90,8 +88,8 @@ const SanPhamForm = ({ loading, initialValues, handleSubmit }: Props) => {
                     autosize
                 />
                 <LoaiSanPhamSelect
-                    loaiSanPhamId={sanPhamForm.values.maLoaiSanPham}
-                    setLoaiSanPhamId={(value) => sanPhamForm.setFieldValue('maLoaiSanPham', value)}
+                    maLoaiSanPham={sanPhamForm.values.maLoaiSanPham}
+                    setMaLoaiSanPham={(value) => sanPhamForm.setFieldValue('maLoaiSanPham', value)}
                     error={sanPhamForm.errors.maLoaiSanPham}
                 />
                 <Accordion mt={'xs'}>
