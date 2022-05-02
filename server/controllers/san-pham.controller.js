@@ -10,7 +10,6 @@ const getById = async (id) => {
 };
 
 const create = async (sanPhamData) => {
-    console.log(sanPhamData);
     return sanPhamService.create(sanPhamData);
 };
 
