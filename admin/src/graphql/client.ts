@@ -27,6 +27,9 @@ const cache = new InMemoryCache({
                 },
                 sanPham: {
                     merge: true
+                },
+                phieuNhap: {
+                    merge: true
                 }
             }
         }

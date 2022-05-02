@@ -29,15 +29,15 @@ const SanPhamDetails = () => {
 
     return (
         <LoadingWrapper loading={loading}><>
-            {(data && data.sanPham.byID) && <Box>
+            {data && <Box>
                 <Center>
                     <Title>Chi tiết sản phẩm</Title>
                 </Center>
                 <Grid justify='center'>
-                    {data.sanPham.byID.anhSanPham.map((anhSanPham, index) => (
+                    {data.sanPham.byID.anhSanPham.map((url, index) => (
                         <ImageDisplay
                             key={index}
-                            anhSanPham={anhSanPham}
+                            anhSanPham={url}
                         />
                     ))}
                 </Grid>
