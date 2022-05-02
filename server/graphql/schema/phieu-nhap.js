@@ -22,6 +22,7 @@ const typeDefs = gql`
 
     type ChiTietPhieuNhap {
         id: ID!
+        maPhieuNhap: String!
         sanPham: SanPham
         soLuongNhap: Int!
         donGiaNhap: Int!
