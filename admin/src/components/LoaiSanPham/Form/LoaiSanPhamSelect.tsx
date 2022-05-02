@@ -19,13 +19,12 @@ interface SearchVars extends PaginateVars {
 }
 
 interface Props {
-    loaiSanPhamId: string;
-    setLoaiSanPhamId: (loaiSanPhamId: string) => void;
+    maLoaiSanPham: string;
+    setMaLoaiSanPham: (loaiSanPhamId: string) => void;
     error: ReactNode;
 }
 
-const LoaiSanPhamSelect = (
-    { loaiSanPhamId, setLoaiSanPhamId, error }: Props) => {
+const LoaiSanPhamSelect = ({ maLoaiSanPham, setMaLoaiSanPham, error }: Props) => {
     const { debouncedSeach, setSearch } = useDebouncedSearch('', 300);
 
     const { data, loading } = useQuery<
@@ -53,8 +52,8 @@ const LoaiSanPhamSelect = (
             nothingFound={loading ? <Loader /> : 'Không tìm thấy loại sản phẩm nào'}
             data={loaiSanPhamData}
             onSearchChange={setSearch}
-            value={loaiSanPhamId}
-            onChange={(value) => setLoaiSanPhamId(value || '')}
+            value={maLoaiSanPham}
+            onChange={(value) => setMaLoaiSanPham(value || '')}
             error={error}
             clearable
         />
