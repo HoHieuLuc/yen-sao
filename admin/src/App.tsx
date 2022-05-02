@@ -8,9 +8,9 @@ import { LoadingOverlay } from '@mantine/core';
 
 import { useLazyQuery } from '@apollo/client';
 import { ME } from './graphql/queries/auth';
-import { showNotification } from '@mantine/notifications';
 
 import { User } from './types';
+import { showErrorNotification } from './events';
 
 export interface CurrentUser {
     me: User;
@@ -20,12 +20,7 @@ const App = () => {
     const [getCurrentUser, currentUser] = useLazyQuery<{ user: CurrentUser }>(ME, {
         onError: (error) => {
             if (error.networkError && error.networkError.message === 'Failed to fetch') {
-                showNotification({
-                    title: 'Thông báo',
-                    message: 'Không thể kết nối đến máy chủ',
-                    color: 'red',
-                });
-                return;
+                return showErrorNotification('Không thể kết nối đến máy chủ');
             }
             localStorage.removeItem('token');
             location.reload();
