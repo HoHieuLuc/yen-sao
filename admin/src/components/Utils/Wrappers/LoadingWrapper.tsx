@@ -1,7 +1,7 @@
 import { LoadingOverlay } from '@mantine/core';
 
 interface Props {
-    children: JSX.Element;
+    children: JSX.Element | Array<JSX.Element> | React.ReactNode;
     loading: boolean;
 }
 
