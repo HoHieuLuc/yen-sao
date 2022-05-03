@@ -37,7 +37,7 @@ const create = async (idPhieuNhap, chiTietPhieuNhap) => {
         }
     
         // cập nhật số lượng sản phẩm
-        const sanPhamCanUpdate = await SanPham.findByIdAndUpdate(
+        await SanPham.findByIdAndUpdate(
             chiTietPhieuNhap.maSanPham,
             {
                 $inc: {
@@ -46,10 +46,6 @@ const create = async (idPhieuNhap, chiTietPhieuNhap) => {
             },
             { new: true, runValidators: true, session }
         );
-
-        if (!sanPhamCanUpdate) {
-            throw new UserInputError('Sản phẩm không tồn tại');
-        }
 
         const createdChiTietPhieuNhap = new ChiTietPhieuNhap({
             maPhieuNhap: idPhieuNhap,

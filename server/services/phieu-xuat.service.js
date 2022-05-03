@@ -61,7 +61,7 @@ const buildUpdateProductQuantityBulkOps = (chiTietPhieuXuat, isCreate = true) =>
 const create = async (chiTietPhieuXuat, nguoiXuat) => {
     const session = await SanPham.startSession();
     session.startTransaction();
-    try {        
+    try {
         const phieuXuat = new PhieuXuat({
             nguoiXuat,
             chiTiet: []
@@ -95,9 +95,7 @@ const create = async (chiTietPhieuXuat, nguoiXuat) => {
         }
         await session.commitTransaction();
 
-        const chiTiet = createdChiTietPhieuXuats.map(({ _id }) => _id);
-
-        phieuXuat.chiTiet = chiTiet;
+        phieuXuat.chiTiet = createdChiTietPhieuXuats.map(({ _id }) => _id);
         await phieuXuat.save({ session: null });
 
         const createdPhieuXuat = await phieuXuat.populate(populateOptions);

@@ -84,9 +84,7 @@ const create = async (chiTietPhieuNhap, nguoiNhap) => {
         await session.commitTransaction();
 
         // Tạo phiếu nhập
-        const chiTiet = createdChiTietPhieuNhaps.map(({ _id }) => _id);
-
-        phieuNhap.chiTiet = chiTiet;
+        phieuNhap.chiTiet =  createdChiTietPhieuNhaps.map(({ _id }) => _id);
         await phieuNhap.save({ session: null });
 
         return phieuNhap.populate(populateOptions);
