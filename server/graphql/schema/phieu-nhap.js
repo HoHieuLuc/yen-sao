@@ -42,7 +42,9 @@ const typeDefs = gql`
     type PhieuNhapQueries {
         all(
             page: Int!,
-            limit: Int!
+            limit: Int!,
+            from: Date,
+            to: Date
         ): PhieuNhapsByPage!
         byID(
             id: ID!
@@ -107,8 +109,8 @@ const resolvers = {
         )
     },
     PhieuNhapQueries: {
-        all: async (_, { page, limit }) =>
-            phieuNhapController.getAll(page, limit),
+        all: async (_, { page, limit, from, to }) =>
+            phieuNhapController.getAll(page, limit, from, to),
         byID: async (_, { id }) =>
             phieuNhapController.getById(id),
     },

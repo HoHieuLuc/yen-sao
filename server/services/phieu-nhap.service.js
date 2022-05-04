@@ -18,15 +18,34 @@ const populateOptions = [
     }
 ];
 
-const getAll = async (page, limit) => {
+const getAll = async (page, limit, from, to) => {
     const paginateOptions = {
         page,
         limit,
         populate: populateOptions,
         sort: '-createdAt'
     };
-    const phieuNhaps = await PhieuNhap.paginate({}, paginateOptions);
-    return phieuNhaps;
+
+    let findOptions = {};
+
+    if (from || to) {
+        const createdAt = {};
+        if (from ){
+            createdAt.$gte = from;
+        }
+        if (to) {
+            createdAt.$lte = to;
+        }
+        findOptions = {
+            createdAt
+        };
+    }
+    try {
+        const phieuNhaps = await PhieuNhap.paginate(findOptions, paginateOptions);
+        return phieuNhaps;
+    } catch (error) {
+        throw new UserInputError(error.message);
+    }
 };
 
 
@@ -84,7 +103,7 @@ const create = async (chiTietPhieuNhap, nguoiNhap) => {
         await session.commitTransaction();
 
         // Tạo phiếu nhập
-        phieuNhap.chiTiet =  createdChiTietPhieuNhaps.map(({ _id }) => _id);
+        phieuNhap.chiTiet = createdChiTietPhieuNhaps.map(({ _id }) => _id);
         await phieuNhap.save({ session: null });
 
         return phieuNhap.populate(populateOptions);
