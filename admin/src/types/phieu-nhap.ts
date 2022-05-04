@@ -18,3 +18,19 @@ export interface PhieuNhap {
     tongTien: number;
     chiTiet: Array<ChiTietPhieuNhap>
 }
+
+export interface PhieuNhapByID {
+    phieuNhap: {
+        byID: PhieuNhap;
+    }
+}
+
+export interface ChiTietPhieuNhapFormData {
+    maSanPham: string;
+    soLuongNhap: number;
+    donGiaNhap: number;
+}
+
+export interface PhieuNhapVars {
+    payload: Array<ChiTietPhieuNhapFormData>
+}
