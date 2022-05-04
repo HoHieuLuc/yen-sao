@@ -5,6 +5,7 @@ const typeDefs = gql`
         page: Int!
         totalPages: Int!
         limit: Int!
+        totalDocs: Int!
     }
 `;
 

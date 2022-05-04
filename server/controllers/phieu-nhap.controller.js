@@ -3,8 +3,8 @@ const { checkIfDuplicateExists } = require('../utils/functions');
 const phieuNhapService = require('../services/phieu-nhap.service');
 const sanPhamService = require('../services/san-pham.service');
 
-const getAll = async (page = 1, limit = 10) => {
-    return phieuNhapService.getAll(page, limit);
+const getAll = async (page = 1, limit = 10, from = null, to = null) => {
+    return phieuNhapService.getAll(page, limit, from, to);
 };
 
 const getById = async (id) => {

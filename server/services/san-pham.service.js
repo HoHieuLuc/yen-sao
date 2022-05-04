@@ -6,7 +6,7 @@ const getAll = async (page, limit, search) => {
         page,
         limit,
         populate: 'maLoaiSanPham',
-        sort: '-updatedAt'
+        sort: '-createdAt'
     };
     const sanPhams = await SanPham.paginate({
         tenSanPham: { 
