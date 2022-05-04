@@ -1,10 +1,13 @@
 import { gql, useApolloClient } from '@apollo/client';
-import { Accordion, Button, Group } from '@mantine/core';
-import ChiTietPhieuNhapForm, { ChiTietPhieuNhapFormData } from './ChiTietPhieuNhapForm';
 import { formList, useForm } from '@mantine/form';
+
+import { Accordion, Button, Group } from '@mantine/core';
 import PlusIcon from '../../Utils/Icons/PlusIcon';
+import ChiTietPhieuNhapListForm from './ChiTietPhieuNhapListForm';
+
 import { showErrorNotification } from '../../../events';
-import { PhieuNhapVars } from '../Create/CreatePhieuNhap';
+import { nanoid } from 'nanoid';
+import { ChiTietPhieuNhapFormData, PhieuNhapVars } from '../../../types';
 
 interface Props {
     loading: boolean;
@@ -33,11 +36,9 @@ const PhieuNhapForm = ({ loading, handleSubmit }: Props) => {
     });
 
     const client = useApolloClient();
-    const chiTietFormElements = phieuNhapForm.values.payload.map((_, index) => {
-        const maSanPham = phieuNhapForm.getListInputProps('payload', index, 'maSanPham');
-        const idToRead = typeof maSanPham.value === 'string' ? maSanPham.value : '';
+    const chiTietFormElements = phieuNhapForm.values.payload.map((phieuNhap, index) => {
         const sanPham = client.readFragment<{ tenSanPham: string }>({
-            id: `SanPham:${idToRead}`,
+            id: `SanPham:${phieuNhap.maSanPham}`,
             fragment: gql`
                 fragment TenSanPham on SanPham {
                     tenSanPham
@@ -45,8 +46,13 @@ const PhieuNhapForm = ({ loading, handleSubmit }: Props) => {
             `
         });
         return (
-            <Accordion.Item label={sanPham ? sanPham.tenSanPham : 'Chọn sản phẩm'} key={index}>
-                <ChiTietPhieuNhapForm
+            <Accordion.Item
+                label={sanPham 
+                    ? `${sanPham.tenSanPham} - Số lượng nhập: ${phieuNhap.soLuongNhap || 0}`
+                    : 'Chọn sản phẩm'}
+                key={nanoid(10)}
+            >
+                <ChiTietPhieuNhapListForm
                     phieuNhapForm={phieuNhapForm}
                     index={index}
                 />

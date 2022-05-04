@@ -26,10 +26,24 @@ const cache = new InMemoryCache({
                     merge: true,
                 },
                 sanPham: {
-                    merge: true
+                    merge: true,
                 },
                 phieuNhap: {
                     merge: true
+                }
+            }
+        },
+        PhieuNhap: {
+            fields: {
+                chiTiet: {
+                    merge: false
+                }
+            }
+        },
+        PhieuXuat: {
+            fields: {
+                chiTiet: {
+                    merge: false
                 }
             }
         }

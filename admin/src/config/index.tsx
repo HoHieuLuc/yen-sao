@@ -2,6 +2,7 @@ import CreateLoaiSanPham from '../components/LoaiSanPham/Create/CreateLoaiSanPha
 import LoaiSanPhamList from '../components/LoaiSanPham/List/LoaiSanPhamList';
 import CreatePhieuNhap from '../components/PhieuNhap/Create/CreatePhieuNhap';
 import PhieuNhapDetails from '../components/PhieuNhap/Details/PhieuNhapDetails';
+import EditPhieuNhap from '../components/PhieuNhap/Edit/EditPhieuNhap';
 import PhieuNhapList from '../components/PhieuNhap/List/PhieuNhapList';
 import NewPost from '../components/Post/NewPost/NewPost';
 import PostDetails from '../components/Post/PostDetails/PostDetails';
@@ -113,6 +114,12 @@ const appConfig: AppConfig = {
                     title: 'Chi tiết phiếu nhập',
                     to: '/phieu-nhap/:id',
                     element: <PhieuNhapDetails />
+                },
+                {
+                    type: 'hidden',
+                    title: 'Chỉnh sửa phiếu nhập',
+                    to: '/phieu-nhap/:id/sua',
+                    element: <EditPhieuNhap />
                 }
             ]
         }

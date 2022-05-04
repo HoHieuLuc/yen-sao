@@ -1,9 +1,11 @@
 import { useApolloClient, useMutation } from '@apollo/client';
+
 import { Box, Center, Title } from '@mantine/core';
+import PhieuNhapForm from '../Form/PhieuNhapForm';
+
 import { showErrorNotification, showSuccessNotification } from '../../../events';
 import { phieuNhapQuery } from '../../../graphql/queries';
-import { ChiTietPhieuNhapFormData } from '../Form/ChiTietPhieuNhapForm';
-import PhieuNhapForm from '../Form/PhieuNhapForm';
+import { ChiTietPhieuNhapFormData } from '../../../types';
 
 export interface PhieuNhapVars {
     payload: Array<ChiTietPhieuNhapFormData>
