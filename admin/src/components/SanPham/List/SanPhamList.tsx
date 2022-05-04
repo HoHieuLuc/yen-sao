@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client';
 import { useDebouncedSearchParams, usePagination } from '../../../hooks';
 
-import { Center, Pagination, Table, TextInput } from '@mantine/core';
+import { Center, Pagination, ScrollArea, Table, Text, TextInput } from '@mantine/core';
 import ErrorPage from '../../Utils/Errors/ErrorPage';
 import LinkIcon from '../../Utils/Icons/LinkIcon';
 import SearchIcon from '../../Utils/Icons/SearchIcon';
@@ -48,9 +48,14 @@ const SanPhamList = () => {
         return <ErrorPage />;
     }
 
-    const sanPhamElements = data?.sanPham.all.docs.map(sanPham => (
+    const sanPhamElements = data?.sanPham.all.docs.map((sanPham, index) => (
         <tr key={sanPham.id}>
-            <td>{sanPham.tenSanPham}</td>
+            <td>{10 * (currentPage - 1) + (index + 1)}</td>
+            <td>
+                <Text lineClamp={1}>
+                    {sanPham.tenSanPham}
+                </Text>
+            </td>
             <td>{sanPham.soLuong}</td>
             <td>{sanPham.loaiSanPham.tenLoaiSanPham}</td>
             <td>
@@ -80,20 +85,24 @@ const SanPhamList = () => {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 rightSection={<SearchIcon />}
+                mb='xs'
             />
-            <Table striped highlightOnHover mb='sm'>
-                <thead>
-                    <tr>
-                        <th>Tên sản phẩm</th>
-                        <th>Số lượng còn</th>
-                        <th>Loại sản phẩm</th>
-                        <th>Chức năng</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {sanPhamElements}
-                </tbody>
-            </Table>
+            <ScrollArea style={{ whiteSpace: 'break-spaces' }}>
+                <Table striped highlightOnHover mb='sm'>
+                    <thead>
+                        <tr style={{ whiteSpace: 'nowrap' }}>
+                            <th>STT</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Số lượng còn</th>
+                            <th>Loại sản phẩm</th>
+                            <th>Chức năng</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {sanPhamElements}
+                    </tbody>
+                </Table>
+            </ScrollArea>
             {data && (
                 <Center>
                     <Pagination
