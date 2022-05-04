@@ -1,16 +1,19 @@
-import { ActionIcon, Center } from '@mantine/core';
 import { useModals } from '@mantine/modals';
-import { convertToVietnameseDate, convertToVND } from '../../../utils/functions';
+
+import { ActionIcon, Center } from '@mantine/core';
 import Icon from '../../Utils/Icons/Icon';
 import LinkIcon from '../../Utils/Icons/LinkIcon';
 import DeletePhieuNhap from '../Delete/DeletePhieuNhap';
 import { PhieuNhapDoc } from './PhieuNhapList';
 
+import { convertToVietnameseDate, convertToVND } from '../../../utils/common';
+
 interface Props {
     phieuNhap: PhieuNhapDoc;
+    index: number;
 }
 
-const PhieuNhapItem = ({ phieuNhap }: Props) => {
+const PhieuNhapItem = ({ phieuNhap, index }: Props) => {
     const modals = useModals();
 
     const openDeleteModal = (phieuNhap: PhieuNhapDoc) => {
@@ -25,12 +28,25 @@ const PhieuNhapItem = ({ phieuNhap }: Props) => {
 
     return (
         <tr key={phieuNhap.id}>
+            <td>{index}</td>
             <td>{phieuNhap.nguoiNhap.username}</td>
             <td>{convertToVietnameseDate(phieuNhap.createdAt)}</td>
             <td>{phieuNhap.soMatHangNhap}</td>
             <td>{convertToVND(phieuNhap.tongTien)}</td>
             <td>
                 <Center>
+                    <LinkIcon 
+                        iconType='edit'
+                        label='Sửa'
+                        to={`/phieu-nhap/${phieuNhap.id}/sua`}
+                        color='green'
+                    />
+                    <LinkIcon 
+                        iconType='info'
+                        label='Chi tiết'
+                        to={`/phieu-nhap/${phieuNhap.id}`}
+                        color='blue'
+                    />
                     <ActionIcon
                         variant='hover'
                         color='red'
@@ -38,12 +54,6 @@ const PhieuNhapItem = ({ phieuNhap }: Props) => {
                     >
                         <Icon label='Xóa' iconType='delete' />
                     </ActionIcon>
-                    <LinkIcon 
-                        iconType='info'
-                        label='Chi tiết'
-                        to={`/phieu-nhap/${phieuNhap.id}`}
-                        color='blue'
-                    />
                 </Center>
             </td>
         </tr>
