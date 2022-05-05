@@ -31,8 +31,8 @@ interface PhieuNhapsData {
 }
 
 interface PhieuNhapVars extends PaginateVars {
-    from?: number | null;
-    to?: number | null;
+    from: number | null;
+    to: number | null;
 }
 
 const PhieuNhapList = () => {

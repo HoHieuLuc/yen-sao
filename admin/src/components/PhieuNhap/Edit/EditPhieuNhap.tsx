@@ -1,13 +1,15 @@
-import { useQuery } from '@apollo/client';
-import { Accordion, Box, Center, Grid, Title } from '@mantine/core';
 import { useParams } from 'react-router-dom';
+import { useQuery } from '@apollo/client';
+
+import CreateChiTietPhieuNhap from '../Create/CreateChiTietPhieuNhap';
+import { Box, Center, Divider, Grid, Title } from '@mantine/core';
+import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
+import EditChiTietPhieuNhap from './EditChiTietPhieuNhap';
+import NotFound from '../../Utils/Errors/NotFound';
+
+import { convertToVietnameseDate, convertToVND } from '../../../utils/common';
 import { phieuNhapQuery } from '../../../graphql/queries';
 import { PhieuNhapByID } from '../../../types';
-import { convertToVietnameseDate, convertToVND } from '../../../utils/common';
-import NotFound from '../../Utils/Errors/NotFound';
-import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
-import CreateChiTietPhieuNhap from '../Create/CreateChiTietPhieuNhap';
-import EditChiTietPhieuNhap from './EditChiTietPhieuNhap';
 
 const EditPhieuNhap = () => {
     const { id } = useParams();
@@ -47,13 +49,13 @@ const EditPhieuNhap = () => {
                         {convertToVND(data.phieuNhap.byID.tongTien)}
                     </Grid.Col>
                 </Grid>
-                <Accordion multiple offsetIcon={false}>
+                <Box>
                     {data.phieuNhap.byID.chiTiet.map(item => (
-                        <Accordion.Item
+                        <Box
                             key={item.id}
-                            label={`${item.sanPham.tenSanPham} - Số lượng nhập: ${item.soLuongNhap}`}
                         >
                             <EditChiTietPhieuNhap
+                                label={`${item.sanPham.tenSanPham} - Số lượng nhập: ${item.soLuongNhap}`}
                                 idPhieuNhap={id}
                                 idChiTiet={item.id}
                                 initialValues={{
@@ -63,14 +65,16 @@ const EditPhieuNhap = () => {
                                     ...item,
                                 }}
                             />
-                        </Accordion.Item>
+                            <Divider />
+                        </Box>
                     ))}
-                    <Accordion.Item label='Thêm sản phẩm mới vào phiếu nhập'>
-                        <CreateChiTietPhieuNhap 
+                    <Box>
+                        <CreateChiTietPhieuNhap
+                            label='Thêm sản phẩm mới vào phiếu nhập'
                             idPhieuNhap={id}
                         />
-                    </Accordion.Item>
-                </Accordion>
+                    </Box>
+                </Box>
             </Box>}
         </LoadingWrapper>
     );

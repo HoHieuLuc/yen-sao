@@ -7,8 +7,10 @@ import ChiTietPhieuNhapForm from '../Form/ChiTietPhieuNhapForm';
 import { showErrorNotification, showSuccessNotification } from '../../../events';
 import { chiTietPhieuNhapQuery } from '../../../graphql/queries';
 import { ChiTietPhieuNhapFormData } from '../../../types';
+import AccordionItem from '../../Utils/AccordionItem/MyAccordionItem';
 
 interface Props {
+    label: string;
     idPhieuNhap: string;
     idChiTiet: string;
     initialValues: {
@@ -20,11 +22,11 @@ interface Props {
     }
 }
 
-interface UpdateVars extends Omit<Props, 'initialValues'> {
+interface UpdateVars extends Omit<Props, 'initialValues' | 'label'> {
     payload: ChiTietPhieuNhapFormData;
 }
 
-const EditChiTietPhieuNhap = ({ idPhieuNhap, idChiTiet, initialValues }: Props) => {
+const EditChiTietPhieuNhap = ({ label, idPhieuNhap, idChiTiet, initialValues }: Props) => {
     const [updateChiTietPhieuNhap, { loading }] = useMutation<
         never, UpdateVars
     >(chiTietPhieuNhapQuery.UPDATE, {
@@ -57,13 +59,15 @@ const EditChiTietPhieuNhap = ({ idPhieuNhap, idChiTiet, initialValues }: Props) 
     };
 
     return (
-        <ChiTietPhieuNhapForm
-            type='update'
-            initialValues={initialValues}
-            loading={loading}
-            onSubmit={handleUpdate}
-            onDelete={openDeleteModal}
-        />
+        <AccordionItem label={label}>
+            <ChiTietPhieuNhapForm
+                type='update'
+                initialValues={initialValues}
+                loading={loading}
+                onSubmit={handleUpdate}
+                onDelete={openDeleteModal}
+            />
+        </AccordionItem>
     );
 };
 
