@@ -4,6 +4,10 @@ import CreatePhieuNhap from '../components/PhieuNhap/Create/CreatePhieuNhap';
 import PhieuNhapDetails from '../components/PhieuNhap/Details/PhieuNhapDetails';
 import EditPhieuNhap from '../components/PhieuNhap/Edit/EditPhieuNhap';
 import PhieuNhapList from '../components/PhieuNhap/List/PhieuNhapList';
+import CreatePhieuXuat from '../components/PhieuXuat/Create/CreatePhieuXuat';
+import PhieuXuatDetails from '../components/PhieuXuat/Details/PhieuXuatDetails';
+import EditPhieuXuat from '../components/PhieuXuat/Edit/EditPhieuXuat';
+import PhieuXuatList from '../components/PhieuXuat/List/PhieuXuatList';
 import NewPost from '../components/Post/NewPost/NewPost';
 import PostDetails from '../components/Post/PostDetails/PostDetails';
 import PostsList from '../components/Post/PostsList/PostsList';
@@ -120,6 +124,37 @@ const appConfig: AppConfig = {
                     title: 'Chỉnh sửa phiếu nhập',
                     to: '/phieu-nhap/:id/sua',
                     element: <EditPhieuNhap />
+                }
+            ]
+        },
+        {
+            type: 'menu',
+            title: 'Xuất hàng',
+            subLinksPattern: '/phieu-xuat',
+            subLinks: [
+                {
+                    type: 'nav',
+                    title: 'Danh sách',
+                    to: '/phieu-xuat',
+                    element: <PhieuXuatList />
+                },
+                {
+                    type: 'nav',
+                    title: 'Tạo phiếu xuất',
+                    to: '/phieu-xuat/them',
+                    element: <CreatePhieuXuat />
+                },
+                {
+                    type: 'hidden',
+                    title: 'Chi tiết phiếu xuất',
+                    to: '/phieu-xuat/:id',
+                    element: <PhieuXuatDetails />
+                },
+                {
+                    type: 'hidden',
+                    title: 'Sửa phiếu xuất',
+                    to: '/phieu-xuat/:id/sua',
+                    element: <EditPhieuXuat />
                 }
             ]
         }
