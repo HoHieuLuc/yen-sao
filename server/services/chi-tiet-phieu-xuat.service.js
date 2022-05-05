@@ -41,7 +41,10 @@ const create = async (idPhieuXuat, chiTietPhieuXuat) => {
             throw new UserInputError('Số lượng sản phẩm không đủ để xuất hàng');
         }
 
-        const createdChiTietPhieuXuat = new ChiTietPhieuXuat(chiTietPhieuXuat);
+        const createdChiTietPhieuXuat = new ChiTietPhieuXuat({
+            maPhieuXuat: idPhieuXuat,
+            ...chiTietPhieuXuat
+        });
         await createdChiTietPhieuXuat.save();
 
         phieuXuat.chiTiet.push(createdChiTietPhieuXuat._id);
@@ -99,7 +102,7 @@ const update = async (idPhieuXuat, idChiTietPhieuXuat, chiTietPhieuXuat) => {
 
         // phục hồi (tăng) số lượng sản phẩm trong kho
         // đối với sản phẩm trong chi tiết bị cập nhật
-        const restoredSanPham = await SanPham.findByIdAndUpdate(
+        const prevSanPham = await SanPham.findByIdAndUpdate(
             chiTietToBeUpdated.maSanPham,
             {
                 $inc: {
@@ -131,9 +134,15 @@ const update = async (idPhieuXuat, idChiTietPhieuXuat, chiTietPhieuXuat) => {
         await phieuXuat.save(); // trigger middleware cập nhật tổng tiền
 
         const updatedPhieuXuat = await phieuXuat.populate(populateOptions);
+
+        // nếu sản phẩm trước khi cập nhật cũng là sản phẩm được cập nhật
+        // tức là chỉ cập nhật số lượng hoặc đơn giá xuất (mã sản phẩm không đổi)
+        // thì sanPhamBiThayDoi trả về là sản phẩm được cập nhật (updatedSanPham)
+        const sanPhamBiThayDoi = prevSanPham._id.toString() === updatedSanPham._id.toString()
+            ? updatedSanPham : prevSanPham;
         return {
             phieuXuat: updatedPhieuXuat,
-            sanPhamBiThayDoi: restoredSanPham // cần phải return để client tự update cache
+            sanPhamBiThayDoi: sanPhamBiThayDoi // cần phải return để client tự update cache
         };
     } catch (error) {
         await session.abortTransaction();
@@ -144,11 +153,13 @@ const update = async (idPhieuXuat, idChiTietPhieuXuat, chiTietPhieuXuat) => {
 };
 
 const remove = async (idPhieuXuat, idChiTietPhieuXuat) => {
+    const session = await SanPham.startSession();
+    session.startTransaction();
     try {
         const phieuXuat = await PhieuXuat.findOne({
             _id: idPhieuXuat,
             chiTiet: idChiTietPhieuXuat
-        }).populate('chiTiet');
+        }).populate('chiTiet').session(session);
 
         if (!phieuXuat) {
             // phiếu xuất hoặc chi tiết phiếu xuất không tồn tại
@@ -167,14 +178,15 @@ const remove = async (idPhieuXuat, idChiTietPhieuXuat) => {
                     soLuong: sanPhamCanUpdate.soLuongXuat
                 }
             },
-            { new: true, runValidators: true }
+            { new: true, runValidators: true, session }
         );
 
-        await ChiTietPhieuXuat.findByIdAndDelete(idChiTietPhieuXuat);
-
+        await ChiTietPhieuXuat.findByIdAndDelete(idChiTietPhieuXuat, { session });
+        
         phieuXuat.chiTiet.pull(idChiTietPhieuXuat);
-
         await phieuXuat.save();
+        await session.commitTransaction();
+
         const updatedPhieuXuat = await phieuXuat.populate(populateOptions);
 
         return {
@@ -182,7 +194,10 @@ const remove = async (idPhieuXuat, idChiTietPhieuXuat) => {
             sanPhamBiThayDoi: restoredSanPham
         };
     } catch (error) {
+        await session.abortTransaction();
         throw new UserInputError(error.message);
+    } finally {
+        await session.endSession();
     }
 };
 
