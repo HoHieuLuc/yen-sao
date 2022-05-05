@@ -6,7 +6,7 @@ export const usePagination = () => {
     const currentPage = parseInt(searchParams.get('page') || '1');
 
     useEffect(() => {
-        if (currentPage !== 1){
+        if (currentPage !== 1) {
             searchParams.set('page', currentPage.toString());
             setSearchParams(searchParams);
         }
