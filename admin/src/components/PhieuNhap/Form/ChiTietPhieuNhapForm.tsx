@@ -9,7 +9,10 @@ import { ChiTietPhieuNhapFormData } from '../../../types';
 interface BaseProps {
     type: 'create' | 'update';
     initialValues?: unknown;
-    onSubmit: (values: ChiTietPhieuNhapFormData) => void;
+    onSubmit: (
+        values: ChiTietPhieuNhapFormData,
+        callback: () => void
+    ) => void;
     onDelete?: () => void;
     loading: boolean;
 }
@@ -54,8 +57,19 @@ const ChiTietPhieuNhapForm = ({
 
     const [lock, setLock] = useState(type === 'update');
 
+    const handleLock = () => {
+        setLock(prev => !prev);
+        if (type === 'update' && lock) {
+            chiTietPhieuNhapForm.setValues({
+                maSanPham: initialValues.maSanPham,
+                soLuongNhap: initialValues.soLuongNhap,
+                donGiaNhap: initialValues.donGiaNhap,
+            });
+        }
+    };
+
     const submit = (values: ChiTietPhieuNhapFormData) => {
-        onSubmit(values);
+        onSubmit(values, () => chiTietPhieuNhapForm.reset());
     };
 
     return (
@@ -106,7 +120,7 @@ const ChiTietPhieuNhapForm = ({
                         </Button>
                         <Button
                             type='button'
-                            onClick={() => setLock(prev => !prev)}
+                            onClick={handleLock}
                             color='green'
                         >
                             {lock ? 'Sửa' : 'Hủy'}
