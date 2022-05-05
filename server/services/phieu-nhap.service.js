@@ -30,7 +30,7 @@ const getAll = async (page, limit, from, to) => {
 
     if (from || to) {
         const createdAt = {};
-        if (from ){
+        if (from) {
             createdAt.$gte = from;
         }
         if (to) {
