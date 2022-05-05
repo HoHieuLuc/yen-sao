@@ -7,18 +7,14 @@ export const useDebouncedSearchParams = (wait = 200) => {
     const [search, setSearch] = useState(searchParams.get('search') || '');
     const [debouncedSearch] = useDebouncedValue(search.trim(), wait);
 
-    useEffect(() => {
-        if (search === '') {
-            searchParams.delete('search');
-            searchParams.delete('page');
-            setSearchParams(searchParams);
-        }
-    }, [search]);
-
-    useEffect(() => {
+    useEffect(() => {        
+        searchParams.delete('page');
         if (debouncedSearch !== '' ) {
-            setSearchParams({ search: debouncedSearch });
+            searchParams.set('search', debouncedSearch);
+        } else {
+            searchParams.delete('search');
         }
+        setSearchParams(searchParams);
     }, [debouncedSearch]);
 
     return {
