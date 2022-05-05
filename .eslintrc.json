@@ -19,7 +19,9 @@
         "indent": [
             "error",
             4,
-            { "SwitchCase": 1 }
+            {
+                "SwitchCase": 1
+            }
         ],
         "quotes": [
             "error",
@@ -40,6 +42,17 @@
             "warn",
             {
                 "argsIgnorePattern": "^_"
+            }
+        ],
+        "object-curly-spacing": [
+            "error",
+            "always"
+        ],
+        "arrow-spacing": [
+            "error",
+            {
+                "before": true,
+                "after": true
             }
         ],
         "jest/no-disabled-tests": "warn",

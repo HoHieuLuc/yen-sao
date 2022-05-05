@@ -18,15 +18,33 @@ const populateOptions = [
     }
 ];
 
-const getAll = async (page, limit) => {
+const getAll = async (page, limit, from, to) => {
     const paginateOptions = {
         page,
         limit,
         populate: populateOptions,
         sort: '-createdAt'
     };
-    const phieuXuats = await PhieuXuat.paginate({}, paginateOptions);
-    return phieuXuats;
+
+    let findOptions = {};
+    if (from || to) {
+        const createdAt = {};
+        if (from) {
+            createdAt.$gte = from;
+        }
+        if (to) {
+            createdAt.$lte = to;
+        }
+        findOptions = {
+            createdAt
+        };
+    }
+    try {
+        const phieuXuats = await PhieuXuat.paginate(findOptions, paginateOptions);
+        return phieuXuats;
+    } catch (error) {
+        throw new UserInputError(error.message);
+    }
 };
 
 const getById = async (id) => {

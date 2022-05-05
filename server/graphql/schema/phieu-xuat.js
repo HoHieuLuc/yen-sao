@@ -41,7 +41,9 @@ const typeDefs = gql`
     type PhieuXuatQueries {
         all(
             page: Int!,
-            limit: Int!
+            limit: Int!,
+            from: Date,
+            to: Date
         ): PhieuXuatsByPage!
         byID(
             id: ID!
@@ -104,8 +106,8 @@ const resolvers = {
         ),
     },
     PhieuXuatQueries: {
-        all: async (_, { page, limit }) =>
-            phieuXuatController.getAll(page, limit),
+        all: async (_, { page, limit, from, to }) =>
+            phieuXuatController.getAll(page, limit, from, to),
         byID: async (_, { id }) =>
             phieuXuatController.getById(id),
     },
