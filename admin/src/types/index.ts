@@ -9,3 +9,10 @@ export {
     type ChiTietPhieuNhap,
     type ChiTietPhieuNhapFormData,
 } from './phieu-nhap';
+export {
+    type PhieuXuat,
+    type PhieuXuatByID,
+    type PhieuXuatVars,
+    type ChiTietPhieuXuat,
+    type ChiTietPhieuXuatFormData
+} from './phieu-xuat';
