@@ -2,7 +2,7 @@ import { useQuery } from '@apollo/client';
 import { usePagination } from '../../../hooks';
 import { useDateRangeSearchParams } from '../../../hooks/use-date-range-search-params';
 
-import { Button, Center, Grid, Pagination, ScrollArea, Table } from '@mantine/core';
+import { Button, Center, Grid, ScrollArea, Table } from '@mantine/core';
 import ErrorPage from '../../Utils/Errors/ErrorPage';
 import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
 import PhieuNhapItem from './PhieuNhapItem';
@@ -12,6 +12,7 @@ import SearchIcon from '../../Utils/Icons/SearchIcon';
 import { PageInfo, PaginateVars, User } from '../../../types';
 import { phieuNhapQuery } from '../../../graphql/queries';
 import dayjs from 'dayjs';
+import MyPagination from '../../Utils/Pagination/MyPagination';
 
 export interface PhieuNhapDoc {
     id: string;
@@ -36,7 +37,7 @@ interface PhieuNhapVars extends PaginateVars {
 }
 
 const PhieuNhapList = () => {
-    const { currentPage, handlePageChange } = usePagination();
+    const { currentPage, handlePageChange, limit, handleLimitChange } = usePagination();
     const { from, to, handleSearch } = useDateRangeSearchParams();
 
     const { data, loading, error } = useQuery<
@@ -44,7 +45,7 @@ const PhieuNhapList = () => {
     >(phieuNhapQuery.ALL, {
         variables: {
             page: currentPage,
-            limit: 10,
+            limit: limit,
             from: from.paramValue,
             to: to.paramValue
         }
@@ -111,14 +112,14 @@ const PhieuNhapList = () => {
                 </Table>
             </ScrollArea>
             {data && (
-                <Center>
-                    <Pagination
-                        total={data.phieuNhap.all.pageInfo.totalPages}
-                        siblings={1}
-                        page={currentPage}
-                        onChange={handlePageChange}
-                    />
-                </Center>
+                <MyPagination
+                    total={data.phieuNhap.all.pageInfo.totalPages}
+                    siblings={1}
+                    page={currentPage}
+                    onChange={handlePageChange}
+                    limit={limit.toString()}
+                    onLimitChange={handleLimitChange}
+                />
             )}
         </LoadingWrapper>
     );
