@@ -7,7 +7,7 @@ import ChiTietPhieuNhapForm from '../Form/ChiTietPhieuNhapForm';
 import { showErrorNotification, showSuccessNotification } from '../../../events';
 import { chiTietPhieuNhapQuery } from '../../../graphql/queries';
 import { ChiTietPhieuNhapFormData } from '../../../types';
-import AccordionItem from '../../Utils/AccordionItem/MyAccordionItem';
+import MyAccordionItem from '../../Utils/AccordionItem/MyAccordionItem';
 
 interface Props {
     label: string;
@@ -59,7 +59,7 @@ const EditChiTietPhieuNhap = ({ label, idPhieuNhap, idChiTiet, initialValues }: 
     };
 
     return (
-        <AccordionItem label={label}>
+        <MyAccordionItem label={label}>
             <ChiTietPhieuNhapForm
                 type='update'
                 initialValues={initialValues}
@@ -67,7 +67,7 @@ const EditChiTietPhieuNhap = ({ label, idPhieuNhap, idChiTiet, initialValues }: 
                 onSubmit={handleUpdate}
                 onDelete={openDeleteModal}
             />
-        </AccordionItem>
+        </MyAccordionItem>
     );
 };
 
