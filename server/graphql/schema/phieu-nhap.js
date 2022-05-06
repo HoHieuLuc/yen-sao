@@ -26,6 +26,8 @@ const typeDefs = gql`
         sanPham: SanPham
         soLuongNhap: Int!
         donGiaNhap: Int!
+        createdAt: Date!
+        updatedAt: Date!
     }
 
     type PhieuNhapsByPage {
@@ -51,8 +53,22 @@ const typeDefs = gql`
         ): PhieuNhap
     }
 
+    type ChiTietPhieuNhapByPage {
+        docs: [ChiTietPhieuNhap!]!
+        pageInfo: PageInfo
+    }
+
+    type ChiTietPhieuNhapQueries {
+        bySanPhamID(
+            id: ID!,
+            page: Int!,
+            limit: Int!
+        ): ChiTietPhieuNhapByPage
+    }
+
     extend type Query {
         phieuNhap: PhieuNhapQueries
+        chiTietPhieuNhap: ChiTietPhieuNhapQueries
     }
 
     type PhieuNhapMutations {
@@ -103,8 +119,14 @@ const resolvers = {
             return isMongooseModel(root.maSanPham) ? root.maSanPham : null;
         }
     },
+    ChiTietPhieuNhapByPage: {
+        pageInfo: (root) => root
+    },
     Query: {
         phieuNhap: chainMiddlewares(authRequired,
+            () => ({})
+        ),
+        chiTietPhieuNhap: chainMiddlewares(authRequired,
             () => ({})
         )
     },
@@ -113,6 +135,10 @@ const resolvers = {
             phieuNhapController.getAll(page, limit, from, to),
         byID: async (_, { id }) =>
             phieuNhapController.getById(id),
+    },
+    ChiTietPhieuNhapQueries: {
+        bySanPhamID: async (_, { id, page, limit }) => 
+            chiTietPhieuNhapController.getBySanPhamID(id, page, limit)
     },
     Mutation: {
         phieuNhap: chainMiddlewares(authRequired,

@@ -15,6 +15,22 @@ const populateOptions = [
     }
 ];
 
+const getBySanPhamID = async (id, page, limit) => {
+    const options = {
+        page,
+        limit,
+        sort: '-createdAt'
+    };
+    try {
+        const chiTiets = await ChiTietPhieuNhap.paginate({
+            maSanPham: id
+        }, options);
+        return chiTiets;
+    } catch (error) {
+        throw new UserInputError(error.message);
+    }
+};
+
 const create = async (idPhieuNhap, chiTietPhieuNhap) => {
     const session = await SanPham.startSession();
     session.startTransaction();
@@ -35,7 +51,7 @@ const create = async (idPhieuNhap, chiTietPhieuNhap) => {
         if (!phieuNhap) {
             throw new UserInputError('Phiếu nhập không tồn tại');
         }
-    
+
         // cập nhật số lượng sản phẩm
         await SanPham.findByIdAndUpdate(
             chiTietPhieuNhap.maSanPham,
@@ -207,6 +223,7 @@ const remove = async (idPhieuNhap, idChiTietPhieuNhap) => {
 };
 
 module.exports = {
+    getBySanPhamID,
     create,
     update,
     remove,
