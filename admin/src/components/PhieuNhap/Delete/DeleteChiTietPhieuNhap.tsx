@@ -15,7 +15,7 @@ const DeleteChiTietPhieuNhap = ({ tenSanPham, idPhieuNhap, idChiTiet, closeModal
         never, { idPhieuNhap: string, idChiTiet: string }
     >(chiTietPhieuNhapQuery.DELETE, {
         onCompleted: () => {
-            showSuccessNotification('Xóa chi tiết phiếu nhập thành công');
+            showSuccessNotification(`Xóa sản phẩm "${tenSanPham}" khỏi phiếu nhập thành công`);
             closeModal();
         },
         onError: (error) => showErrorNotification(error.message)
