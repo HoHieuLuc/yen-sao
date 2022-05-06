@@ -17,7 +17,7 @@ const DeleteChiTietPhieuXuat = ({ tenSanPham, idPhieuXuat, idChiTiet, closeModal
         never, { idPhieuXuat: string, idChiTiet: string }
     >(chiTietPhieuXuatQuery.DELETE, {
         onCompleted: () => {
-            showSuccessNotification('Xóa chi tiết phiếu xuất thành công');
+            showSuccessNotification(`Xóa sản phẩm "${tenSanPham}" khỏi phiếu xuất thành công`);
             closeModal();
         },
         onError: (error) => showErrorNotification(error.message)
