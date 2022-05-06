@@ -1,16 +1,20 @@
-import { useParams } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useModals } from '@mantine/modals';
 import { useQuery } from '@apollo/client';
 
-import { Box, Center, Grid, ScrollArea, Table, Title } from '@mantine/core';
-import { PhieuNhapByID } from '../../../types';
-import NotFound from '../../Utils/Errors/NotFound';
+import { Box, Button, Center, Grid, Group, ScrollArea, Table, Title } from '@mantine/core';
 import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
+import ChiTietPhieuNhapItem from './ChiTietPhieuNhapItem';
+import DeletePhieuNhap from '../Delete/DeletePhieuNhap';
+import NotFound from '../../Utils/Errors/NotFound';
+import { PhieuNhapByID } from '../../../types';
 
 import { convertToVietnameseDate, convertToVND } from '../../../utils/common';
 import { phieuNhapQuery } from '../../../graphql/queries';
-import ChiTietPhieuNhapItem from './ChiTietPhieuNhapItem';
+import { PhieuNhapDoc } from '../List/PhieuNhapList';
 
 const PhieuNhapDetails = () => {
+    const navigate = useNavigate();
     const { id } = useParams();
     const { data, loading, error } = useQuery<
         PhieuNhapByID, { id: string }
@@ -20,7 +24,20 @@ const PhieuNhapDetails = () => {
         }
     });
 
-    if (error || (data && data.phieuNhap && data.phieuNhap.byID === null)) {
+    const modals = useModals();
+
+    const openDeleteModal = (phieuNhap: PhieuNhapDoc) => {
+        const modalId = modals.openModal({
+            title: <h3>Xóa phiếu nhập</h3>,
+            children: <DeletePhieuNhap
+                phieuNhap={phieuNhap}
+                closeModal={() => modals.closeModal(modalId)}
+                callback={() => navigate('/phieu-nhap')}
+            />
+        });
+    };
+
+    if (error || !id || (data && data.phieuNhap && data.phieuNhap.byID === null)) {
         return <NotFound />;
     }
 
@@ -70,6 +87,14 @@ const PhieuNhapDetails = () => {
                         </tbody>
                     </Table>
                 </ScrollArea>
+                <Group position='right' mt='md'>
+                    <Button color='red' onClick={() => openDeleteModal(data.phieuNhap.byID)}>
+                        Xóa
+                    </Button>
+                    <Button color='teal' component={Link} to={`/phieu-nhap/${id}/sua`} >
+                        Sửa
+                    </Button>
+                </Group>
             </Box>}
         </LoadingWrapper>
     );
