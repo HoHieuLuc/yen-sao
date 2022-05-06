@@ -1,7 +1,7 @@
-import { useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 
-import { Box, Center, Grid, ScrollArea, Table, Title } from '@mantine/core';
+import { Box, Button, Center, Grid, Group, ScrollArea, Table, Title } from '@mantine/core';
 import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
 import ChiTietPhieuXuatItem from './ChiTietPhieuXuatItem';
 import NotFound from '../../Utils/Errors/NotFound';
@@ -9,8 +9,12 @@ import NotFound from '../../Utils/Errors/NotFound';
 import { convertToVietnameseDate, convertToVND } from '../../../utils/common';
 import { phieuXuatQuery } from '../../../graphql/queries';
 import { PhieuXuatByID } from '../../../types';
+import { useModals } from '@mantine/modals';
+import { PhieuXuatDoc } from '../List/PhieuXuatList';
+import DeletePhieuXuat from '../Delete/DeletePhieuXuat';
 
 const PhieuXuatDetails = () => {
+    const navigate = useNavigate();
     const { id } = useParams();
     const { data, loading, error } = useQuery<
         PhieuXuatByID, { id: string }
@@ -20,7 +24,20 @@ const PhieuXuatDetails = () => {
         }
     });
 
-    if (error || (data && data.phieuXuat && data.phieuXuat.byID === null)) {
+    const modals = useModals();
+
+    const openDeleteModal = (phieuXuat: PhieuXuatDoc) => {
+        const modalId = modals.openModal({
+            title: <h3>Xóa phiếu xuất</h3>,
+            children: <DeletePhieuXuat
+                phieuXuat={phieuXuat}
+                closeModal={() => modals.closeModal(modalId)}
+                callback={() => navigate('/phieu-xuat')}
+            />
+        });
+    };
+
+    if (error || !id || (data && data.phieuXuat && data.phieuXuat.byID === null)) {
         return <NotFound />;
     }
 
@@ -70,6 +87,14 @@ const PhieuXuatDetails = () => {
                         </tbody>
                     </Table>
                 </ScrollArea>
+                <Group position='right' mt='md'>
+                    <Button color='red' onClick={() => openDeleteModal(data.phieuXuat.byID)}>
+                        Xóa
+                    </Button>
+                    <Button color='teal' component={Link} to={`/phieu-xuat/${id}/sua`} >
+                        Sửa
+                    </Button>
+                </Group>
             </Box>}
         </LoadingWrapper>
     );
