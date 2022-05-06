@@ -1,5 +1,5 @@
 import { useForm } from '@mantine/form';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Button, NumberInput, Select, SimpleGrid } from '@mantine/core';
 import SanPhamSelect from '../../SanPham/Form/SanPhamSelect';
@@ -56,9 +56,8 @@ const ChiTietPhieuXuatForm = ({
     });
 
     const [lock, setLock] = useState(type === 'update');
-
-    const handleLock = () => {
-        setLock(prev => !prev);
+    
+    useEffect(() => {
         if (type === 'update' && lock) {
             chiTietPhieuXuatForm.setValues({
                 maSanPham: initialValues.maSanPham,
@@ -66,7 +65,7 @@ const ChiTietPhieuXuatForm = ({
                 donGiaXuat: initialValues.donGiaXuat,
             });
         }
-    };
+    }, [lock]);
 
     const submit = (values: ChiTietPhieuXuatFormData) => {
         onSubmit(values, () => chiTietPhieuXuatForm.reset());
@@ -120,7 +119,7 @@ const ChiTietPhieuXuatForm = ({
                         </Button>
                         <Button
                             type='button'
-                            onClick={handleLock}
+                            onClick={() => setLock(prev => !prev)}
                             color='green'
                         >
                             {lock ? 'Sửa' : 'Hủy'}
