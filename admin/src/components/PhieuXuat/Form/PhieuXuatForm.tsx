@@ -3,7 +3,7 @@ import { formList, useForm } from '@mantine/form';
 
 import ChiTietPhieuXuatListForm from './ChiTietPhieuXuatListForm';
 import { Accordion, Button, Group } from '@mantine/core';
-import PlusIcon from '../../Utils/Icons/PlusIcon';
+import { PlusIcon } from '../../Utils/Icons';
 
 import { ChiTietPhieuXuatFormData, PhieuXuatVars } from '../../../types';
 import { showErrorNotification } from '../../../events';
@@ -47,7 +47,7 @@ const PhieuXuatForm = ({ loading, handleSubmit }: Props) => {
         });
         return (
             <Accordion.Item
-                label={sanPham 
+                label={sanPham
                     ? `${sanPham.tenSanPham} - Số lượng xuất: ${phieuXuat.soLuongXuat || 0}`
                     : 'Chọn sản phẩm'}
                 key={nanoid(10)}

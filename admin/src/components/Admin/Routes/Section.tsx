@@ -1,6 +1,7 @@
-import { Routes, Route } from 'react-router-dom';
-import appConfig from '../../../config';
 import NotFound from '../../Utils/Errors/NotFound';
+import { Routes, Route } from 'react-router-dom';
+
+import appConfig from '../../../config';
 
 const AppSection = () => {
     return (

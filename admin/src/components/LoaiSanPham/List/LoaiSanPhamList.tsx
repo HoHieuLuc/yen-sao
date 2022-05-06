@@ -1,20 +1,14 @@
-import { useQuery } from '@apollo/client';
-import { useModals } from '@mantine/modals';
 import { useDebouncedSearchParams, usePagination } from '../../../hooks';
+import { useModals } from '@mantine/modals';
+import { useQuery } from '@apollo/client';
 
-import {
-    Center,
-    Grid,
-    Pagination,
-    TextInput,
-} from '@mantine/core';
-
-import ErrorPage from '../../Utils/Errors/ErrorPage';
+import { Center, Grid, Pagination, TextInput } from '@mantine/core';
 import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
-import EditLoaiSanPham from '../Edit/EditLoaiSanPham';
-import LoaiSanPhamItem from './LoaiSanPhamItem';
 import DeleteLoaiSanPham from '../Delete/DeleteLoaiSanPham';
-import SearchIcon from '../../Utils/Icons/SearchIcon';
+import EditLoaiSanPham from '../Edit/EditLoaiSanPham';
+import ErrorPage from '../../Utils/Errors/ErrorPage';
+import LoaiSanPhamItem from './LoaiSanPhamItem';
+import { SearchIcon } from '../../Utils/Icons';
 
 import { LoaiSanPham, PageInfo, PaginateVars } from '../../../types';
 import { loaiSanPhamQuery } from '../../../graphql/queries';

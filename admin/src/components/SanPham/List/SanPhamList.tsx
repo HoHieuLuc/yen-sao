@@ -1,18 +1,14 @@
-import { useQuery } from '@apollo/client';
 import { useDebouncedSearchParams, usePagination, useToggleSortParams } from '../../../hooks';
+import { useQuery } from '@apollo/client';
 
 import { Center, ScrollArea, Table, Text, TextInput, UnstyledButton } from '@mantine/core';
-import ErrorPage from '../../Utils/Errors/ErrorPage';
-import LinkIcon from '../../Utils/Icons/LinkIcon';
-import SearchIcon from '../../Utils/Icons/SearchIcon';
+import { ArrowDown, ArrowsUpDown, ArrowUp, LinkIcon, SearchIcon } from '../../Utils/Icons';
 import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
-
-import { sanPhamQuery } from '../../../graphql/queries';
-import { LoaiSanPham, PageInfo, PaginateVars } from '../../../types';
 import MyPagination from '../../Utils/Pagination/MyPagination';
-import ArrowsUpDown from '../../Utils/Icons/ArrowsUpDown';
-import ArrowUp from '../../Utils/Icons/ArrowUp';
-import ArrowDown from '../../Utils/Icons/ArrowDown';
+import ErrorPage from '../../Utils/Errors/ErrorPage';
+
+import { LoaiSanPham, PageInfo, PaginateVars } from '../../../types';
+import { sanPhamQuery } from '../../../graphql/queries';
 
 interface SanPhamDoc {
     id: string;

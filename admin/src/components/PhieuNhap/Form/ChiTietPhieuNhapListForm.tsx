@@ -1,8 +1,9 @@
 import { Button, NumberInput, SimpleGrid } from '@mantine/core';
+import SanPhamSelect from '../../SanPham/Form/SanPhamSelect';
+
 import { FormList } from '@mantine/form/lib/form-list/form-list';
 import { UseFormReturnType } from '@mantine/form/lib/use-form';
 import { ChiTietPhieuNhapFormData } from '../../../types';
-import SanPhamSelect from '../../SanPham/Form/SanPhamSelect';
 
 interface Props {
     phieuNhapForm: UseFormReturnType<{

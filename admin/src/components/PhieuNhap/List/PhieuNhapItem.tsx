@@ -1,12 +1,11 @@
 import { useModals } from '@mantine/modals';
 
-import { ActionIcon, Center } from '@mantine/core';
-import Icon from '../../Utils/Icons/Icon';
-import LinkIcon from '../../Utils/Icons/LinkIcon';
 import DeletePhieuNhap from '../Delete/DeletePhieuNhap';
-import { PhieuNhapDoc } from './PhieuNhapList';
+import { ActionIcon, Center } from '@mantine/core';
+import { LinkIcon, Icon } from '../../Utils/Icons';
 
 import { convertToVietnameseDate, convertToVND } from '../../../utils/common';
+import { PhieuNhapDoc } from './PhieuNhapList';
 
 interface Props {
     phieuNhap: PhieuNhapDoc;
@@ -35,13 +34,13 @@ const PhieuNhapItem = ({ phieuNhap, index }: Props) => {
             <td>{convertToVND(phieuNhap.tongTien)}</td>
             <td>
                 <Center>
-                    <LinkIcon 
+                    <LinkIcon
                         iconType='edit'
                         label='Sửa'
                         to={`/phieu-nhap/${phieuNhap.id}/sua`}
                         color='green'
                     />
-                    <LinkIcon 
+                    <LinkIcon
                         iconType='info'
                         label='Chi tiết'
                         to={`/phieu-nhap/${phieuNhap.id}`}

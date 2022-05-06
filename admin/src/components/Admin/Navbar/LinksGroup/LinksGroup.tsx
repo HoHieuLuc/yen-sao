@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import useStyles from './LinksGroup.styles';
+import { useState } from 'react';
+
 import { Group, Box, Collapse, ThemeIcon, Button, SimpleGrid } from '@mantine/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import NavLink from '../NavLinks/NavLink';
-import useStyles from './LinksGroup.styles';
+
 import { AppLink } from '../../../../config/types';
 
 interface Props {

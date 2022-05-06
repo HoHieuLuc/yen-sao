@@ -1,7 +1,8 @@
 import { Anchor, Text } from '@mantine/core';
 import { Link } from 'react-router-dom';
-import { ChiTietPhieuNhap } from '../../../types';
+
 import { convertToVND } from '../../../utils/common';
+import { ChiTietPhieuNhap } from '../../../types';
 
 interface Props {
     chiTietPhieuNhap: ChiTietPhieuNhap;

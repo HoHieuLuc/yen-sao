@@ -15,3 +15,8 @@ export const MULTI_UPLOAD = gql`
         }
     }
 `;
+
+export const uploadQuery = {
+    SINGLE_UPLOAD,
+    MULTI_UPLOAD
+};

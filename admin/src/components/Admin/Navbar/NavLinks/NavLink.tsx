@@ -1,6 +1,7 @@
-import { Button, MantineSize } from '@mantine/core';
 import { Link, useLocation } from 'react-router-dom';
+import { Button, MantineSize } from '@mantine/core';
 import LinksGroup from '../LinksGroup/LinksGroup';
+
 import { AppLink } from '../../../../config/types';
 
 interface Props {

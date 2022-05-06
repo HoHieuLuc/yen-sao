@@ -7,8 +7,8 @@ import ErrorPage from '../../Utils/Errors/ErrorPage';
 import { Anchor, Box, Table } from '@mantine/core';
 import { Link } from 'react-router-dom';
 
-import { convertToShortDate, convertToVND } from '../../../utils/common';
 import { ChiTietPhieuXuat, PageInfo, PaginateVars } from '../../../types';
+import { convertToShortDate, convertToVND } from '../../../utils/common';
 import { chiTietPhieuXuatQuery } from '../../../graphql/queries';
 
 interface ChiTietData {

@@ -1,12 +1,9 @@
-import {
-    Navbar,
-    ScrollArea,
-    Divider,
-    Text
-} from '@mantine/core';
+import { useApolloClient } from '@apollo/client';
+
+import { Navbar, ScrollArea, Divider, Text } from '@mantine/core';
 import NavLinks from './NavLinks/NavLinks';
 import NavLink from './NavLinks/NavLink';
-import { useApolloClient } from '@apollo/client';
+
 import { ME } from '../../../graphql/queries/auth';
 import { User } from '../../../types';
 

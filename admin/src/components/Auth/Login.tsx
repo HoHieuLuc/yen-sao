@@ -1,15 +1,22 @@
 import {
-    TextInput,
+    LazyQueryExecFunction,
+    OperationVariables,
+    useApolloClient,
+    useMutation,
+} from '@apollo/client';
+import { useForm } from '@mantine/form';
+
+import {
     PasswordInput,
-    Button,
+    TextInput,
     Container,
+    Button,
     Group,
 } from '@mantine/core';
-import { useForm } from '@mantine/form';
-import { useMutation, LazyQueryExecFunction, OperationVariables, useApolloClient } from '@apollo/client';
+
+import { showErrorNotification } from '../../events';
 import { LOGIN } from '../../graphql/queries/auth';
 import { CurrentUser } from '../../App';
-import { showErrorNotification } from '../../events';
 
 interface LoginData {
     login: {
@@ -48,7 +55,7 @@ const Login = ({ getCurrentUser }: Props) => {
         },
         onCompleted: (data) => {
             localStorage.setItem('token', data.user.login.value);
-            client.resetStore().then(() => getCurrentUser()).catch(void(0));
+            client.resetStore().then(() => getCurrentUser()).catch(void (0));
         }
     });
 

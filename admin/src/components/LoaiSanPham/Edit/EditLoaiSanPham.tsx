@@ -1,9 +1,10 @@
 import { useMutation } from '@apollo/client';
 
+import LoaiSanPhamForm from '../Form/LoaiSanPhamForm';
+
 import { showErrorNotification, showSuccessNotification } from '../../../events';
 import { loaiSanPhamQuery } from '../../../graphql/queries';
 import { LoaiSanPham } from '../../../types';
-import LoaiSanPhamForm from '../Form/LoaiSanPhamForm';
 
 interface Props extends LoaiSanPham {
     closeModal: () => void;
