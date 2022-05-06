@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 const chiTietPhieuXuat = mongoose.Schema(
     {
@@ -24,8 +25,10 @@ const chiTietPhieuXuat = mongoose.Schema(
         }
     },
     {
-        timestamp: true
+        timestamps: true
     }
 );
+
+chiTietPhieuXuat.plugin(mongoosePaginate);
 
 module.exports = mongoose.model('ChiTietPhieuXuat', chiTietPhieuXuat);

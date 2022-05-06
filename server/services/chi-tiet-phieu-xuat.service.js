@@ -15,6 +15,22 @@ const populateOptions = [
     }
 ];
 
+const getBySanPhamID = async (id, page, limit) => {
+    const options = {
+        page,
+        limit,
+        sort: '-createdAt'
+    };
+    try {
+        const chiTiets = await ChiTietPhieuXuat.paginate({
+            maSanPham: id
+        }, options);
+        return chiTiets;
+    } catch (error) {
+        throw new UserInputError(error.message);
+    }
+};
+
 const create = async (idPhieuXuat, chiTietPhieuXuat) => {
     const session = await SanPham.startSession();
     session.startTransaction();
@@ -202,6 +218,7 @@ const remove = async (idPhieuXuat, idChiTietPhieuXuat) => {
 };
 
 module.exports = {
+    getBySanPhamID,
     create,
     update,
     remove,
