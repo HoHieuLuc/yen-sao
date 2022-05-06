@@ -1,5 +1,29 @@
 import { gql } from '@apollo/client';
 
+const BY_SAN_PHAM_ID = gql`
+    query ChiTietPhieuXuatBySanPhamID($id: ID!, $page: Int!, $limit: Int!) {
+        chiTietPhieuXuat {
+            bySanPhamID(id: $id, page: $page, limit: $limit) {
+                docs {
+                    id
+                    maPhieuXuat
+                    soLuongXuat
+                    donGiaXuat
+                    createdAt
+                    updatedAt
+                }
+                pageInfo {
+                    page
+                    totalPages
+                    limit
+                    totalDocs
+                }
+            }
+        }
+    }
+`;
+
+
 const CREATE = gql`
     mutation CreateChiTietPhieuXuat($idPhieuXuat: ID!, $payload: PhieuXuatInput!) {
         chiTietPhieuXuat {
@@ -88,6 +112,7 @@ const DELETE = gql`
 `;
 
 export const chiTietPhieuXuatQuery = {
+    BY_SAN_PHAM_ID,
     CREATE,
     UPDATE,
     DELETE,

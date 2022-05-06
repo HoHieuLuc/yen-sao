@@ -2,7 +2,7 @@ import { useMutation } from '@apollo/client';
 import { useModals } from '@mantine/modals';
 
 import DeleteChiTietPhieuXuat from '../Delete/DeleteChiTietPhieuXuat';
-import AccordionItem from '../../Utils/AccordionItem/MyAccordionItem';
+import MyAccordionItem from '../../Utils/AccordionItem/MyAccordionItem';
 import ChiTietPhieuXuatForm from '../Form/ChiTietPhieuXuatForm';
 
 import { showErrorNotification, showSuccessNotification } from '../../../events';
@@ -59,7 +59,7 @@ const EditChiTietPhieuXuat = ({ idPhieuXuat, idChiTiet, initialValues, label }: 
     };
 
     return (
-        <AccordionItem label={label}>
+        <MyAccordionItem label={label}>
             <ChiTietPhieuXuatForm
                 type='update'
                 initialValues={initialValues}
@@ -67,7 +67,7 @@ const EditChiTietPhieuXuat = ({ idPhieuXuat, idChiTiet, initialValues, label }: 
                 onSubmit={handleUpdate}
                 onDelete={openDeleteModal}
             />
-        </AccordionItem>
+        </MyAccordionItem>
     );
 };
 

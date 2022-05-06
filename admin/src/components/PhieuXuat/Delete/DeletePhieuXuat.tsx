@@ -10,9 +10,10 @@ import { PhieuXuatDoc } from '../List/PhieuXuatList';
 interface Props {
     phieuXuat: PhieuXuatDoc;
     closeModal: () => void;
+    callback?: () => void;
 }
 
-const DeletePhieuXuat = ({ phieuXuat, closeModal }: Props) => {
+const DeletePhieuXuat = ({ phieuXuat, closeModal, callback }: Props) => {
     const client = useApolloClient();
     const [deletePhieuXuat, { loading }] = useMutation<
         never, { id: string }
@@ -36,7 +37,8 @@ const DeletePhieuXuat = ({ phieuXuat, closeModal }: Props) => {
         void deletePhieuXuat({
             variables: {
                 id: phieuXuat.id
-            }
+            },
+            onCompleted: callback
         });
     };
 

@@ -7,6 +7,8 @@ export interface ChiTietPhieuXuat {
     sanPham: SanPham;
     soLuongXuat: number;
     donGiaXuat: number;
+    createdAt: number;
+    updatedAt: number;
 }
 
 export interface PhieuXuat {

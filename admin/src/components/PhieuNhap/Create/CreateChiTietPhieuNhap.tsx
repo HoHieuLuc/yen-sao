@@ -1,9 +1,11 @@
 import { useMutation } from '@apollo/client';
+
+import MyAccordionItem from '../../Utils/AccordionItem/MyAccordionItem';
+import ChiTietPhieuNhapForm from '../Form/ChiTietPhieuNhapForm';
+
 import { showErrorNotification, showSuccessNotification } from '../../../events';
 import { chiTietPhieuNhapQuery } from '../../../graphql/queries';
 import { ChiTietPhieuNhapFormData } from '../../../types';
-import AccordionItem from '../../Utils/AccordionItem/MyAccordionItem';
-import ChiTietPhieuNhapForm from '../Form/ChiTietPhieuNhapForm';
 
 interface Props {
     label: string;
@@ -33,13 +35,13 @@ const CreateChiTietPhieuNhap = ({ label, idPhieuNhap }: Props) => {
     };
 
     return (
-        <AccordionItem label={label}>
+        <MyAccordionItem label={label}>
             <ChiTietPhieuNhapForm
                 type='create'
                 loading={loading}
                 onSubmit={handleCreate}
             />
-        </AccordionItem>
+        </MyAccordionItem>
     );
 };
 

@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client';
 import { useDebouncedSearchParams, usePagination } from '../../../hooks';
 
-import { Center, Pagination, ScrollArea, Table, Text, TextInput } from '@mantine/core';
+import { Center, ScrollArea, Table, Text, TextInput } from '@mantine/core';
 import ErrorPage from '../../Utils/Errors/ErrorPage';
 import LinkIcon from '../../Utils/Icons/LinkIcon';
 import SearchIcon from '../../Utils/Icons/SearchIcon';
@@ -9,6 +9,7 @@ import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
 
 import { sanPhamQuery } from '../../../graphql/queries';
 import { LoaiSanPham, PageInfo, PaginateVars } from '../../../types';
+import MyPagination from '../../Utils/Pagination/MyPagination';
 
 interface SanPhamDoc {
     id: string;
@@ -32,14 +33,14 @@ interface SearchVars extends PaginateVars {
 
 const SanPhamList = () => {
     const { search, debouncedSearch, setSearch } = useDebouncedSearchParams(300);
-    const { currentPage, handlePageChange } = usePagination();
+    const { currentPage, handlePageChange, limit, handleLimitChange } = usePagination();    
 
     const { data, loading, error } = useQuery<
         SanPhamsData, SearchVars
     >(sanPhamQuery.ALL, {
         variables: {
             page: currentPage,
-            limit: 10,
+            limit: limit,
             search: debouncedSearch
         }
     });
@@ -104,14 +105,14 @@ const SanPhamList = () => {
                 </Table>
             </ScrollArea>
             {data && (
-                <Center>
-                    <Pagination
-                        total={data.sanPham.all.pageInfo.totalPages}
-                        siblings={1}
-                        page={currentPage}
-                        onChange={handlePageChange}
-                    />
-                </Center>
+                <MyPagination 
+                    total={data.sanPham.all.pageInfo.totalPages}
+                    siblings={1}
+                    page={currentPage}
+                    onChange={handlePageChange}
+                    limit={limit.toString()}
+                    onLimitChange={handleLimitChange}
+                />
             )}
         </LoadingWrapper>
     );

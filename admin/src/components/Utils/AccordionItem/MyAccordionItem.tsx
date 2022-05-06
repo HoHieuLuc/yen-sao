@@ -6,7 +6,7 @@ interface Props {
     children: React.ReactNode | React.ReactNode[];
 }
 
-const AccordionItem = ({ children, label }: Props) => {
+const MyAccordionItem = ({ children, label }: Props) => {
     const [opened, setOpen] = useState(false);
 
     return (
@@ -48,4 +48,4 @@ const AccordionItem = ({ children, label }: Props) => {
     );
 };
 
-export default AccordionItem;
+export default MyAccordionItem;

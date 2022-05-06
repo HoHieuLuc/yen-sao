@@ -1,20 +1,25 @@
 import CreateLoaiSanPham from '../components/LoaiSanPham/Create/CreateLoaiSanPham';
 import LoaiSanPhamList from '../components/LoaiSanPham/List/LoaiSanPhamList';
+
 import CreatePhieuNhap from '../components/PhieuNhap/Create/CreatePhieuNhap';
 import PhieuNhapDetails from '../components/PhieuNhap/Details/PhieuNhapDetails';
 import EditPhieuNhap from '../components/PhieuNhap/Edit/EditPhieuNhap';
 import PhieuNhapList from '../components/PhieuNhap/List/PhieuNhapList';
+
 import CreatePhieuXuat from '../components/PhieuXuat/Create/CreatePhieuXuat';
 import PhieuXuatDetails from '../components/PhieuXuat/Details/PhieuXuatDetails';
 import EditPhieuXuat from '../components/PhieuXuat/Edit/EditPhieuXuat';
 import PhieuXuatList from '../components/PhieuXuat/List/PhieuXuatList';
+
 import NewPost from '../components/Post/NewPost/NewPost';
 import PostDetails from '../components/Post/PostDetails/PostDetails';
 import PostsList from '../components/Post/PostsList/PostsList';
+
 import CreateSanPham from '../components/SanPham/Create/CreateSanPham';
 import SanPhamDetails from '../components/SanPham/Details/SanPhamDetails';
 import EditSanPham from '../components/SanPham/Edit/EditSanPham';
 import SanPhamList from '../components/SanPham/List/SanPhamList';
+
 import { AppConfig } from './types';
 
 const appConfig: AppConfig = {
@@ -48,25 +53,6 @@ const appConfig: AppConfig = {
         },
         {
             type: 'menu',
-            title: 'Loại sản phẩm',
-            subLinksPattern: '/loai-san-pham',
-            subLinks: [
-                {
-                    title: 'Danh sách',
-                    type: 'nav',
-                    to: '/loai-san-pham',
-                    element: <LoaiSanPhamList />
-                },
-                {
-                    title: 'Thêm mới',
-                    type: 'nav',
-                    to: '/loai-san-pham/them',
-                    element: <CreateLoaiSanPham />
-                }
-            ]
-        },
-        {
-            type: 'menu',
             title: 'Sản phẩm',
             subLinksPattern: '/san-pham',
             subLinks: [
@@ -93,6 +79,25 @@ const appConfig: AppConfig = {
                     type: 'hidden',
                     to: '/san-pham/:id',
                     element: <SanPhamDetails />
+                }
+            ]
+        },
+        {
+            type: 'menu',
+            title: 'Loại sản phẩm',
+            subLinksPattern: '/loai-san-pham',
+            subLinks: [
+                {
+                    title: 'Danh sách',
+                    type: 'nav',
+                    to: '/loai-san-pham',
+                    element: <LoaiSanPhamList />
+                },
+                {
+                    title: 'Thêm mới',
+                    type: 'nav',
+                    to: '/loai-san-pham/them',
+                    element: <CreateLoaiSanPham />
                 }
             ]
         },

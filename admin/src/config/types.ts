@@ -1,5 +1,8 @@
+import React from 'react';
+
 interface BaseLink {
     title: string;
+    icon?: React.ReactNode;
     type: 'nav' | 'menu' | 'hidden';
 }
 
