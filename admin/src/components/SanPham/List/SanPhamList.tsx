@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client';
-import { useDebouncedSearchParams, usePagination } from '../../../hooks';
+import { useDebouncedSearchParams, usePagination, useToggleSortParams } from '../../../hooks';
 
-import { Center, ScrollArea, Table, Text, TextInput } from '@mantine/core';
+import { Center, ScrollArea, Table, Text, TextInput, UnstyledButton } from '@mantine/core';
 import ErrorPage from '../../Utils/Errors/ErrorPage';
 import LinkIcon from '../../Utils/Icons/LinkIcon';
 import SearchIcon from '../../Utils/Icons/SearchIcon';
@@ -10,6 +10,9 @@ import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
 import { sanPhamQuery } from '../../../graphql/queries';
 import { LoaiSanPham, PageInfo, PaginateVars } from '../../../types';
 import MyPagination from '../../Utils/Pagination/MyPagination';
+import ArrowsUpDown from '../../Utils/Icons/ArrowsUpDown';
+import ArrowUp from '../../Utils/Icons/ArrowUp';
+import ArrowDown from '../../Utils/Icons/ArrowDown';
 
 interface SanPhamDoc {
     id: string;
@@ -29,11 +32,13 @@ interface SanPhamsData {
 
 interface SearchVars extends PaginateVars {
     search: string;
+    sort: string | null;
 }
 
 const SanPhamList = () => {
     const { search, debouncedSearch, setSearch } = useDebouncedSearchParams(300);
-    const { currentPage, handlePageChange, limit, handleLimitChange } = usePagination();    
+    const { currentPage, handlePageChange, limit, handleLimitChange } = usePagination();
+    const [sort, toggleSort] = useToggleSortParams(['', 'SO_LUONG_ASC', 'SO_LUONG_DESC']);
 
     const { data, loading, error } = useQuery<
         SanPhamsData, SearchVars
@@ -41,7 +46,8 @@ const SanPhamList = () => {
         variables: {
             page: currentPage,
             limit: limit,
-            search: debouncedSearch
+            search: debouncedSearch,
+            sort: sort
         }
     });
 
@@ -52,7 +58,7 @@ const SanPhamList = () => {
     const sanPhamElements = data?.sanPham.all.docs.map((sanPham, index) => (
         <tr key={sanPham.id}>
             <td>{10 * (currentPage - 1) + (index + 1)}</td>
-            <td>
+            <td style={{ width: '50%' }}>
                 <Text lineClamp={1}>
                     {sanPham.tenSanPham}
                 </Text>
@@ -93,8 +99,18 @@ const SanPhamList = () => {
                     <thead>
                         <tr style={{ whiteSpace: 'nowrap' }}>
                             <th>STT</th>
-                            <th>Tên sản phẩm</th>
-                            <th>Số lượng còn</th>
+                            <th style={{ width: '50%' }}>Tên sản phẩm</th>
+                            <th>
+                                <UnstyledButton onClick={() => toggleSort()}>
+                                    Số lượng còn {
+                                        sort === null
+                                            ? <ArrowsUpDown />
+                                            : sort === 'SO_LUONG_ASC'
+                                                ? <ArrowUp />
+                                                : <ArrowDown />
+                                    }
+                                </UnstyledButton>
+                            </th>
                             <th>Loại sản phẩm</th>
                             <th>Chức năng</th>
                         </tr>
@@ -105,7 +121,7 @@ const SanPhamList = () => {
                 </Table>
             </ScrollArea>
             {data && (
-                <MyPagination 
+                <MyPagination
                     total={data.sanPham.all.pageInfo.totalPages}
                     siblings={1}
                     page={currentPage}

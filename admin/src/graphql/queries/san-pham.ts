@@ -1,9 +1,9 @@
 import { gql } from '@apollo/client';
 
 const ALL = gql`
-    query AllSanPhams($page: Int!, $limit: Int!, $search: String) {
+    query AllSanPhams($page: Int!, $limit: Int!, $search: String, $sort: SortSanPham) {
         sanPham {
-            all(page: $page, limit: $limit, search: $search) {
+            all(page: $page, limit: $limit, search: $search, sort: $sort) {
                 docs {
                     id
                     tenSanPham
