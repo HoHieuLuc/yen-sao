@@ -1,12 +1,12 @@
 const { UserInputError } = require('apollo-server');
 const SanPham = require('../models/SanPham');
 
-const getAll = async (page, limit, search) => {
+const getAll = async (page, limit, search, sort) => {
     const options = {
         page,
         limit,
         populate: 'maLoaiSanPham',
-        sort: '-createdAt'
+        sort: sort || '-createdAt',
     };
     const sanPhams = await SanPham.paginate({
         tenSanPham: { 
