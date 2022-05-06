@@ -7,6 +7,8 @@ export interface ChiTietPhieuNhap {
     sanPham: SanPham;
     soLuongNhap: number;
     donGiaNhap: number;
+    createdAt: number;
+    updatedAt: number;
 }
 
 export interface PhieuNhap {
