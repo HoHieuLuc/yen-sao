@@ -33,6 +33,12 @@ const cache = new InMemoryCache({
                 },
                 phieuXuat: {
                     merge: true
+                },
+                chiTietPhieuNhap: {
+                    merge: true
+                },
+                chiTietPhieuXuat: {
+                    merge: true
                 }
             }
         },
