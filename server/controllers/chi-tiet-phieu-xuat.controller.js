@@ -4,6 +4,10 @@ const PhieuXuat = require('../models/PhieuXuat');
 const chiTietPhieuXuatService = require('../services/chi-tiet-phieu-xuat.service');
 const sanPhamService = require('../services/san-pham.service');
 
+const getBySanPhamID = async (id, page = 1, limit = 10) => {
+    return chiTietPhieuXuatService.getBySanPhamID(id, page, limit);
+};
+
 const create = async (idPhieuXuat, chiTietPhieuXuat) => {
     if (!mongoose.isValidObjectId(idPhieuXuat)) {
         throw new UserInputError('Mã phiếu nhập không hợp lệ');
@@ -60,6 +64,7 @@ const remove = async (idPhieuXuat, idChiTietPhieuXuat) => {
 };
 
 module.exports = {
+    getBySanPhamID,
     create,
     update,
     remove,
