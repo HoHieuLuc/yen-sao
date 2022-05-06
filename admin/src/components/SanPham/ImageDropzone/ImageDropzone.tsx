@@ -55,7 +55,6 @@ const ImageDropzone = ({ images, onChange, onRemoveImage }: Props) => {
         });
     };
 
-
     return (
         <>
             <Dropzone
