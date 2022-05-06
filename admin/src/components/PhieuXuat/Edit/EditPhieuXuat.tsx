@@ -1,8 +1,8 @@
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 
 import CreateChiTietPhieuXuat from '../Create/CreateChiTietPhieuXuat';
-import { Box, Center, Divider, Grid, Title } from '@mantine/core';
+import { Anchor, Box, Center, Divider, Grid, Title } from '@mantine/core';
 import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
 import EditChiTietPhieuXuat from './EditChiTietPhieuXuat';
 import NotFound from '../../Utils/Errors/NotFound';
@@ -34,7 +34,9 @@ const EditPhieuXuat = () => {
                 <Grid gutter={10} mb='sm'>
                     <Grid.Col xs={6}>Ngày xuất:</Grid.Col>
                     <Grid.Col xs={6}>
-                        {convertToVietnameseDate(data.phieuXuat.byID.createdAt)}
+                        <Anchor component={Link} to={`/phieu-xuat/${id}`}>
+                            {convertToVietnameseDate(data.phieuXuat.byID.createdAt)}
+                        </Anchor>
                     </Grid.Col>
                     <Grid.Col xs={6}>Người xuất:</Grid.Col>
                     <Grid.Col xs={6}>
