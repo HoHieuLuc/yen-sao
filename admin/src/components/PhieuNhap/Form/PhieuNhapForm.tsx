@@ -1,13 +1,13 @@
 import { gql, useApolloClient } from '@apollo/client';
 import { formList, useForm } from '@mantine/form';
 
-import { Accordion, Button, Group } from '@mantine/core';
-import PlusIcon from '../../Utils/Icons/PlusIcon';
 import ChiTietPhieuNhapListForm from './ChiTietPhieuNhapListForm';
+import { Accordion, Button, Group } from '@mantine/core';
+import { PlusIcon } from '../../Utils/Icons';
 
+import { ChiTietPhieuNhapFormData, PhieuNhapVars } from '../../../types';
 import { showErrorNotification } from '../../../events';
 import { nanoid } from 'nanoid';
-import { ChiTietPhieuNhapFormData, PhieuNhapVars } from '../../../types';
 
 interface Props {
     loading: boolean;
@@ -47,7 +47,7 @@ const PhieuNhapForm = ({ loading, handleSubmit }: Props) => {
         });
         return (
             <Accordion.Item
-                label={sanPham 
+                label={sanPham
                     ? `${sanPham.tenSanPham} - Số lượng nhập: ${phieuNhap.soLuongNhap || 0}`
                     : 'Chọn sản phẩm'}
                 key={nanoid(10)}

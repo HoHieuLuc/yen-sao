@@ -1,5 +1,6 @@
-import { useEffect } from 'react';
 import { useApolloClient } from '@apollo/client';
+import { useEffect } from 'react';
+
 import { LoadingOverlay } from '@mantine/core';
 
 const Logout = () => {

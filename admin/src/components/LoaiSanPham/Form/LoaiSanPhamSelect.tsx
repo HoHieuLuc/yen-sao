@@ -1,9 +1,11 @@
-import { Loader, Select } from '@mantine/core';
 import { useQuery } from '@apollo/client';
+
+import { Loader, Select } from '@mantine/core';
+
 import { LoaiSanPham, PageInfo, PaginateVars } from '../../../types';
 import { loaiSanPhamQuery } from '../../../graphql/queries';
-import { ReactNode } from 'react';
 import { useDebouncedSearch } from '../../../hooks';
+import { ReactNode } from 'react';
 
 interface LoaiSanPhamsData {
     loaiSanPham: {

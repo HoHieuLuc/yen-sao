@@ -1,10 +1,11 @@
-import { Tabs } from '@mantine/core';
 import { useParams } from 'react-router-dom';
 import { useTabs } from '../../../hooks';
-import NotFound from '../../Utils/Errors/NotFound';
+
 import ChiTietPhieuNhapList from './ChiTietPhieuNhapList';
 import ChiTietPhieuXuatList from './ChiTietPhieuXuatList';
+import NotFound from '../../Utils/Errors/NotFound';
 import DetailsTab from './DetailsTab';
+import { Tabs } from '@mantine/core';
 
 const SanPhamDetails = () => {
     const { id } = useParams();

@@ -1,8 +1,8 @@
 import { Link, useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 
-import CreateChiTietPhieuXuat from '../Create/CreateChiTietPhieuXuat';
 import { Anchor, Box, Center, Divider, Grid, Title } from '@mantine/core';
+import CreateChiTietPhieuXuat from '../Create/CreateChiTietPhieuXuat';
 import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
 import EditChiTietPhieuXuat from './EditChiTietPhieuXuat';
 import NotFound from '../../Utils/Errors/NotFound';

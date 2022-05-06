@@ -1,12 +1,11 @@
 import { useModals } from '@mantine/modals';
 
-import { ActionIcon, Center } from '@mantine/core';
-import Icon from '../../Utils/Icons/Icon';
-import LinkIcon from '../../Utils/Icons/LinkIcon';
 import DeletePhieuXuat from '../Delete/DeletePhieuXuat';
-import { PhieuXuatDoc } from './PhieuXuatList';
+import { ActionIcon, Center } from '@mantine/core';
+import { LinkIcon, Icon } from '../../Utils/Icons';
 
 import { convertToVietnameseDate, convertToVND } from '../../../utils/common';
+import { PhieuXuatDoc } from './PhieuXuatList';
 
 interface Props {
     phieuXuat: PhieuXuatDoc;
@@ -35,7 +34,7 @@ const PhieuXuatItem = ({ phieuXuat, index }: Props) => {
             <td>{convertToVND(phieuXuat.tongTien)}</td>
             <td>
                 <Center>
-                    <LinkIcon 
+                    <LinkIcon
                         iconType='edit'
                         label='Sửa'
                         to={`/phieu-xuat/${phieuXuat.id}/sua`}

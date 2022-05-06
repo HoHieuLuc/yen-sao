@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
-import {
-    AppShell,
-    useMantineTheme,
-} from '@mantine/core';
+import { useState } from 'react';
+
+import { AppShell, useMantineTheme } from '@mantine/core';
+import AppSection from './Routes/Section';
 import AppNavbar from './Navbar/Navbar';
 import AppHeader from './Header/Header';
-import AppSection from './Routes/Section';
 
 const Admin = () => {
     const theme = useMantineTheme();

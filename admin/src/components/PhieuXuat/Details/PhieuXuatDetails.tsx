@@ -1,17 +1,17 @@
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useModals } from '@mantine/modals';
 import { useQuery } from '@apollo/client';
 
 import { Box, Button, Center, Grid, Group, ScrollArea, Table, Title } from '@mantine/core';
 import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
 import ChiTietPhieuXuatItem from './ChiTietPhieuXuatItem';
+import DeletePhieuXuat from '../Delete/DeletePhieuXuat';
 import NotFound from '../../Utils/Errors/NotFound';
 
 import { convertToVietnameseDate, convertToVND } from '../../../utils/common';
 import { phieuXuatQuery } from '../../../graphql/queries';
-import { PhieuXuatByID } from '../../../types';
-import { useModals } from '@mantine/modals';
 import { PhieuXuatDoc } from '../List/PhieuXuatList';
-import DeletePhieuXuat from '../Delete/DeletePhieuXuat';
+import { PhieuXuatByID } from '../../../types';
 
 const PhieuXuatDetails = () => {
     const navigate = useNavigate();

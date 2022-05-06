@@ -1,10 +1,12 @@
+import { useMutation } from '@apollo/client';
+
 import { Group, Text, Image, ActionIcon } from '@mantine/core';
 import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone';
-import { useMutation } from '@apollo/client';
-import { MULTI_UPLOAD } from '../../../graphql/queries';
-import { showNotification } from '@mantine/notifications';
+import { CloseIcon } from '../../Utils/Icons';
+
+import { showErrorNotification } from '../../../events';
+import { uploadQuery } from '../../../graphql/queries';
 import appConfig from '../../../config';
-import CloseIcon from '../../Utils/Icons/CloseIcon';
 
 export const dropzoneChildren = () => {
     return (
@@ -34,30 +36,17 @@ interface Props {
 const ImageDropzone = ({ images, onChange, onRemoveImage }: Props) => {
     const [multiUpload, { loading }] = useMutation<
         { upload: MultiUpload }, { files: Array<File> }
-    >(MULTI_UPLOAD, {
-        onError: (error) => {
-            console.log(error);
-            showNotification({
-                title: 'Thông báo',
-                message: error.message,
-                color: 'red'
-            });
-        },
+    >(uploadQuery.MULTI_UPLOAD, {
+        onError: (error) => showErrorNotification(error.message),
         onCompleted: (data) => {
             const imageUrls = data.upload.multiUpload.map((url) => `${appConfig.apiURL}${url}`);
             onChange(imageUrls);
         }
     });
 
-    const showError = (message: string) => showNotification({
-        title: 'Thông báo',
-        message,
-        color: 'red'
-    });
-
     const handleMultiUpload = (files: Array<File>) => {
         if (files.length + images.length > 3) {
-            return showError('Bạn chỉ được upload tối đa 3 ảnh.');
+            return showErrorNotification('Chỉ được đăng tối đa 3 ảnh');
         }
         void multiUpload({
             variables: {
@@ -66,12 +55,15 @@ const ImageDropzone = ({ images, onChange, onRemoveImage }: Props) => {
         });
     };
 
-
     return (
         <>
             <Dropzone
                 onDrop={(files) => handleMultiUpload(files)}
-                onReject={() => showError(`File không hợp lệ hoặc kích thước file quá lớn (tối đa 3mb).`)}
+                onReject={() =>
+                    showErrorNotification(
+                        `File không hợp lệ hoặc kích thước file quá lớn (tối đa 3mb).`
+                    )
+                }
                 maxSize={3 * 1024 ** 2}
                 accept={IMAGE_MIME_TYPE}
                 loading={loading}

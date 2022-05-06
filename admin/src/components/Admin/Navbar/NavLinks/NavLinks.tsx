@@ -1,6 +1,7 @@
-import appConfig from '../../../../config';
-import NavLink from './NavLink';
 import { SimpleGrid } from '@mantine/core';
+import NavLink from './NavLink';
+
+import appConfig from '../../../../config';
 
 const NavLinks = () => {
     return (

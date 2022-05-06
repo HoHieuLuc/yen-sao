@@ -7,11 +7,11 @@ import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
 import ChiTietPhieuNhapItem from './ChiTietPhieuNhapItem';
 import DeletePhieuNhap from '../Delete/DeletePhieuNhap';
 import NotFound from '../../Utils/Errors/NotFound';
-import { PhieuNhapByID } from '../../../types';
 
 import { convertToVietnameseDate, convertToVND } from '../../../utils/common';
 import { phieuNhapQuery } from '../../../graphql/queries';
 import { PhieuNhapDoc } from '../List/PhieuNhapList';
+import { PhieuNhapByID } from '../../../types';
 
 const PhieuNhapDetails = () => {
     const navigate = useNavigate();
