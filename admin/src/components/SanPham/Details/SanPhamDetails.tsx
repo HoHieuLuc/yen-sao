@@ -1,65 +1,46 @@
-import { useQuery } from '@apollo/client';
-import { Box, Center, Grid, Paper, Text, Title } from '@mantine/core';
+import { Tabs } from '@mantine/core';
 import { useParams } from 'react-router-dom';
-import { sanPhamQuery } from '../../../graphql/queries';
-import { SanPham } from '../../../types';
+import { useTabs } from '../../../hooks';
 import NotFound from '../../Utils/Errors/NotFound';
-import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
-import ImageDisplay from './ImageDisplay';
-
-interface SanPhamByID {
-    sanPham: {
-        byID: SanPham
-    }
-}
+import ChiTietPhieuNhapList from './ChiTietPhieuNhapList';
+import ChiTietPhieuXuatList from './ChiTietPhieuXuatList';
+import DetailsTab from './DetailsTab';
 
 const SanPhamDetails = () => {
     const { id } = useParams();
-    const { data, loading, error } = useQuery<
-        SanPhamByID, { id: string }
-    >(sanPhamQuery.BY_ID, {
-        variables: {
-            id: id || ''
-        }
-    });
+    const { activeTab, onTabChange } = useTabs([
+        'thong-tin', 'nhap-hang', 'xuat-hang'
+    ]);
 
-    if (error || (data && data.sanPham && data.sanPham.byID === null)) {
+    if (!id) {
         return <NotFound />;
     }
 
     return (
-        <LoadingWrapper loading={loading}><>
-            {data && <Box>
-                <Center>
-                    <Title>Chi tiết sản phẩm</Title>
-                </Center>
-                <Grid justify='center'>
-                    {data.sanPham.byID.anhSanPham.map((url, index) => (
-                        <ImageDisplay
-                            key={index}
-                            anhSanPham={url}
-                        />
-                    ))}
-                </Grid>
-                <Center><h3>{data.sanPham.byID.tenSanPham}</h3></Center>
-                <Grid gutter={10}>
-                    <Grid.Col xs={6} md={2}>Loại:</Grid.Col>
-                    <Grid.Col xs={6} md={10}>
-                        {data.sanPham.byID.loaiSanPham.tenLoaiSanPham}
-                    </Grid.Col>
-                    <Grid.Col xs={6} md={2}>Số lượng tồn:</Grid.Col>
-                    <Grid.Col xs={6} md={10}>{data.sanPham.byID.soLuong}</Grid.Col>
-                    <Grid.Col>Mô tả:</Grid.Col>
-                    <Grid.Col>
-                        <Paper shadow='xs' withBorder p='sm'>
-                            <Text style={{ whiteSpace: 'pre-wrap' }}>
-                                {data.sanPham.byID.moTa}
-                            </Text>
-                        </Paper>
-                    </Grid.Col>
-                </Grid>
-            </Box>}
-        </></LoadingWrapper>
+        <Tabs
+            active={activeTab}
+            onTabChange={onTabChange}
+            styles={{
+                root: {
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: '100%'
+                },
+                body: {
+                    flexGrow: 1
+                }
+            }}
+        >
+            <Tabs.Tab label="Thông tin sản phẩm" tabKey='thong-tin'>
+                <DetailsTab id={id} isOpened={activeTab === 0} />
+            </Tabs.Tab>
+            <Tabs.Tab label="Thông tin nhập hàng" tabKey='nhap-hang'>
+                <ChiTietPhieuNhapList id={id} isOpened={activeTab === 1} />
+            </Tabs.Tab>
+            <Tabs.Tab label="Thông tin xuất hàng" tabKey='xuat-hang'>
+                <ChiTietPhieuXuatList id={id} isOpened={activeTab === 2} />
+            </Tabs.Tab>
+        </Tabs>
     );
 };
 
