@@ -35,12 +35,18 @@ const typeDefs = gql`
         anhSanPham: [String!]!
         maLoaiSanPham: ID
     }
+
+    enum SortSanPham {
+        SO_LUONG_ASC
+        SO_LUONG_DESC
+    }
     
     type SanPhamQueries {
         all(
             page: Int!,
             limit: Int!,
             search: String,
+            sort: SortSanPham
         ): SanPhamsByPage!
         byID(id: ID!): SanPham
     }
@@ -70,6 +76,10 @@ const resolvers = {
                 : loaiSanPhamController.getById(root.maLoaiSanPham);
         }
     },
+    SortSanPham: {
+        SO_LUONG_ASC: 'soLuong',
+        SO_LUONG_DESC: '-soLuong'
+    },
     SanPhamsByPage: {
         pageInfo: (root) => root
     },
@@ -77,7 +87,8 @@ const resolvers = {
         sanPham: () => ({})
     },
     SanPhamQueries: {
-        all: async (_, { page, limit, search }) => sanPhamController.getAll(page, limit, search),
+        all: async (_, { page, limit, search, sort }) =>
+            sanPhamController.getAll(page, limit, search, sort),
         byID: async (_, { id }) => sanPhamController.getById(id)
     },
     Mutation: {
