@@ -22,6 +22,7 @@ const CreatePhieuXuat = () => {
                 id: 'ROOT_QUERY',
                 fieldName: 'phieuXuat',
             });
+            client.cache.gc();
         },
         onError: (error) => showErrorNotification(error.message)
     });

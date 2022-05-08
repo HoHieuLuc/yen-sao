@@ -1,8 +1,12 @@
-import { useDebouncedSearchParams, usePagination, useToggleSortParams } from '../../../hooks';
+import { 
+    useDebouncedSearchParams, 
+    usePagination, 
+    useSortParams, 
+} from '../../../hooks';
 import { useQuery } from '@apollo/client';
 
 import { Center, ScrollArea, Table, Text, TextInput, UnstyledButton } from '@mantine/core';
-import { ArrowDown, ArrowsUpDown, ArrowUp, LinkIcon, SearchIcon } from '../../Utils/Icons';
+import { SortIcon, LinkIcon, SearchIcon } from '../../Utils/Icons';
 import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
 import MyPagination from '../../Utils/Pagination/MyPagination';
 import ErrorPage from '../../Utils/Errors/ErrorPage';
@@ -34,7 +38,11 @@ interface SearchVars extends PaginateVars {
 const SanPhamList = () => {
     const { search, debouncedSearch, setSearch } = useDebouncedSearchParams(300);
     const { currentPage, handlePageChange, limit, handleLimitChange } = usePagination();
-    const [sort, toggleSort] = useToggleSortParams(['', 'SO_LUONG_ASC', 'SO_LUONG_DESC']);
+    const [sortSanPham, toggleSortSoLuong] = useSortParams(
+        { 
+            soLuong: [null, 'SO_LUONG_ASC', 'SO_LUONG_DESC']
+        }
+    );
 
     const { data, loading, error } = useQuery<
         SanPhamsData, SearchVars
@@ -43,7 +51,7 @@ const SanPhamList = () => {
             page: currentPage,
             limit: limit,
             search: debouncedSearch,
-            sort: sort
+            sort: sortSanPham.currentSortValue
         }
     });
 
@@ -97,14 +105,12 @@ const SanPhamList = () => {
                             <th>STT</th>
                             <th style={{ width: '50%' }}>Tên sản phẩm</th>
                             <th>
-                                <UnstyledButton onClick={() => toggleSort()}>
-                                    Số lượng còn {
-                                        sort === null
-                                            ? <ArrowsUpDown />
-                                            : sort === 'SO_LUONG_ASC'
-                                                ? <ArrowUp />
-                                                : <ArrowDown />
-                                    }
+                                <UnstyledButton onClick={() => toggleSortSoLuong('soLuong')}>
+                                    Số lượng còn <SortIcon 
+                                        currentSort={sortSanPham.currentSortValue}
+                                        ascValue='SO_LUONG_ASC'
+                                        descValue='SO_LUONG_DESC'
+                                    />
                                 </UnstyledButton>
                             </th>
                             <th>Loại sản phẩm</th>

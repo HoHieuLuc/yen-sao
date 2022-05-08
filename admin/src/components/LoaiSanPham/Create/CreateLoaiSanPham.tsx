@@ -19,6 +19,7 @@ const CreateLoaiSanPham = () => {
                 id: 'ROOT_QUERY',
                 fieldName: 'loaiSanPham',
             });
+            client.cache.gc();
         },
         onError: (error) => showErrorNotification(error.message)
     });

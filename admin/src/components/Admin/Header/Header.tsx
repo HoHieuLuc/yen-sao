@@ -25,7 +25,7 @@ const AppHeader = ({ theme, opened, setOpened }: Props) => {
     const dark = colorScheme === 'dark';
 
     return (
-        <Header sx={{ background: theme.colors.blue[5] }} height={50} p="sm">
+        <Header sx={{ background: theme.colors.blue[5], zIndex: 500 }} height={50} p="sm">
             <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
                 <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
                     <Burger

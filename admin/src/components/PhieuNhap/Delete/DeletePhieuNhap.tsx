@@ -26,6 +26,7 @@ const DeletePhieuNhap = ({ phieuNhap, closeModal, callback }: Props) => {
                 id: 'ROOT_QUERY',
                 fieldName: 'phieuNhap',
             });
+            client.cache.gc();
             closeModal();
         },
         onError: (error) => {

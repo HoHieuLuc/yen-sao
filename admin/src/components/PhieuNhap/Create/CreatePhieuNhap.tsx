@@ -22,6 +22,7 @@ const CreatePhieuNhap = () => {
                 id: 'ROOT_QUERY',
                 fieldName: 'phieuNhap',
             });
+            client.cache.gc();
         },
         onError: (error) => showErrorNotification(error.message)
     });

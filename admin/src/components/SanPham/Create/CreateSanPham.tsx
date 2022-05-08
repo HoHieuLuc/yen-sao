@@ -16,6 +16,7 @@ const CreateSanPham = () => {
                 id: 'ROOT_QUERY',
                 fieldName: 'sanPham',
             });
+            client.cache.gc();
         },
         onError: (error) => showErrorNotification(error.message)
     });
