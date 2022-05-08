@@ -41,12 +41,20 @@ const typeDefs = gql`
         donGiaNhap: Int!
     }
 
+    enum SortPhieuNhap {
+        NGAY_NHAP_ASC
+        NGAY_NHAP_DESC
+        TONG_TIEN_ASC
+        TONG_TIEN_DESC
+    }
+
     type PhieuNhapQueries {
         all(
             page: Int!,
             limit: Int!,
             from: Date,
-            to: Date
+            to: Date,
+            sort: SortPhieuNhap
         ): PhieuNhapsByPage!
         byID(
             id: ID!
@@ -111,6 +119,12 @@ const resolvers = {
     PhieuNhap: {
         soMatHangNhap: (root) => root.chiTiet.length
     },
+    SortPhieuNhap: {
+        NGAY_NHAP_ASC: 'createdAt',
+        NGAY_NHAP_DESC: '-createdAt',
+        TONG_TIEN_ASC: 'tongTien',
+        TONG_TIEN_DESC: '-tongTien'
+    },
     PhieuNhapsByPage: {
         pageInfo: (root) => root
     },
@@ -131,8 +145,8 @@ const resolvers = {
         )
     },
     PhieuNhapQueries: {
-        all: async (_, { page, limit, from, to }) =>
-            phieuNhapController.getAll(page, limit, from, to),
+        all: async (_, { page, limit, from, to, sort }) =>
+            phieuNhapController.getAll(page, limit, from, to, sort),
         byID: async (_, { id }) =>
             phieuNhapController.getById(id),
     },
