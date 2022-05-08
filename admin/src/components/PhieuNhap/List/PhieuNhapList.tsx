@@ -1,12 +1,12 @@
 import { useDateRangeSearchParams } from '../../../hooks/use-date-range-search-params';
-import { usePagination } from '../../../hooks';
+import { usePagination, useSortParams } from '../../../hooks';
 import { useQuery } from '@apollo/client';
 
-import { Button, Center, Grid, ScrollArea, Table } from '@mantine/core';
+import { Button, Center, Grid, ScrollArea, Table, UnstyledButton } from '@mantine/core';
 import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
 import MyPagination from '../../Utils/Pagination/MyPagination';
 import ErrorPage from '../../Utils/Errors/ErrorPage';
-import { SearchIcon } from '../../Utils/Icons';
+import { SearchIcon, SortIcon } from '../../Utils/Icons';
 import PhieuNhapItem from './PhieuNhapItem';
 import { DatePicker } from '@mantine/dates';
 
@@ -34,11 +34,16 @@ interface PhieuNhapsData {
 interface PhieuNhapVars extends PaginateVars {
     from: number | null;
     to: number | null;
+    sort: string | null;
 }
 
 const PhieuNhapList = () => {
     const { currentPage, handlePageChange, limit, handleLimitChange } = usePagination();
     const { from, to, handleSearch } = useDateRangeSearchParams();
+    const [sortPhieuNhap, toggleSortPhieuNhap] = useSortParams({
+        ngayNhap: [null, 'NGAY_NHAP_ASC', 'NGAY_NHAP_DESC'],
+        tongTien: [null, 'TONG_TIEN_ASC', 'TONG_TIEN_DESC'],
+    });
 
     const { data, loading, error } = useQuery<
         PhieuNhapsData, PhieuNhapVars
@@ -47,8 +52,10 @@ const PhieuNhapList = () => {
             page: currentPage,
             limit: limit,
             from: from.paramValue,
-            to: to.paramValue
-        }
+            to: to.paramValue,
+            sort: sortPhieuNhap.currentSortValue
+        },
+        fetchPolicy: 'cache-and-network'
     });
 
     if (error) {
@@ -96,9 +103,29 @@ const PhieuNhapList = () => {
                         <tr style={{ whiteSpace: 'nowrap' }}>
                             <th>STT</th>
                             <th>Người nhập</th>
-                            <th>Ngày nhập</th>
+                            <th>
+                                <UnstyledButton
+                                    onClick={() => toggleSortPhieuNhap('ngayNhap')}
+                                >
+                                    Ngày nhập <SortIcon
+                                        currentSort={sortPhieuNhap.currentSortValue}
+                                        ascValue='NGAY_NHAP_ASC'
+                                        descValue='NGAY_NHAP_DESC'
+                                    />
+                                </UnstyledButton>
+                            </th>
                             <th>Số mặt hàng nhập</th>
-                            <th>Tổng tiền</th>
+                            <th>
+                                <UnstyledButton
+                                    onClick={() => toggleSortPhieuNhap('tongTien')}
+                                >
+                                    Tổng tiền <SortIcon
+                                        currentSort={sortPhieuNhap.currentSortValue}
+                                        ascValue='TONG_TIEN_ASC'
+                                        descValue='TONG_TIEN_DESC'
+                                    />
+                                </UnstyledButton>
+                            </th>
                             <th>
                                 <Center>
                                     Chức năng
