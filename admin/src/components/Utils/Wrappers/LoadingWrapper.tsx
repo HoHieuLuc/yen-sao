@@ -7,9 +7,16 @@ interface Props {
 
 const LoadingWrapper = ({ children, loading }: Props) => {
     return (
-        <div style={{ position: 'relative', height: '100%' }}>
-            <LoadingOverlay visible={loading} />
-            {children}
+        <div style={{
+            position: 'relative',
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+        }}>
+            <div style={{ flexGrow: 1 }}>
+                <LoadingOverlay visible={loading} />
+                {children}
+            </div>
         </div>
     );
 };
