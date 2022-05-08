@@ -18,12 +18,12 @@ const populateOptions = [
     }
 ];
 
-const getAll = async (page, limit, from, to) => {
+const getAll = async (page, limit, from, to, sort) => {
     const paginateOptions = {
         page,
         limit,
         populate: populateOptions,
-        sort: '-createdAt'
+        sort: sort || '-createdAt'
     };
 
     let findOptions = {};
