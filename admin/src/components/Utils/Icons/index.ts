@@ -9,6 +9,7 @@ import Icon from './Icon';
 import LinkIcon from './LinkIcon';
 import PlusIcon from './PlusIcon';
 import SearchIcon from './SearchIcon';
+import SortIcon from './SortIcon';
 
 export {
     ArrowDown,
@@ -22,4 +23,5 @@ export {
     LinkIcon,
     PlusIcon,
     SearchIcon,
+    SortIcon
 };
