@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+// unused
 export const useLoopToggle = (values: Array<string>, defaultValueIndex: number) => {
     const [current, setCurrent] = useState(values[defaultValueIndex] || values[0]);
 
