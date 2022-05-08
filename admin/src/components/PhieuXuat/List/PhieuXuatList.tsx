@@ -1,12 +1,12 @@
 import { useDateRangeSearchParams } from '../../../hooks/use-date-range-search-params';
-import { usePagination } from '../../../hooks';
+import { usePagination, useSortParams } from '../../../hooks';
 import { useQuery } from '@apollo/client';
 
-import { Button, Center, Grid, ScrollArea, Table } from '@mantine/core';
+import { Button, Center, Grid, ScrollArea, Table, UnstyledButton } from '@mantine/core';
 import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
 import MyPagination from '../../Utils/Pagination/MyPagination';
 import ErrorPage from '../../Utils/Errors/ErrorPage';
-import { SearchIcon } from '../../Utils/Icons';
+import { SearchIcon, SortIcon } from '../../Utils/Icons';
 import PhieuXuatItem from './PhieuXuatItem';
 import { DatePicker } from '@mantine/dates';
 
@@ -34,11 +34,16 @@ interface PhieuXuatsData {
 interface PhieuXuatVars extends PaginateVars {
     from: number | null;
     to: number | null;
+    sort: string | null;
 }
 
 const PhieuXuatList = () => {
     const { currentPage, handlePageChange, limit, handleLimitChange } = usePagination();
     const { from, to, handleSearch } = useDateRangeSearchParams();
+    const [sortPhieuXuat, toggleSortPhieuXuat] = useSortParams({
+        ngayXuat: [null, 'NGAY_XUAT_ASC', 'NGAY_XUAT_DESC'],
+        tongTien: [null, 'TONG_TIEN_ASC', 'TONG_TIEN_DESC'],
+    });
 
     const { data, loading, error } = useQuery<
         PhieuXuatsData, PhieuXuatVars
@@ -47,8 +52,10 @@ const PhieuXuatList = () => {
             page: currentPage,
             limit: limit,
             from: from.paramValue,
-            to: to.paramValue
-        }
+            to: to.paramValue,
+            sort: sortPhieuXuat.currentSortValue
+        },
+        fetchPolicy: 'cache-and-network'
     });
 
     if (error) {
@@ -72,7 +79,9 @@ const PhieuXuatList = () => {
                         placeholder='Chọn ngày'
                         value={from.value}
                         onChange={from.onChange}
-                        maxDate={dayjs(to.value).subtract(1, 'd').toDate() ?? undefined}
+                        maxDate={
+                            dayjs(to.value).subtract(1, 'd').toDate() ?? undefined
+                        }
                     />
                 </Grid.Col>
                 <Grid.Col md={4}>
@@ -81,7 +90,9 @@ const PhieuXuatList = () => {
                         placeholder='Chọn ngày'
                         value={to.value}
                         onChange={to.onChange}
-                        minDate={dayjs(from.value).add(1, 'd').toDate() ?? undefined}
+                        minDate={
+                            dayjs(from.value).add(1, 'd').toDate() ?? undefined
+                        }
                     />
                 </Grid.Col>
                 <Grid.Col md={2}>
@@ -90,15 +101,36 @@ const PhieuXuatList = () => {
                     </Button>
                 </Grid.Col>
             </Grid>
+
             <ScrollArea style={{ whiteSpace: 'break-spaces' }}>
                 <Table striped highlightOnHover mb='sm'>
                     <thead>
                         <tr style={{ whiteSpace: 'nowrap' }}>
                             <th>STT</th>
                             <th>Người xuất</th>
-                            <th>Ngày xuất</th>
+                            <th>
+                                <UnstyledButton
+                                    onClick={() => toggleSortPhieuXuat('ngayXuat')}
+                                >
+                                    Ngày xuất <SortIcon
+                                        currentSort={sortPhieuXuat.currentSortValue}
+                                        ascValue='NGAY_XUAT_ASC'
+                                        descValue='NGAY_XUAT_DESC'
+                                    />
+                                </UnstyledButton>
+                            </th>
                             <th>Số mặt hàng xuất</th>
-                            <th>Tổng tiền</th>
+                            <th>
+                                <UnstyledButton
+                                    onClick={() => toggleSortPhieuXuat('tongTien')}
+                                >
+                                    Tổng tiền <SortIcon
+                                        currentSort={sortPhieuXuat.currentSortValue}
+                                        ascValue='TONG_TIEN_ASC'
+                                        descValue='TONG_TIEN_DESC'
+                                    />
+                                </UnstyledButton>
+                            </th>
                             <th>
                                 <Center>
                                     Chức năng

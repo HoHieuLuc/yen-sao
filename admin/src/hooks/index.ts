@@ -5,3 +5,4 @@ export { useDebouncedSearch } from './use-debounced-search';
 export { useLoopToggle } from './use-loop-toggle';
 export { usePagination } from './use-pagination';
 export { useTabs } from './use-tabs';
+export { useSortParams } from './use-sort-params';
