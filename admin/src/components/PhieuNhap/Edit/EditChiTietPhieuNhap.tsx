@@ -30,8 +30,8 @@ const EditChiTietPhieuNhap = ({ label, idPhieuNhap, idChiTiet, initialValues }: 
     const [updateChiTietPhieuNhap, { loading }] = useMutation<
         never, UpdateVars
     >(chiTietPhieuNhapQuery.UPDATE, {
-        onError: (error) => showErrorNotification(error.message),
         onCompleted: () => showSuccessNotification('Cập nhật thành công'),
+        onError: (error) => showErrorNotification(error.message),
     });
 
     const modals = useModals();

@@ -30,6 +30,7 @@ const DeleteLoaiSanPham = ({ loaiSanPham, closeModal }: Props) => {
                 id: 'ROOT_QUERY',
                 fieldName: 'loaiSanPham',
             });
+            client.cache.gc();
             closeModal();
         },
         onError: (error) => {

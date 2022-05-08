@@ -7,7 +7,6 @@ import { PlusIcon } from '../../Utils/Icons';
 
 import { ChiTietPhieuXuatFormData, PhieuXuatVars } from '../../../types';
 import { showErrorNotification } from '../../../events';
-import { nanoid } from 'nanoid';
 
 interface Props {
     loading: boolean;
@@ -50,7 +49,7 @@ const PhieuXuatForm = ({ loading, handleSubmit }: Props) => {
                 label={sanPham
                     ? `${sanPham.tenSanPham} - Số lượng xuất: ${phieuXuat.soLuongXuat || 0}`
                     : 'Chọn sản phẩm'}
-                key={nanoid(10)}
+                key={index}
             >
                 <ChiTietPhieuXuatListForm
                     phieuXuatForm={phieuXuatForm}

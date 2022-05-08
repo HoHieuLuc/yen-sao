@@ -26,6 +26,7 @@ const DeletePhieuXuat = ({ phieuXuat, closeModal, callback }: Props) => {
                 id: 'ROOT_QUERY',
                 fieldName: 'phieuXuat',
             });
+            client.cache.gc();
             closeModal();
         },
         onError: (error) => {
