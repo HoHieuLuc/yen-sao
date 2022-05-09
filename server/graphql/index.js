@@ -7,6 +7,10 @@ const {
     resolvers: dateResolvers
 } = require('./scalar/date');
 const {
+    typeDefs: objectScalar,
+    resolvers: objectResolvers
+} = require('./scalar/object');
+const {
     typeDefs: Token
 } = require('./schema/token');
 const {
@@ -40,7 +44,10 @@ const {
     typeDefs: PhieuXuat,
     resolvers: phieuXuatResolvers
 } = require('./schema/phieu-xuat');
-
+const {
+    typeDefs: Config,
+    resolvers: configResolvers
+} = require('./schema/config');
 
 const defaultSchema = gql`
     type Query {
@@ -56,6 +63,7 @@ const schema = makeExecutableSchema({
     typeDefs: [
         defaultSchema,
         dateScalar,
+        objectScalar,
         Paginatable,
         User,
         Token,
@@ -64,17 +72,20 @@ const schema = makeExecutableSchema({
         SanPham,
         LoaiSanPham,
         PhieuNhap,
-        PhieuXuat
+        PhieuXuat,
+        Config
     ],
     resolvers: merge(
         dateResolvers,
+        objectResolvers,
         userResolvers,
         fileResolvers,
         postResolvers,
         sanPhamResolvers,
         loaiSanPhamResolvers,
         phieuNhapResolvers,
-        phieuXuatResolvers
+        phieuXuatResolvers,
+        configResolvers
     )
 });
 
