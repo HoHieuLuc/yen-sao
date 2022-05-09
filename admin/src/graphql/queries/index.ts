@@ -8,3 +8,4 @@ export { chiTietPhieuXuatQuery } from './chi-tiet-phieu-xuat';
 export { phieuXuatQuery } from './phieu-xuat';
 
 export { uploadQuery } from './upload';
+export { configQuery } from './config';

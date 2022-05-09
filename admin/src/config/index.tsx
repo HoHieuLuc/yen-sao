@@ -1,5 +1,7 @@
 import CreateLoaiSanPham from '../components/LoaiSanPham/Create/CreateLoaiSanPham';
 import LoaiSanPhamList from '../components/LoaiSanPham/List/LoaiSanPhamList';
+import About from '../components/Manage/About/About';
+import EditAbout from '../components/Manage/About/EditAbout';
 
 import CreatePhieuNhap from '../components/PhieuNhap/Create/CreatePhieuNhap';
 import PhieuNhapDetails from '../components/PhieuNhap/Details/PhieuNhapDetails';
@@ -10,10 +12,6 @@ import CreatePhieuXuat from '../components/PhieuXuat/Create/CreatePhieuXuat';
 import PhieuXuatDetails from '../components/PhieuXuat/Details/PhieuXuatDetails';
 import EditPhieuXuat from '../components/PhieuXuat/Edit/EditPhieuXuat';
 import PhieuXuatList from '../components/PhieuXuat/List/PhieuXuatList';
-
-import NewPost from '../components/Post/NewPost/NewPost';
-import PostDetails from '../components/Post/PostDetails/PostDetails';
-import PostsList from '../components/Post/PostsList/PostsList';
 
 import CreateSanPham from '../components/SanPham/Create/CreateSanPham';
 import SanPhamDetails from '../components/SanPham/Details/SanPhamDetails';
@@ -26,31 +24,6 @@ const appConfig: AppConfig = {
     title: 'Yến sào MS.Tưởng',
     apiURL: 'http://localhost:4000',
     links: [
-        {
-            type: 'menu',
-            title: 'Bài viết',
-            subLinksPattern: '/bai-viet',
-            subLinks: [
-                {
-                    type: 'nav',
-                    to: '/bai-viet/them',
-                    title: 'Thêm bài viết mới',
-                    element: <NewPost />,
-                },
-                {
-                    type: 'nav',
-                    to: '/bai-viet',
-                    title: 'Danh sách bài viết',
-                    element: <PostsList />,
-                },
-                {
-                    type: 'hidden',
-                    to: '/bai-viet/:id',
-                    element: <PostDetails />,
-                    title: 'Chi tiết bài viết',
-                }
-            ]
-        },
         {
             type: 'menu',
             title: 'Sản phẩm',
@@ -160,6 +133,25 @@ const appConfig: AppConfig = {
                     title: 'Sửa phiếu xuất',
                     to: '/phieu-xuat/:id/sua',
                     element: <EditPhieuXuat />
+                }
+            ]
+        },
+        {
+            type: 'menu',
+            title: 'Quản lý',
+            subLinksPattern: '/manage',
+            subLinks: [
+                {
+                    type: 'nav',
+                    title: 'Bài viết giới thiệu',
+                    to: '/manage/about',
+                    element: <About />
+                },
+                {
+                    type: 'hidden',
+                    title: 'Chỉnh sửa bài viết giới thiệu',
+                    to: '/manage/about/sua',
+                    element: <EditAbout />
                 }
             ]
         }
