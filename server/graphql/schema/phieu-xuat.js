@@ -66,11 +66,23 @@ const typeDefs = gql`
         pageInfo: PageInfo
     }
 
+    enum SortChiTietPhieuXuat {
+        NGAY_XUAT_ASC
+        NGAY_XUAT_DESC
+        SO_LUONG_ASC
+        SO_LUONG_DESC
+        DON_GIA_ASC
+        DON_GIA_DESC
+    }
+
     type ChiTietPhieuXuatQueries {
         bySanPhamID(
             id: ID!,
             page: Int!,
-            limit: Int!
+            limit: Int!,
+            from: Date,
+            to: Date,
+            sort: SortChiTietPhieuXuat
         ): ChiTietPhieuXuatByPage
     }
 
@@ -128,6 +140,14 @@ const resolvers = {
     PhieuXuatsByPage: {
         pageInfo: (root) => root
     },
+    SortChiTietPhieuXuat: {
+        NGAY_XUAT_ASC: 'createdAt',
+        NGAY_XUAT_DESC: '-createdAt',
+        SO_LUONG_ASC: 'soLuongXuat',
+        SO_LUONG_DESC: '-soLuongXuat',
+        DON_GIA_ASC: 'donGiaXuat',
+        DON_GIA_DESC: '-donGiaXuat'
+    },
     ChiTietPhieuXuat: {
         sanPham: (root) => {
             return isMongooseModel(root.maSanPham) ? root.maSanPham : null;
@@ -151,8 +171,8 @@ const resolvers = {
             phieuXuatController.getById(id),
     },
     ChiTietPhieuXuatQueries: {
-        bySanPhamID: async (_, { id, page, limit }) =>
-            chiTietPhieuXuatController.getBySanPhamID(id, page, limit)
+        bySanPhamID: async (_, { id, page, limit, from, to, sort }) =>
+            chiTietPhieuXuatController.getBySanPhamID(id, page, limit, from, to, sort)
     },
     Mutation: {
         phieuXuat: chainMiddlewares(authRequired,

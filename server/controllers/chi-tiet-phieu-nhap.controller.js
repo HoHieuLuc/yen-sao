@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 const chiTietPhieuNhapService = require('../services/chi-tiet-phieu-nhap.service');
 const sanPhamService = require('../services/san-pham.service');
 
-const getBySanPhamID = async (idSanPham, page = 1, limit = 10) => {
-    return chiTietPhieuNhapService.getBySanPhamID(idSanPham, page, limit);
+const getBySanPhamID = async (idSanPham, page = 1, limit = 10, from, to, sort) => {
+    return chiTietPhieuNhapService.getBySanPhamID(idSanPham, page, limit, from, to, sort);
 };
 
 const create = async (idPhieuNhap, chiTietPhieuNhap) => {
