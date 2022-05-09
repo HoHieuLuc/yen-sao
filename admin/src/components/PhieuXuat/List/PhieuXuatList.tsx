@@ -21,7 +21,7 @@ export interface PhieuXuatDoc {
     tongTien: number;
 }
 
-interface PhieuXuatsData {
+export interface PhieuXuatsData {
     phieuXuat: {
         all: {
             docs: Array<PhieuXuatDoc>;

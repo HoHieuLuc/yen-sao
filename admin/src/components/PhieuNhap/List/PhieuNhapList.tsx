@@ -21,7 +21,7 @@ export interface PhieuNhapDoc {
     tongTien: number;
 }
 
-interface PhieuNhapsData {
+export interface PhieuNhapsData {
     phieuNhap: {
         all: {
             docs: Array<PhieuNhapDoc>;
