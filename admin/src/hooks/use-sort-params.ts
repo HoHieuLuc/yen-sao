@@ -30,11 +30,10 @@ export const useSortParams = (values: Record<string, Array<string | null>>) => {
         const arrayOfSorts = Object.entries(values).flatMap(item => {
             return item[1];
         });
-        if (arrayOfSorts.indexOf(sort.currentSortValue) === -1) {
-            searchParams.delete('sort');
-            setSearchParams(searchParams);
-        }
-        else if (!sort.currentSortValue) {
+        if (
+            arrayOfSorts.indexOf(sort.currentSortValue) === -1
+            || !sort.currentSortValue
+        ) {
             searchParams.delete('sort');
         } else {
             searchParams.set('sort', sort.currentSortValue);
