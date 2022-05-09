@@ -26,6 +26,7 @@ const MyMantineProvider = ({ children }: Props) => {
                     datesLocale: 'vi',
                 }}
                 withGlobalStyles
+                withNormalizeCSS
             >
                 <NotificationsProvider autoClose={5000} zIndex={9999}>
                     <ModalsProvider>
