@@ -66,11 +66,23 @@ const typeDefs = gql`
         pageInfo: PageInfo
     }
 
+    enum SortChiTietPhieuNhap {
+        NGAY_NHAP_ASC
+        NGAY_NHAP_DESC
+        SO_LUONG_ASC
+        SO_LUONG_DESC
+        DON_GIA_ASC
+        DON_GIA_DESC
+    }
+
     type ChiTietPhieuNhapQueries {
         bySanPhamID(
             id: ID!,
             page: Int!,
-            limit: Int!
+            limit: Int!,
+            from: Date,
+            to: Date,
+            sort: SortChiTietPhieuNhap
         ): ChiTietPhieuNhapByPage
     }
 
@@ -133,6 +145,14 @@ const resolvers = {
             return isMongooseModel(root.maSanPham) ? root.maSanPham : null;
         }
     },
+    SortChiTietPhieuNhap: {
+        NGAY_NHAP_ASC: 'createdAt',
+        NGAY_NHAP_DESC: '-createdAt',
+        SO_LUONG_ASC: 'soLuongNhap',
+        SO_LUONG_DESC: '-soLuongNhap',
+        DON_GIA_ASC: 'donGiaNhap',
+        DON_GIA_DESC: '-donGiaNhap'
+    },
     ChiTietPhieuNhapByPage: {
         pageInfo: (root) => root
     },
@@ -151,8 +171,8 @@ const resolvers = {
             phieuNhapController.getById(id),
     },
     ChiTietPhieuNhapQueries: {
-        bySanPhamID: async (_, { id, page, limit }) => 
-            chiTietPhieuNhapController.getBySanPhamID(id, page, limit)
+        bySanPhamID: async (_, { id, page, limit, from, to, sort }) =>
+            chiTietPhieuNhapController.getBySanPhamID(id, page, limit, from, to, sort)
     },
     Mutation: {
         phieuNhap: chainMiddlewares(authRequired,

@@ -4,8 +4,8 @@ const PhieuXuat = require('../models/PhieuXuat');
 const chiTietPhieuXuatService = require('../services/chi-tiet-phieu-xuat.service');
 const sanPhamService = require('../services/san-pham.service');
 
-const getBySanPhamID = async (id, page = 1, limit = 10) => {
-    return chiTietPhieuXuatService.getBySanPhamID(id, page, limit);
+const getBySanPhamID = async (id, page = 1, limit = 10, from, to, sort) => {
+    return chiTietPhieuXuatService.getBySanPhamID(id, page, limit, from, to, sort);
 };
 
 const create = async (idPhieuXuat, chiTietPhieuXuat) => {

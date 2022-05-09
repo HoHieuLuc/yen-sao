@@ -15,15 +15,30 @@ const populateOptions = [
     }
 ];
 
-const getBySanPhamID = async (id, page, limit) => {
+const getBySanPhamID = async (id, page, limit, from, to, sort) => {
     const options = {
         page,
         limit,
-        sort: '-createdAt'
+        sort: sort || '-createdAt'
     };
+    let findOptions = {};
+
+    if (from || to) {
+        const createdAt = {};
+        if (from) {
+            createdAt.$gte = from;
+        }
+        if (to) {
+            createdAt.$lte = to;
+        }
+        findOptions = {
+            createdAt
+        };
+    }
     try {
         const chiTiets = await ChiTietPhieuNhap.paginate({
-            maSanPham: id
+            maSanPham: id,
+            ...findOptions
         }, options);
         return chiTiets;
     } catch (error) {
