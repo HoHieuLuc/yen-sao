@@ -13,10 +13,6 @@ import PhieuXuatDetails from '../components/PhieuXuat/Details/PhieuXuatDetails';
 import EditPhieuXuat from '../components/PhieuXuat/Edit/EditPhieuXuat';
 import PhieuXuatList from '../components/PhieuXuat/List/PhieuXuatList';
 
-import NewPost from '../components/Post/NewPost/NewPost';
-import PostDetails from '../components/Post/PostDetails/PostDetails';
-import PostsList from '../components/Post/PostsList/PostsList';
-
 import CreateSanPham from '../components/SanPham/Create/CreateSanPham';
 import SanPhamDetails from '../components/SanPham/Details/SanPhamDetails';
 import EditSanPham from '../components/SanPham/Edit/EditSanPham';
@@ -28,31 +24,6 @@ const appConfig: AppConfig = {
     title: 'Yến sào MS.Tưởng',
     apiURL: 'http://localhost:4000',
     links: [
-        {
-            type: 'menu',
-            title: 'Bài viết',
-            subLinksPattern: '/bai-viet',
-            subLinks: [
-                {
-                    type: 'nav',
-                    to: '/bai-viet/them',
-                    title: 'Thêm bài viết mới',
-                    element: <NewPost />,
-                },
-                {
-                    type: 'nav',
-                    to: '/bai-viet',
-                    title: 'Danh sách bài viết',
-                    element: <PostsList />,
-                },
-                {
-                    type: 'hidden',
-                    to: '/bai-viet/:id',
-                    element: <PostDetails />,
-                    title: 'Chi tiết bài viết',
-                }
-            ]
-        },
         {
             type: 'menu',
             title: 'Sản phẩm',
