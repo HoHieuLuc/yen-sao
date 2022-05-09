@@ -1,39 +1,37 @@
-const { finished } = require('stream/promises');
-const path = require('path');
-const fs = require('fs');
-const { nanoid } = require('nanoid');
+const { UserInputError } = require('apollo-server');
+const cloudinary = require('cloudinary').v2;
 
 const singleUpload = async (file) => {
-    const { createReadStream, filename } = await file;
+    const { createReadStream } = await file;
     const stream = createReadStream();
-    const newFilename = `${nanoid()}-${filename}`;
-    const pathName = path.join(
-        __dirname,
-        `../public/uploads/${newFilename}`
-    );
+    try {
+        const result = await new Promise((resolve, reject) => {
+            stream.pipe(
+                cloudinary.uploader.upload_stream({
+                    folder: 'yen-sao'
+                }, (error, result) => {
+                    if (error) {
+                        reject(error);
+                    }
 
-    const out = fs.createWriteStream(pathName);
-    stream.pipe(out);
-    await finished(out);
-    return `/public/uploads/${newFilename}`;
+                    resolve(result);
+                })
+            );
+        });
+        return result.secure_url;
+    } catch (error) {
+        console.log(error);
+        throw new UserInputError(error.message);
+    }
 };
 
 const multiUpload = async (files) => {
     const result = [];
+    const arrayOfPromises = [];
     for (const file of files) {
-        const { createReadStream, filename } = await file;
-        const stream = createReadStream();
-        const newFilename = `${nanoid()}-${filename}`;
-        const pathName = path.join(
-            __dirname,
-            `../public/uploads/${newFilename}`
-        );
-
-        const out = fs.createWriteStream(pathName);
-        stream.pipe(out);
-        await finished(out);
-        result.push(`/public/uploads/${newFilename}`);
+        arrayOfPromises.push(singleUpload(file));
     }
+    result.push(...await Promise.all(arrayOfPromises));
     return result;
 };
 
