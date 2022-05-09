@@ -2,17 +2,16 @@ import { useDateRangeSearchParams } from '../../../hooks/use-date-range-search-p
 import { usePagination, useSortParams } from '../../../hooks';
 import { useQuery } from '@apollo/client';
 
-import { Button, Center, Grid, ScrollArea, Table, UnstyledButton } from '@mantine/core';
+import { Center, ScrollArea, Table, UnstyledButton } from '@mantine/core';
 import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
+import DateRangeSearch from '../../Utils/Search/DateRangeSearch';
 import MyPagination from '../../Utils/Pagination/MyPagination';
 import ErrorPage from '../../Utils/Errors/ErrorPage';
-import { SearchIcon, SortIcon } from '../../Utils/Icons';
+import { SortIcon } from '../../Utils/Icons';
 import PhieuNhapItem from './PhieuNhapItem';
-import { DatePicker } from '@mantine/dates';
 
 import { PageInfo, PaginateVars, User } from '../../../types';
 import { phieuNhapQuery } from '../../../graphql/queries';
-import dayjs from 'dayjs';
 
 export interface PhieuNhapDoc {
     id: string;
@@ -72,31 +71,11 @@ const PhieuNhapList = () => {
 
     return (
         <LoadingWrapper loading={loading}>
-            <Grid justify='center' mb='md' align='end'>
-                <Grid.Col md={4}>
-                    <DatePicker
-                        label='Từ ngày'
-                        placeholder='Chọn ngày'
-                        value={from.value}
-                        onChange={from.onChange}
-                        maxDate={dayjs(to.value).subtract(1, 'd').toDate() ?? undefined}
-                    />
-                </Grid.Col>
-                <Grid.Col md={4}>
-                    <DatePicker
-                        label='Đến ngày'
-                        placeholder='Chọn ngày'
-                        value={to.value}
-                        onChange={to.onChange}
-                        minDate={dayjs(from.value).add(1, 'd').toDate() ?? undefined}
-                    />
-                </Grid.Col>
-                <Grid.Col md={2}>
-                    <Button onClick={handleSearch} rightIcon={<SearchIcon />}>
-                        Tìm kiếm
-                    </Button>
-                </Grid.Col>
-            </Grid>
+            <DateRangeSearch 
+                from={from}
+                to={to}
+                handleSearch={handleSearch}
+            />
             <ScrollArea style={{ whiteSpace: 'break-spaces' }}>
                 <Table striped highlightOnHover mb='sm'>
                     <thead>
