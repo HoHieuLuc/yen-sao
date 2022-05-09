@@ -6,7 +6,6 @@ import appConfig from '../../../config';
 const AppSection = () => {
     return (
         <Routes>
-            <Route path='/' element={<div>Home</div>} />
             {appConfig.links.map(link => {
                 if (link.type === 'menu') {
                     return link.subLinks.map(subLink => {
