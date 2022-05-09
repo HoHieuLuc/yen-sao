@@ -1,5 +1,7 @@
 import CreateLoaiSanPham from '../components/LoaiSanPham/Create/CreateLoaiSanPham';
 import LoaiSanPhamList from '../components/LoaiSanPham/List/LoaiSanPhamList';
+import About from '../components/Manage/About/About';
+import EditAbout from '../components/Manage/About/EditAbout';
 
 import CreatePhieuNhap from '../components/PhieuNhap/Create/CreatePhieuNhap';
 import PhieuNhapDetails from '../components/PhieuNhap/Details/PhieuNhapDetails';
@@ -160,6 +162,25 @@ const appConfig: AppConfig = {
                     title: 'Sửa phiếu xuất',
                     to: '/phieu-xuat/:id/sua',
                     element: <EditPhieuXuat />
+                }
+            ]
+        },
+        {
+            type: 'menu',
+            title: 'Quản lý',
+            subLinksPattern: '/manage',
+            subLinks: [
+                {
+                    type: 'nav',
+                    title: 'Bài viết giới thiệu',
+                    to: '/manage/about',
+                    element: <About />
+                },
+                {
+                    type: 'hidden',
+                    title: 'Chỉnh sửa bài viết giới thiệu',
+                    to: '/manage/about/sua',
+                    element: <EditAbout />
                 }
             ]
         }
