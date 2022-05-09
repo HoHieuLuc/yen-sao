@@ -1,3 +1,5 @@
+import ChangePassword from '../components/Auth/ChangePassword';
+import Dashboard from '../components/Dashboard/Dashboard';
 import CreateLoaiSanPham from '../components/LoaiSanPham/Create/CreateLoaiSanPham';
 import LoaiSanPhamList from '../components/LoaiSanPham/List/LoaiSanPhamList';
 import About from '../components/Manage/About/About';
@@ -24,6 +26,12 @@ const appConfig: AppConfig = {
     title: 'Yến sào MS.Tưởng',
     apiURL: 'http://localhost:4000',
     links: [
+        {
+            type: 'nav',
+            title: 'Trang chủ',
+            to: '/',
+            element: <Dashboard />
+        },
         {
             type: 'menu',
             title: 'Sản phẩm',
@@ -154,6 +162,12 @@ const appConfig: AppConfig = {
                     element: <EditAbout />
                 }
             ]
+        },
+        {
+            type: 'nav',
+            title: 'Đổi mật khẩu',
+            to: '/doi-mat-khau',
+            element: <ChangePassword />
         }
     ]
 };
