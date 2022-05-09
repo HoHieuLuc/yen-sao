@@ -22,10 +22,6 @@ const {
     resolvers: fileResolvers
 } = require('./schema/file');
 const {
-    typeDefs: Post,
-    resolvers: postResolvers
-} = require('./schema/post');
-const {
     typeDefs: Paginatable
 } = require('./schema/paginate');
 const {
@@ -68,7 +64,6 @@ const schema = makeExecutableSchema({
         User,
         Token,
         File,
-        Post,
         SanPham,
         LoaiSanPham,
         PhieuNhap,
@@ -80,7 +75,6 @@ const schema = makeExecutableSchema({
         objectResolvers,
         userResolvers,
         fileResolvers,
-        postResolvers,
         sanPhamResolvers,
         loaiSanPhamResolvers,
         phieuNhapResolvers,
