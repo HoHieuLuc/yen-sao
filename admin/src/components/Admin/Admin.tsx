@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { AppShell, useMantineTheme } from '@mantine/core';
-import AppSection from './Routes/Section';
+import AppSection from './Routes/Routes';
 import AppNavbar from './Navbar/Navbar';
 import AppHeader from './Header/Header';
 

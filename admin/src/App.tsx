@@ -1,23 +1,25 @@
 import { useEffect } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
 
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { LoadingOverlay } from '@mantine/core';
+import Logout from './components/Auth/Logout';
 import Admin from './components/Admin/Admin';
 import Login from './components/Auth/Login';
-import Logout from './components/Auth/Logout';
-import { LoadingOverlay } from '@mantine/core';
 
 import { useLazyQuery } from '@apollo/client';
-import { ME } from './graphql/queries/auth';
+import { authQuery } from './graphql/queries';
 
-import { User } from './types';
 import { showErrorNotification } from './events';
+import { User } from './types';
 
 export interface CurrentUser {
     me: User;
 }
 
 const App = () => {
-    const [getCurrentUser, currentUser] = useLazyQuery<{ user: CurrentUser }>(ME, {
+    const [getCurrentUser, currentUser] = useLazyQuery<
+        { user: CurrentUser }
+    >(authQuery.ME, {
         onError: (error) => {
             if (error.networkError && error.networkError.message === 'Failed to fetch') {
                 return showErrorNotification('Không thể kết nối đến máy chủ');

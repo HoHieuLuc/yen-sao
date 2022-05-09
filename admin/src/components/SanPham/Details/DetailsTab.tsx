@@ -1,12 +1,13 @@
 import { useQuery } from '@apollo/client';
 
-import { Box, Center, Grid, Paper, Text, Title } from '@mantine/core';
+import { Box, Button, Center, Grid, Group, Paper, Text, Title } from '@mantine/core';
 import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
 import NotFound from '../../Utils/Errors/NotFound';
 import ImageDisplay from './ImageDisplay';
 
 import { sanPhamQuery } from '../../../graphql/queries';
 import { SanPham } from '../../../types';
+import { Link } from 'react-router-dom';
 
 interface SanPhamByID {
     sanPham: {
@@ -48,7 +49,7 @@ const DetailsTab = ({ id, isOpened }: Props) => {
                     ))}
                 </Grid>
                 <Center><h3>{data.sanPham.byID.tenSanPham}</h3></Center>
-                <Grid gutter={10}>
+                <Grid gutter={10} mb='sm'>
                     <Grid.Col xs={6} md={2}>Loại:</Grid.Col>
                     <Grid.Col xs={6} md={10}>
                         {data.sanPham.byID.loaiSanPham.tenLoaiSanPham}
@@ -64,6 +65,15 @@ const DetailsTab = ({ id, isOpened }: Props) => {
                         </Paper>
                     </Grid.Col>
                 </Grid>
+                <Group position='right'>
+                    <Button
+                        component={Link}
+                        to={`/san-pham/${id}/sua`}
+                        color='teal'
+                    >
+                        Sửa
+                    </Button>
+                </Group>
             </Box>}
         </LoadingWrapper>
     );
