@@ -12,8 +12,13 @@ const getCurrentUser = async (authHeader) => {
     return userService.getCurrentUser(authHeader);
 };
 
+const changePassword = async (username, oldPassword, newPassword) => {
+    return userService.changePassword(username, oldPassword, newPassword);
+};
+
 module.exports = {
     create,
     login,
-    getCurrentUser
+    getCurrentUser,
+    changePassword
 };

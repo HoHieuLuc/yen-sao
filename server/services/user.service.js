@@ -44,8 +44,28 @@ const getCurrentUser = async (authHeader) => {
     }
 };
 
+const changePassword = async (username, oldPassword, newPassword) => {
+    const user = await User.findOne({ username });
+
+    const isPasswordCorrect = await user.comparePassword(oldPassword);
+    if (!isPasswordCorrect) {
+        throw new AuthenticationError('Mật khẩu cũ không đúng');
+    }
+
+    const isSamePassword = await user.comparePassword(newPassword);
+    if (isSamePassword) {
+        throw new AuthenticationError('Mật khẩu mới không được giống mật khẩu cũ');
+    }
+
+    user.password = newPassword;
+    await user.save();
+
+    return user;
+};
+
 module.exports = {
     create,
     login,
-    getCurrentUser
+    getCurrentUser,
+    changePassword
 };

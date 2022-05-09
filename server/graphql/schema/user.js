@@ -32,6 +32,10 @@ const typeDefs = gql`
             username: String!,
             password: String!
         ): Token
+        changePassword (
+            oldPassword: String!,
+            newPassword: String!
+        ): User
     }
 
     extend type Mutation {
@@ -52,10 +56,15 @@ const resolvers = {
         user: () => ({})
     },
     UserMutations: {
-        create: chainMiddlewares(authRequired,
-            (_, args) => userController.create(args)
+        create: chainMiddlewares(authRequired, (_, args) =>
+            userController.create(args)
         ),
-        login: async (_, { username, password }) => userController.login(username, password)
+        login: async (_, { username, password }) =>
+            userController.login(username, password),
+        changePassword: chainMiddlewares(authRequired,
+            (_, { oldPassword, newPassword }, { currentUser }) =>
+                userController.changePassword(currentUser.username, oldPassword, newPassword)
+        ),
     }
 };
 
