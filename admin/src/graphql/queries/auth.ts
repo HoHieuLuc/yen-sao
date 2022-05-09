@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-export const LOGIN = gql`
+const LOGIN = gql`
     mutation Login($username: String!, $password: String!) {
         user {
             login(username: $username, password: $password) {
@@ -10,7 +10,7 @@ export const LOGIN = gql`
     }
 `;
 
-export const ME = gql`
+const ME = gql`
     query Me {
         user {
             me {
@@ -23,3 +23,19 @@ export const ME = gql`
         }
     }
 `;
+
+const CHANGE_PASSWORD = gql`
+    mutation ChangePassword($oldPassword: String!, $newPassword: String!) {
+        user {
+            changePassword(oldPassword: $oldPassword, newPassword: $newPassword) {
+                id
+            }
+        }
+    }
+`;
+
+export const authQuery = {
+    LOGIN,
+    ME,
+    CHANGE_PASSWORD
+};

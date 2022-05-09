@@ -9,3 +9,4 @@ export { phieuXuatQuery } from './phieu-xuat';
 
 export { uploadQuery } from './upload';
 export { configQuery } from './config';
+export { authQuery } from './auth';
