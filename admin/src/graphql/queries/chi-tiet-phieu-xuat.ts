@@ -1,9 +1,16 @@
 import { gql } from '@apollo/client';
 
 const BY_SAN_PHAM_ID = gql`
-    query ChiTietPhieuXuatBySanPhamID($id: ID!, $page: Int!, $limit: Int!) {
+    query ChiTietPhieuXuatBySanPhamID(
+        $id: ID!, 
+        $page: Int!, 
+        $limit: Int!,
+        $from: Date,
+        $to: Date,
+        $sort: SortChiTietPhieuXuat
+    ) {
         chiTietPhieuXuat {
-            bySanPhamID(id: $id, page: $page, limit: $limit) {
+            bySanPhamID(id: $id, page: $page, limit: $limit, from: $from, to: $to, sort: $sort) {
                 docs {
                     id
                     maPhieuXuat
