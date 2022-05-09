@@ -15,7 +15,7 @@ import {
 } from '@mantine/core';
 
 import { showErrorNotification } from '../../events';
-import { LOGIN } from '../../graphql/queries/auth';
+import { authQuery } from '../../graphql/queries';
 import { CurrentUser } from '../../App';
 
 interface LoginData {
@@ -48,9 +48,8 @@ const Login = ({ getCurrentUser }: Props) => {
 
     const [login, { loading: loginLoading }] = useMutation<
         { user: LoginData }, LoginVars
-    >(LOGIN, {
+    >(authQuery.LOGIN, {
         onError: (error) => {
-            console.log(error);
             showErrorNotification(error.message);
         },
         onCompleted: (data) => {

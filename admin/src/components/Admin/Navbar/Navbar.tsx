@@ -4,7 +4,7 @@ import { Navbar, ScrollArea, Divider, Text } from '@mantine/core';
 import NavLinks from './NavLinks/NavLinks';
 import NavLink from './NavLinks/NavLink';
 
-import { ME } from '../../../graphql/queries/auth';
+import { authQuery } from '../../../graphql/queries';
 import { User } from '../../../types';
 
 interface Props {
@@ -14,7 +14,10 @@ interface Props {
 const AppNavbar = ({ opened }: Props) => {
     const client = useApolloClient();
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const { user: { me } } = client.readQuery<{ user: { me: User } }>({ query: ME })!;
+    const { user: { me } } = client.readQuery<
+        { user: { me: User } }
+    >({ query: authQuery.ME })!;
+    
     return (
         <Navbar
             p="sm"
