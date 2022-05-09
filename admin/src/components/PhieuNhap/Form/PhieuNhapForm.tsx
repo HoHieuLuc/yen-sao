@@ -17,6 +17,7 @@ interface Props {
 }
 
 const PhieuNhapForm = ({ loading, handleSubmit }: Props) => {
+    const client = useApolloClient();
     const phieuNhapForm = useForm({
         initialValues: {
             payload: formList<ChiTietPhieuNhapFormData>([{
@@ -34,7 +35,6 @@ const PhieuNhapForm = ({ loading, handleSubmit }: Props) => {
         }
     });
 
-    const client = useApolloClient();
     const chiTietFormElements = phieuNhapForm.values.payload.map((phieuNhap, index) => {
         const sanPham = client.readFragment<{ tenSanPham: string }>({
             id: `SanPham:${phieuNhap.maSanPham}`,

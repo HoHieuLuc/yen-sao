@@ -6,8 +6,12 @@ export const useDateRangeSearchParams = () => {
     const fromParam = searchParams.get('from') || null;
     const toParam = searchParams.get('to') || null;
 
-    const _from = (fromParam && !isNaN(Number(fromParam))) ? new Date(Number(fromParam)) : null;
-    const _to = (toParam && !isNaN(Number(toParam))) ? new Date(Number(toParam)) : null;
+    const _from = (fromParam && !isNaN(Number(fromParam)))
+        ? new Date(Number(fromParam))
+        : null;
+    const _to = (toParam && !isNaN(Number(toParam)))
+        ? new Date(Number(toParam))
+        : null;
 
     const [from, setFrom] = useState<Date | null>(_from);
     const [to, setTo] = useState<Date | null>(_to);
@@ -50,3 +54,5 @@ export const useDateRangeSearchParams = () => {
         handleSearch
     };
 };
+
+export type DateRangeSearchType = ReturnType<typeof useDateRangeSearchParams>;
