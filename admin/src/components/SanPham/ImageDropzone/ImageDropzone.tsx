@@ -6,7 +6,6 @@ import { CloseIcon } from '../../Utils/Icons';
 
 import { showErrorNotification } from '../../../events';
 import { uploadQuery } from '../../../graphql/queries';
-import appConfig from '../../../config';
 
 export const dropzoneChildren = () => {
     return (
@@ -39,7 +38,7 @@ const ImageDropzone = ({ images, onChange, onRemoveImage }: Props) => {
     >(uploadQuery.MULTI_UPLOAD, {
         onError: (error) => showErrorNotification(error.message),
         onCompleted: (data) => {
-            const imageUrls = data.upload.multiUpload.map((url) => `${appConfig.apiURL}${url}`);
+            const imageUrls = data.upload.multiUpload;
             onChange(imageUrls);
         }
     });
