@@ -22,7 +22,7 @@ const typeDefs = gql`
 
     input ChiTietPhieuNhapInput {
         maSanPham: ID!
-        soLuongNhap: Float!
+        soLuongNhap: Int!
         donGiaNhap: Int!
         ghiChu: String
     }

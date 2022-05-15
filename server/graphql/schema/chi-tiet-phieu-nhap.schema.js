@@ -9,7 +9,7 @@ const typeDefs = gql`
         id: ID!
         maPhieuNhap: String!
         sanPham: SanPham
-        soLuongNhap: Float!
+        soLuongNhap: Int!
         donGiaNhap: Int!
         ngayNhap: Date!
         ghiChu: String

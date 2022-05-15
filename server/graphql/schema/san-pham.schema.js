@@ -7,7 +7,7 @@ const typeDefs = gql`
     type SanPham {
         id: ID!
         tenSanPham: String!
-        soLuong: Float!
+        soLuong: Int!
         donGiaSi: Int!
         donGiaLe: Int!
         donGiaTuyChon: String
