@@ -1,7 +1,7 @@
 const { gql } = require('apollo-server');
 const userController = require('../../controllers/user.controller');
 const chainMiddlewares = require('../../middlewares');
-const authRequired = require('../../middlewares/authentication');
+const { authRequired, adminRequired } = require('../../middlewares/authentication');
 
 const typeDefs = gql`
     type User {
@@ -10,10 +10,22 @@ const typeDefs = gql`
         email: String!
         fullname: String!
         role: String!
+        isBanned: Boolean!
+    }
+
+    type UsersByPage {
+        docs: [User!]!
+        pageInfo: PageInfo!
     }
 
     type UserQueries {
         me: User
+        all(
+            page: Int!,
+            limit: Int!,
+            search: String
+        ): UsersByPage!
+        byID(id: ID!): User
     }
 
     extend type Query {
@@ -36,6 +48,10 @@ const typeDefs = gql`
             oldPassword: String!,
             newPassword: String!
         ): User
+        banByID(
+            id: ID!,
+            isBanned: Boolean!
+        ): User
     }
 
     extend type Mutation {
@@ -44,6 +60,9 @@ const typeDefs = gql`
 `;
 
 const resolvers = {
+    UsersByPage: {
+        pageInfo: (root) => root
+    },
     Query: {
         user: () => ({})
     },
@@ -51,12 +70,18 @@ const resolvers = {
         me: (_, __, context) => {
             return context.currentUser;
         },
+        all: chainMiddlewares(adminRequired, (_, { page, limit, search }) =>
+            userController.getAll(page, limit, search)
+        ),
+        byID: chainMiddlewares(adminRequired, (_, { id }) =>
+            userController.getById(id)
+        ),
     },
     Mutation: {
         user: () => ({})
     },
     UserMutations: {
-        create: chainMiddlewares(authRequired, (_, args) =>
+        create: chainMiddlewares(adminRequired, (_, args) =>
             userController.create(args)
         ),
         login: async (_, { username, password }) =>
@@ -65,6 +90,9 @@ const resolvers = {
             (_, { oldPassword, newPassword }, { currentUser }) =>
                 userController.changePassword(currentUser.username, oldPassword, newPassword)
         ),
+        banByID: chainMiddlewares(adminRequired, (_, { id, isBanned }, { currentUser }) => 
+            userController.banById(id, isBanned, currentUser._id)
+        )
     }
 };
 
