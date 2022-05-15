@@ -1,6 +1,5 @@
 const { UserInputError } = require('apollo-server');
 const mongoose = require('mongoose');
-const PhieuXuat = require('../models/PhieuXuat');
 const chiTietPhieuXuatService = require('../services/chi-tiet-phieu-xuat.service');
 const sanPhamService = require('../services/san-pham.service');
 
@@ -8,32 +7,19 @@ const getBySanPhamID = async (id, page = 1, limit = 10, from, to, sort) => {
     return chiTietPhieuXuatService.getBySanPhamID(id, page, limit, from, to, sort);
 };
 
-const create = async (idPhieuXuat, chiTietPhieuXuat) => {
+const create = async (idPhieuXuat, chiTietPhieuXuat, currentUser) => {
     if (!mongoose.isValidObjectId(idPhieuXuat)) {
         throw new UserInputError('Mã phiếu nhập không hợp lệ');
     }
     if (!mongoose.isValidObjectId(chiTietPhieuXuat.maSanPham)) {
         throw new UserInputError('Mã sản phẩm không hợp lệ');
     }
-
     await sanPhamService.checkIfExist([chiTietPhieuXuat.maSanPham]);
 
-    const phieuXuat = await PhieuXuat.findById(idPhieuXuat).populate('chiTiet');
-    if (!phieuXuat) {
-        throw new UserInputError('Phiếu xuất không tồn tại');
-    }
-
-    const chiTietPhieuXuatExist = phieuXuat.chiTiet.find(
-        item => item.maSanPham.toString() === chiTietPhieuXuat.maSanPham
-    );
-    if (chiTietPhieuXuatExist) {
-        throw new UserInputError('Sản phẩm trong 1 phiếu xuất không được trùng nhau');
-    }
-
-    return chiTietPhieuXuatService.create(idPhieuXuat, chiTietPhieuXuat);
+    return chiTietPhieuXuatService.create(idPhieuXuat, chiTietPhieuXuat, currentUser);
 };
 
-const update = async (idPhieuXuat, idChiTietPhieuXuat, chiTietPhieuXuat) => {
+const update = async (idPhieuXuat, idChiTietPhieuXuat, chiTietPhieuXuat, currentUser) => {
     if (!mongoose.isValidObjectId(idPhieuXuat)) {
         throw new UserInputError('Mã phiếu xuất không hợp lệ');
     }
@@ -46,11 +32,12 @@ const update = async (idPhieuXuat, idChiTietPhieuXuat, chiTietPhieuXuat) => {
     return chiTietPhieuXuatService.update(
         idPhieuXuat,
         idChiTietPhieuXuat,
-        chiTietPhieuXuat
+        chiTietPhieuXuat,
+        currentUser
     );
 };
 
-const remove = async (idPhieuXuat, idChiTietPhieuXuat) => {
+const remove = async (idPhieuXuat, idChiTietPhieuXuat, currentUser) => {
     if (!mongoose.isValidObjectId(idPhieuXuat)) {
         throw new UserInputError('Mã phiếu nhập không hợp lệ');
     }
@@ -59,7 +46,8 @@ const remove = async (idPhieuXuat, idChiTietPhieuXuat) => {
     }
     return chiTietPhieuXuatService.remove(
         idPhieuXuat,
-        idChiTietPhieuXuat
+        idChiTietPhieuXuat,
+        currentUser
     );
 };
 
