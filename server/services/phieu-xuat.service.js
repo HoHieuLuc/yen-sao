@@ -2,15 +2,13 @@ const { UserInputError } = require('apollo-server');
 const PhieuXuat = require('../models/PhieuXuat');
 const SanPham = require('../models/SanPham');
 const ChiTietPhieuXuat = require('../models/ChiTietPhieuXuat');
+const { throwIfUserCantMutate } = require('../utils/functions');
 
 const populateOptions = [
     {
         path: 'chiTiet',
         populate: {
             path: 'maSanPham',
-            populate: {
-                path: 'maLoaiSanPham'
-            }
         }
     },
     {
@@ -76,12 +74,14 @@ const buildUpdateProductQuantityBulkOps = (chiTietPhieuXuat, isCreate = true) =>
     }));
 };
 
-const create = async (chiTietPhieuXuat, nguoiXuat) => {
+const create = async (nguoiMua, nguoiXuat, ngayXuat, chiTietPhieuXuat) => {
     const session = await SanPham.startSession();
     session.startTransaction();
     try {
         const phieuXuat = new PhieuXuat({
+            nguoiMua,
             nguoiXuat,
+            ngayXuat,
             chiTiet: []
         });
 
@@ -90,6 +90,7 @@ const create = async (chiTietPhieuXuat, nguoiXuat) => {
         const createdChiTietPhieuXuats = await ChiTietPhieuXuat.insertMany(
             chiTietPhieuXuat.map(chiTiet => ({
                 maPhieuXuat: phieuXuat._id,
+                ngayXuat,
                 ...chiTiet
             })),
             { session }
@@ -126,7 +127,34 @@ const create = async (chiTietPhieuXuat, nguoiXuat) => {
     }
 };
 
-const remove = async (phieuXuatId) => {
+const update = async (id, payload, currentUser) => {
+    try {
+        const phieuXuat = await PhieuXuat.findById(id).populate(populateOptions);
+
+        if (!phieuXuat) {
+            throw new UserInputError('Phiếu xuất không tồn tại');
+        }
+
+        throwIfUserCantMutate(currentUser.role, phieuXuat.createdAt,
+            'Nhân viên không thể sửa phiếu xuất đã được tạo quá 24 giờ'
+        );
+        phieuXuat.set(payload);
+        await phieuXuat.save();
+        await ChiTietPhieuXuat.updateMany(
+            { 
+                maPhieuXuat: phieuXuat._id 
+            },
+            {
+                ...payload
+            }
+        );
+        return phieuXuat;
+    } catch (error) {
+        throw new UserInputError(error.message);
+    }
+};
+
+const remove = async (phieuXuatId, currentUser) => {
     const session = await SanPham.startSession();
     session.startTransaction();
     try {
@@ -138,6 +166,9 @@ const remove = async (phieuXuatId) => {
         if (!phieuXuat) {
             throw new UserInputError('Phiếu xuất không tồn tại');
         }
+        throwIfUserCantMutate(currentUser.role, phieuXuat.createdAt,
+            'Nhân viên không thể xóa phiếu xuất đã được tạo quá 24 giờ'
+        );
 
         // cập nhật lại số lượng sản phẩm khi xóa phiếu xuất
         const sanPhamsBulkOps = buildUpdateProductQuantityBulkOps(
@@ -168,5 +199,6 @@ module.exports = {
     getById,
     getAll,
     create,
-    remove
+    update,
+    remove,
 };
