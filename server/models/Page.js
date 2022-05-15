@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const configSchema = new mongoose.Schema(
+const pageSchema = new mongoose.Schema(
     {
         name: {
             type: String,
@@ -16,4 +16,4 @@ const configSchema = new mongoose.Schema(
     }
 );
 
-module.exports = mongoose.model('Config', configSchema);
+module.exports = mongoose.model('Page', pageSchema);

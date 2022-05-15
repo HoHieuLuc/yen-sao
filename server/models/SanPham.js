@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const LoaiSanPham = require('./LoaiSanPham');
 const mongoosePaginate = require('mongoose-paginate-v2');
 
 const sanPham = mongoose.Schema(
@@ -15,7 +14,12 @@ const sanPham = mongoose.Schema(
             min: 0,
             default: 0
         },
-        donGia: {
+        donGiaSi: {
+            type: Number,
+            required: true,
+            min: 0
+        },
+        donGiaLe: {
             type: Number,
             required: true,
             min: 0
@@ -34,17 +38,12 @@ const sanPham = mongoose.Schema(
                 message: 'Ảnh sản phẩm phải có ít nhất 1 ảnh và nhiều nhất 3 ảnh'
             }
         },
-        maLoaiSanPham: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'LoaiSanPham',
-            required: true,
-            validate: {
-                validator: async (v) => {
-                    const loaiSanPham = await LoaiSanPham.findById(v);
-                    return !!loaiSanPham;
-                },
-                message: 'Loại sản phẩm không tồn tại'
-            }
+        tags: {
+            type: [String],
+        },
+        xuatXu: {
+            type: String,
+            trim: true
         }
     },
     {

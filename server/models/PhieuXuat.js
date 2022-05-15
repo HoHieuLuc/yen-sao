@@ -40,7 +40,6 @@ phieuXuat.pre('save', async function () {
     );
 });
 
-
 phieuXuat.plugin(mongoosePaginate);
 
 module.exports = mongoose.model('PhieuXuat', phieuXuat);

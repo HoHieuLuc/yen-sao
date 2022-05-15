@@ -1,6 +1,6 @@
 const { gql } = require('apollo-server');
 const chainMiddlewares = require('../../middlewares');
-const authRequired = require('../../middlewares/authentication');
+const { authRequired } = require('../../middlewares/authentication');
 const phieuNhapController = require('../../controllers/phieu-nhap.controller');
 const chiTietPhieuNhapController = require('../../controllers/chi-tiet-phieu-nhap.controller');
 const { isMongooseModel } = require('../../utils/functions');

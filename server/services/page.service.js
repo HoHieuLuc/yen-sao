@@ -1,15 +1,15 @@
 const { UserInputError } = require('apollo-server');
-const Config = require('../models/Config');
+const Page = require('../models/Page');
 
 const getByName = async (name) => {
-    return Config.findOne({
-        name: name
+    return Page.findOne({
+        name
     });
 };
 
 const createOrUpdate = async (name, content) => {
     try {
-        const updatedConfig = await Config.findOneAndUpdate(
+        const updatedPage = await Page.findOneAndUpdate(
             {
                 name,
             },
@@ -20,7 +20,7 @@ const createOrUpdate = async (name, content) => {
                 upsert: true, new: true, runValidators: true
             }
         );
-        return updatedConfig;
+        return updatedPage;
     } catch (error) {
         throw new UserInputError(error.message);
     }

@@ -1,53 +1,53 @@
 const { gql } = require('apollo-server-express');
 const chainMiddlewares = require('../../middlewares/index');
-const authRequired = require('../../middlewares/authentication');
-const configController = require('../../controllers/config.controller');
+const { adminRequired } = require('../../middlewares/authentication');
+const pageController = require('../../controllers/page.controller');
 
 const typeDefs = gql`
-    type Config {
+    type Page {
         id: ID!
         name: String!
         content: Object!
     }
 
-    type ConfigQueries {
+    type PageQueries {
         byName(
             name: String!
-        ): Config
+        ): Page
     }
 
-    type ConfigMutations {
+    type PageMutations {
         createOrUpdate(
             name: String!,
             content: Object!
-        ): Config
+        ): Page
     }
 
     extend type Query {
-        config: ConfigQueries
+        page: PageQueries
     }
 
     extend type Mutation {
-        config: ConfigMutations
+        page: PageMutations
     }
 `;
 
 const resolvers = {
     Query: {
-        config: () => ({})
+        page: () => ({})
     },
-    ConfigQueries: {
+    PageQueries: {
         byName: async (_, { name }) =>
-            configController.getByName(name),
+            pageController.getByName(name),
     },
     Mutation: {
-        config: chainMiddlewares(authRequired,
+        page: chainMiddlewares(adminRequired,
             () => ({})
         ),
     },
-    ConfigMutations: {
+    PageMutations: {
         createOrUpdate: async (_, { name, content }) =>
-            configController.createOrUpdate(name, content)
+            pageController.createOrUpdate(name, content)
     }
 };
 
