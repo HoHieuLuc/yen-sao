@@ -22,7 +22,15 @@ const chiTietPhieuXuat = mongoose.Schema(
             type: Number,
             required: true,
             min: [0, 'Giá xuất không hợp lệ']
-        }
+        },
+        ngayXuat: {
+            type: Date,
+            required: true
+        },
+        ghiChu: {
+            type: String,
+            trim: true
+        },
     },
     {
         timestamps: true
