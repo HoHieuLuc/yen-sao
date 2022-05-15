@@ -5,7 +5,6 @@ const getAll = async (page, limit, search, sort) => {
     const options = {
         page,
         limit,
-        populate: 'maLoaiSanPham',
         sort: sort || '-createdAt',
     };
     const sanPhams = await SanPham.paginate({
@@ -19,7 +18,7 @@ const getAll = async (page, limit, search, sort) => {
 
 const getById = async (id) => {
     try {
-        const sanPham = await SanPham.findById(id).populate('maLoaiSanPham');
+        const sanPham = await SanPham.findById(id);
         return sanPham;
     } catch (error) {
         throw new UserInputError(error.message);
@@ -29,7 +28,7 @@ const getById = async (id) => {
 const create = async (sanPhamData) => {
     try {
         const sanPham = await SanPham.create(sanPhamData);
-        return SanPham.findById(sanPham._id).populate('maLoaiSanPham');
+        return sanPham;
     } catch (error) {
         throw new UserInputError(error.message);
     }
@@ -41,7 +40,7 @@ const update = async (id, sanPhamData) => {
             id,
             sanPhamData,
             { new: true, runValidators: true }
-        ).populate('maLoaiSanPham');
+        );
         return sanPham;
     } catch (error) {
         throw new UserInputError(error.message);
