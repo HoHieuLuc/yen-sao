@@ -8,9 +8,9 @@ const getAll = async (page, limit, search, sort) => {
         sort: sort || '-createdAt',
     };
     const sanPhams = await SanPham.paginate({
-        tenSanPham: { 
-            $regex: search, 
-            $options: 'i' 
+        tenSanPham: {
+            $regex: search,
+            $options: 'i'
         },
     }, options);
     return sanPhams;
@@ -47,6 +47,10 @@ const update = async (id, sanPhamData) => {
     }
 };
 
+const remove = async (id) => {
+    return SanPham.findByIdAndRemove(id);
+};
+
 const checkIfExist = async (arrayOfIds = []) => {
     try {
         const sanPhams = await SanPham.find({ _id: { $in: arrayOfIds } });
@@ -63,5 +67,6 @@ module.exports = {
     getAll,
     create,
     update,
+    remove,
     checkIfExist
 };

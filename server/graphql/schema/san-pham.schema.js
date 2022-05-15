@@ -1,20 +1,19 @@
 const { gql } = require('apollo-server');
 const chainMiddlewares = require('../../middlewares');
-const { authRequired } = require('../../middlewares/authentication');
+const { adminRequired } = require('../../middlewares/authentication');
 const sanPhamController = require('../../controllers/san-pham.controller');
-
-const sanPham = `
-    tenSanPham: String!
-    soLuong: Int
-    donGia: Int!
-    moTa: String
-    anhSanPham: [String!]!
-`;
 
 const typeDefs = gql`
     type SanPham {
         id: ID!
-        ${sanPham}
+        tenSanPham: String!
+        soLuong: Int!
+        donGiaSi: Int!
+        donGiaLe: Int!
+        donGiaTuyChon: String
+        moTa: String
+        xuatXu: String
+        anhSanPham: [String!]!
         createdAt: Date!
         updatedAt: Date!
     }
@@ -24,13 +23,24 @@ const typeDefs = gql`
         pageInfo: PageInfo!
     }
 
-    input SanPhamInput {
+    input CreateSanPhamInput {
+        tenSanPham: String!
+        donGiaSi: Int!
+        donGiaLe: Int!
+        donGiaTuyChon: String
+        moTa: String
+        xuatXu: String
+        anhSanPham: [String!]!
+    }
+
+    input UpdateSanPhamInput {
         tenSanPham: String
-        soLuong: Int
         donGiaSi: Int
         donGiaLe: Int
+        donGiaTuyChon: String
         moTa: String
-        anhSanPham: [String!]!
+        xuatXu: String
+        anhSanPham: [String!]
     }
 
     enum SortSanPham {
@@ -53,10 +63,13 @@ const typeDefs = gql`
     }
 
     type SanPhamMutations {
-        create(payload: SanPhamInput!): SanPham
+        create(payload: CreateSanPhamInput!): SanPham
         update(
             id: ID!,
-            payload: SanPhamInput!
+            payload: UpdateSanPhamInput!
+        ): SanPham
+        delete(
+            id: ID!
         ): SanPham
     }
 
@@ -82,7 +95,7 @@ const resolvers = {
         byID: async (_, { id }) => sanPhamController.getById(id)
     },
     Mutation: {
-        sanPham: chainMiddlewares(authRequired,
+        sanPham: chainMiddlewares(adminRequired,
             () => ({})
         ),
     },
@@ -91,6 +104,8 @@ const resolvers = {
             sanPhamController.create(payload),
         update: async (_, { id, payload }) =>
             sanPhamController.update(id, payload),
+        delete: async (_, { id }) =>
+            sanPhamController.remove(id),
     },
 };
 
