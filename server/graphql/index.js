@@ -29,10 +29,6 @@ const {
     resolvers: sanPhamResolvers
 } = require('./schema/san-pham');
 const {
-    typeDefs: LoaiSanPham,
-    resolvers: loaiSanPhamResolvers
-} = require('./schema/loai-san-pham');
-const {
     typeDefs: PhieuNhap,
     resolvers: phieuNhapResolvers
 } = require('./schema/phieu-nhap');
@@ -41,9 +37,9 @@ const {
     resolvers: phieuXuatResolvers
 } = require('./schema/phieu-xuat');
 const {
-    typeDefs: Config,
-    resolvers: configResolvers
-} = require('./schema/config');
+    typeDefs: Page,
+    resolvers: pageResolvers
+} = require('./schema/page');
 
 const defaultSchema = gql`
     type Query {
@@ -65,10 +61,9 @@ const schema = makeExecutableSchema({
         Token,
         File,
         SanPham,
-        LoaiSanPham,
         PhieuNhap,
         PhieuXuat,
-        Config
+        Page
     ],
     resolvers: merge(
         dateResolvers,
@@ -76,10 +71,9 @@ const schema = makeExecutableSchema({
         userResolvers,
         fileResolvers,
         sanPhamResolvers,
-        loaiSanPhamResolvers,
         phieuNhapResolvers,
         phieuXuatResolvers,
-        configResolvers
+        pageResolvers
     )
 });
 
