@@ -239,9 +239,10 @@ const remove = async (idPhieuNhap, idChiTietPhieuNhap, currentUser) => {
 
         phieuNhap.chiTiet.pull(idChiTietPhieuNhap);
         await phieuNhap.save();
-
         await session.commitTransaction();
+
         const updatedPhieuNhap = await phieuNhap.populate(populateOptions);
+        
         return {
             phieuNhap: updatedPhieuNhap,
             sanPhamBiThayDoi: updatedSanPham // cần phải return để client tự update cache
