@@ -41,6 +41,10 @@ const {
     resolvers: phieuXuatResolvers
 } = require('./schema/phieu-xuat.schema');
 const {
+    typeDefs: ChiTietPhieuXuat,
+    resolvers: chiTietPhieuXuatResolvers
+} = require('./schema/chi-tiet-phieu-xuat.schema');
+const {
     typeDefs: Page,
     resolvers: pageResolvers
 } = require('./schema/page.schema');
@@ -68,6 +72,7 @@ const schema = makeExecutableSchema({
         PhieuNhap,
         ChiTietPhieuNhap,
         PhieuXuat,
+        ChiTietPhieuXuat,
         Page
     ],
     resolvers: merge(
@@ -79,6 +84,7 @@ const schema = makeExecutableSchema({
         phieuNhapResolvers,
         chiTietPhieuNhapResolvers,
         phieuXuatResolvers,
+        chiTietPhieuXuatResolvers,
         pageResolvers
     )
 });

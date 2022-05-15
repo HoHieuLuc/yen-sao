@@ -9,6 +9,11 @@ const phieuXuat = mongoose.Schema(
             ref: 'User',
             required: true
         },
+        nguoiMua: {
+            type: String,
+            required: true,
+            trim: true,
+        },
         ngayXuat: {
             type: Date,
             default: new Date()
@@ -36,7 +41,9 @@ phieuXuat.pre('save', async function () {
         }
     });
     this.tongTien = allChiTiets.reduce(
-        (sum, { soLuongXuat, donGiaXuat }) => sum + soLuongXuat * donGiaXuat, 0
+        (sum, { soLuongXuat, donGiaXuat }) =>
+            sum + soLuongXuat / 100 * donGiaXuat,
+        0
     );
 });
 

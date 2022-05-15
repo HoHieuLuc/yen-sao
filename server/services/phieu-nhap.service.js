@@ -79,7 +79,7 @@ const create = async (ngayNhap, chiTietPhieuNhap, nguoiNhap) => {
     try {
         const phieuNhap = new PhieuNhap({
             nguoiNhap,
-            ngayNhap: ngayNhap,
+            ngayNhap,
             chiTiet: []
         });
 
@@ -118,6 +118,11 @@ const create = async (ngayNhap, chiTietPhieuNhap, nguoiNhap) => {
 const update = async (id, payload, currentUser) => {
     try {
         const phieuNhap = await PhieuNhap.findById(id).populate(populateOptions);
+
+        if (!phieuNhap) {
+            throw new UserInputError('Phiếu nhập không tồn tại');
+        }
+
         throwIfUserCantMutate(currentUser.role, phieuNhap.createdAt,
             'Nhân viên không thể sửa phiếu nhập đã được tạo quá 24 giờ'
         );

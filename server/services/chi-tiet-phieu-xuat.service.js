@@ -2,6 +2,7 @@ const { UserInputError } = require('apollo-server');
 const ChiTietPhieuXuat = require('../models/ChiTietPhieuXuat');
 const PhieuXuat = require('../models/PhieuXuat');
 const SanPham = require('../models/SanPham');
+const { throwIfUserCantMutate } = require('../utils/functions');
 
 const populateOptions = [
     {
@@ -46,12 +47,31 @@ const getBySanPhamID = async (id, page, limit, from, to, sort) => {
     }
 };
 
-const create = async (idPhieuXuat, chiTietPhieuXuat) => {
+const create = async (idPhieuXuat, chiTietPhieuXuat, currentUser) => {
     const session = await SanPham.startSession();
     session.startTransaction();
-    try {
-        const phieuXuat = await PhieuXuat.findById(idPhieuXuat).session(session);
 
+    const phieuXuat = await PhieuXuat.findById(idPhieuXuat).session(session);
+    if (!phieuXuat) {
+        throw new UserInputError('Phiếu xuất không tồn tại');
+    }
+
+    throwIfUserCantMutate(currentUser.role, phieuXuat.createdAt,
+        'Nhân viên không thể cập nhật phiếu xuất đã được tạo quá 24 giờ'
+    );
+
+    // nếu tìm thấy phiếu xuất và sản phẩm trong chi tiết phiếu xuất
+    // thì tức là sản phẩm đó đã tồn tại trong phiếu xuất
+    const chiTietPhieuXuatExist = await ChiTietPhieuXuat.findOne({
+        maPhieuXuat: idPhieuXuat,
+        maSanPham: chiTietPhieuXuat.maSanPham
+    });
+
+    if (chiTietPhieuXuatExist) {
+        throw new UserInputError('Sản phẩm trong 1 phiếu xuất không được trùng nhau');
+    }
+
+    try {
         // giảm số lượng sản phẩm khi xuất
         const sanPhamCanUpdate = await SanPham.findByIdAndUpdate(
             chiTietPhieuXuat.maSanPham,
@@ -74,9 +94,10 @@ const create = async (idPhieuXuat, chiTietPhieuXuat) => {
 
         const createdChiTietPhieuXuat = new ChiTietPhieuXuat({
             maPhieuXuat: idPhieuXuat,
+            ngayXuat: phieuXuat.ngayXuat,
             ...chiTietPhieuXuat
         });
-        await createdChiTietPhieuXuat.save();
+        await createdChiTietPhieuXuat.save({ session });
 
         phieuXuat.chiTiet.push(createdChiTietPhieuXuat._id);
         await phieuXuat.save();
@@ -95,11 +116,11 @@ const create = async (idPhieuXuat, chiTietPhieuXuat) => {
 };
 
 /* 
-- Phục hồi số lượng sản phẩm trong kho dựa theo số lượng xuất
-- Giảm số lượng sản phẩm trong kho khi chi tiết xuất bị thay đổi
+- Phục hồi (tăng) số lượng sản phẩm của sản phẩm bị update dựa theo số lượng xuất
+- Giảm số lượng sản phẩm trong kho của sản phẩm trong chi tiết thay thế
 - Nếu số lượng sau khi giảm < 0 thì hủy transaction và báo lỗi
 */
-const update = async (idPhieuXuat, idChiTietPhieuXuat, chiTietPhieuXuat) => {
+const update = async (idPhieuXuat, idChiTietPhieuXuat, chiTietPhieuXuat, currentUser) => {
     const phieuXuat = await PhieuXuat.findOne({
         _id: idPhieuXuat,
         chiTiet: idChiTietPhieuXuat
@@ -109,6 +130,11 @@ const update = async (idPhieuXuat, idChiTietPhieuXuat, chiTietPhieuXuat) => {
         throw new UserInputError('Phiếu xuất không tồn tại');
     }
 
+    throwIfUserCantMutate(currentUser.role, phieuXuat.createdAt,
+        'Nhân viên không thể cập nhật phiếu nhập đã được tạo quá 24 giờ'
+    );
+
+    // kiểm tra sản phẩm đã tồn tại trong phiếu xuất chưa
     const chiTietPhieuXuatExist = phieuXuat.chiTiet.find(
         item => (
             item.maSanPham.toString() === chiTietPhieuXuat.maSanPham
@@ -125,6 +151,7 @@ const update = async (idPhieuXuat, idChiTietPhieuXuat, chiTietPhieuXuat) => {
     try {
         // cập nhật chi tiết phiếu xuất
         // options không có new để lấy lại chi tiết trước khi cập nhật
+        // chi tiết này sẽ có mã sản phẩm cũ để cập nhật lại số lượng sản phẩm
         const chiTietToBeUpdated = await ChiTietPhieuXuat.findByIdAndUpdate(
             idChiTietPhieuXuat,
             chiTietPhieuXuat,
@@ -144,7 +171,7 @@ const update = async (idPhieuXuat, idChiTietPhieuXuat, chiTietPhieuXuat) => {
         );
 
         // giảm số lượng sản phẩm trong kho 
-        // đối với sản phẩm xuất
+        // đối với sản phẩm trong chi tiết thay thế
         const updatedSanPham = await SanPham.findByIdAndUpdate(
             chiTietPhieuXuat.maSanPham,
             {
@@ -166,8 +193,7 @@ const update = async (idPhieuXuat, idChiTietPhieuXuat, chiTietPhieuXuat) => {
 
         const updatedPhieuXuat = await phieuXuat.populate(populateOptions);
 
-        // nếu sản phẩm trước khi cập nhật cũng là sản phẩm được cập nhật
-        // tức là chỉ cập nhật số lượng hoặc đơn giá xuất (mã sản phẩm không đổi)
+        // nếu mã sản phẩm không bị thay đổi
         // thì sanPhamBiThayDoi trả về là sản phẩm được cập nhật (updatedSanPham)
         const sanPhamBiThayDoi = prevSanPham._id.toString() === updatedSanPham._id.toString()
             ? updatedSanPham : prevSanPham;
@@ -183,20 +209,25 @@ const update = async (idPhieuXuat, idChiTietPhieuXuat, chiTietPhieuXuat) => {
     }
 };
 
-const remove = async (idPhieuXuat, idChiTietPhieuXuat) => {
+const remove = async (idPhieuXuat, idChiTietPhieuXuat, currentUser) => {
     const session = await SanPham.startSession();
     session.startTransaction();
+
+    const phieuXuat = await PhieuXuat.findOne({
+        _id: idPhieuXuat,
+        chiTiet: idChiTietPhieuXuat
+    }).populate('chiTiet').session(session);
+
+    if (!phieuXuat) {
+        // phiếu xuất hoặc chi tiết phiếu xuất không tồn tại
+        throw new UserInputError('Phiếu xuất không tồn tại');
+    }
+
+    throwIfUserCantMutate(currentUser.role, phieuXuat.createdAt,
+        'Nhân viên không thể cập nhật phiếu xuất đã được tạo quá 24 giờ'
+    );
+
     try {
-        const phieuXuat = await PhieuXuat.findOne({
-            _id: idPhieuXuat,
-            chiTiet: idChiTietPhieuXuat
-        }).populate('chiTiet').session(session);
-
-        if (!phieuXuat) {
-            // phiếu xuất hoặc chi tiết phiếu xuất không tồn tại
-            throw new UserInputError('Phiếu xuất không tồn tại');
-        }
-
         const sanPhamCanUpdate = phieuXuat.chiTiet.find(
             ({ _id }) => _id.toString() === idChiTietPhieuXuat
         );
@@ -213,7 +244,7 @@ const remove = async (idPhieuXuat, idChiTietPhieuXuat) => {
         );
 
         await ChiTietPhieuXuat.findByIdAndDelete(idChiTietPhieuXuat, { session });
-        
+
         phieuXuat.chiTiet.pull(idChiTietPhieuXuat);
         await phieuXuat.save();
         await session.commitTransaction();

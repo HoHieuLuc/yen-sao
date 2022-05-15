@@ -16,7 +16,7 @@ const escapeRegExp = (string = '') => {
 const throwIfUserCantMutate = (role, createdAt, message) => {
     if (
         role === 'staff' &&
-        new Date().getTime() - createdAt.getTime() > (24 * 3600 * 1000)
+        (new Date().getTime() - createdAt.getTime()) > (24 * 3600 * 1000)
     ) {
         throw new ForbiddenError(message);
     }
