@@ -22,6 +22,14 @@ const chiTietPhieuNhap = mongoose.Schema(
             type: Number,
             required: true,
             min: [0, 'Giá nhập không hợp lệ']
+        },
+        ngayNhap: {
+            type: Date,
+            required: true
+        },
+        ghiChu: {
+            type: String,
+            trim: true
         }
     },
     {
