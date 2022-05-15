@@ -12,34 +12,34 @@ const {
 } = require('./scalar/object');
 const {
     typeDefs: Token
-} = require('./schema/token');
+} = require('./schema/token.schema');
 const {
     typeDefs: User,
     resolvers: userResolvers
-} = require('./schema/user');
+} = require('./schema/user.schema');
 const {
     typeDefs: File,
     resolvers: fileResolvers
 } = require('./schema/file.schema');
 const {
     typeDefs: Paginatable
-} = require('./schema/paginate');
+} = require('./schema/paginate.schema');
 const {
     typeDefs: SanPham,
     resolvers: sanPhamResolvers
-} = require('./schema/san-pham');
+} = require('./schema/san-pham.schema');
 const {
     typeDefs: PhieuNhap,
     resolvers: phieuNhapResolvers
-} = require('./schema/phieu-nhap');
+} = require('./schema/phieu-nhap.schema');
 const {
     typeDefs: PhieuXuat,
     resolvers: phieuXuatResolvers
-} = require('./schema/phieu-xuat');
+} = require('./schema/phieu-xuat.schema');
 const {
     typeDefs: Page,
     resolvers: pageResolvers
-} = require('./schema/page');
+} = require('./schema/page.schema');
 
 const defaultSchema = gql`
     type Query {
