@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const bscrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET, JWT_LIFETIME } = require('../utils/config');
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 const UserSchema = mongoose.Schema({
     username: {
@@ -19,7 +20,7 @@ const UserSchema = mongoose.Schema({
         type: String,
         required: true,
         unique: true,
-        match: [/^(.+)@(\S+)$/, 'Please provide a valid email']
+        match: [/^(.+)@(\S+)$/, 'Email không hợp lệ']
     },
     fullname: {
         type: String,
@@ -27,7 +28,15 @@ const UserSchema = mongoose.Schema({
     },
     role: {
         type: String,
-        default: 'staff'
+        default: 'staff',
+        enum: {
+            values: ['staff', 'admin'],
+            message: '{VALUE} không phải là quyền hợp lệ'
+        }
+    },
+    isBanned: {
+        type: Boolean,
+        default: false
     }
 });
 
@@ -51,5 +60,7 @@ UserSchema.methods.createJWT = function () {
         }
     );
 };
+
+UserSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model('User', UserSchema);
