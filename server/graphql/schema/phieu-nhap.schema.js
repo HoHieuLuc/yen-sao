@@ -2,32 +2,17 @@ const { gql } = require('apollo-server');
 const chainMiddlewares = require('../../middlewares');
 const { authRequired } = require('../../middlewares/authentication');
 const phieuNhapController = require('../../controllers/phieu-nhap.controller');
-const chiTietPhieuNhapController = require('../../controllers/chi-tiet-phieu-nhap.controller');
-const { isMongooseModel } = require('../../utils/functions');
-
-const phieuNhap = `
-    id: ID!
-    nguoiNhap: User!
-    createdAt: Date!
-    updatedAt: Date!
-    soMatHangNhap: Int!
-    tongTien: Int!
-`;
 
 const typeDefs = gql`
     type PhieuNhap {
-        ${phieuNhap}
-        chiTiet: [ChiTietPhieuNhap!]!
-    }
-
-    type ChiTietPhieuNhap {
         id: ID!
-        maPhieuNhap: String!
-        sanPham: SanPham
-        soLuongNhap: Int!
-        donGiaNhap: Int!
+        nguoiNhap: User!
+        ngayNhap: Date!
         createdAt: Date!
         updatedAt: Date!
+        soMatHangNhap: Int!
+        tongTien: Int!
+        chiTiet: [ChiTietPhieuNhap!]!
     }
 
     type PhieuNhapsByPage {
@@ -35,10 +20,15 @@ const typeDefs = gql`
         pageInfo: PageInfo!
     }
 
-    input PhieuNhapInput {
+    input ChiTietPhieuNhapInput {
         maSanPham: ID!
-        soLuongNhap: Int!
+        soLuongNhap: Float!
         donGiaNhap: Int!
+        ghiChu: String
+    }
+
+    input UpdatePhieuNhapInput {
+        ngayNhap: Date!
     }
 
     enum SortPhieuNhap {
@@ -61,69 +51,26 @@ const typeDefs = gql`
         ): PhieuNhap
     }
 
-    type ChiTietPhieuNhapByPage {
-        docs: [ChiTietPhieuNhap!]!
-        pageInfo: PageInfo
-    }
-
-    enum SortChiTietPhieuNhap {
-        NGAY_NHAP_ASC
-        NGAY_NHAP_DESC
-        SO_LUONG_ASC
-        SO_LUONG_DESC
-        DON_GIA_ASC
-        DON_GIA_DESC
-    }
-
-    type ChiTietPhieuNhapQueries {
-        bySanPhamID(
-            id: ID!,
-            page: Int!,
-            limit: Int!,
-            from: Date,
-            to: Date,
-            sort: SortChiTietPhieuNhap
-        ): ChiTietPhieuNhapByPage
-    }
-
     extend type Query {
         phieuNhap: PhieuNhapQueries
-        chiTietPhieuNhap: ChiTietPhieuNhapQueries
     }
 
     type PhieuNhapMutations {
         create(
-            payload: [PhieuNhapInput!]!
+            ngayNhap: Date!,
+            payload: [ChiTietPhieuNhapInput!]!
         ): PhieuNhap
         delete(
             id: ID!
         ): PhieuNhap
-    }
-
-    type ChiTietPhieuNhapMutationsResponse {
-        phieuNhap: PhieuNhap!
-        sanPhamBiThayDoi: SanPham!
-    }
-
-    type ChiTietPhieuNhapMutations {
-        create(
-            idPhieuNhap: ID!
-            payload: PhieuNhapInput!
-        ): PhieuNhap
         update(
-            idPhieuNhap: ID!
-            idChiTiet: ID!
-            payload: PhieuNhapInput!
-        ): ChiTietPhieuNhapMutationsResponse
-        delete(
-            idPhieuNhap: ID!
-            idChiTiet: ID!
-        ): ChiTietPhieuNhapMutationsResponse
+            id: ID!,
+            payload: UpdatePhieuNhapInput!
+        ): PhieuNhap
     }
 
     extend type Mutation {
         phieuNhap: PhieuNhapMutations
-        chiTietPhieuNhap: ChiTietPhieuNhapMutations
     }
 `;
 
@@ -140,29 +87,10 @@ const resolvers = {
     PhieuNhapsByPage: {
         pageInfo: (root) => root
     },
-    ChiTietPhieuNhap: {
-        sanPham: (root) => {
-            return isMongooseModel(root.maSanPham) ? root.maSanPham : null;
-        }
-    },
-    SortChiTietPhieuNhap: {
-        NGAY_NHAP_ASC: 'createdAt',
-        NGAY_NHAP_DESC: '-createdAt',
-        SO_LUONG_ASC: 'soLuongNhap',
-        SO_LUONG_DESC: '-soLuongNhap',
-        DON_GIA_ASC: 'donGiaNhap',
-        DON_GIA_DESC: '-donGiaNhap'
-    },
-    ChiTietPhieuNhapByPage: {
-        pageInfo: (root) => root
-    },
     Query: {
         phieuNhap: chainMiddlewares(authRequired,
             () => ({})
         ),
-        chiTietPhieuNhap: chainMiddlewares(authRequired,
-            () => ({})
-        )
     },
     PhieuNhapQueries: {
         all: async (_, { page, limit, from, to, sort }) =>
@@ -170,37 +98,19 @@ const resolvers = {
         byID: async (_, { id }) =>
             phieuNhapController.getById(id),
     },
-    ChiTietPhieuNhapQueries: {
-        bySanPhamID: async (_, { id, page, limit, from, to, sort }) =>
-            chiTietPhieuNhapController.getBySanPhamID(id, page, limit, from, to, sort)
-    },
     Mutation: {
         phieuNhap: chainMiddlewares(authRequired,
             () => ({})
         ),
-        chiTietPhieuNhap: chainMiddlewares(authRequired,
-            () => ({})
-        )
     },
     PhieuNhapMutations: {
-        create: async (_, { payload }, { currentUser }) =>
-            phieuNhapController.create(payload, currentUser.id),
-        delete: async (_, { id }) =>
-            phieuNhapController.remove(id)
+        create: async (_, { ngayNhap, payload }, { currentUser }) =>
+            phieuNhapController.create(ngayNhap, payload, currentUser.id),
+        delete: async (_, { id }, { currentUser }) =>
+            phieuNhapController.remove(id, currentUser),
+        update: async (_, { id, payload }, { currentUser }) =>
+            phieuNhapController.update(id, payload, currentUser),
     },
-    ChiTietPhieuNhapMutations: {
-        create: async (_, { idPhieuNhap, payload }) =>
-            chiTietPhieuNhapController.create(idPhieuNhap, payload),
-
-        update: async (_, { idPhieuNhap, idChiTiet, payload }) =>
-            chiTietPhieuNhapController.update(
-                idPhieuNhap,
-                idChiTiet,
-                payload,
-            ),
-        delete: async (_, { idPhieuNhap, idChiTiet }) =>
-            chiTietPhieuNhapController.remove(idPhieuNhap, idChiTiet)
-    }
 };
 
 module.exports = {

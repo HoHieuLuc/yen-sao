@@ -7,7 +7,7 @@ const typeDefs = gql`
     type SanPham {
         id: ID!
         tenSanPham: String!
-        soLuong: Int!
+        soLuong: Float!
         donGiaSi: Int!
         donGiaLe: Int!
         donGiaTuyChon: String
@@ -30,6 +30,7 @@ const typeDefs = gql`
         donGiaTuyChon: String
         moTa: String
         xuatXu: String
+        tags: [String]
         anhSanPham: [String!]!
     }
 
@@ -40,6 +41,7 @@ const typeDefs = gql`
         donGiaTuyChon: String
         moTa: String
         xuatXu: String
+        tags: [String]
         anhSanPham: [String!]
     }
 

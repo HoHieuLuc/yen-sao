@@ -33,6 +33,10 @@ const {
     resolvers: phieuNhapResolvers
 } = require('./schema/phieu-nhap.schema');
 const {
+    typeDefs: ChiTietPhieuNhap,
+    resolvers: chiTietPhieuNhapResolvers
+} = require('./schema/chi-tiet-phieu-nhap.schema');
+const {
     typeDefs: PhieuXuat,
     resolvers: phieuXuatResolvers
 } = require('./schema/phieu-xuat.schema');
@@ -62,6 +66,7 @@ const schema = makeExecutableSchema({
         File,
         SanPham,
         PhieuNhap,
+        ChiTietPhieuNhap,
         PhieuXuat,
         Page
     ],
@@ -72,6 +77,7 @@ const schema = makeExecutableSchema({
         fileResolvers,
         sanPhamResolvers,
         phieuNhapResolvers,
+        chiTietPhieuNhapResolvers,
         phieuXuatResolvers,
         pageResolvers
     )
