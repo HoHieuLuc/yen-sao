@@ -12,23 +12,28 @@ const getById = async (id) => {
 };
 
 
-const create = async (chiTietPhieuNhap, nguoiNhap) => {
+const create = async (ngayNhap, chiTietPhieuNhap, nguoiNhap) => {
     const arrayOfSanPhamIds = chiTietPhieuNhap.map(({ maSanPham }) => maSanPham);
     if (checkIfDuplicateExists(arrayOfSanPhamIds)) {
         throw new UserInputError('Sản phẩm trong 1 phiếu nhập không được trùng nhau');
     }
     await sanPhamService.checkIfExist(arrayOfSanPhamIds);
 
-    return phieuNhapService.create(chiTietPhieuNhap, nguoiNhap);
+    return phieuNhapService.create(ngayNhap, chiTietPhieuNhap, nguoiNhap);
 };
 
-const remove = async (phieuNhapId) => {
-    return phieuNhapService.remove(phieuNhapId);
+const update = async (id, payload, currentUser) => {
+    return phieuNhapService.update(id, payload, currentUser);
+};
+
+const remove = async (phieuNhapId, currentUser) => {
+    return phieuNhapService.remove(phieuNhapId, currentUser);
 };
 
 module.exports = {
     getById,
     getAll,
     create,
-    remove
+    update,
+    remove,
 };
