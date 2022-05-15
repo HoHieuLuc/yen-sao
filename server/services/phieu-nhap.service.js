@@ -2,15 +2,13 @@ const { UserInputError } = require('apollo-server');
 const PhieuNhap = require('../models/PhieuNhap');
 const SanPham = require('../models/SanPham');
 const ChiTietPhieuNhap = require('../models/ChiTietPhieuNhap');
+const { throwIfUserCantMutate } = require('../utils/functions');
 
 const populateOptions = [
     {
         path: 'chiTiet',
         populate: {
             path: 'maSanPham',
-            populate: {
-                path: 'maLoaiSanPham'
-            }
         }
     },
     {
@@ -75,12 +73,13 @@ const buildUpdateProductQuantityBulkOps = (chiTietPhieuNhap, isCreate = true) =>
     }));
 };
 
-const create = async (chiTietPhieuNhap, nguoiNhap) => {
+const create = async (ngayNhap, chiTietPhieuNhap, nguoiNhap) => {
     const session = await SanPham.startSession();
     session.startTransaction();
     try {
         const phieuNhap = new PhieuNhap({
             nguoiNhap,
+            ngayNhap: ngayNhap,
             chiTiet: []
         });
 
@@ -89,6 +88,7 @@ const create = async (chiTietPhieuNhap, nguoiNhap) => {
         const createdChiTietPhieuNhaps = await ChiTietPhieuNhap.insertMany(
             chiTietPhieuNhap.map((chiTiet) => ({
                 maPhieuNhap: phieuNhap._id,
+                ngayNhap,
                 ...chiTiet
             })),
             { session }
@@ -115,7 +115,29 @@ const create = async (chiTietPhieuNhap, nguoiNhap) => {
     }
 };
 
-const remove = async (phieuNhapId) => {
+const update = async (id, payload, currentUser) => {
+    try {
+        const phieuNhap = await PhieuNhap.findById(id).populate(populateOptions);
+        throwIfUserCantMutate(currentUser.role, phieuNhap.createdAt,
+            'Nhân viên không thể sửa phiếu nhập đã được tạo quá 24 giờ'
+        );
+        phieuNhap.set(payload);
+        await phieuNhap.save();
+        await ChiTietPhieuNhap.updateMany(
+            {
+                maPhieuNhap: id
+            },
+            {
+                ...payload
+            }
+        );
+        return phieuNhap;
+    } catch (error) {
+        throw new UserInputError(error.message);
+    }
+};
+
+const remove = async (phieuNhapId, currentUser) => {
     const session = await SanPham.startSession();
     session.startTransaction();
     try {
@@ -127,6 +149,10 @@ const remove = async (phieuNhapId) => {
         if (!phieuNhap) {
             throw new UserInputError('Phiếu nhập không tồn tại');
         }
+
+        throwIfUserCantMutate(currentUser.role, phieuNhap.createdAt,
+            'Nhân viên không thể xóa phiếu nhập đã được tạo quá 24 giờ'
+        );
 
         //cập nhật lại số lượng sản phẩm khi xóa phiếu nhập
         const sanPhamsBulkOps = buildUpdateProductQuantityBulkOps(
@@ -164,5 +190,6 @@ module.exports = {
     getById,
     getAll,
     create,
-    remove
+    update,
+    remove,
 };

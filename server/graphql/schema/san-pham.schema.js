@@ -30,6 +30,7 @@ const typeDefs = gql`
         donGiaTuyChon: String
         moTa: String
         xuatXu: String
+        tags: [String]
         anhSanPham: [String!]!
     }
 
@@ -40,6 +41,7 @@ const typeDefs = gql`
         donGiaTuyChon: String
         moTa: String
         xuatXu: String
+        tags: [String]
         anhSanPham: [String!]
     }
 

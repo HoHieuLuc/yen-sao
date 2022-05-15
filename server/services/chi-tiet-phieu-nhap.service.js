@@ -2,6 +2,7 @@ const { UserInputError } = require('apollo-server');
 const ChiTietPhieuNhap = require('../models/ChiTietPhieuNhap');
 const PhieuNhap = require('../models/PhieuNhap');
 const SanPham = require('../models/SanPham');
+const { throwIfUserCantMutate } = require('../utils/functions');
 
 const populateOptions = [
     {
@@ -46,9 +47,19 @@ const getBySanPhamID = async (id, page, limit, from, to, sort) => {
     }
 };
 
-const create = async (idPhieuNhap, chiTietPhieuNhap) => {
+const create = async (idPhieuNhap, chiTietPhieuNhap, currentUser) => {
     const session = await SanPham.startSession();
     session.startTransaction();
+
+    const phieuNhap = await PhieuNhap.findById(idPhieuNhap).session(session);
+
+    if (!phieuNhap) {
+        throw new UserInputError('Phiếu nhập không tồn tại');
+    }
+
+    throwIfUserCantMutate(currentUser.role, phieuNhap.createdAt,
+        'Nhân viên không thể cập nhật phiếu nhập đã được tạo quá 24 giờ'
+    );
 
     // nếu tìm thấy phiếu nhập và sản phẩm trong chi tiết phiếu nhập
     // thì tức là sản phẩm đó đã tồn tại trong phiếu nhập
@@ -61,12 +72,6 @@ const create = async (idPhieuNhap, chiTietPhieuNhap) => {
         throw new UserInputError('Sản phẩm trong 1 phiếu nhập không được trùng nhau');
     }
     try {
-        const phieuNhap = await PhieuNhap.findById(idPhieuNhap).session(session);
-
-        if (!phieuNhap) {
-            throw new UserInputError('Phiếu nhập không tồn tại');
-        }
-
         // cập nhật số lượng sản phẩm
         await SanPham.findByIdAndUpdate(
             chiTietPhieuNhap.maSanPham,
@@ -75,14 +80,15 @@ const create = async (idPhieuNhap, chiTietPhieuNhap) => {
                     soLuong: chiTietPhieuNhap.soLuongNhap
                 }
             },
-            { new: true, runValidators: true, session }
+            { runValidators: true, session }
         );
 
         const createdChiTietPhieuNhap = new ChiTietPhieuNhap({
             maPhieuNhap: idPhieuNhap,
+            ngayNhap: phieuNhap.ngayNhap,
             ...chiTietPhieuNhap,
         });
-        await createdChiTietPhieuNhap.save();
+        await createdChiTietPhieuNhap.save({ session });
 
         phieuNhap.chiTiet.push(createdChiTietPhieuNhap._id);
         await phieuNhap.save();
@@ -105,7 +111,7 @@ const create = async (idPhieuNhap, chiTietPhieuNhap) => {
 - Giảm số lượng sản phẩm trong kho của sản phẩm bị thay đổi
 - Nếu số lượng sau khi giảm < 0 thì hủy transaction và báo lỗi
 */
-const update = async (idPhieuNhap, idChiTietPhieuNhap, chiTietPhieuNhap) => {
+const update = async (idPhieuNhap, idChiTietPhieuNhap, chiTietPhieuNhap, currentUser) => {
     const phieuNhap = await PhieuNhap.findOne({
         _id: idPhieuNhap,
         chiTiet: idChiTietPhieuNhap
@@ -115,6 +121,11 @@ const update = async (idPhieuNhap, idChiTietPhieuNhap, chiTietPhieuNhap) => {
         throw new UserInputError('Phiếu nhập không tồn tại');
     }
 
+    throwIfUserCantMutate(currentUser.role, phieuNhap.createdAt,
+        'Nhân viên không thể cập nhật phiếu nhập đã được tạo quá 24 giờ'
+    );
+
+    // kiểm tra sản phẩm đã tồn tại trong phiếu nhập chưa
     const chiTietPhieuNhapExist = phieuNhap.chiTiet.find(
         item => (
             item.maSanPham.toString() === chiTietPhieuNhap.maSanPham
@@ -131,6 +142,7 @@ const update = async (idPhieuNhap, idChiTietPhieuNhap, chiTietPhieuNhap) => {
     try {
         // cập nhật chi tiết phiếu nhập
         // options không có new để lấy lại chi tiết trước khi cập nhật
+        // chi tiết này sẽ có mã sản phẩm cũ để cập nhật lại số lượng sản phẩm
         const chiTietToBeUpdated = await ChiTietPhieuNhap.findByIdAndUpdate(
             idChiTietPhieuNhap,
             chiTietPhieuNhap,
@@ -183,21 +195,26 @@ const update = async (idPhieuNhap, idChiTietPhieuNhap, chiTietPhieuNhap) => {
     }
 };
 
-const remove = async (idPhieuNhap, idChiTietPhieuNhap) => {
+const remove = async (idPhieuNhap, idChiTietPhieuNhap, currentUser) => {
     const session = await SanPham.startSession();
     session.startTransaction();
+
+    // kiểm tra xem phiếu nhập và chi tiết phiếu nhập có tồn tại hay không
+    const phieuNhap = await PhieuNhap.findOne({
+        _id: idPhieuNhap,
+        chiTiet: idChiTietPhieuNhap
+    }).populate('chiTiet').session(session);
+
+    if (!phieuNhap) {
+        // phiếu nhập hoặc chi tiết phiếu nhập không tồn tại
+        throw new UserInputError('Phiếu nhập không tồn tại');
+    }
+
+    throwIfUserCantMutate(currentUser.role, phieuNhap.createdAt,
+        'Nhân viên không thể cập nhật phiếu nhập đã được tạo quá 24 giờ'
+    );
+
     try {
-        // kiểm tra xem phiếu nhập và chi tiết phiếu nhập có tồn tại hay không
-        const phieuNhap = await PhieuNhap.findOne({
-            _id: idPhieuNhap,
-            chiTiet: idChiTietPhieuNhap
-        }).populate('chiTiet').session(session);
-
-        if (!phieuNhap) {
-            // phiếu nhập hoặc chi tiết phiếu nhập không tồn tại
-            throw new UserInputError('Phiếu nhập không tồn tại');
-        }
-
         const sanPhamCanUpdate = phieuNhap.chiTiet.find(
             ({ _id }) => _id.toString() === idChiTietPhieuNhap
         );
