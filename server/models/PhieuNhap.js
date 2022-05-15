@@ -36,7 +36,9 @@ phieuNhap.pre('save', async function () {
         }
     });
     this.tongTien = allChiTiets.reduce(
-        (sum, { soLuongNhap, donGiaNhap }) => sum + soLuongNhap * donGiaNhap, 0
+        (sum, { soLuongNhap, donGiaNhap }) =>
+            sum + soLuongNhap / 100 * donGiaNhap,
+        0
     );
 });
 
