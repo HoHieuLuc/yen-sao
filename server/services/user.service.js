@@ -3,6 +3,30 @@ const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = require('../utils/config');
 
+const getAll = async (page, limit, search) => {
+    const options = {
+        page,
+        limit,
+        sort: '-createdAt',
+    };
+    return User.paginate({
+        $or: [
+            { username: { $regex: search, $options: 'i' } },
+            { email: { $regex: search, $options: 'i' } },
+            { fullname: { $regex: search, $options: 'i' } },
+        ]
+    }, options);
+};
+
+const getById = async (id) => {
+    try {
+        const user = await User.findById(id);
+        return user;
+    } catch (error) {
+        throw new UserInputError(error.message);
+    }
+};
+
 const login = async (username, password) => {
     const user = await User.findOne({ username });
     if (!user) {
@@ -12,6 +36,10 @@ const login = async (username, password) => {
     const isPasswordCorrect = await user.comparePassword(password);
     if (!isPasswordCorrect) {
         throw new AuthenticationError('Sai tài khoản hoặc mật khẩu');
+    }
+
+    if (user.isBanned) {
+        throw new AuthenticationError('Tài khoản của bạn đã bị khóa');
     }
 
     const token = user.createJWT();
@@ -37,9 +65,12 @@ const getCurrentUser = async (authHeader) => {
         try {
             const payload = jwt.verify(token, JWT_SECRET);
             const currentUser = await User.findById(payload.id, '-password');
+            if (currentUser.isBanned) {
+                throw new AuthenticationError('Tài khoản của bạn đã bị khóa');
+            }
             return { currentUser };
         } catch (error) {
-            throw new AuthenticationError('Token không hợp lệ');
+            throw new AuthenticationError(error.message);
         }
     }
 };
@@ -63,9 +94,20 @@ const changePassword = async (username, oldPassword, newPassword) => {
     return user;
 };
 
+const banById = (id, isBanned) => {
+    return User.findByIdAndUpdate(
+        id,
+        { isBanned },
+        { new: true, runValidators: true }
+    );
+};
+
 module.exports = {
-    create,
     login,
+    getAll,
+    create,
+    getById,
+    banById,
     getCurrentUser,
-    changePassword
+    changePassword,
 };
