@@ -20,7 +20,7 @@ const {
 const {
     typeDefs: File,
     resolvers: fileResolvers
-} = require('./schema/file');
+} = require('./schema/file.schema');
 const {
     typeDefs: Paginatable
 } = require('./schema/paginate');
