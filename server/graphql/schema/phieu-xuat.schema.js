@@ -110,7 +110,7 @@ const resolvers = {
         create: async (_, { nguoiMua, ngayXuat, payload }, { currentUser }) =>
             phieuXuatController.create(
                 nguoiMua,
-                currentUser.id,
+                currentUser,
                 ngayXuat,
                 payload,
             ),

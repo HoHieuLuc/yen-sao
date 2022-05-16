@@ -102,12 +102,12 @@ const resolvers = {
         ),
     },
     SanPhamMutations: {
-        create: async (_, { payload }) =>
-            sanPhamController.create(payload),
-        update: async (_, { id, payload }) =>
-            sanPhamController.update(id, payload),
-        delete: async (_, { id }) =>
-            sanPhamController.remove(id),
+        create: async (_, { payload }, { currentUser }) =>
+            sanPhamController.create(payload, currentUser),
+        update: async (_, { id, payload }, { currentUser }) =>
+            sanPhamController.update(id, payload, currentUser),
+        delete: async (_, { id }, { currentUser }) =>
+            sanPhamController.remove(id, currentUser),
     },
 };
 
