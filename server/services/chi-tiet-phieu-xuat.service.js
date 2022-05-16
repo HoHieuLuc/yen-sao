@@ -51,7 +51,7 @@ const create = async (idPhieuXuat, chiTietPhieuXuat, currentUser) => {
     const session = await SanPham.startSession();
     session.startTransaction();
 
-    const phieuXuat = await PhieuXuat.findById(idPhieuXuat).session(session);
+    const phieuXuat = await PhieuXuat.findById(idPhieuXuat);
     if (!phieuXuat) {
         throw new UserInputError('Phiếu xuất không tồn tại');
     }
@@ -98,11 +98,10 @@ const create = async (idPhieuXuat, chiTietPhieuXuat, currentUser) => {
             ...chiTietPhieuXuat
         });
         await createdChiTietPhieuXuat.save({ session });
+        await session.commitTransaction();
 
         phieuXuat.chiTiet.push(createdChiTietPhieuXuat._id);
         await phieuXuat.save();
-
-        await session.commitTransaction();
 
         const updatedPhieuXuat = await phieuXuat.populate(populateOptions);
 
@@ -216,7 +215,7 @@ const remove = async (idPhieuXuat, idChiTietPhieuXuat, currentUser) => {
     const phieuXuat = await PhieuXuat.findOne({
         _id: idPhieuXuat,
         chiTiet: idChiTietPhieuXuat
-    }).populate('chiTiet').session(session);
+    }).populate('chiTiet');
 
     if (!phieuXuat) {
         // phiếu xuất hoặc chi tiết phiếu xuất không tồn tại
@@ -244,10 +243,10 @@ const remove = async (idPhieuXuat, idChiTietPhieuXuat, currentUser) => {
         );
 
         await ChiTietPhieuXuat.findByIdAndDelete(idChiTietPhieuXuat, { session });
+        await session.commitTransaction();
 
         phieuXuat.chiTiet.pull(idChiTietPhieuXuat);
         await phieuXuat.save();
-        await session.commitTransaction();
 
         const updatedPhieuXuat = await phieuXuat.populate(populateOptions);
 

@@ -51,7 +51,7 @@ const create = async (idPhieuNhap, chiTietPhieuNhap, currentUser) => {
     const session = await SanPham.startSession();
     session.startTransaction();
 
-    const phieuNhap = await PhieuNhap.findById(idPhieuNhap).session(session);
+    const phieuNhap = await PhieuNhap.findById(idPhieuNhap);
 
     if (!phieuNhap) {
         throw new UserInputError('Phiếu nhập không tồn tại');
@@ -89,11 +89,10 @@ const create = async (idPhieuNhap, chiTietPhieuNhap, currentUser) => {
             ...chiTietPhieuNhap,
         });
         await createdChiTietPhieuNhap.save({ session });
+        await session.commitTransaction();
 
         phieuNhap.chiTiet.push(createdChiTietPhieuNhap._id);
         await phieuNhap.save();
-
-        await session.commitTransaction();
 
         const updatedPhieuNhap = await phieuNhap.populate(populateOptions);
 
@@ -203,7 +202,7 @@ const remove = async (idPhieuNhap, idChiTietPhieuNhap, currentUser) => {
     const phieuNhap = await PhieuNhap.findOne({
         _id: idPhieuNhap,
         chiTiet: idChiTietPhieuNhap
-    }).populate('chiTiet').session(session);
+    }).populate('chiTiet');
 
     if (!phieuNhap) {
         // phiếu nhập hoặc chi tiết phiếu nhập không tồn tại
@@ -236,13 +235,13 @@ const remove = async (idPhieuNhap, idChiTietPhieuNhap, currentUser) => {
         }
 
         await ChiTietPhieuNhap.findByIdAndDelete(idChiTietPhieuNhap);
+        await session.commitTransaction();
 
         phieuNhap.chiTiet.pull(idChiTietPhieuNhap);
         await phieuNhap.save();
-        await session.commitTransaction();
 
         const updatedPhieuNhap = await phieuNhap.populate(populateOptions);
-        
+
         return {
             phieuNhap: updatedPhieuNhap,
             sanPhamBiThayDoi: updatedSanPham // cần phải return để client tự update cache
