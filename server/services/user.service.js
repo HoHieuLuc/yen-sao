@@ -75,8 +75,8 @@ const getCurrentUser = async (authHeader) => {
     }
 };
 
-const changePassword = async (username, oldPassword, newPassword) => {
-    const user = await User.findOne({ username });
+const changePassword = async (oldPassword, newPassword, currentUser) => {
+    const user = await User.findById(currentUser._id);
 
     const isPasswordCorrect = await user.comparePassword(oldPassword);
     if (!isPasswordCorrect) {

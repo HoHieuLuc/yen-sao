@@ -1,6 +1,8 @@
 const userService = require('../services/user.service');
 const { escapeRegExp } = require('../utils/functions');
-const { ForbiddenError } = require('apollo-server');
+const { ForbiddenError, UserInputError } = require('apollo-server');
+const mongoose = require('mongoose');
+const userLogger = require('../logs/user.log');
 
 const getAll = async (page, limit, search = '') => {
     return userService.getAll(page, limit, escapeRegExp(search));
@@ -14,23 +16,32 @@ const login = async (username, password) => {
     return userService.login(username, password);
 };
 
-const create = async (newUser) => {
-    return userService.create(newUser);
+const create = async (newUser, currentUser) => {
+    const user = await userService.create(newUser);
+    await userLogger.create(user, currentUser);
+    return user;
 };
 
 const getCurrentUser = async (authHeader) => {
     return userService.getCurrentUser(authHeader);
 };
 
-const changePassword = async (username, oldPassword, newPassword) => {
-    return userService.changePassword(username, oldPassword, newPassword);
+const changePassword = async (oldPassword, newPassword, currentUser) => {
+    const user = await userService.changePassword(oldPassword, newPassword, currentUser);
+    await userLogger.changePassword(user, currentUser);
+    return user;
 };
 
-const banById = async (id, isBanned, currentUserId) => {
-    if (currentUserId.toString() !== id.toString()) {
-        return userService.banById(id, isBanned);
+const banById = async (id, isBanned, currentUser) => {
+    if (!mongoose.isValidObjectId(id)) {
+        throw new UserInputError('Mã người dùng không hợp lệ');
     }
-    throw new ForbiddenError('Bạn không thể làm điều này');
+    if (currentUser._id.toString() === id.toString()) {
+        throw new ForbiddenError('Bạn không thể làm điều này');
+    }
+    const user = await userService.banById(id, isBanned);
+    await userLogger.banById(user, currentUser);
+    return user;
 };
 
 module.exports = {

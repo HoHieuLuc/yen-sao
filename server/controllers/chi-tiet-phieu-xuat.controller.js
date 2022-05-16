@@ -2,6 +2,7 @@ const { UserInputError } = require('apollo-server');
 const mongoose = require('mongoose');
 const chiTietPhieuXuatService = require('../services/chi-tiet-phieu-xuat.service');
 const sanPhamService = require('../services/san-pham.service');
+const chiTietPhieuXuatLogger = require('../logs/chi-tiet-phieu-xuat.log');
 
 const getBySanPhamID = async (id, page = 1, limit = 10, from, to, sort) => {
     return chiTietPhieuXuatService.getBySanPhamID(id, page, limit, from, to, sort);
@@ -16,7 +17,9 @@ const create = async (idPhieuXuat, chiTietPhieuXuat, currentUser) => {
     }
     await sanPhamService.checkIfExist([chiTietPhieuXuat.maSanPham]);
 
-    return chiTietPhieuXuatService.create(idPhieuXuat, chiTietPhieuXuat, currentUser);
+    const phieuXuat = await chiTietPhieuXuatService.create(idPhieuXuat, chiTietPhieuXuat, currentUser);
+    await chiTietPhieuXuatLogger.create(phieuXuat, currentUser);
+    return phieuXuat;
 };
 
 const update = async (idPhieuXuat, idChiTietPhieuXuat, chiTietPhieuXuat, currentUser) => {
@@ -29,12 +32,14 @@ const update = async (idPhieuXuat, idChiTietPhieuXuat, chiTietPhieuXuat, current
 
     await sanPhamService.checkIfExist([chiTietPhieuXuat.maSanPham]);
 
-    return chiTietPhieuXuatService.update(
+    const result = await chiTietPhieuXuatService.update(
         idPhieuXuat,
         idChiTietPhieuXuat,
         chiTietPhieuXuat,
         currentUser
     );
+    await chiTietPhieuXuatLogger.update(result.phieuXuat, currentUser);
+    return result;
 };
 
 const remove = async (idPhieuXuat, idChiTietPhieuXuat, currentUser) => {
@@ -44,11 +49,14 @@ const remove = async (idPhieuXuat, idChiTietPhieuXuat, currentUser) => {
     if (!mongoose.isValidObjectId(idChiTietPhieuXuat)) {
         throw new UserInputError('Mã chi tiết phiếu nhập không hợp lệ');
     }
-    return chiTietPhieuXuatService.remove(
+    
+    const result = await chiTietPhieuXuatService.remove(
         idPhieuXuat,
         idChiTietPhieuXuat,
         currentUser
     );
+    await chiTietPhieuXuatLogger.remove(result.phieuXuat, currentUser);
+    return result;
 };
 
 module.exports = {

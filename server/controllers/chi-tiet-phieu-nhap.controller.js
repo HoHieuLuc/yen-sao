@@ -2,6 +2,7 @@ const { UserInputError } = require('apollo-server');
 const mongoose = require('mongoose');
 const chiTietPhieuNhapService = require('../services/chi-tiet-phieu-nhap.service');
 const sanPhamService = require('../services/san-pham.service');
+const chiTietPhieuNhapLogger = require('../logs/chi-tiet-phieu-nhap.log');
 
 const getBySanPhamID = async (idSanPham, page = 1, limit = 10, from, to, sort) => {
     return chiTietPhieuNhapService.getBySanPhamID(idSanPham, page, limit, from, to, sort);
@@ -16,7 +17,9 @@ const create = async (idPhieuNhap, chiTietPhieuNhap, currentUser) => {
     }
     await sanPhamService.checkIfExist([chiTietPhieuNhap.maSanPham]);
 
-    return chiTietPhieuNhapService.create(idPhieuNhap, chiTietPhieuNhap, currentUser);
+    const phieuNhap = await chiTietPhieuNhapService.create(idPhieuNhap, chiTietPhieuNhap, currentUser);
+    await chiTietPhieuNhapLogger.create(phieuNhap, currentUser);
+    return phieuNhap;
 };
 
 const update = async (idPhieuNhap, idChiTietPhieuNhap, chiTietPhieuNhap, currentUser) => {
@@ -28,12 +31,14 @@ const update = async (idPhieuNhap, idChiTietPhieuNhap, chiTietPhieuNhap, current
     }
     await sanPhamService.checkIfExist([chiTietPhieuNhap.maSanPham]);
 
-    return chiTietPhieuNhapService.update(
+    const result = await chiTietPhieuNhapService.update(
         idPhieuNhap,
         idChiTietPhieuNhap,
         chiTietPhieuNhap,
         currentUser
     );
+    await chiTietPhieuNhapLogger.update(result.phieuNhap, currentUser);
+    return result;
 };
 
 const remove = async (idPhieuNhap, idChiTietPhieuNhap, currentUser) => {
@@ -43,7 +48,10 @@ const remove = async (idPhieuNhap, idChiTietPhieuNhap, currentUser) => {
     if (!mongoose.isValidObjectId(idChiTietPhieuNhap)) {
         throw new UserInputError('Mã chi tiết phiếu nhập không hợp lệ');
     }
-    return chiTietPhieuNhapService.remove(idPhieuNhap, idChiTietPhieuNhap, currentUser);
+
+    const result = await chiTietPhieuNhapService.remove(idPhieuNhap, idChiTietPhieuNhap, currentUser);
+    await chiTietPhieuNhapLogger.remove(result.phieuNhap, currentUser);
+    return result;
 };
 
 module.exports = {
