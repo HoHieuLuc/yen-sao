@@ -81,17 +81,18 @@ const resolvers = {
         user: () => ({})
     },
     UserMutations: {
-        create: chainMiddlewares(adminRequired, (_, args) =>
-            userController.create(args)
+        create: chainMiddlewares(adminRequired, (_, args, { currentUser }) =>
+            userController.create(args, currentUser)
         ),
         login: async (_, { username, password }) =>
             userController.login(username, password),
         changePassword: chainMiddlewares(authRequired,
             (_, { oldPassword, newPassword }, { currentUser }) =>
-                userController.changePassword(currentUser.username, oldPassword, newPassword)
+                userController.changePassword(oldPassword, newPassword, currentUser)
         ),
-        banByID: chainMiddlewares(adminRequired, (_, { id, isBanned }, { currentUser }) => 
-            userController.banById(id, isBanned, currentUser._id)
+        banByID: chainMiddlewares(adminRequired,
+            (_, { id, isBanned }, { currentUser }) =>
+                userController.banById(id, isBanned, currentUser)
         )
     }
 };

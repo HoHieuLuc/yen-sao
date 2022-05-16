@@ -105,7 +105,7 @@ const resolvers = {
     },
     PhieuNhapMutations: {
         create: async (_, { ngayNhap, payload }, { currentUser }) =>
-            phieuNhapController.create(ngayNhap, payload, currentUser.id),
+            phieuNhapController.create(ngayNhap, payload, currentUser),
         delete: async (_, { id }, { currentUser }) =>
             phieuNhapController.remove(id, currentUser),
         update: async (_, { id, payload }, { currentUser }) =>

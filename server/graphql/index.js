@@ -48,6 +48,10 @@ const {
     typeDefs: Page,
     resolvers: pageResolvers
 } = require('./schema/page.schema');
+const {
+    typeDefs: ActivityLog,
+    resolvers: activityLogResolvers
+} = require('./schema/activity-log.schema');
 
 const defaultSchema = gql`
     type Query {
@@ -73,7 +77,8 @@ const schema = makeExecutableSchema({
         ChiTietPhieuNhap,
         PhieuXuat,
         ChiTietPhieuXuat,
-        Page
+        Page,
+        ActivityLog
     ],
     resolvers: merge(
         dateResolvers,
@@ -85,7 +90,8 @@ const schema = makeExecutableSchema({
         chiTietPhieuNhapResolvers,
         phieuXuatResolvers,
         chiTietPhieuXuatResolvers,
-        pageResolvers
+        pageResolvers,
+        activityLogResolvers
     )
 });
 
