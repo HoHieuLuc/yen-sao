@@ -25,6 +25,13 @@ const MyMantineProvider = ({ children }: Props) => {
                     colorScheme,
                     datesLocale: 'vi',
                 }}
+                styles={{
+                    DatePicker: {
+                        input: {
+                            textTransform: 'capitalize'
+                        },
+                    }
+                }}
                 withGlobalStyles
                 withNormalizeCSS
             >
