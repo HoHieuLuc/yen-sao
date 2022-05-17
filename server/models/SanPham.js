@@ -25,7 +25,8 @@ const sanPham = mongoose.Schema(
             min: 0
         },
         donGiaTuyChon: {
-            type: String
+            type: String,
+            default: ''
         },
         moTa: {
             type: String,
@@ -43,10 +44,12 @@ const sanPham = mongoose.Schema(
         },
         tags: {
             type: [String],
+            default: []
         },
         xuatXu: {
             type: String,
-            trim: true
+            trim: true,
+            default: ''
         }
     },
     {

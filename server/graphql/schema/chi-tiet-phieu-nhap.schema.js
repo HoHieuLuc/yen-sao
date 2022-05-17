@@ -11,6 +11,7 @@ const typeDefs = gql`
         sanPham: SanPham
         soLuongNhap: Int!
         donGiaNhap: Int!
+        thanhTien: Int!
         ngayNhap: Date!
         ghiChu: String
         createdAt: Date!
@@ -76,11 +77,12 @@ const resolvers = {
     ChiTietPhieuNhap: {
         sanPham: (root) => {
             return isMongooseModel(root.maSanPham) ? root.maSanPham : null;
-        }
+        },
+        thanhTien: (root) => root.soLuongNhap / 100 * root.donGiaNhap
     },
     SortChiTietPhieuNhap: {
-        NGAY_NHAP_ASC: 'createdAt',
-        NGAY_NHAP_DESC: '-createdAt',
+        NGAY_NHAP_ASC: 'ngayNhap',
+        NGAY_NHAP_DESC: '-ngayNhap',
         SO_LUONG_ASC: 'soLuongNhap',
         SO_LUONG_DESC: '-soLuongNhap',
         DON_GIA_ASC: 'donGiaNhap',

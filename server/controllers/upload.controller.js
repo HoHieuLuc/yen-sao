@@ -6,8 +6,8 @@ const singleUpload = async (file) => {
 };
 
 const multiUpload = async (files) => {
-    if (files.length > 3) {
-        throw new UserInputError('Bạn chỉ được phép upload tối đa 3 ảnh.');
+    if (files.length > 5) {
+        throw new UserInputError('Bạn chỉ được phép upload tối đa 5 ảnh.');
     }
     return uploadService.multiUpload(files);
 };

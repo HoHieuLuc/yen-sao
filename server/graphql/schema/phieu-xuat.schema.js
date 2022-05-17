@@ -82,8 +82,8 @@ const resolvers = {
         soMatHangXuat: (root) => root.chiTiet.length
     },
     SortPhieuXuat: {
-        NGAY_XUAT_ASC: 'createdAt',
-        NGAY_XUAT_DESC: '-createdAt',
+        NGAY_XUAT_ASC: 'ngayXuat',
+        NGAY_XUAT_DESC: '-ngayXuat',
         TONG_TIEN_ASC: 'tongTien',
         TONG_TIEN_DESC: '-tongTien'
     },

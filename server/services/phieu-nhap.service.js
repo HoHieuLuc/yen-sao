@@ -21,21 +21,21 @@ const getAll = async (page, limit, from, to, sort) => {
         page,
         limit,
         populate: populateOptions,
-        sort: sort || '-createdAt'
+        sort: sort || '-ngayNhap'
     };
 
     let findOptions = {};
 
     if (from || to) {
-        const createdAt = {};
+        const ngayNhap = {};
         if (from) {
-            createdAt.$gte = from;
+            ngayNhap.$gte = from;
         }
         if (to) {
-            createdAt.$lte = to;
+            ngayNhap.$lte = to;
         }
         findOptions = {
-            createdAt
+            ngayNhap
         };
     }
     try {
