@@ -31,8 +31,8 @@ export const useSortParams = (values: Record<string, Array<string | null>>) => {
             return item[1];
         });
         if (
-            arrayOfSorts.indexOf(sort.currentSortValue) === -1
-            || !sort.currentSortValue
+            arrayOfSorts.indexOf(sort.currentSortValue) === -1 ||
+            !sort.currentSortValue
         ) {
             searchParams.delete('sort');
         } else {
@@ -44,7 +44,23 @@ export const useSortParams = (values: Record<string, Array<string | null>>) => {
 
     const toggle = (sortBy: string) => {
         setSort((prevSort) => {
-            if (!prevSort.sortBy || prevSort.sortBy !== sortBy) {
+            if (prevSort.sortBy !== sortBy) {
+                if (sortBy ===
+                    Object.entries(values).find(
+                        item => item[1].find(
+                            value => value === prevSort.currentSortValue
+                        )
+                    )?.at(0)
+                ) {
+                    const index = values[sortBy].indexOf(sort.currentSortValue);
+                    const next = values[sortBy].at(index + 1);
+
+                    return {
+                        currentSortValue: next || null,
+                        sortBy: sortBy,
+                    };
+                }
+
                 return {
                     currentSortValue: values[sortBy].at(1) || null,
                     sortBy: sortBy,
@@ -52,6 +68,7 @@ export const useSortParams = (values: Record<string, Array<string | null>>) => {
             } else {
                 const index = values[sortBy].indexOf(sort.currentSortValue);
                 const next = values[sortBy].at(index + 1);
+
                 return {
                     currentSortValue: next || null,
                     sortBy: sortBy,
