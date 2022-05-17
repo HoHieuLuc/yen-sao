@@ -1,5 +1,5 @@
-import { useQuery } from '@apollo/client';
 import useGlobalStyles from '../../../utils/global.styles';
+import { useQuery } from '@apollo/client';
 
 import { Box, Button, Center, Group, Title } from '@mantine/core';
 import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
@@ -7,10 +7,10 @@ import ErrorPage from '../../Utils/Errors/ErrorPage';
 import RichTextEditor from '@mantine/rte';
 import { Link } from 'react-router-dom';
 
-import { configQuery } from '../../../graphql/queries';
+import { pageQuery } from '../../../graphql/queries';
 
 export interface AboutData {
-    config: {
+    page: {
         byName: {
             id: string;
             name: string;
@@ -25,7 +25,7 @@ const About = () => {
     const { classes } = useGlobalStyles();
     const { data, loading, error } = useQuery<
         AboutData, { name: 'about' }
-    >(configQuery.CONFIG_BY_NAME,
+    >(pageQuery.PAGE_BY_NAME,
         {
             variables: {
                 name: 'about'
@@ -45,7 +45,7 @@ const About = () => {
             {data &&
                 <Box>
                     <RichTextEditor
-                        value={data.config.byName ? data.config.byName.content.value : ''}
+                        value={data.page.byName ? data.page.byName.content.value : ''}
                         readOnly
                         onChange={() => void (0)}
                         placeholder='Nhập nội dung bài viết giới thiệu'
