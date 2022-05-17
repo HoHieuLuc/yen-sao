@@ -29,7 +29,8 @@ const chiTietPhieuNhap = mongoose.Schema(
         },
         ghiChu: {
             type: String,
-            trim: true
+            trim: true,
+            default: ''
         }
     },
     {
