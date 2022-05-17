@@ -2,7 +2,7 @@ const { UserInputError } = require('apollo-server');
 const { checkIfDuplicateExists } = require('../utils/functions');
 const phieuNhapService = require('../services/phieu-nhap.service');
 const sanPhamService = require('../services/san-pham.service');
-const phieuNhapLogger = require('../logs/phieu-nhap.log');
+const phieuNhapLogger = require('../loggers/phieu-nhap.logger');
 
 const getAll = async (page = 1, limit = 10, from = null, to = null, sort) => {
     return phieuNhapService.getAll(page, limit, from, to, sort);

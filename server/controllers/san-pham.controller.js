@@ -3,7 +3,7 @@ const sanPhamService = require('../services/san-pham.service');
 const ChiTietPhieuNhap = require('../models/ChiTietPhieuNhap');
 const ChiTietPhieuXuat = require('../models/ChiTietPhieuXuat');
 const { escapeRegExp } = require('../utils/functions');
-const sanPhamLogger = require('../logs/san-pham.log');
+const sanPhamLogger = require('../loggers/san-pham.logger');
 
 const getAll = async (page = 1, limit = 10, search = '', sort = '-createdAt') => {
     return sanPhamService.getAll(page, limit, escapeRegExp(search), sort);

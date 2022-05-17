@@ -1,12 +1,12 @@
-const logHelper = require('./helper.log');
+const logHelper = require('./helper.logger');
 
 const create = async (phieuNhap, currentUser) => {
     await logHelper.create(
         currentUser._id,
-        'update',
+        'create',
         'PhieuNhap',
         phieuNhap._id,
-        `Thêm 1 sản phẩm mới vào phiếu nhập ngày ${new Date(phieuNhap.ngayNhap)
+        `Tạo phiếu nhập ngày ${new Date(phieuNhap.ngayNhap)
             .toLocaleDateString('vi-VN')
         }`,
         JSON.stringify(phieuNhap),
@@ -19,7 +19,7 @@ const update = async (phieuNhap, currentUser) => {
         'update',
         'PhieuNhap',
         phieuNhap._id,
-        `Cập nhật 1 sản phẩm trong phiếu nhập ngày ${new Date(phieuNhap.ngayNhap)
+        `Cập nhật phiếu nhập ngày ${new Date(phieuNhap.ngayNhap)
             .toLocaleDateString('vi-VN')
         }`,
         JSON.stringify(phieuNhap),
@@ -29,10 +29,10 @@ const update = async (phieuNhap, currentUser) => {
 const remove = async (phieuNhap, currentUser) => {
     await logHelper.create(
         currentUser._id,
-        'update',
+        'delete',
         'PhieuNhap',
         phieuNhap._id,
-        `Xóa 1 sản phẩm khỏi phiếu nhập ngày ${new Date(phieuNhap.ngayNhap)
+        `Xóa phiếu nhập ngày ${new Date(phieuNhap.ngayNhap)
             .toLocaleDateString('vi-VN')
         }`,
         JSON.stringify(phieuNhap),

@@ -2,7 +2,7 @@ const { UserInputError } = require('apollo-server');
 const mongoose = require('mongoose');
 const chiTietPhieuNhapService = require('../services/chi-tiet-phieu-nhap.service');
 const sanPhamService = require('../services/san-pham.service');
-const chiTietPhieuNhapLogger = require('../logs/chi-tiet-phieu-nhap.log');
+const chiTietPhieuNhapLogger = require('../loggers/chi-tiet-phieu-nhap.logger');
 
 const getBySanPhamID = async (idSanPham, page = 1, limit = 10, from, to, sort) => {
     return chiTietPhieuNhapService.getBySanPhamID(idSanPham, page, limit, from, to, sort);
