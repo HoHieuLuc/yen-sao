@@ -1,18 +1,16 @@
 import ChangePassword from '../components/Auth/ChangePassword';
 import Dashboard from '../components/Dashboard/Dashboard';
-import CreateLoaiSanPham from '../components/LoaiSanPham/Create/CreateLoaiSanPham';
-import LoaiSanPhamList from '../components/LoaiSanPham/List/LoaiSanPhamList';
 import About from '../components/Manage/About/About';
 import EditAbout from '../components/Manage/About/EditAbout';
 
 import CreatePhieuNhap from '../components/PhieuNhap/Create/CreatePhieuNhap';
 import PhieuNhapDetails from '../components/PhieuNhap/Details/PhieuNhapDetails';
-import EditPhieuNhap from '../components/PhieuNhap/Edit/EditPhieuNhap';
+import EditPhieuNhapPage from '../components/PhieuNhap/Edit/EditPhieuNhapPage';
 import PhieuNhapList from '../components/PhieuNhap/List/PhieuNhapList';
 
 import CreatePhieuXuat from '../components/PhieuXuat/Create/CreatePhieuXuat';
 import PhieuXuatDetails from '../components/PhieuXuat/Details/PhieuXuatDetails';
-import EditPhieuXuat from '../components/PhieuXuat/Edit/EditPhieuXuat';
+import EditPhieuXuatPage from '../components/PhieuXuat/Edit/EditPhieuXuatPage';
 import PhieuXuatList from '../components/PhieuXuat/List/PhieuXuatList';
 
 import CreateSanPham from '../components/SanPham/Create/CreateSanPham';
@@ -65,25 +63,6 @@ const appConfig: AppConfig = {
         },
         {
             type: 'menu',
-            title: 'Loại sản phẩm',
-            subLinksPattern: '/loai-san-pham',
-            subLinks: [
-                {
-                    title: 'Danh sách',
-                    type: 'nav',
-                    to: '/loai-san-pham',
-                    element: <LoaiSanPhamList />
-                },
-                {
-                    title: 'Thêm mới',
-                    type: 'nav',
-                    to: '/loai-san-pham/them',
-                    element: <CreateLoaiSanPham />
-                }
-            ]
-        },
-        {
-            type: 'menu',
             title: 'Nhập hàng',
             subLinksPattern: '/phieu-nhap',
             subLinks: [
@@ -109,7 +88,7 @@ const appConfig: AppConfig = {
                     type: 'hidden',
                     title: 'Chỉnh sửa phiếu nhập',
                     to: '/phieu-nhap/:id/sua',
-                    element: <EditPhieuNhap />
+                    element: <EditPhieuNhapPage />
                 }
             ]
         },
@@ -140,7 +119,7 @@ const appConfig: AppConfig = {
                     type: 'hidden',
                     title: 'Sửa phiếu xuất',
                     to: '/phieu-xuat/:id/sua',
-                    element: <EditPhieuXuat />
+                    element: <EditPhieuXuatPage />
                 }
             ]
         },
