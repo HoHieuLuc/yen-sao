@@ -20,20 +20,20 @@ const getBySanPhamID = async (id, page, limit, from, to, sort) => {
     const options = {
         page,
         limit,
-        sort: sort || '-createdAt'
+        sort: sort || '-ngayXuat'
     };
     let findOptions = {};
 
     if (from || to) {
-        const createdAt = {};
+        const ngayXuat = {};
         if (from) {
-            createdAt.$gte = from;
+            ngayXuat.$gte = from;
         }
         if (to) {
-            createdAt.$lte = to;
+            ngayXuat.$lte = to;
         }
         findOptions = {
-            createdAt
+            ngayXuat
         };
     }
     try {
