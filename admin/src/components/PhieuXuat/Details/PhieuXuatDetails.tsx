@@ -2,16 +2,15 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useModals } from '@mantine/modals';
 import { useQuery } from '@apollo/client';
 
-import { Box, Button, Center, Grid, Group, ScrollArea, Table, Title } from '@mantine/core';
+import { Box, Button, Center, Grid, Group, Title } from '@mantine/core';
 import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
 import ChiTietPhieuXuatItem from './ChiTietPhieuXuatItem';
 import DeletePhieuXuat from '../Delete/DeletePhieuXuat';
 import NotFound from '../../Utils/Errors/NotFound';
 
-import { convertToVietnameseDate, convertToVND } from '../../../utils/common';
+import { convertToShortDate, convertToVND } from '../../../utils/common';
 import { phieuXuatQuery } from '../../../graphql/queries';
-import { PhieuXuatDoc } from '../List/PhieuXuatList';
-import { PhieuXuatByID } from '../../../types';
+import { PhieuXuat, PhieuXuatByID } from '../../../types';
 
 const PhieuXuatDetails = () => {
     const navigate = useNavigate();
@@ -26,7 +25,7 @@ const PhieuXuatDetails = () => {
 
     const modals = useModals();
 
-    const openDeleteModal = (phieuXuat: PhieuXuatDoc) => {
+    const openDeleteModal = (phieuXuat: PhieuXuat) => {
         const modalId = modals.openModal({
             title: <h3>Xóa phiếu xuất</h3>,
             children: <DeletePhieuXuat
@@ -48,45 +47,34 @@ const PhieuXuatDetails = () => {
                     <Title>Chi tiết phiếu xuất</Title>
                 </Center>
                 <Grid gutter={10} mb='sm'>
-                    <Grid.Col xs={6}>Ngày xuất:</Grid.Col>
-                    <Grid.Col xs={6}>
-                        {convertToVietnameseDate(data.phieuXuat.byID.createdAt)}
+                    <Grid.Col span={4}>Ngày xuất:</Grid.Col>
+                    <Grid.Col span={8}>
+                        {convertToShortDate(data.phieuXuat.byID.ngayXuat)}
                     </Grid.Col>
-                    <Grid.Col xs={6}>Người xuất:</Grid.Col>
-                    <Grid.Col xs={6}>
-                        {data.phieuXuat.byID.nguoiXuat.username}
+                    <Grid.Col span={4}>Người xuất:</Grid.Col>
+                    <Grid.Col span={8}>
+                        {data.phieuXuat.byID.nguoiXuat.fullname}
                     </Grid.Col>
-                    <Grid.Col xs={6}>Số mặt hàng xuất:</Grid.Col>
-                    <Grid.Col xs={6}>
+                    <Grid.Col span={4}>Người mua:</Grid.Col>
+                    <Grid.Col span={8}>
+                        {data.phieuXuat.byID.nguoiMua}
+                    </Grid.Col>
+                    <Grid.Col span={4}>Số mặt hàng xuất:</Grid.Col>
+                    <Grid.Col span={8}>
                         {data.phieuXuat.byID.soMatHangXuat}
                     </Grid.Col>
-                    <Grid.Col xs={6}>Tổng tiền:</Grid.Col>
-                    <Grid.Col xs={6}>
+                    <Grid.Col span={4}>Tổng tiền:</Grid.Col>
+                    <Grid.Col span={8}>
                         {convertToVND(data.phieuXuat.byID.tongTien)}
                     </Grid.Col>
                 </Grid>
-                <ScrollArea style={{ whiteSpace: 'break-spaces' }}>
-                    <Table striped highlightOnHover>
-                        <thead>
-                            <tr style={{ whiteSpace: 'nowrap' }}>
-                                <th>STT</th>
-                                <th>Tên sản phẩm</th>
-                                <th>Số lượng xuất</th>
-                                <th>Đơn giá xuất</th>
-                                <th>Thành tiền</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {data.phieuXuat.byID.chiTiet.map((item, index) => (
-                                <ChiTietPhieuXuatItem
-                                    key={item.id}
-                                    chiTietPhieuXuat={item}
-                                    index={index}
-                                />
-                            ))}
-                        </tbody>
-                    </Table>
-                </ScrollArea>
+                {data.phieuXuat.byID.chiTiet.map((item, index) => (
+                    <ChiTietPhieuXuatItem
+                        key={item.id}
+                        chiTietPhieuXuat={item}
+                        index={index}
+                    />
+                ))}
                 <Group position='right' mt='md'>
                     <Button color='red' onClick={() => openDeleteModal(data.phieuXuat.byID)}>
                         Xóa

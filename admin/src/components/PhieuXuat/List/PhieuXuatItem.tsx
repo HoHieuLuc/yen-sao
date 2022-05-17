@@ -4,18 +4,18 @@ import DeletePhieuXuat from '../Delete/DeletePhieuXuat';
 import { ActionIcon, Center } from '@mantine/core';
 import { LinkIcon, Icon } from '../../Utils/Icons';
 
-import { convertToVietnameseDate, convertToVND } from '../../../utils/common';
-import { PhieuXuatDoc } from './PhieuXuatList';
+import { convertToShortDate, convertToVND } from '../../../utils/common';
+import { PhieuXuat } from '../../../types';
 
 interface Props {
-    phieuXuat: PhieuXuatDoc;
+    phieuXuat: PhieuXuat;
     index: number;
 }
 
 const PhieuXuatItem = ({ phieuXuat, index }: Props) => {
     const modals = useModals();
 
-    const openDeleteModal = (phieuXuat: PhieuXuatDoc) => {
+    const openDeleteModal = (phieuXuat: PhieuXuat) => {
         const modalId = modals.openModal({
             title: <h3>Xóa phiếu xuất</h3>,
             children: <DeletePhieuXuat
@@ -28,8 +28,9 @@ const PhieuXuatItem = ({ phieuXuat, index }: Props) => {
     return (
         <tr key={phieuXuat.id}>
             <td>{index}</td>
-            <td>{phieuXuat.nguoiXuat.username}</td>
-            <td>{convertToVietnameseDate(phieuXuat.createdAt)}</td>
+            <td>{phieuXuat.nguoiXuat.fullname}</td>
+            <td>{phieuXuat.nguoiMua}</td>
+            <td>{convertToShortDate(phieuXuat.ngayXuat)}</td>
             <td>{phieuXuat.soMatHangXuat}</td>
             <td>{convertToVND(phieuXuat.tongTien)}</td>
             <td>

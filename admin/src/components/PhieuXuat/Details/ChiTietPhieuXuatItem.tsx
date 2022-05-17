@@ -1,4 +1,4 @@
-import { Anchor, Text } from '@mantine/core';
+import { Anchor, Box, Paper, SimpleGrid, Text } from '@mantine/core';
 import { Link } from 'react-router-dom';
 
 import { convertToVND } from '../../../utils/common';
@@ -11,26 +11,36 @@ interface Props {
 
 const ChiTietPhieuXuatItem = ({ chiTietPhieuXuat, index }: Props) => {
     return (
-        <tr>
-            <td>{index + 1}</td>
-            <td>
+        <Paper shadow='sm' p='md' withBorder mb='xs'>
+            <Box>
                 <Anchor
                     component={Link}
                     to={`/san-pham/${chiTietPhieuXuat.sanPham.id}`}
                 >
-                    <Text lineClamp={1}>
-                        {chiTietPhieuXuat.sanPham.tenSanPham}
+                    <Text>
+                        {index + 1}. {chiTietPhieuXuat.sanPham.tenSanPham}
                     </Text>
                 </Anchor>
-            </td>
-            <td>{chiTietPhieuXuat.soLuongXuat}</td>
-            <td>{convertToVND(chiTietPhieuXuat.donGiaXuat)}</td>
-            <td>
-                {convertToVND(
-                    chiTietPhieuXuat.donGiaXuat * chiTietPhieuXuat.soLuongXuat
-                )}
-            </td>
-        </tr>
+            </Box>
+            <SimpleGrid cols={3}>
+                <Text>
+                    Số lượng nhập: {chiTietPhieuXuat.soLuongXuat / 1000} kg
+                </Text>
+                <Text>
+                    Đơn giá nhập: {convertToVND(chiTietPhieuXuat.donGiaXuat)}
+                </Text>
+                <Text>
+                    Thành tiền: {convertToVND(chiTietPhieuXuat.thanhTien)}
+                </Text>
+            </SimpleGrid>
+            {chiTietPhieuXuat.ghiChu && (
+                <>Ghi chú:
+                    <Text style={{ whiteSpace: 'pre-wrap' }}>
+                        {chiTietPhieuXuat.ghiChu}
+                    </Text>
+                </>
+            )}
+        </Paper>
     );
 };
 

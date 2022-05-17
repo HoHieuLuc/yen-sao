@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
 import { useForm } from '@mantine/form';
 
-import { Button, NumberInput, Select, SimpleGrid } from '@mantine/core';
+import { Button, NumberInput, Select, SimpleGrid, Textarea } from '@mantine/core';
 import SanPhamSelect from '../../SanPham/Form/SanPhamSelect';
 
-import { ChiTietPhieuXuatFormData } from '../../../types';
+import { ChiTietPhieuXuatInput } from '../../../types';
 
 interface BaseProps {
     type: 'create' | 'update';
     initialValues?: unknown;
     onSubmit: (
-        values: ChiTietPhieuXuatFormData,
+        values: ChiTietPhieuXuatInput,
         callback: () => void
     ) => void;
     onDelete?: () => void;
@@ -20,12 +20,9 @@ interface BaseProps {
 interface UpdateProps extends BaseProps {
     type: 'update';
     initialValues: {
-        maSanPham: string;
         tenSanPham: string;
         soLuongTon: number;
-        soLuongXuat: number;
-        donGiaXuat: number;
-    };
+    } & ChiTietPhieuXuatInput;
     onDelete: () => void;
 }
 
@@ -42,11 +39,12 @@ const ChiTietPhieuXuatForm = ({
     onDelete,
     loading
 }: Props) => {
-    const chiTietPhieuXuatForm = useForm<ChiTietPhieuXuatFormData>({
+    const chiTietPhieuXuatForm = useForm<ChiTietPhieuXuatInput>({
         initialValues: {
             maSanPham: type === 'update' ? initialValues.maSanPham : '',
-            soLuongXuat: type === 'update' ? initialValues.soLuongXuat : 0,
+            soLuongXuat: type === 'update' ? initialValues.soLuongXuat / 1000 : 0,
             donGiaXuat: type === 'update' ? initialValues.donGiaXuat : 0,
+            ghiChu: type === 'update' ? initialValues.ghiChu : ''
         },
         validate: {
             maSanPham: (value) => value ? null : 'Vui lòng chọn sản phẩm',
@@ -56,19 +54,23 @@ const ChiTietPhieuXuatForm = ({
     });
 
     const [lock, setLock] = useState(type === 'update');
-    
+
     useEffect(() => {
         if (type === 'update' && lock) {
             chiTietPhieuXuatForm.setValues({
                 maSanPham: initialValues.maSanPham,
-                soLuongXuat: initialValues.soLuongXuat,
+                soLuongXuat: initialValues.soLuongXuat / 1000,
                 donGiaXuat: initialValues.donGiaXuat,
+                ghiChu: initialValues.ghiChu
             });
         }
     }, [lock]);
 
-    const submit = (values: ChiTietPhieuXuatFormData) => {
-        onSubmit(values, () => chiTietPhieuXuatForm.reset());
+    const submit = (values: ChiTietPhieuXuatInput) => {
+        onSubmit({
+            ...values,
+            soLuongXuat: values.soLuongXuat * 1000
+        }, () => chiTietPhieuXuatForm.reset());
     };
 
     return (
@@ -77,12 +79,13 @@ const ChiTietPhieuXuatForm = ({
                 {(lock && type === 'update')
                     ? <Select
                         label='Tên sản phẩm'
-                        description={`Số lượng tồn: ${initialValues.soLuongTon}`}
+                        description={`Số lượng tồn: ${initialValues.soLuongTon / 1000} kg`}
                         defaultValue={initialValues.maSanPham}
                         data={[{
                             value: initialValues.maSanPham,
                             label: initialValues.tenSanPham
                         }]}
+                        required
                         disabled
                     />
                     : <SanPhamSelect
@@ -96,16 +99,38 @@ const ChiTietPhieuXuatForm = ({
                 <NumberInput
                     label='Đơn giá xuất'
                     placeholder='Đơn giá xuất'
-                    min={0}
                     {...chiTietPhieuXuatForm.getInputProps('donGiaXuat')}
+                    parser={(value) => value?.replace(/\$\s?|(,*)/g, '')}
+                    formatter={(value) =>
+                        !Number.isNaN(parseFloat(value || 'a'))
+                            ? (value || '').replace(
+                                /\B(?=(\d{3})+(?!\d))/g,
+                                ','
+                            )
+                            : ''
+                    }
                     disabled={lock}
+                    required
+                    min={0}
                 />
                 <NumberInput
-                    label='Số lượng xuất'
+                    label='Số lượng xuất (kg)'
                     placeholder='Số lượng xuất'
-                    min={0}
                     {...chiTietPhieuXuatForm.getInputProps('soLuongXuat')}
                     disabled={lock}
+                    precision={2}
+                    required
+                    min={0}
+                />
+                <Textarea
+                    label='Ghi chú'
+                    placeholder='Nhập ghi chú'
+                    value={chiTietPhieuXuatForm.values.ghiChu}
+                    onChange={(e) =>
+                        chiTietPhieuXuatForm.setFieldValue('ghiChu', e.target.value)
+                    }
+                    disabled={lock}
+                    autosize
                 />
                 <SimpleGrid cols={type === 'update' ? 3 : 2}>
                     {type === 'update' && <>

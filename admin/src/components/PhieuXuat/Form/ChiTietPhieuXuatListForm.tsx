@@ -1,13 +1,15 @@
-import { Button, NumberInput, SimpleGrid } from '@mantine/core';
+import { Button, NumberInput, SimpleGrid, Textarea } from '@mantine/core';
 import SanPhamSelect from '../../SanPham/Form/SanPhamSelect';
 
 import { FormList } from '@mantine/form/lib/form-list/form-list';
 import { UseFormReturnType } from '@mantine/form/lib/use-form';
-import { ChiTietPhieuXuatFormData } from '../../../types';
+import { ChiTietPhieuXuatInput } from '../../../types';
 
 interface Props {
     phieuXuatForm: UseFormReturnType<{
-        payload: FormList<ChiTietPhieuXuatFormData>;
+        ngayXuat: Date;
+        nguoiMua: string;
+        payload: FormList<ChiTietPhieuXuatInput>;
     }>
     index: number;
 }
@@ -18,25 +20,47 @@ const ChiTietPhieuXuatListForm = ({ phieuXuatForm, index }: Props) => {
     return (
         <SimpleGrid cols={1} spacing='xs'>
             <SanPhamSelect
-                error={phieuXuatForm.getListInputProps('payload', index, 'maSanPham').error}
+                error={
+                    phieuXuatForm.getListInputProps(
+                        'payload',
+                        index,
+                        'maSanPham').error
+                }
                 maSanPham={typeof maSanPham.value === 'string' ? maSanPham.value : ''}
                 setMaSanPham={(maSanPham) =>
-                    phieuXuatForm.getListInputProps('payload', index, 'maSanPham').onChange(maSanPham)
+                    phieuXuatForm.getListInputProps(
+                        'payload',
+                        index,
+                        'maSanPham'
+                    ).onChange(maSanPham)
                 }
             />
             <NumberInput
-                label='Đơn giá xuất'
+                label='Đơn giá xuất/100gram'
                 placeholder='Đơn giá xuất'
-                min={0}
-                required
                 {...phieuXuatForm.getListInputProps('payload', index, 'donGiaXuat')}
+                parser={(value) => value?.replace(/\$\s?|(,*)/g, '')}
+                formatter={(value) =>
+                    !Number.isNaN(parseFloat(value || 'a'))
+                        ? (value || '').replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                        : '0'
+                }
+                required
+                min={0}
             />
             <NumberInput
-                label='Số lượng xuất'
+                label='Số lượng xuất (kg)'
                 placeholder='Số lượng xuất'
-                min={0}
-                required
                 {...phieuXuatForm.getListInputProps('payload', index, 'soLuongXuat')}
+                precision={2}
+                required
+                min={0}
+            />
+            <Textarea
+                label='Ghi chú'
+                placeholder='Nhập ghi chú'
+                {...phieuXuatForm.getListInputProps('payload', index, 'ghiChu')}
+                autosize
             />
             <Button
                 color='red'

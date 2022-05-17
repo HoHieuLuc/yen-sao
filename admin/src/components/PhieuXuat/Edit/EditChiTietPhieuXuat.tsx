@@ -7,23 +7,20 @@ import ChiTietPhieuXuatForm from '../Form/ChiTietPhieuXuatForm';
 
 import { showErrorNotification, showSuccessNotification } from '../../../events';
 import { chiTietPhieuXuatQuery } from '../../../graphql/queries';
-import { ChiTietPhieuXuatFormData } from '../../../types';
+import { ChiTietPhieuXuatInput } from '../../../types';
 
 interface Props {
     label: string;
     idPhieuXuat: string;
     idChiTiet: string;
     initialValues: {
-        maSanPham: string;
         tenSanPham: string;
         soLuongTon: number;
-        soLuongXuat: number;
-        donGiaXuat: number;
-    }
+    } & ChiTietPhieuXuatInput;
 }
 
 interface UpdateVars extends Omit<Props, 'initialValues' | 'label'> {
-    payload: ChiTietPhieuXuatFormData;
+    payload: ChiTietPhieuXuatInput;
 }
 
 const EditChiTietPhieuXuat = ({ idPhieuXuat, idChiTiet, initialValues, label }: Props) => {
@@ -36,12 +33,12 @@ const EditChiTietPhieuXuat = ({ idPhieuXuat, idChiTiet, initialValues, label }: 
 
     const modals = useModals();
 
-    const handleUpdate = (values: ChiTietPhieuXuatFormData) => {
+    const handleUpdate = (values: ChiTietPhieuXuatInput) => {
         void updateChiTietPhieuXuat({
             variables: {
                 idPhieuXuat: idPhieuXuat,
                 idChiTiet,
-                payload: values,
+                payload: values
             }
         });
     };

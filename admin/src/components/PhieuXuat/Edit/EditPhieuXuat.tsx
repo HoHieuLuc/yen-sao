@@ -1,84 +1,86 @@
-import { Link, useParams } from 'react-router-dom';
-import { useQuery } from '@apollo/client';
+import { useMutation } from '@apollo/client';
+import { useForm } from '@mantine/form';
 
-import { Anchor, Box, Center, Divider, Grid, Title } from '@mantine/core';
-import CreateChiTietPhieuXuat from '../Create/CreateChiTietPhieuXuat';
-import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
-import EditChiTietPhieuXuat from './EditChiTietPhieuXuat';
-import NotFound from '../../Utils/Errors/NotFound';
+import { Button, Grid, TextInput } from '@mantine/core';
+import { DatePicker } from '@mantine/dates';
 
-import { convertToVietnameseDate, convertToVND } from '../../../utils/common';
+import { showErrorNotification, showSuccessNotification } from '../../../events';
+import { PhieuXuat, UpdatePhieuXuatInput } from '../../../types';
 import { phieuXuatQuery } from '../../../graphql/queries';
-import { PhieuXuatByID } from '../../../types';
+import { convertToVND } from '../../../utils/common';
 
-const EditPhieuXuat = () => {
-    const { id } = useParams();
-    const { data, loading, error } = useQuery<
-        PhieuXuatByID, { id: string }
-    >(phieuXuatQuery.BY_ID, {
-        variables: {
-            id: id || ''
+interface Props {
+    phieuXuat: PhieuXuat;
+}
+
+const EditPhieuXuat = ({ phieuXuat }: Props) => {
+    const [updatePhieuXuat, { loading }] = useMutation<
+        never, UpdatePhieuXuatInput
+    >(phieuXuatQuery.UPDATE, {
+        onCompleted: () => showSuccessNotification('Cập nhật phiếu xuất thành công'),
+        onError: (error) => showErrorNotification(error.message)
+    });
+
+    const updatePhieuXuatForm = useForm({
+        initialValues: {
+            ngayXuat: new Date(phieuXuat.ngayXuat),
+            nguoiMua: phieuXuat.nguoiMua
+        },
+        validate: {
+            ngayXuat: (value) => value ? null : 'Vui lòng nhập ngày xuất',
+            nguoiMua: (value) => value ? null : 'Vui lòng nhập tên người mua'
         }
     });
 
-    if (error || !id || (data && data.phieuXuat && data.phieuXuat.byID === null)) {
-        return <NotFound />;
-    }
+    const handleUpdate = (values: typeof updatePhieuXuatForm.values) => {
+        void updatePhieuXuat({
+            variables: {
+                id: phieuXuat.id,
+                payload: values
+            }
+        });
+    };
 
     return (
-        <LoadingWrapper loading={loading}>
-            {data && <Box>
-                <Center mb='md'>
-                    <Title>Chỉnh sửa phiếu xuất</Title>
-                </Center>
-                <Grid gutter={10} mb='sm'>
-                    <Grid.Col xs={6}>Ngày xuất:</Grid.Col>
-                    <Grid.Col xs={6}>
-                        <Anchor component={Link} to={`/phieu-xuat/${id}`}>
-                            {convertToVietnameseDate(data.phieuXuat.byID.createdAt)}
-                        </Anchor>
-                    </Grid.Col>
-                    <Grid.Col xs={6}>Người xuất:</Grid.Col>
-                    <Grid.Col xs={6}>
-                        {data.phieuXuat.byID.nguoiXuat.username}
-                    </Grid.Col>
-                    <Grid.Col xs={6}>Số mặt hàng xuất:</Grid.Col>
-                    <Grid.Col xs={6}>
-                        {data.phieuXuat.byID.soMatHangXuat}
-                    </Grid.Col>
-                    <Grid.Col xs={6}>Tổng tiền:</Grid.Col>
-                    <Grid.Col xs={6}>
-                        {convertToVND(data.phieuXuat.byID.tongTien)}
-                    </Grid.Col>
-                </Grid>
-                <Box>
-                    {data.phieuXuat.byID.chiTiet.map(item => (
-                        <Box key={item.id}>
-                            <EditChiTietPhieuXuat
-                                label={
-                                    `${item.sanPham.tenSanPham} - Số lượng xuất: ${item.soLuongXuat}`
-                                }
-                                idPhieuXuat={id}
-                                idChiTiet={item.id}
-                                initialValues={{
-                                    tenSanPham: item.sanPham.tenSanPham,
-                                    maSanPham: item.sanPham.id,
-                                    soLuongTon: item.sanPham.soLuong,
-                                    ...item,
-                                }}
-                            />
-                            <Divider />
-                        </Box>
-                    ))}
-                    <Box>
-                        <CreateChiTietPhieuXuat
-                            label='Thêm sản phẩm mới vào phiếu xuất'
-                            idPhieuXuat={id}
-                        />
-                    </Box>
-                </Box>
-            </Box>}
-        </LoadingWrapper>
+        <form onSubmit={updatePhieuXuatForm.onSubmit(handleUpdate)}>
+            <Grid gutter={10} mb='sm' align='center'>
+                <Grid.Col span={4}>Ngày xuất:</Grid.Col>
+                <Grid.Col span={8}>
+                    <DatePicker
+                        {...updatePhieuXuatForm.getInputProps('ngayXuat')}
+                        clearable={false}
+                    />
+                </Grid.Col>
+                <Grid.Col span={4}>Người mua:</Grid.Col>
+                <Grid.Col span={6}>
+                    <TextInput
+                        {...updatePhieuXuatForm.getInputProps('nguoiMua')}
+                        placeholder='Nhập tên người mua'
+                    />
+                </Grid.Col>
+                <Grid.Col span={2}>
+                    <Button
+                        type='submit'
+                        loading={loading}
+                        fullWidth
+                    >
+                        Xác nhận
+                    </Button>
+                </Grid.Col>
+                <Grid.Col span={4}>Người xuất:</Grid.Col>
+                <Grid.Col span={8}>
+                    {phieuXuat.nguoiXuat.fullname}
+                </Grid.Col>
+                <Grid.Col span={4}>Số mặt hàng xuất:</Grid.Col>
+                <Grid.Col span={8}>
+                    {phieuXuat.soMatHangXuat}
+                </Grid.Col>
+                <Grid.Col span={4}>Tổng tiền:</Grid.Col>
+                <Grid.Col span={8}>
+                    {convertToVND(phieuXuat.tongTien)}
+                </Grid.Col>
+            </Grid>
+        </form>
     );
 };
 
