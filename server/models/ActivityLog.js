@@ -19,7 +19,7 @@ const activityLogSchema = new mongoose.Schema(
             type: String,
             required: true,
             enum: {
-                values: ['PhieuNhap', 'PhieuXuat', 'SanPham', 'Page', 'User'],
+                values: ['PhieuNhap', 'PhieuXuat', 'SanPham', 'User'],
             }
         },
         onDocumentId: {
