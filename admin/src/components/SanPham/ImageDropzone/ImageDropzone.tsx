@@ -1,6 +1,6 @@
 import { useMutation } from '@apollo/client';
 
-import { Group, Text, Image, ActionIcon } from '@mantine/core';
+import { Group, Text, Image, ActionIcon, Box } from '@mantine/core';
 import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 import { CloseIcon } from '../../Utils/Icons';
 
@@ -15,7 +15,7 @@ export const dropzoneChildren = () => {
                     Kéo ảnh vào hoặc click chuột để tải lên
                 </Text>
                 <Text size="sm" color="dimmed" inline mt={7}>
-                    Chỉ được đăng tối đa 3 ảnh, mỗi ảnh tối đa 3mb
+                    Chỉ được đăng tối đa 5 ảnh
                 </Text>
             </div>
         </Group>
@@ -44,8 +44,8 @@ const ImageDropzone = ({ images, onChange, onRemoveImage }: Props) => {
     });
 
     const handleMultiUpload = (files: Array<File>) => {
-        if (files.length + images.length > 3) {
-            return showErrorNotification('Chỉ được đăng tối đa 3 ảnh');
+        if (files.length + images.length > 5) {
+            return showErrorNotification('Chỉ được đăng tối đa 5 ảnh');
         }
         void multiUpload({
             variables: {
@@ -60,10 +60,9 @@ const ImageDropzone = ({ images, onChange, onRemoveImage }: Props) => {
                 onDrop={(files) => handleMultiUpload(files)}
                 onReject={() =>
                     showErrorNotification(
-                        `File không hợp lệ hoặc kích thước file quá lớn (tối đa 3mb).`
+                        `File không hợp lệ.`
                     )
                 }
-                maxSize={3 * 1024 ** 2}
                 accept={IMAGE_MIME_TYPE}
                 loading={loading}
             >
@@ -71,12 +70,14 @@ const ImageDropzone = ({ images, onChange, onRemoveImage }: Props) => {
             </Dropzone>
             <Group position="center" spacing="sm" mt='sm'>
                 {images.map((imageUrl, index) => (
-                    <div
-                        key={index}
-                        style={{
+                    <Box
+                        key={`${index}${imageUrl}`}
+                        sx={(theme) => ({
+                            borderRadius: theme.radius.sm,
                             maxWidth: '25%',
-                            position: 'relative'
-                        }}
+                            position: 'relative',
+                            border: '1px solid #eaeaea',
+                        })}
                     >
                         <Image
                             src={imageUrl}
@@ -97,7 +98,7 @@ const ImageDropzone = ({ images, onChange, onRemoveImage }: Props) => {
                         >
                             <CloseIcon />
                         </ActionIcon>
-                    </div>
+                    </Box>
                 ))}
             </Group>
         </>

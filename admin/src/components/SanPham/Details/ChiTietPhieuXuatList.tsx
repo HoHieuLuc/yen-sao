@@ -69,9 +69,9 @@ const ChiTietPhieuXuatList = ({ id, isOpened }: Props) => {
                     {convertToShortDate(chiTiet.createdAt)}
                 </Anchor>
             </td>
-            <td>{chiTiet.soLuongXuat}</td>
+            <td>{chiTiet.soLuongXuat / 1000}</td>
             <td>{convertToVND(chiTiet.donGiaXuat)}</td>
-            <td>{convertToVND(chiTiet.soLuongXuat * chiTiet.donGiaXuat)}</td>
+            <td>{convertToVND(chiTiet.soLuongXuat / 100 * chiTiet.donGiaXuat)}</td>
         </tr>
     ));
 
@@ -102,7 +102,7 @@ const ChiTietPhieuXuatList = ({ id, isOpened }: Props) => {
                                 <UnstyledButton
                                     onClick={() => toggleSortChiTietPhieuXuat('soLuong')}
                                 >
-                                    Số lượng xuất <SortIcon
+                                    Số lượng (kg) <SortIcon
                                         currentSort={sortChiTietPhieuXuat.currentSortValue}
                                         ascValue='SO_LUONG_ASC'
                                         descValue='SO_LUONG_DESC'

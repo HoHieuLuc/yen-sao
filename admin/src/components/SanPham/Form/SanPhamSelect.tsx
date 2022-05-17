@@ -1,24 +1,10 @@
-import { useApolloClient, useQuery, gql } from '@apollo/client';
+import { useApolloClient, gql } from '@apollo/client';
 import { useDebouncedSearch } from '../../../hooks';
 
 import { Loader, Select } from '@mantine/core';
 
-import { PageInfo, PaginateVars, SanPham } from '../../../types';
-import { sanPhamQuery } from '../../../graphql/queries';
+import { sanPhamHooks } from '../../../graphql/queries';
 import { ReactNode } from 'react';
-
-interface SanPhamsData {
-    sanPham: {
-        all: {
-            docs: Array<SanPham>;
-            pageInfo: PageInfo;
-        }
-    }
-}
-
-interface SearchVars extends PaginateVars {
-    search: string;
-}
 
 interface Props {
     maSanPham: string;
@@ -30,15 +16,13 @@ const SanPhamSelect = ({ maSanPham, setMaSanPham, error }: Props) => {
     const { debouncedSeach, setSearch } = useDebouncedSearch('', 300);
     const client = useApolloClient();
 
-    const { data, loading } = useQuery<
-        SanPhamsData, SearchVars
-    >(sanPhamQuery.ALL, {
-        variables: {
+    const { data, loading } = sanPhamHooks.useAllSanPham(
+        {
             page: 1,
             limit: 50,
             search: debouncedSeach,
         }
-    });
+    );
 
     const sanPhamData = data ? data.sanPham.all.docs.map(
         (sanPham) => ({
@@ -59,7 +43,7 @@ const SanPhamSelect = ({ maSanPham, setMaSanPham, error }: Props) => {
     return (
         <Select
             label='Tên sản phẩm'
-            placeholder='Chọn loại sản phẩm'
+            placeholder='Chọn sản phẩm'
             searchable
             nothingFound={loading ? <Loader /> : 'Không tìm thấy sản phẩm nào'}
             data={sanPhamData}
@@ -68,7 +52,8 @@ const SanPhamSelect = ({ maSanPham, setMaSanPham, error }: Props) => {
             onChange={(value) => setMaSanPham(value || '')}
             error={error}
             clearable
-            description={sanPham ? `Số lượng tồn: ${sanPham.soLuong}` : ''}
+            description={sanPham ? `Số lượng tồn: ${sanPham.soLuong / 1000} kg` : ''}
+            required
         />
     );
 };

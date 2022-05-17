@@ -1,48 +1,24 @@
-import { useMutation, useQuery } from '@apollo/client';
 import { useParams } from 'react-router-dom';
 
-import SanPhamForm, { SanPhamFormVars } from '../Form/SanPhamForm';
 import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
 import NotFound from '../../Utils/Errors/NotFound';
+import SanPhamForm from '../Form/SanPhamForm';
 import { Box } from '@mantine/core';
 
-import { showErrorNotification, showSuccessNotification } from '../../../events';
-import { sanPhamQuery } from '../../../graphql/queries';
-import { SanPham } from '../../../types';
-
-interface SanPhamByID {
-    sanPham: {
-        byID: SanPham
-    }
-}
-
-interface UpdateVars {
-    id: string;
-    payload: SanPhamFormVars;
-}
+import { sanPhamHooks } from '../../../graphql/queries';
+import { SanPhamFormVars } from '../../../types';
 
 const EditSanPham = () => {
     const { id } = useParams();
-    const { data, loading, error } = useQuery<
-        SanPhamByID, { id: string }
-    >(sanPhamQuery.BY_ID, {
-        variables: {
-            id: id || ''
-        }
-    });
+    const { data, loading, error } = sanPhamHooks.useSanPhamByID(id || '');
 
-    const [updateSanPham, { loading: updateLoading }] = useMutation<
-        never, UpdateVars
-    >(sanPhamQuery.UPDATE, {
-        onCompleted: () => showSuccessNotification('Cập nhật sản phẩm thành công'),
-        onError: (error) => showErrorNotification(error.message)
-    });
+    const [updateSanPham, { loading: updateLoading }] = sanPhamHooks.useUpdateSanPham();
 
     if (error || !id || (data && data.sanPham && data.sanPham.byID === null)) {
         return <NotFound />;
     }
 
-    const handleUpdate = (values: SanPhamFormVars) => {        
+    const handleUpdate = (values: SanPhamFormVars) => {
         void updateSanPham({
             variables: {
                 id,
@@ -57,10 +33,7 @@ const EditSanPham = () => {
                 {data && <SanPhamForm
                     loading={updateLoading}
                     handleSubmit={handleUpdate}
-                    initialValues={{
-                        ...data.sanPham.byID,
-                        maLoaiSanPham: data.sanPham.byID.loaiSanPham.id
-                    }}
+                    initialValues={data.sanPham.byID}
                 />}
             </Box>
         </></LoadingWrapper>

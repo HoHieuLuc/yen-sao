@@ -66,12 +66,12 @@ const ChiTietPhieuNhapList = ({ id, isOpened }: Props) => {
             <td>{10 * (1 - 1) + (index + 1)}</td>
             <td>
                 <Anchor component={Link} to={`/phieu-nhap/${chiTiet.maPhieuNhap}`}>
-                    {convertToShortDate(chiTiet.createdAt)}
+                    {convertToShortDate(chiTiet.ngayNhap)}
                 </Anchor>
             </td>
-            <td>{chiTiet.soLuongNhap}</td>
-            <td>{chiTiet.donGiaNhap}</td>
-            <td>{convertToVND(chiTiet.soLuongNhap * chiTiet.donGiaNhap)}</td>
+            <td>{chiTiet.soLuongNhap / 1000}</td>
+            <td>{convertToVND(chiTiet.donGiaNhap)}</td>
+            <td>{convertToVND(chiTiet.thanhTien)}</td>
         </tr>
     ));
 
@@ -102,7 +102,7 @@ const ChiTietPhieuNhapList = ({ id, isOpened }: Props) => {
                                 <UnstyledButton
                                     onClick={() => toggleSortChiTietPhieuNhap('soLuong')}
                                 >
-                                    Số lượng <SortIcon
+                                    Số lượng (kg) <SortIcon
                                         currentSort={sortChiTietPhieuNhap.currentSortValue}
                                         ascValue='SO_LUONG_ASC'
                                         descValue='SO_LUONG_DESC'
