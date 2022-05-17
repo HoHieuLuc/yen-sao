@@ -1,4 +1,4 @@
-const logHelper = require('./helper.log');
+const logHelper = require('./helper.logger');
 
 const create = async ({ _doc: { password: _, ...user } }, currentUser) => {
     await logHelper.create(
