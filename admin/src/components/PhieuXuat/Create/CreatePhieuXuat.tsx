@@ -5,10 +5,10 @@ import PhieuXuatForm from '../Form/PhieuXuatForm';
 
 import { showErrorNotification, showSuccessNotification } from '../../../events';
 import { phieuXuatQuery } from '../../../graphql/queries';
-import { ChiTietPhieuXuatFormData } from '../../../types';
+import { ChiTietPhieuXuatInput } from '../../../types';
 
 export interface PhieuXuatVars {
-    payload: Array<ChiTietPhieuXuatFormData>
+    payload: Array<ChiTietPhieuXuatInput>
 }
 
 const CreatePhieuXuat = () => {

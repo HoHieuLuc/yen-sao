@@ -10,21 +10,13 @@ import ErrorPage from '../../Utils/Errors/ErrorPage';
 import { SortIcon } from '../../Utils/Icons';
 import PhieuXuatItem from './PhieuXuatItem';
 
-import { PageInfo, PaginateVars, User } from '../../../types';
+import { PageInfo, PaginateVars, PhieuXuat } from '../../../types';
 import { phieuXuatQuery } from '../../../graphql/queries';
-
-export interface PhieuXuatDoc {
-    id: string;
-    nguoiXuat: Omit<User, 'email' | 'fullname' | 'role'>;
-    createdAt: number;
-    soMatHangXuat: number;
-    tongTien: number;
-}
 
 export interface PhieuXuatsData {
     phieuXuat: {
         all: {
-            docs: Array<PhieuXuatDoc>;
+            docs: Array<PhieuXuat>;
             pageInfo: PageInfo;
         }
     }
@@ -82,6 +74,7 @@ const PhieuXuatList = () => {
                         <tr style={{ whiteSpace: 'nowrap' }}>
                             <th>STT</th>
                             <th>Người xuất</th>
+                            <th>Người mua</th>
                             <th>
                                 <UnstyledButton
                                     onClick={() => toggleSortPhieuXuat('ngayXuat')}

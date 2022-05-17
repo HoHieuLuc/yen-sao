@@ -5,7 +5,7 @@ import { Center, Title } from '@mantine/core';
 import AboutForm from './AboutForm';
 
 import { showErrorNotification, showSuccessNotification } from '../../../events';
-import { configQuery } from '../../../graphql/queries';
+import { pageQuery } from '../../../graphql/queries';
 import { AboutData } from './About';
 
 interface AboutConfigVars {
@@ -18,16 +18,17 @@ interface AboutConfigVars {
 const EditAbout = () => {
     const { data, loading } = useQuery<
         AboutData, { name: 'about' }
-    >(configQuery.CONFIG_BY_NAME,
+    >(pageQuery.PAGE_BY_NAME,
         {
             variables: {
                 name: 'about'
             }
         }
     );
+
     const [submitAbout, { loading: submitLoading }] = useMutation<
         never, AboutConfigVars
-    >(configQuery.CREATE_OR_UPDATE_CONFIG, {
+    >(pageQuery.CREATE_OR_UPDATE_PAGE, {
         onCompleted: () => showSuccessNotification('Cập nhật thành công'),
         onError: (error) => showErrorNotification(error.message)
     });
@@ -50,7 +51,7 @@ const EditAbout = () => {
             </Center>
             {data &&
                 <AboutForm
-                    inititalValue={data.config.byName ? data.config.byName.content.value : ''}
+                    inititalValue={data.page.byName ? data.page.byName.content.value : ''}
                     loading={submitLoading}
                     handleSubmit={handleSubmitAbout}
                 />

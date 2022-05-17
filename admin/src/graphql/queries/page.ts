@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
-const CONFIG_BY_NAME = gql`
+const PAGE_BY_NAME = gql`
     query ConfigByName($name: String!) {
-        config {
+        page {
             byName(name: $name) {
                 id
                 name
@@ -12,9 +12,9 @@ const CONFIG_BY_NAME = gql`
     }
 `;
 
-const CREATE_OR_UPDATE_CONFIG = gql`
+const CREATE_OR_UPDATE_PAGE = gql`
     mutation CreateOrUpdateConfig($name: String!, $content: Object!) {
-        config {
+        page {
             createOrUpdate(name: $name, content: $content) {
                 id
                 name
@@ -24,7 +24,7 @@ const CREATE_OR_UPDATE_CONFIG = gql`
     }
 `;
 
-export const configQuery = {
-    CONFIG_BY_NAME,
-    CREATE_OR_UPDATE_CONFIG
+export const pageQuery = {
+    PAGE_BY_NAME,
+    CREATE_OR_UPDATE_PAGE
 };

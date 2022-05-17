@@ -1,12 +1,13 @@
 import { gql, useApolloClient } from '@apollo/client';
 import { formList, useForm } from '@mantine/form';
 
+import { Accordion, Button, Group, Stack, TextInput } from '@mantine/core';
 import ChiTietPhieuXuatListForm from './ChiTietPhieuXuatListForm';
-import { Accordion, Button, Group } from '@mantine/core';
 import { PlusIcon } from '../../Utils/Icons';
 
-import { ChiTietPhieuXuatFormData, PhieuXuatVars } from '../../../types';
+import { ChiTietPhieuXuatInput, PhieuXuatVars } from '../../../types';
 import { showErrorNotification } from '../../../events';
+import { DatePicker } from '@mantine/dates';
 
 interface Props {
     loading: boolean;
@@ -19,17 +20,22 @@ interface Props {
 const PhieuXuatForm = ({ loading, handleSubmit }: Props) => {
     const phieuXuatForm = useForm({
         initialValues: {
-            payload: formList<ChiTietPhieuXuatFormData>([{
+            ngayXuat: new Date(),
+            nguoiMua: '',
+            payload: formList<ChiTietPhieuXuatInput>([{
                 maSanPham: '',
                 soLuongXuat: 0,
-                donGiaXuat: 0
-            }])
+                donGiaXuat: 0,
+                ghiChu: ''
+            }]),
         },
         validate: {
+            ngayXuat: (value) => value ? null : 'Vui lòng nhập ngày xuất',
+            nguoiMua: (value) => value ? null : 'Vui lòng nhập tên người mua',
             payload: {
                 maSanPham: (value) => value ? null : 'Vui lòng chọn 1 sản phẩm',
                 donGiaXuat: (value) => value >= 0 ? null : 'Giá xuất không hợp lệ',
-                soLuongXuat: (value) => value >= 1 ? null : 'Số lượng không hợp lệ',
+                soLuongXuat: (value) => value > 0 ? null : 'Số lượng không hợp lệ',
             }
         }
     });
@@ -47,7 +53,7 @@ const PhieuXuatForm = ({ loading, handleSubmit }: Props) => {
         return (
             <Accordion.Item
                 label={sanPham
-                    ? `${sanPham.tenSanPham} - Số lượng xuất: ${phieuXuat.soLuongXuat || 0}`
+                    ? `${sanPham.tenSanPham} - Số lượng xuất: ${phieuXuat.soLuongXuat || 0} kg`
                     : 'Chọn sản phẩm'}
                 key={index}
             >
@@ -61,36 +67,57 @@ const PhieuXuatForm = ({ loading, handleSubmit }: Props) => {
 
     const submit = (values: PhieuXuatVars) => {
         if (phieuXuatForm.values.payload.length === 0) {
-            return showErrorNotification('Vui lòng nhập ít nhất 1 chi tiết phiếu xuất');
+            return showErrorNotification('Vui lòng xuất ít nhất 1 sẩn phẩm');
         }
-        handleSubmit(values, () => phieuXuatForm.reset());
+        handleSubmit({
+            ...values,
+            payload: values.payload.map(item => ({
+                ...item,
+                soLuongXuat: item.soLuongXuat * 1000
+            }))
+        }, () => phieuXuatForm.reset());
     };
 
     return (
         <form onSubmit={phieuXuatForm.onSubmit(submit)}>
-            <Accordion multiple offsetIcon={false}>
-                {chiTietFormElements}
-            </Accordion>
-            <Group position='center' mt='md'>
-                <Button
-                    color='green'
-                    onClick={() => phieuXuatForm.addListItem('payload',
-                        {
-                            maSanPham: '',
-                            soLuongXuat: 0,
-                            donGiaXuat: 0
-                        })}
-                    rightIcon={<PlusIcon />}
-                >
-                    Thêm mới
-                </Button>
-                <Button
-                    type='submit'
-                    loading={loading}
-                >
-                    Xác nhận
-                </Button>
-            </Group>
+            <Stack spacing='xs'>
+                <TextInput
+                    label='Người mua'
+                    placeholder='Nhập tên người mua'
+                    {...phieuXuatForm.getInputProps('nguoiMua')}
+                    required
+                />
+                <DatePicker
+                    label='Ngày xuất'
+                    {...phieuXuatForm.getInputProps('ngayXuat')}
+                    clearable={false}
+                    required
+                />
+                <Accordion multiple offsetIcon={false}>
+                    {chiTietFormElements}
+                </Accordion>
+                <Group position='center'>
+                    <Button
+                        color='green'
+                        onClick={() => phieuXuatForm.addListItem('payload',
+                            {
+                                maSanPham: '',
+                                soLuongXuat: 0,
+                                donGiaXuat: 0,
+                                ghiChu: ''
+                            })}
+                        rightIcon={<PlusIcon />}
+                    >
+                        Thêm mới
+                    </Button>
+                    <Button
+                        type='submit'
+                        loading={loading}
+                    >
+                        Xác nhận
+                    </Button>
+                </Group>
+            </Stack>
         </form>
     );
 };

@@ -33,7 +33,7 @@ const SanPhamDetails = () => {
             }}
         >
             <Tabs.Tab label="Thông tin sản phẩm" tabKey='thong-tin'>
-                <DetailsTab id={id} isOpened={activeTab === 0} />
+                <DetailsTab id={id} />
             </Tabs.Tab>
             <Tabs.Tab label="Thông tin nhập hàng" tabKey='nhap-hang'>
                 <ChiTietPhieuNhapList id={id} isOpened={activeTab === 1} />

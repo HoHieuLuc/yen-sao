@@ -10,21 +10,14 @@ import ErrorPage from '../../Utils/Errors/ErrorPage';
 import { SortIcon } from '../../Utils/Icons';
 import PhieuNhapItem from './PhieuNhapItem';
 
-import { PageInfo, PaginateVars, User } from '../../../types';
+import { PageInfo, PaginateVars, PhieuNhap } from '../../../types';
 import { phieuNhapQuery } from '../../../graphql/queries';
 
-export interface PhieuNhapDoc {
-    id: string;
-    nguoiNhap: Omit<User, 'email' | 'fullname' | 'role'>;
-    createdAt: number;
-    soMatHangNhap: number;
-    tongTien: number;
-}
 
 export interface PhieuNhapsData {
     phieuNhap: {
         all: {
-            docs: Array<PhieuNhapDoc>;
+            docs: Array<PhieuNhap>;
             pageInfo: PageInfo;
         }
     }

@@ -1,32 +1,16 @@
-import { useApolloClient, useMutation } from '@apollo/client';
+import SanPhamForm from '../Form/SanPhamForm';
 
-import SanPhamForm, { SanPhamFormVars } from '../Form/SanPhamForm';
-
-import { showErrorNotification, showSuccessNotification } from '../../../events';
-import { sanPhamQuery } from '../../../graphql/queries';
+import { sanPhamHooks } from '../../../graphql/queries';
+import { SanPhamFormVars } from '../../../types';
 
 const CreateSanPham = () => {
-    const client = useApolloClient();
-    const [createSanPham, { loading }] = useMutation<
-        never, { payload: SanPhamFormVars }
-    >(sanPhamQuery.CREATE, {
-        onCompleted: () => {
-            showSuccessNotification('Thêm sản phẩm thành công');
-            client.cache.evict({
-                id: 'ROOT_QUERY',
-                fieldName: 'sanPham',
-            });
-            client.cache.gc();
-        },
-        onError: (error) => showErrorNotification(error.message)
-    });
+    const [createSanPham, { loading }] = sanPhamHooks.useCreateSanPham();
 
-    const handleCreateSanPham = (values: SanPhamFormVars, callback: () => void) => {
+    const handleCreateSanPham = (values: SanPhamFormVars) => {
         void createSanPham({
             variables: {
                 payload: values
-            },
-            onCompleted: callback
+            }
         });
     };
 

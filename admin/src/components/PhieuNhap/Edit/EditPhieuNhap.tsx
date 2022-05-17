@@ -1,84 +1,62 @@
-import { Link, useParams } from 'react-router-dom';
-import { useQuery } from '@apollo/client';
+import { useMutation } from '@apollo/client';
+import { useState } from 'react';
 
-import { Anchor, Box, Center, Divider, Grid, Title } from '@mantine/core';
-import CreateChiTietPhieuNhap from '../Create/CreateChiTietPhieuNhap';
-import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
-import EditChiTietPhieuNhap from './EditChiTietPhieuNhap';
-import NotFound from '../../Utils/Errors/NotFound';
+import { Button, Grid } from '@mantine/core';
+import { DatePicker } from '@mantine/dates';
 
-import { convertToVietnameseDate, convertToVND } from '../../../utils/common';
+import { showErrorNotification, showSuccessNotification } from '../../../events';
+import { PhieuNhap, UpdatePhieuNhapInput } from '../../../types';
 import { phieuNhapQuery } from '../../../graphql/queries';
-import { PhieuNhapByID } from '../../../types';
 
-const EditPhieuNhap = () => {
-    const { id } = useParams();
-    const { data, loading, error } = useQuery<
-        PhieuNhapByID, { id: string }
-    >(phieuNhapQuery.BY_ID, {
-        variables: {
-            id: id || ''
-        }
+interface Props {
+    phieuNhap: PhieuNhap;
+}
+
+const EditPhieuNhap = ({ phieuNhap }: Props) => {
+    const [updatePhieuNhap, { loading }] = useMutation<
+        never, UpdatePhieuNhapInput
+    >(phieuNhapQuery.UPDATE, {
+        onCompleted: () => showSuccessNotification('Cập nhật phiếu nhập thành công'),
+        onError: (error) => showErrorNotification(error.message)
     });
 
-    if (error || !id || (data && data.phieuNhap && data.phieuNhap.byID === null)) {
-        return <NotFound />;
-    }
+    const [ngayNhap, setNgayNhap] = useState<Date | null>(
+        new Date(phieuNhap.ngayNhap)
+    );
+
+    const handleUpdate = () => {
+        if (!ngayNhap) {
+            return;
+        }
+        void updatePhieuNhap({
+            variables: {
+                id: phieuNhap.id,
+                payload: {
+                    ngayNhap
+                }
+            }
+        });
+    };
 
     return (
-        <LoadingWrapper loading={loading}>
-            {data && <Box>
-                <Center mb='md'>
-                    <Title>Chỉnh sửa phiếu nhập</Title>
-                </Center>
-                <Grid gutter={10} mb='sm'>
-                    <Grid.Col xs={6}>Ngày nhập:</Grid.Col>
-                    <Grid.Col xs={6}>
-                        <Anchor component={Link} to={`/phieu-nhap/${id}`}>
-                            {convertToVietnameseDate(data.phieuNhap.byID.createdAt)}
-                        </Anchor>
-                    </Grid.Col>
-                    <Grid.Col xs={6}>Người nhập:</Grid.Col>
-                    <Grid.Col xs={6}>
-                        {data.phieuNhap.byID.nguoiNhap.username}
-                    </Grid.Col>
-                    <Grid.Col xs={6}>Số mặt hàng nhập:</Grid.Col>
-                    <Grid.Col xs={6}>
-                        {data.phieuNhap.byID.soMatHangNhap}
-                    </Grid.Col>
-                    <Grid.Col xs={6}>Tổng tiền:</Grid.Col>
-                    <Grid.Col xs={6}>
-                        {convertToVND(data.phieuNhap.byID.tongTien)}
-                    </Grid.Col>
-                </Grid>
-                <Box>
-                    {data.phieuNhap.byID.chiTiet.map(item => (
-                        <Box
-                            key={item.id}
-                        >
-                            <EditChiTietPhieuNhap
-                                label={`${item.sanPham.tenSanPham} - Số lượng nhập: ${item.soLuongNhap}`}
-                                idPhieuNhap={id}
-                                idChiTiet={item.id}
-                                initialValues={{
-                                    tenSanPham: item.sanPham.tenSanPham,
-                                    maSanPham: item.sanPham.id,
-                                    soLuongTon: item.sanPham.soLuong,
-                                    ...item,
-                                }}
-                            />
-                            <Divider />
-                        </Box>
-                    ))}
-                    <Box>
-                        <CreateChiTietPhieuNhap
-                            label='Thêm sản phẩm mới vào phiếu nhập'
-                            idPhieuNhap={id}
-                        />
-                    </Box>
-                </Box>
-            </Box>}
-        </LoadingWrapper>
+        <Grid>
+            <Grid.Col span={9}>
+                <DatePicker
+                    value={ngayNhap}
+                    onChange={setNgayNhap}
+                    clearable={false}
+                />
+            </Grid.Col>
+            <Grid.Col span={3}>
+                <Button
+                    disabled={ngayNhap === null}
+                    loading={loading}
+                    onClick={handleUpdate}
+                >
+                    Xác nhận
+                </Button>
+            </Grid.Col>
+        </Grid>
     );
 };
 

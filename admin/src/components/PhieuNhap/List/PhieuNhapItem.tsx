@@ -4,18 +4,18 @@ import DeletePhieuNhap from '../Delete/DeletePhieuNhap';
 import { ActionIcon, Center } from '@mantine/core';
 import { LinkIcon, Icon } from '../../Utils/Icons';
 
-import { convertToVietnameseDate, convertToVND } from '../../../utils/common';
-import { PhieuNhapDoc } from './PhieuNhapList';
+import { convertToShortDate, convertToVND } from '../../../utils/common';
+import { PhieuNhap } from '../../../types';
 
 interface Props {
-    phieuNhap: PhieuNhapDoc;
+    phieuNhap: PhieuNhap;
     index: number;
 }
 
 const PhieuNhapItem = ({ phieuNhap, index }: Props) => {
     const modals = useModals();
 
-    const openDeleteModal = (phieuNhap: PhieuNhapDoc) => {
+    const openDeleteModal = (phieuNhap: PhieuNhap) => {
         const modalId = modals.openModal({
             title: <h3>Xóa phiếu nhập</h3>,
             children: <DeletePhieuNhap
@@ -28,8 +28,8 @@ const PhieuNhapItem = ({ phieuNhap, index }: Props) => {
     return (
         <tr key={phieuNhap.id}>
             <td>{index}</td>
-            <td>{phieuNhap.nguoiNhap.username}</td>
-            <td>{convertToVietnameseDate(phieuNhap.createdAt)}</td>
+            <td>{phieuNhap.nguoiNhap.fullname}</td>
+            <td>{convertToShortDate(phieuNhap.ngayNhap)}</td>
             <td>{phieuNhap.soMatHangNhap}</td>
             <td>{convertToVND(phieuNhap.tongTien)}</td>
             <td>

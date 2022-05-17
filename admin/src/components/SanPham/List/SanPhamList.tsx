@@ -1,9 +1,8 @@
-import { 
-    useDebouncedSearchParams, 
-    usePagination, 
-    useSortParams, 
+import {
+    useDebouncedSearchParams,
+    usePagination,
+    useSortParams,
 } from '../../../hooks';
-import { useQuery } from '@apollo/client';
 
 import { Center, ScrollArea, Table, Text, TextInput, UnstyledButton } from '@mantine/core';
 import { SortIcon, LinkIcon, SearchIcon } from '../../Utils/Icons';
@@ -11,49 +10,26 @@ import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
 import MyPagination from '../../Utils/Pagination/MyPagination';
 import ErrorPage from '../../Utils/Errors/ErrorPage';
 
-import { LoaiSanPham, PageInfo, PaginateVars } from '../../../types';
-import { sanPhamQuery } from '../../../graphql/queries';
+import { sanPhamHooks } from '../../../graphql/queries';
 
-interface SanPhamDoc {
-    id: string;
-    tenSanPham: string;
-    soLuong: number;
-    loaiSanPham: Omit<LoaiSanPham, 'moTa'>;
-}
-
-interface SanPhamsData {
-    sanPham: {
-        all: {
-            docs: Array<SanPhamDoc>;
-            pageInfo: PageInfo;
-        }
-    }
-}
-
-interface SearchVars extends PaginateVars {
-    search: string;
-    sort: string | null;
-}
 
 const SanPhamList = () => {
     const { search, debouncedSearch, setSearch } = useDebouncedSearchParams(300);
     const { currentPage, handlePageChange, limit, handleLimitChange } = usePagination();
     const [sortSanPham, toggleSortSoLuong] = useSortParams(
-        { 
+        {
             soLuong: [null, 'SO_LUONG_ASC', 'SO_LUONG_DESC']
         }
     );
 
-    const { data, loading, error } = useQuery<
-        SanPhamsData, SearchVars
-    >(sanPhamQuery.ALL, {
-        variables: {
+    const { data, loading, error } = sanPhamHooks.useAllSanPham(
+        {
             page: currentPage,
             limit: limit,
             search: debouncedSearch,
             sort: sortSanPham.currentSortValue
         }
-    });
+    );
 
     if (error) {
         return <ErrorPage />;
@@ -67,8 +43,7 @@ const SanPhamList = () => {
                     {sanPham.tenSanPham}
                 </Text>
             </td>
-            <td>{sanPham.soLuong}</td>
-            <td>{sanPham.loaiSanPham.tenLoaiSanPham}</td>
+            <td>{sanPham.soLuong / 1000}</td>
             <td>
                 <Center>
                     <LinkIcon
@@ -106,15 +81,18 @@ const SanPhamList = () => {
                             <th style={{ width: '50%' }}>Tên sản phẩm</th>
                             <th>
                                 <UnstyledButton onClick={() => toggleSortSoLuong('soLuong')}>
-                                    Số lượng còn <SortIcon 
+                                    Số lượng tồn (kg) <SortIcon
                                         currentSort={sortSanPham.currentSortValue}
                                         ascValue='SO_LUONG_ASC'
                                         descValue='SO_LUONG_DESC'
                                     />
                                 </UnstyledButton>
                             </th>
-                            <th>Loại sản phẩm</th>
-                            <th>Chức năng</th>
+                            <th>
+                                <Center>
+                                    Chức năng
+                                </Center>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>

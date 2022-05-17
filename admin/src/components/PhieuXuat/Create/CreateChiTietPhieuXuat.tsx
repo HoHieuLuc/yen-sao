@@ -5,7 +5,7 @@ import ChiTietPhieuXuatForm from '../Form/ChiTietPhieuXuatForm';
 
 import { showErrorNotification, showSuccessNotification } from '../../../events';
 import { chiTietPhieuXuatQuery } from '../../../graphql/queries';
-import { ChiTietPhieuXuatFormData } from '../../../types';
+import { ChiTietPhieuXuatInput } from '../../../types';
 
 interface Props {
     label: string;
@@ -13,7 +13,7 @@ interface Props {
 }
 
 interface CreateVars extends Omit<Props, 'label'> {
-    payload: ChiTietPhieuXuatFormData
+    payload: ChiTietPhieuXuatInput
 }
 
 const CreateChiTietPhieuXuat = ({ idPhieuXuat, label }: Props) => {
@@ -24,7 +24,7 @@ const CreateChiTietPhieuXuat = ({ idPhieuXuat, label }: Props) => {
         onCompleted: () => showSuccessNotification('Thêm sản phẩm vào phiếu xuất thành công')
     });
 
-    const handleCreate = (values: ChiTietPhieuXuatFormData, callback: () => void) => {
+    const handleCreate = (values: ChiTietPhieuXuatInput, callback: () => void) => {
         void createChiTietPhieuXuat({
             variables: {
                 idPhieuXuat,

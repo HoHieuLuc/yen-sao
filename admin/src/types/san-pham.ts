@@ -1,13 +1,52 @@
-import { LoaiSanPham } from './loai-san-pham';
+import { PageInfo, PaginateVars } from './paginate';
 
 export interface SanPham {
     id: string;
     tenSanPham: string;
     soLuong: number;
-    donGia: number;
+    donGiaSi: number;
+    donGiaLe: number;
+    donGiaTuyChon: string;
     moTa: string;
+    xuatXu: string;
+    tags: Array<string>;
     anhSanPham: Array<string>;
     createdAt: number;
     updatedAt: number;
-    loaiSanPham: LoaiSanPham;
+}
+
+export interface SanPhamFormVars {
+    tenSanPham: string;
+    donGiaSi: number;
+    donGiaLe: number;
+    donGiaTuyChon: string;
+    moTa: string;
+    xuatXu: string;
+    tags: Array<string>;
+    anhSanPham: Array<string>;
+}
+
+export interface UpdateSanPhamInput {
+    id: string;
+    payload: SanPhamFormVars;
+}
+
+export interface SanPhamByID {
+    sanPham: {
+        byID: SanPham
+    }
+}
+
+export interface AllSanPhams {
+    sanPham: {
+        all: {
+            docs: Array<SanPham>;
+            pageInfo: PageInfo;
+        }
+    }
+}
+
+export interface SearchSanPhamVars extends PaginateVars {
+    search: string;
+    sort?: string | null;
 }

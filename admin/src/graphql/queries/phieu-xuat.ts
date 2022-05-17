@@ -9,10 +9,13 @@ const ALL = gql`
                     nguoiXuat {
                         id
                         username
+                        fullname
                     }
-                    createdAt
+                    nguoiMua
+                    ngayXuat
                     soMatHangXuat
                     tongTien
+                    createdAt
                 }
                 pageInfo {
                     page
@@ -32,11 +35,14 @@ const BY_ID = gql`
                 nguoiXuat {
                     id
                     username
+                    fullname
                 }
-                createdAt
-                updatedAt
+                nguoiMua
+                ngayXuat
                 soMatHangXuat
                 tongTien
+                createdAt
+                updatedAt
                 chiTiet {
                     id
                     maPhieuXuat
@@ -44,14 +50,11 @@ const BY_ID = gql`
                         id
                         tenSanPham
                         soLuong
-                        anhSanPham
-                        loaiSanPham {
-                            id
-                            tenLoaiSanPham
-                        }
                     }
                     soLuongXuat
                     donGiaXuat
+                    thanhTien
+                    ghiChu
                 }
             }
         }
@@ -59,27 +62,15 @@ const BY_ID = gql`
 `;
 
 const CREATE = gql`
-    mutation CreatePhieuXuat($payload: [PhieuXuatInput!]!) {
+    mutation CreatePhieuXuat($nguoiMua: String!, $ngayXuat: Date!, $payload: [ChiTietPhieuXuatInput!]!) {
         phieuXuat {
-            create(payload: $payload) {
+            create(nguoiMua: $nguoiMua, ngayXuat: $ngayXuat, payload: $payload) {
                 id
-                nguoiXuat {
-                    id
-                    username
-                }
-                soMatHangXuat
-                tongTien
                 chiTiet {
                     id
-                    maPhieuXuat
-                    soLuongXuat
-                    donGiaXuat
                     sanPham {
                         id
-                        tenSanPham
                         soLuong
-                        createdAt
-                        updatedAt
                     }
                 }
             }
@@ -94,23 +85,33 @@ const DELETE = gql`
                 id
                 chiTiet {
                     id
-                    maPhieuXuat
                     sanPham {
                         id
-                        tenSanPham
                         soLuong
                     }
-                    soLuongXuat
-                    donGiaXuat
                 }
             }
         }
     }
 `;
 
+const UPDATE = gql`
+    mutation UpdatePhieuXuat($id: ID!, $payload: UpdatePhieuXuatInput!) {
+        phieuXuat {
+            update(id: $id, payload: $payload) {
+                id
+                nguoiMua
+                ngayXuat
+                updatedAt
+            }
+        }
+    }
+`;
+
 export const phieuXuatQuery = {
-    CREATE,
     ALL,
+    BY_ID,
+    CREATE,
+    UPDATE,
     DELETE,
-    BY_ID
 };

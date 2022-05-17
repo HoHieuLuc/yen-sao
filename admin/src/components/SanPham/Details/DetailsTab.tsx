@@ -1,34 +1,37 @@
-import { useQuery } from '@apollo/client';
+import { Link, useNavigate } from 'react-router-dom';
+import { useModals } from '@mantine/modals';
 
-import { Box, Button, Center, Grid, Group, Paper, Text, Title } from '@mantine/core';
+import { Box, Button, Center, Grid, Group, Title } from '@mantine/core';
 import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
+import DeleteSanPham from '../Delete/DeleteSanPham';
 import NotFound from '../../Utils/Errors/NotFound';
+import RichTextEditor from '@mantine/rte';
 import ImageDisplay from './ImageDisplay';
 
-import { sanPhamQuery } from '../../../graphql/queries';
+import { sanPhamHooks } from '../../../graphql/queries';
+import { convertToVND } from '../../../utils/common';
 import { SanPham } from '../../../types';
-import { Link } from 'react-router-dom';
 
-interface SanPhamByID {
-    sanPham: {
-        byID: SanPham
-    }
-}
 
 interface Props {
     id: string;
-    isOpened: boolean;
 }
 
-const DetailsTab = ({ id, isOpened }: Props) => {
-    const { data, loading, error } = useQuery<
-        SanPhamByID, { id: string }
-    >(sanPhamQuery.BY_ID, {
-        variables: {
-            id: id
-        },
-        skip: !isOpened
-    });
+const DetailsTab = ({ id }: Props) => {
+    const navigate = useNavigate();
+    const { data, loading, error } = sanPhamHooks.useSanPhamByID(id);
+
+    const modals = useModals();
+    const openDeleteModal = (sanPham: SanPham) => {
+        const modalId = modals.openModal({
+            title: <h3>Xóa phiếu nhập</h3>,
+            children: <DeleteSanPham
+                sanPham={sanPham}
+                closeModal={() => modals.closeModal(modalId)}
+                callback={() => navigate('/san-pham')}
+            />
+        });
+    };
 
     if (error || (data && data.sanPham && data.sanPham.byID === null)) {
         return <NotFound />;
@@ -50,22 +53,47 @@ const DetailsTab = ({ id, isOpened }: Props) => {
                 </Grid>
                 <Center><h3>{data.sanPham.byID.tenSanPham}</h3></Center>
                 <Grid gutter={10} mb='sm'>
-                    <Grid.Col xs={6} md={2}>Loại:</Grid.Col>
+                    <Grid.Col xs={6} md={2}>Số lượng tồn (kg):</Grid.Col>
+                    <Grid.Col xs={6} md={10}>{data.sanPham.byID.soLuong / 1000}</Grid.Col>
+                    <Grid.Col xs={6} md={2}>Giá: </Grid.Col>
                     <Grid.Col xs={6} md={10}>
-                        {data.sanPham.byID.loaiSanPham.tenLoaiSanPham}
+                        {data.sanPham.byID.donGiaTuyChon
+                            ? data.sanPham.byID.donGiaTuyChon
+                            : `Sỉ: ${convertToVND(data.sanPham.byID.donGiaSi)}/100gram, 
+                            Lẻ: ${convertToVND(data.sanPham.byID.donGiaLe)}/100gram
+                            `
+                        }
                     </Grid.Col>
-                    <Grid.Col xs={6} md={2}>Số lượng tồn:</Grid.Col>
-                    <Grid.Col xs={6} md={10}>{data.sanPham.byID.soLuong}</Grid.Col>
+                    {data.sanPham.byID.xuatXu &&
+                        <>
+                            <Grid.Col xs={6} md={2}>Xuất xứ:</Grid.Col>
+                            <Grid.Col xs={6} md={10}>{data.sanPham.byID.xuatXu}</Grid.Col>
+                        </>
+                    }
+                    {data.sanPham.byID.tags.length > 0 &&
+                        <>
+                            <Grid.Col xs={6} md={2}>Tags:</Grid.Col>
+                            <Grid.Col xs={6} md={10}>
+                                {data.sanPham.byID.tags.join(', ')}
+                            </Grid.Col>
+                        </>
+                    }
                     <Grid.Col>Mô tả:</Grid.Col>
                     <Grid.Col>
-                        <Paper shadow='xs' withBorder p='sm'>
-                            <Text style={{ whiteSpace: 'pre-wrap' }}>
-                                {data.sanPham.byID.moTa}
-                            </Text>
-                        </Paper>
+                        <RichTextEditor
+                            readOnly
+                            value={data.sanPham.byID.moTa}
+                            onChange={() => void (0)}
+                        />
                     </Grid.Col>
                 </Grid>
                 <Group position='right'>
+                    <Button
+                        color='red'
+                        onClick={() => openDeleteModal(data.sanPham.byID)}
+                    >
+                        Xóa
+                    </Button>
                     <Button
                         component={Link}
                         to={`/san-pham/${id}/sua`}

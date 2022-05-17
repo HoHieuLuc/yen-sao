@@ -1,6 +1,8 @@
 import { useMutation } from '@apollo/client';
-import { Box, Button, Center, Container, Group, PasswordInput, Stack, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
+
+import { Box, Button, Center, Container, Group, PasswordInput, Stack, Title } from '@mantine/core';
+
 import { showErrorNotification, showSuccessNotification } from '../../events';
 import { authQuery } from '../../graphql/queries';
 

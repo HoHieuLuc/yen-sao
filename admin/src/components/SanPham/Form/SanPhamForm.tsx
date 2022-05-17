@@ -1,19 +1,17 @@
+import useGlobalStyles from '../../../utils/global.styles';
+import { useUpload } from '../../../hooks';
 import { useForm } from '@mantine/form';
+import { useState } from 'react';
 
-import { Accordion, Box, Button, Group, NumberInput, Textarea, TextInput } from '@mantine/core';
-import LoaiSanPhamSelect from '../../LoaiSanPham/Form/LoaiSanPhamSelect';
 import ImageDropzone from '../ImageDropzone/ImageDropzone';
+import RichTextEditor from '@mantine/rte';
+import {
+    Accordion, Box, Button, Group, MultiSelect,
+    NumberInput, Text, Textarea, TextInput
+} from '@mantine/core';
 
 import { showErrorNotification } from '../../../events';
-
-export interface SanPhamFormVars {
-    tenSanPham: string;
-    soLuong: number;
-    donGia: number;
-    moTa: string;
-    anhSanPham: Array<string>;
-    maLoaiSanPham: string;
-}
+import { SanPhamFormVars } from '../../../types';
 
 interface Props {
     loading: boolean;
@@ -25,21 +23,30 @@ const SanPhamForm = ({ loading, initialValues, handleSubmit }: Props) => {
     const sanPhamForm = useForm<SanPhamFormVars>({
         initialValues: {
             tenSanPham: initialValues?.tenSanPham || '',
-            soLuong: initialValues?.soLuong || 0,
-            donGia: initialValues?.donGia || 0,
+            donGiaSi: initialValues?.donGiaSi || 0,
+            donGiaLe: initialValues?.donGiaLe || 0,
+            donGiaTuyChon: initialValues?.donGiaTuyChon || '',
             moTa: initialValues?.moTa || '',
+            xuatXu: initialValues?.xuatXu || '',
+            tags: initialValues?.tags || [],
             anhSanPham: initialValues?.anhSanPham || [],
-            maLoaiSanPham: initialValues?.maLoaiSanPham || ''
         },
         validate: {
-            tenSanPham: (value) => value ? null : 'Tên sản phẩm không được để trống',
-            moTa: (value) => value ? null : 'Mô tả không được để trống',
-            maLoaiSanPham: (value) => value ? null : 'Vui lòng chọn loại sản phẩm'
+            tenSanPham: (value) => value ? null : 'Tên sản phẩm không được để trống'
         },
     });
 
+    const { singleUpload } = useUpload();
+    const { classes } = useGlobalStyles();
+    const [donGiaSwitch, setDonGiaSwitch] = useState(
+        sanPhamForm.values.donGiaTuyChon !== ''
+    );
+
     const handleOnChangeImages = (images: Array<string>) => {
-        sanPhamForm.setFieldValue('anhSanPham', [...sanPhamForm.values.anhSanPham, ...images]);
+        sanPhamForm.setFieldValue(
+            'anhSanPham',
+            [...sanPhamForm.values.anhSanPham, ...images]
+        );
     };
 
     const handleRemoveImage = (imageUrl: string) => {
@@ -64,35 +71,94 @@ const SanPhamForm = ({ loading, initialValues, handleSubmit }: Props) => {
                     label='Tên sản phẩm'
                     placeholder='Nhập tên sản phẩm'
                     {...sanPhamForm.getInputProps('tenSanPham')}
+                    required
                 />
-                <NumberInput
+
+                {donGiaSwitch
+                    ? <Textarea
+                        mb='xs'
+                        label='Đơn giá tùy chọn (bỏ trống nếu có giá sỉ/lẻ)'
+                        placeholder='Nhập đơn giá tùy chọn'
+                        {...sanPhamForm.getInputProps('donGiaTuyChon')}
+                    />
+                    : <Group position='center' grow spacing='xs'>
+                        <NumberInput
+                            mb='xs'
+                            label='Đơn giá sỉ/100gram'
+                            placeholder='Nhập đơn giá sỉ'
+                            {...sanPhamForm.getInputProps('donGiaSi')}
+                            min={0}
+                            parser={(value) =>
+                                value?.replace(/\$\s?|(,*)/g, '')
+                            }
+                            formatter={(value) =>
+                                !Number.isNaN(parseFloat(value || 'a'))
+                                    ? (value || '').replace(
+                                        /\B(?=(\d{3})+(?!\d))/g,
+                                        ','
+                                    )
+                                    : ''
+                            }
+                            hideControls
+                        />
+                        <NumberInput
+                            mb='xs'
+                            label='Đơn giá lẻ/100gram'
+                            placeholder='Nhập đơn giá lẻ'
+                            {...sanPhamForm.getInputProps('donGiaLe')}
+                            min={0}
+                            parser={(value) =>
+                                value?.replace(/\$\s?|(,*)/g, '')
+                            }
+                            formatter={(value) =>
+                                !Number.isNaN(parseFloat(value || 'a'))
+                                    ? (value || '').replace(
+                                        /\B(?=(\d{3})+(?!\d))/g,
+                                        ','
+                                    )
+                                    : ''
+                            }
+                            hideControls
+                        />
+                    </Group>
+                }
+                <Text
+                    variant='link'
+                    onClick={() => setDonGiaSwitch(!donGiaSwitch)}
+                    style={{ cursor: 'pointer' }}
                     mb='xs'
-                    label='Số lượng'
-                    description='Không bắt buộc'
-                    placeholder='Nhập số lượng'
-                    {...sanPhamForm.getInputProps('soLuong')}
-                    min={0}
-                    hideControls
-                />
-                <NumberInput
+                >
+                    {donGiaSwitch ? 'Hoặc nhập đơn giá sỉ/lẻ' : 'Hoặc nhập đơn giá tùy chọn'}
+                </Text>
+                <RichTextEditor
                     mb='xs'
-                    label='Đơn giá'
-                    placeholder='Nhập đơn giá'
-                    {...sanPhamForm.getInputProps('donGia')}
-                    min={0}
-                    hideControls
-                />
-                <Textarea
-                    mb='xs'
-                    label='Mô tả'
                     placeholder='Nhập mô tả'
                     {...sanPhamForm.getInputProps('moTa')}
-                    autosize
+                    onImageUpload={singleUpload}
+                    className={classes.rte}
+                    stickyOffset={50}
+                    sticky
                 />
-                <LoaiSanPhamSelect
-                    maLoaiSanPham={sanPhamForm.values.maLoaiSanPham}
-                    setMaLoaiSanPham={(value) => sanPhamForm.setFieldValue('maLoaiSanPham', value)}
-                    error={sanPhamForm.errors.maLoaiSanPham}
+                <TextInput
+                    mb='xs'
+                    label='Xuất xứ'
+                    placeholder='Nhập xuất xứ'
+                    {...sanPhamForm.getInputProps('xuatXu')}
+                />
+                <MultiSelect
+                    label='Nhập tags'
+                    data={sanPhamForm.values.tags}
+                    placeholder='Nhập tags'
+                    searchable
+                    creatable
+                    getCreateLabel={(query) => `+ Thêm tag ${query}`}
+                    onCreate={(query) =>
+                        sanPhamForm.setFieldValue(
+                            'tags',
+                            [...sanPhamForm.values.tags, query]
+                        )
+                    }
+                    {...sanPhamForm.getInputProps('tags')}
                 />
                 <Accordion mt={'xs'}>
                     <Accordion.Item label='Đăng ảnh'>
@@ -112,7 +178,7 @@ const SanPhamForm = ({ loading, initialValues, handleSubmit }: Props) => {
                     </Button>
                 </Group>
             </form>
-        </Box>
+        </Box >
     );
 };
 

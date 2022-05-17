@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
 import { useForm } from '@mantine/form';
 
-import { Button, NumberInput, Select, SimpleGrid } from '@mantine/core';
+import { Button, NumberInput, Select, SimpleGrid, Textarea } from '@mantine/core';
 import SanPhamSelect from '../../SanPham/Form/SanPhamSelect';
 
-import { ChiTietPhieuNhapFormData } from '../../../types';
+import { ChiTietPhieuNhapInput } from '../../../types';
 
 interface BaseProps {
     type: 'create' | 'update';
     initialValues?: unknown;
     onSubmit: (
-        values: ChiTietPhieuNhapFormData,
+        values: ChiTietPhieuNhapInput,
         callback: () => void
     ) => void;
     onDelete?: () => void;
@@ -20,12 +20,9 @@ interface BaseProps {
 interface UpdateProps extends BaseProps {
     type: 'update';
     initialValues: {
-        maSanPham: string;
         tenSanPham: string;
         soLuongTon: number;
-        soLuongNhap: number;
-        donGiaNhap: number;
-    };
+    } & ChiTietPhieuNhapInput;
     onDelete: () => void;
 }
 
@@ -42,11 +39,12 @@ const ChiTietPhieuNhapForm = ({
     onDelete,
     loading
 }: Props) => {
-    const chiTietPhieuNhapForm = useForm<ChiTietPhieuNhapFormData>({
+    const chiTietPhieuNhapForm = useForm<ChiTietPhieuNhapInput>({
         initialValues: {
             maSanPham: type === 'update' ? initialValues.maSanPham : '',
-            soLuongNhap: type === 'update' ? initialValues.soLuongNhap : 0,
+            soLuongNhap: type === 'update' ? initialValues.soLuongNhap / 1000 : 0,
             donGiaNhap: type === 'update' ? initialValues.donGiaNhap : 0,
+            ghiChu: type === 'update' ? initialValues.ghiChu : ''
         },
         validate: {
             maSanPham: (value) => value ? null : 'Vui lòng chọn sản phẩm',
@@ -58,17 +56,22 @@ const ChiTietPhieuNhapForm = ({
     const [lock, setLock] = useState(type === 'update');
 
     useEffect(() => {
+        // khi lock phiếu đang update thì reset lại giá trị ban đầu
         if (type === 'update' && lock) {
             chiTietPhieuNhapForm.setValues({
                 maSanPham: initialValues.maSanPham,
-                soLuongNhap: initialValues.soLuongNhap,
+                soLuongNhap: initialValues.soLuongNhap / 1000,
                 donGiaNhap: initialValues.donGiaNhap,
+                ghiChu: initialValues.ghiChu
             });
         }
     }, [lock]);
 
-    const submit = (values: ChiTietPhieuNhapFormData) => {
-        onSubmit(values, () => chiTietPhieuNhapForm.reset());
+    const submit = (values: ChiTietPhieuNhapInput) => {
+        onSubmit({
+            ...values,
+            soLuongNhap: values.soLuongNhap * 1000
+        }, () => chiTietPhieuNhapForm.reset());
     };
 
     return (
@@ -77,12 +80,13 @@ const ChiTietPhieuNhapForm = ({
                 {(lock && type === 'update')
                     ? <Select
                         label='Tên sản phẩm'
-                        description={`Số lượng tồn: ${initialValues.soLuongTon}`}
+                        description={`Số lượng tồn: ${initialValues.soLuongTon / 1000} kg`}
                         defaultValue={initialValues.maSanPham}
                         data={[{
                             value: initialValues.maSanPham,
                             label: initialValues.tenSanPham
                         }]}
+                        required
                         disabled
                     />
                     : <SanPhamSelect
@@ -94,18 +98,40 @@ const ChiTietPhieuNhapForm = ({
                     />
                 }
                 <NumberInput
-                    label='Đơn giá nhập'
+                    label='Đơn giá nhập/100gram'
                     placeholder='Đơn giá nhập'
-                    min={0}
                     {...chiTietPhieuNhapForm.getInputProps('donGiaNhap')}
+                    parser={(value) => value?.replace(/\$\s?|(,*)/g, '')}
+                    formatter={(value) =>
+                        !Number.isNaN(parseFloat(value || 'a'))
+                            ? (value || '').replace(
+                                /\B(?=(\d{3})+(?!\d))/g,
+                                ','
+                            )
+                            : ''
+                    }
                     disabled={lock}
+                    required
+                    min={0}
                 />
                 <NumberInput
-                    label='Số lượng nhập'
+                    label='Số lượng nhập (kg)'
                     placeholder='Số lượng nhập'
-                    min={0}
                     {...chiTietPhieuNhapForm.getInputProps('soLuongNhap')}
                     disabled={lock}
+                    precision={2}
+                    required
+                    min={0}
+                />
+                <Textarea
+                    label='Ghi chú'
+                    placeholder='Nhập ghi chú'
+                    value={chiTietPhieuNhapForm.values.ghiChu || ''}
+                    onChange={(e) =>
+                        chiTietPhieuNhapForm.setFieldValue('ghiChu', e.target.value)
+                    }
+                    disabled={lock}
+                    autosize
                 />
                 <SimpleGrid cols={type === 'update' ? 3 : 2}>
                     {type === 'update' && <>

@@ -1,11 +1,13 @@
 import {
-    Header,
-    Text,
-    MediaQuery,
-    Burger,
     useMantineColorScheme,
-    ActionIcon,
-    MantineTheme
+    SegmentedControl,
+    MediaQuery,
+    MantineTheme,
+    Header,
+    Burger,
+    Center,
+    Text,
+    Box
 } from '@mantine/core';
 import { faSun, faMoon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -22,7 +24,6 @@ interface Props {
 const AppHeader = ({ theme, opened, setOpened }: Props) => {
     // eslint-disable-next-line @typescript-eslint/unbound-method
     const { colorScheme, toggleColorScheme } = useMantineColorScheme();
-    const dark = colorScheme === 'dark';
 
     return (
         <Header sx={{ background: theme.colors.blue[5], zIndex: 500 }} height={50} p="sm">
@@ -51,16 +52,33 @@ const AppHeader = ({ theme, opened, setOpened }: Props) => {
                 >
                     <h2>Studio (REMOVE IN PROD)</h2>
                 </Text>
-                <ActionIcon
-                    variant={dark ? 'outline' : 'filled'}
-                    color={dark ? 'yellow' : 'violet'}
-                    onClick={() => toggleColorScheme()}
-                    title="Thay đổi màu nền"
+                <SegmentedControl
                     ml='auto'
-                    size='md'
-                >
-                    {dark ? <FontAwesomeIcon icon={faSun} /> : <FontAwesomeIcon icon={faMoon} />}
-                </ActionIcon>
+                    value={colorScheme}
+                    onChange={(value) => toggleColorScheme(
+                        value === 'light' ? 'light' : 'dark'
+                    )}
+                    data={[
+                        {
+                            value: 'light',
+                            label: (
+                                <Center>
+                                    <FontAwesomeIcon icon={faSun} />
+                                    <Box ml={10}>Sáng</Box>
+                                </Center>
+                            ),
+                        },
+                        {
+                            value: 'dark',
+                            label: (
+                                <Center>
+                                    <FontAwesomeIcon icon={faMoon} />
+                                    <Box ml={10}>Tối</Box>
+                                </Center>
+                            ),
+                        },
+                    ]}
+                />
             </div>
         </Header>
     );
