@@ -32,7 +32,7 @@ const BY_SAN_PHAM_ID = gql`
 
 
 const CREATE = gql`
-    mutation CreateChiTietPhieuXuat($idPhieuXuat: ID!, $payload: PhieuXuatInput!) {
+    mutation CreateChiTietPhieuXuat($idPhieuXuat: ID!, $payload: ChiTietPhieuXuatInput!) {
         chiTietPhieuXuat {
             create(idPhieuXuat: $idPhieuXuat, payload: $payload) {
                 id
@@ -40,14 +40,15 @@ const CREATE = gql`
                 tongTien
                 chiTiet {
                     id
-                    maPhieuXuat
                     sanPham {
                         id
-                        tenSanPham
                         soLuong
                     }
                     soLuongXuat
                     donGiaXuat
+                    thanhTien
+                    ngayXuat
+                    ghiChu
                 }
             }
         }
@@ -58,7 +59,7 @@ const UPDATE = gql`
     mutation UpdateChiTietPhieuXuat(
         $idPhieuXuat: ID!,
         $idChiTiet: ID!, 
-        $payload: PhieuXuatInput!) 
+        $payload: ChiTietPhieuXuatInput!) 
     {
         chiTietPhieuXuat {
             update(idPhieuXuat: $idPhieuXuat, idChiTiet: $idChiTiet, payload: $payload) {
@@ -68,14 +69,15 @@ const UPDATE = gql`
                     tongTien
                     chiTiet {
                         id
-                        maPhieuXuat
                         sanPham {
                             id
-                            tenSanPham
                             soLuong
                         }
                         soLuongXuat
                         donGiaXuat
+                        thanhTien
+                        ngayXuat
+                        ghiChu
                     }
                 }
                 sanPhamBiThayDoi {
@@ -98,14 +100,15 @@ const DELETE = gql`
                     tongTien
                     chiTiet {
                         id
-                        maPhieuXuat
                         sanPham {
                             id
-                            tenSanPham
                             soLuong
                         }
                         soLuongXuat
                         donGiaXuat
+                        thanhTien
+                        ngayXuat
+                        ghiChu
                     }
                 }
                 sanPhamBiThayDoi {

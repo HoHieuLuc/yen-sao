@@ -16,8 +16,8 @@ const BY_SAN_PHAM_ID = gql`
                     maPhieuNhap
                     soLuongNhap
                     donGiaNhap
-                    createdAt
-                    updatedAt
+                    ngayNhap
+                    thanhTien
                 }
                 pageInfo {
                     page
@@ -31,7 +31,7 @@ const BY_SAN_PHAM_ID = gql`
 `;
 
 const CREATE = gql`
-    mutation CreateChiTietPhieuNhap($idPhieuNhap: ID!, $payload: PhieuNhapInput!) {
+    mutation CreateChiTietPhieuNhap($idPhieuNhap: ID!, $payload: ChiTietPhieuNhapInput!) {
         chiTietPhieuNhap {
             create(idPhieuNhap: $idPhieuNhap, payload: $payload) {
                 id
@@ -39,14 +39,15 @@ const CREATE = gql`
                 tongTien
                 chiTiet {
                     id
-                    maPhieuNhap
                     sanPham {
                         id
-                        tenSanPham
                         soLuong
                     }
                     soLuongNhap
                     donGiaNhap
+                    thanhTien
+                    ngayNhap
+                    ghiChu
                 }
             }
         }
@@ -57,7 +58,7 @@ const UPDATE = gql`
     mutation UpdateChiTietPhieuNhap(
         $idPhieuNhap: ID!,
         $idChiTiet: ID!, 
-        $payload: PhieuNhapInput!) 
+        $payload: ChiTietPhieuNhapInput!) 
     {
         chiTietPhieuNhap {
             update(idPhieuNhap: $idPhieuNhap, idChiTiet: $idChiTiet, payload: $payload) {
@@ -67,14 +68,15 @@ const UPDATE = gql`
                     tongTien
                     chiTiet {
                         id
-                        maPhieuNhap
                         sanPham {
                             id
-                            tenSanPham
                             soLuong
                         }
                         soLuongNhap
                         donGiaNhap
+                        thanhTien
+                        ngayNhap
+                        ghiChu
                     }
                 }
                 sanPhamBiThayDoi {
@@ -97,14 +99,15 @@ const DELETE = gql`
                     tongTien
                     chiTiet {
                         id
-                        maPhieuNhap
                         sanPham {
                             id
-                            tenSanPham
                             soLuong
                         }
                         soLuongNhap
                         donGiaNhap
+                        thanhTien
+                        ngayNhap
+                        ghiChu
                     }
                 }
                 sanPhamBiThayDoi {

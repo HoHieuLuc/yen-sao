@@ -9,10 +9,12 @@ const ALL = gql`
                     nguoiNhap {
                         id
                         username
+                        fullname
                     }
-                    createdAt
+                    ngayNhap
                     soMatHangNhap
                     tongTien
+                    createdAt
                 }
                 pageInfo {
                     page
@@ -32,11 +34,13 @@ const BY_ID = gql`
                 nguoiNhap {
                     id
                     username
+                    fullname
                 }
-                createdAt
-                updatedAt
+                ngayNhap
                 soMatHangNhap
                 tongTien
+                createdAt
+                updatedAt
                 chiTiet {
                     id
                     maPhieuNhap
@@ -44,14 +48,11 @@ const BY_ID = gql`
                         id
                         tenSanPham
                         soLuong
-                        anhSanPham
-                        loaiSanPham {
-                            id
-                            tenLoaiSanPham
-                        }
                     }
                     soLuongNhap
                     donGiaNhap
+                    thanhTien
+                    ghiChu
                 }
             }
         }
@@ -59,27 +60,15 @@ const BY_ID = gql`
 `;
 
 const CREATE = gql`
-    mutation CreatePhieuNhap($payload: [PhieuNhapInput!]!) {
+    mutation CreatePhieuNhap($ngayNhap: Date!, $payload: [ChiTietPhieuNhapInput!]!) {
         phieuNhap {
-            create(payload: $payload) {
+            create(ngayNhap: $ngayNhap, payload: $payload) {
                 id
-                nguoiNhap {
-                    id
-                    username
-                }
-                soMatHangNhap
-                tongTien
                 chiTiet {
                     id
-                    maPhieuNhap
-                    soLuongNhap
-                    donGiaNhap
                     sanPham {
                         id
-                        tenSanPham
                         soLuong
-                        createdAt
-                        updatedAt
                     }
                 }
             }
@@ -94,23 +83,32 @@ const DELETE = gql`
                 id
                 chiTiet {
                     id
-                    maPhieuNhap
                     sanPham {
                         id
-                        tenSanPham
                         soLuong
                     }
-                    soLuongNhap
-                    donGiaNhap
                 }
             }
         }
     }
 `;
 
+const UPDATE = gql`
+    mutation UpdatePhieuNhap($id: ID!, $payload: UpdatePhieuNhapInput!) {
+        phieuNhap {
+            update(id: $id, payload: $payload) {
+                id
+                ngayNhap
+                updatedAt
+            }
+        }
+    }
+`;
+
 export const phieuNhapQuery = {
-    CREATE,
     ALL,
+    BY_ID,
+    CREATE,
+    UPDATE,
     DELETE,
-    BY_ID
 };

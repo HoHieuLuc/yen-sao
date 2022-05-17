@@ -1,12 +1,11 @@
-export { loaiSanPhamQuery } from './loai-san-pham';
-export { sanPhamQuery } from './san-pham';
+export * from './san-pham';
 
-export { chiTietPhieuNhapQuery } from './chi-tiet-phieu-nhap';
-export { phieuNhapQuery } from './phieu-nhap';
+export * from './chi-tiet-phieu-nhap';
+export * from './phieu-nhap';
 
-export { chiTietPhieuXuatQuery } from './chi-tiet-phieu-xuat';
-export { phieuXuatQuery } from './phieu-xuat';
+export * from './chi-tiet-phieu-xuat';
+export * from './phieu-xuat';
 
-export { uploadQuery } from './upload';
-export { configQuery } from './config';
-export { authQuery } from './auth';
+export * from './upload';
+export * from './page';
+export * from './auth';
