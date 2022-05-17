@@ -79,8 +79,8 @@ const resolvers = {
         soMatHangNhap: (root) => root.chiTiet.length
     },
     SortPhieuNhap: {
-        NGAY_NHAP_ASC: 'createdAt',
-        NGAY_NHAP_DESC: '-createdAt',
+        NGAY_NHAP_ASC: 'ngayNhap',
+        NGAY_NHAP_DESC: '-ngayNhap',
         TONG_TIEN_ASC: 'tongTien',
         TONG_TIEN_DESC: '-tongTien'
     },

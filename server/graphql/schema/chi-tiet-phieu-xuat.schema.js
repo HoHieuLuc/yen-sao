@@ -11,6 +11,7 @@ const typeDefs = gql`
         sanPham: SanPham
         soLuongXuat: Int!
         donGiaXuat: Int!
+        thanhTien: Int!
         ngayXuat: Date!
         ghiChu: String
         createdAt: Date!
@@ -74,8 +75,8 @@ const typeDefs = gql`
 
 const resolvers = {
     SortChiTietPhieuXuat: {
-        NGAY_XUAT_ASC: 'createdAt',
-        NGAY_XUAT_DESC: '-createdAt',
+        NGAY_XUAT_ASC: 'ngayXuat',
+        NGAY_XUAT_DESC: '-ngayXuat',
         SO_LUONG_ASC: 'soLuongXuat',
         SO_LUONG_DESC: '-soLuongXuat',
         DON_GIA_ASC: 'donGiaXuat',
@@ -84,7 +85,8 @@ const resolvers = {
     ChiTietPhieuXuat: {
         sanPham: (root) => {
             return isMongooseModel(root.maSanPham) ? root.maSanPham : null;
-        }
+        },
+        thanhTien: (root) => root.soLuongXuat / 100 * root.donGiaXuat
     },
     ChiTietPhieuXuatByPage: {
         pageInfo: (root) => root
