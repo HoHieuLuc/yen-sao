@@ -5,11 +5,7 @@ import PhieuNhapForm from '../Form/PhieuNhapForm';
 
 import { showErrorNotification, showSuccessNotification } from '../../../events';
 import { phieuNhapQuery } from '../../../graphql/queries';
-import { ChiTietPhieuNhapFormData } from '../../../types';
-
-export interface PhieuNhapVars {
-    payload: Array<ChiTietPhieuNhapFormData>
-}
+import { PhieuNhapVars } from '../../../types';
 
 const CreatePhieuNhap = () => {
     const client = useApolloClient();

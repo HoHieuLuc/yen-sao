@@ -5,10 +5,10 @@ import { Box, Button, Group, Text } from '@mantine/core';
 import { showErrorNotification, showSuccessNotification } from '../../../events';
 import { convertToVietnameseDate } from '../../../utils/common';
 import { phieuNhapQuery } from '../../../graphql/queries';
-import { PhieuNhapDoc } from '../List/PhieuNhapList';
+import { PhieuNhap } from '../../../types';
 
 interface Props {
-    phieuNhap: PhieuNhapDoc;
+    phieuNhap: PhieuNhap;
     closeModal: () => void;
     callback?: () => void;
 }
