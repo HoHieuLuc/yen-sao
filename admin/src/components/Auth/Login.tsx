@@ -9,9 +9,10 @@ import { useForm } from '@mantine/form';
 import {
     PasswordInput,
     TextInput,
-    Container,
     Button,
     Group,
+    Grid,
+    Box,
 } from '@mantine/core';
 
 import { showErrorNotification } from '../../events';
@@ -65,25 +66,40 @@ const Login = ({ getCurrentUser }: Props) => {
     };
 
     return (
-        <Container fluid>
-            <Container className='vertical-center'>
-                <form onSubmit={loginForm.onSubmit(handleLogin)}>
-                    <TextInput
-                        label='Tên đăng nhập'
-                        placeholder='Nhập tên đăng nhập'
-                        {...loginForm.getInputProps('username')}
-                    />
-                    <PasswordInput
-                        label='Mật khẩu'
-                        placeholder='Nhập mật khẩu'
-                        {...loginForm.getInputProps('password')}
-                    />
-                    <Group position='right' mt='md'>
-                        <Button type='submit' loading={loginLoading}>Đăng nhập</Button>
-                    </Group>
-                </form>
-            </Container>
-        </Container>
+        <Grid align='stretch' style={{ height: '100vh' }} m={0}>
+            <Grid.Col sm={12} md={4} style={{
+                display: 'table',
+                height: '100%',
+                width: '100%',
+            }}>
+                <Box p='xs' style={{
+                    display: 'table-cell',
+                    verticalAlign: 'middle'
+                }} >
+                    <form onSubmit={loginForm.onSubmit(handleLogin)}>
+                        <TextInput
+                            label='Tên đăng nhập'
+                            placeholder='Nhập tên đăng nhập'
+                            {...loginForm.getInputProps('username')}
+                        />
+                        <PasswordInput
+                            label='Mật khẩu'
+                            placeholder='Nhập mật khẩu'
+                            {...loginForm.getInputProps('password')}
+                        />
+                        <Group position='right' mt='md'>
+                            <Button type='submit' loading={loginLoading}>Đăng nhập</Button>
+                        </Group>
+                    </form>
+                </Box>
+            </Grid.Col>
+            <Grid.Col sx={(theme) => ({
+                [`@media (max-width: ${theme.breakpoints.sm}px)`]: {
+                    display: 'none'
+                },
+                backgroundColor: theme.colors.blue[5]
+            })} md={8}></Grid.Col>
+        </Grid >
     );
 };
 
