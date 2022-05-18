@@ -9,3 +9,4 @@ export * from './phieu-xuat';
 export * from './upload';
 export * from './page';
 export * from './auth';
+export * from './user';

@@ -21,6 +21,7 @@ import EditSanPham from '../components/SanPham/Edit/EditSanPham';
 import SanPhamList from '../components/SanPham/List/SanPhamList';
 
 import { AppConfig } from './types';
+import UserList from '../components/Manage/User/UserList';
 
 const appConfig: AppConfig = {
     title: 'Yến sào MS.Tưởng',
@@ -30,7 +31,7 @@ const appConfig: AppConfig = {
             type: 'nav',
             title: 'Trang chủ',
             to: '/',
-            element: <Dashboard title='Yến sào Ms.Tuỏng' />
+            element: <Dashboard title='Yến sào MS.Tuởng' />
         },
         {
             type: 'menu',
@@ -141,6 +142,12 @@ const appConfig: AppConfig = {
                     title: 'Chỉnh sửa bài viết giới thiệu',
                     to: '/manage/about/sua',
                     element: <EditAbout title='Bài viết giới thiệu | Chỉnh sửa' />
+                },
+                {
+                    type: 'nav',
+                    title: 'Người dùng',
+                    to: '/manage/users',
+                    element: <UserList title='Danh sách người dùng' />
                 }
             ]
         },
