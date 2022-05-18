@@ -1,13 +1,19 @@
+import { useDocumentTitle } from '@mantine/hooks';
 
 import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
 import { Center, Title } from '@mantine/core';
 import AboutForm from './AboutForm';
 
+import { AboutData, AboutPageVars } from '../../../types';
 import { pageHooks } from '../../../graphql/queries';
 import ErrorPage from '../../Utils/Errors/ErrorPage';
-import { AboutData, AboutPageVars } from '../../../types';
 
-const EditAbout = () => {
+interface Props {
+    title: string;
+}
+
+const EditAbout = ({ title }: Props) => {
+    useDocumentTitle(title);
     const { data, loading, error } = pageHooks.usePageByName<AboutData>('about');
 
     const [

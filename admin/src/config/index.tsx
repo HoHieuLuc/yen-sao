@@ -1,5 +1,7 @@
-import ChangePassword from '../components/Auth/ChangePassword';
 import Dashboard from '../components/Dashboard/Dashboard';
+
+import Account from '../components/Account/Account';
+
 import About from '../components/Manage/About/About';
 import EditAbout from '../components/Manage/About/EditAbout';
 
@@ -28,7 +30,7 @@ const appConfig: AppConfig = {
             type: 'nav',
             title: 'Trang chủ',
             to: '/',
-            element: <Dashboard />
+            element: <Dashboard title='Yến sào Ms.Tuỏng' />
         },
         {
             type: 'menu',
@@ -39,13 +41,13 @@ const appConfig: AppConfig = {
                     title: 'Danh sách',
                     type: 'nav',
                     to: '/san-pham',
-                    element: <SanPhamList />
+                    element: <SanPhamList title='Danh sách sản phẩm' />
                 },
                 {
                     title: 'Thêm mới',
                     type: 'nav',
                     to: '/san-pham/them',
-                    element: <CreateSanPham />
+                    element: <CreateSanPham title='Thêm sản phẩm mới' />
                 },
                 {
                     title: 'Sửa',
@@ -70,13 +72,13 @@ const appConfig: AppConfig = {
                     type: 'nav',
                     title: 'Danh sách',
                     to: '/phieu-nhap',
-                    element: <PhieuNhapList />
+                    element: <PhieuNhapList title='Danh sách phiếu nhập' />
                 },
                 {
                     type: 'nav',
                     title: 'Tạo phiếu nhập',
                     to: '/phieu-nhap/them',
-                    element: <CreatePhieuNhap />
+                    element: <CreatePhieuNhap title='Tạo phiếu nhập' />
                 },
                 {
                     type: 'hidden',
@@ -101,13 +103,13 @@ const appConfig: AppConfig = {
                     type: 'nav',
                     title: 'Danh sách',
                     to: '/phieu-xuat',
-                    element: <PhieuXuatList />
+                    element: <PhieuXuatList title='Danh sách phiếu xuất' />
                 },
                 {
                     type: 'nav',
                     title: 'Tạo phiếu xuất',
                     to: '/phieu-xuat/them',
-                    element: <CreatePhieuXuat />
+                    element: <CreatePhieuXuat title='Tạo phiếu xuất' />
                 },
                 {
                     type: 'hidden',
@@ -132,21 +134,21 @@ const appConfig: AppConfig = {
                     type: 'nav',
                     title: 'Bài viết giới thiệu',
                     to: '/manage/about',
-                    element: <About />
+                    element: <About title='Bài viết giới thiệu' />
                 },
                 {
                     type: 'hidden',
                     title: 'Chỉnh sửa bài viết giới thiệu',
                     to: '/manage/about/sua',
-                    element: <EditAbout />
+                    element: <EditAbout title='Bài viết giới thiệu | Chỉnh sửa' />
                 }
             ]
         },
         {
             type: 'nav',
-            title: 'Đổi mật khẩu',
-            to: '/doi-mat-khau',
-            element: <ChangePassword />
+            title: 'Tài khoản',
+            to: '/my-account',
+            element: <Account title='Tài khoản' />
         }
     ]
 };

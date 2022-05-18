@@ -13,7 +13,7 @@ const DeleteChiTietPhieuXuat = ({ tenSanPham, idPhieuXuat, idChiTiet, closeModal
     const [
         deleteChiTietPhieuXuat, 
         { loading }
-    ] = chiTietPhieuXuatHooks.useDeleteChiTietPhieuXuat(tenSanPham);
+    ] = chiTietPhieuXuatHooks.useDeleteChiTietPhieuXuat(tenSanPham, idChiTiet);
 
     const handleDelete = () => {
         void deleteChiTietPhieuXuat({

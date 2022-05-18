@@ -1,3 +1,4 @@
+import { useDocumentTitle } from '@mantine/hooks';
 import { useParams } from 'react-router-dom';
 
 import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
@@ -11,6 +12,12 @@ import { SanPhamFormVars } from '../../../types';
 const EditSanPham = () => {
     const { id } = useParams();
     const { data, loading, error } = sanPhamHooks.useSanPhamByID(id || '');
+
+    useDocumentTitle(
+        `${data && data.sanPham.byID
+            ? `${data.sanPham.byID.tenSanPham}`
+            : 'Đang tải...'} | Chỉnh sửa`
+    );
 
     const [updateSanPham, { loading: updateLoading }] = sanPhamHooks.useUpdateSanPham();
 

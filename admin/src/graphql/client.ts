@@ -39,6 +39,12 @@ const cache = new InMemoryCache({
                 },
                 chiTietPhieuXuat: {
                     merge: true
+                },
+                user: {
+                    merge: true
+                },
+                activityLog: {
+                    merge: true
                 }
             }
         },

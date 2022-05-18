@@ -1,23 +1,15 @@
-import { useApolloClient } from '@apollo/client';
-
 import { Navbar, ScrollArea, Divider, Text } from '@mantine/core';
 import NavLinks from './NavLinks/NavLinks';
 import NavLink from './NavLinks/NavLink';
 
-import { authQuery } from '../../../graphql/queries';
-import { User } from '../../../types';
+import { authHooks } from '../../../graphql/queries';
 
 interface Props {
     opened: boolean;
 }
 
 const AppNavbar = ({ opened }: Props) => {
-    const client = useApolloClient();
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const { user: { me } } = client.readQuery<
-        { user: { me: User } }
-    >({ query: authQuery.ME })!;
-    
+    const me = authHooks.useReadCurrentUser();
     return (
         <Navbar
             p="sm"

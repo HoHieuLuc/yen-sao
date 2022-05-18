@@ -1,5 +1,6 @@
 import { useDateRangeSearchParams } from '../../../hooks/use-date-range-search-params';
 import { usePagination, useSortParams } from '../../../hooks';
+import { useDocumentTitle } from '@mantine/hooks';
 
 import { Center, ScrollArea, Table, UnstyledButton } from '@mantine/core';
 import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
@@ -11,7 +12,12 @@ import PhieuNhapItem from './PhieuNhapItem';
 
 import { phieuNhapHooks } from '../../../graphql/queries';
 
-const PhieuNhapList = () => {
+interface Props {
+    title: string;
+}
+
+const PhieuNhapList = ({ title }: Props) => {
+    useDocumentTitle(title);
     const { currentPage, handlePageChange, limit, handleLimitChange } = usePagination();
     const { from, to, handleSearch } = useDateRangeSearchParams();
     const [sortPhieuNhap, toggleSortPhieuNhap] = useSortParams({

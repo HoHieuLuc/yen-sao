@@ -1,5 +1,6 @@
 import { useDateRangeSearchParams } from '../../../hooks/use-date-range-search-params';
 import { usePagination, useSortParams } from '../../../hooks';
+import { useDocumentTitle } from '@mantine/hooks';
 
 import { Center, ScrollArea, Table, UnstyledButton } from '@mantine/core';
 import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
@@ -9,19 +10,14 @@ import ErrorPage from '../../Utils/Errors/ErrorPage';
 import { SortIcon } from '../../Utils/Icons';
 import PhieuXuatItem from './PhieuXuatItem';
 
-import { PageInfo, PhieuXuat } from '../../../types';
 import { phieuXuatHooks } from '../../../graphql/queries';
 
-export interface PhieuXuatsData {
-    phieuXuat: {
-        all: {
-            docs: Array<PhieuXuat>;
-            pageInfo: PageInfo;
-        }
-    }
+interface Props {
+    title: string;
 }
 
-const PhieuXuatList = () => {
+const PhieuXuatList = ({ title }: Props) => {
+    useDocumentTitle(title);
     const { currentPage, handlePageChange, limit, handleLimitChange } = usePagination();
     const { from, to, handleSearch } = useDateRangeSearchParams();
     const [sortPhieuXuat, toggleSortPhieuXuat] = useSortParams({

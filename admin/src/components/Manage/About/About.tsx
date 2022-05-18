@@ -1,4 +1,5 @@
 import useGlobalStyles from '../../../utils/global.styles';
+import { useDocumentTitle } from '@mantine/hooks';
 
 import { Box, Button, Center, Group, Title } from '@mantine/core';
 import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
@@ -9,7 +10,12 @@ import { Link } from 'react-router-dom';
 import { pageHooks } from '../../../graphql/queries';
 import { AboutData } from '../../../types';
 
-const About = () => {
+interface Props {
+    title: string;
+}
+
+const About = ({ title }: Props) => {
+    useDocumentTitle(title);
     const { classes } = useGlobalStyles();
     const { data, loading, error } = pageHooks.usePageByName<AboutData>('about');
 

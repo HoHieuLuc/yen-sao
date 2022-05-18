@@ -1,4 +1,4 @@
-import { gql, useMutation, useQuery } from '@apollo/client';
+import { gql, useApolloClient, useMutation, useQuery } from '@apollo/client';
 import { showErrorNotification, showSuccessNotification } from '../../events';
 import {
     ChiTietPhieuNhapBySanPhamID,
@@ -154,12 +154,15 @@ const useUpdateChiTietPhieuNhap = () => {
     });
 };
 
-const useDeleteChiTietPhieuNhap = (tenSanPham: string) => {
+const useDeleteChiTietPhieuNhap = (tenSanPham: string, idChiTiet: string) => {
+    const client = useApolloClient();
     return useMutation<
         never, { idPhieuNhap: string, idChiTiet: string }
     >(DELETE, {
         onCompleted: () => {
             showSuccessNotification(`Xóa sản phẩm "${tenSanPham}" khỏi phiếu nhập thành công`);
+            client.cache.evict({ id: `ChiTietPhieuNhap:${idChiTiet}` });
+            client.cache.gc();
         },
         onError: (error) => showErrorNotification(error.message)
     });
