@@ -1,3 +1,4 @@
+import { useDocumentTitle } from '@mantine/hooks';
 import { useParams } from 'react-router-dom';
 
 import CreateChiTietPhieuXuat from '../Create/CreateChiTietPhieuXuat';
@@ -7,11 +8,17 @@ import EditChiTietPhieuXuat from './EditChiTietPhieuXuat';
 import NotFound from '../../Utils/Errors/NotFound';
 import EditPhieuXuat from './EditPhieuXuat';
 
+import { convertToShortDate } from '../../../utils/common';
 import { phieuXuatHooks } from '../../../graphql/queries';
 
 const EditPhieuXuatPage = () => {
     const { id } = useParams();
     const { data, loading, error } = phieuXuatHooks.usePhieuXuatById(id || '');
+    useDocumentTitle(
+        data && data.phieuXuat.byID
+            ? `Phiếu xuất ngày ${convertToShortDate(data.phieuXuat.byID.ngayXuat)} | Chỉnh sửa`
+            : 'Đang tải...'
+    );
 
     if (error || !id || (data && data.phieuXuat && data.phieuXuat.byID === null)) {
         return <NotFound />;

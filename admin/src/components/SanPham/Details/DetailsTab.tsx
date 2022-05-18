@@ -1,6 +1,6 @@
+import useGlobalStyles from '../../../utils/global.styles';
 import { Link, useNavigate } from 'react-router-dom';
 import { useModals } from '@mantine/modals';
-import useGlobalStyles from '../../../utils/global.styles';
 
 import { Box, Button, Center, Grid, Group, Title } from '@mantine/core';
 import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
@@ -9,19 +9,20 @@ import NotFound from '../../Utils/Errors/NotFound';
 import RichTextEditor from '@mantine/rte';
 import ImageDisplay from './ImageDisplay';
 
-import { sanPhamHooks } from '../../../graphql/queries';
+import { SanPham, SanPhamByID } from '../../../types';
 import { convertToVND } from '../../../utils/common';
-import { SanPham } from '../../../types';
-
+import { ApolloError } from '@apollo/client';
 
 interface Props {
     id: string;
+    data: SanPhamByID | undefined;
+    loading: boolean;
+    error?: ApolloError | undefined;
 }
 
-const DetailsTab = ({ id }: Props) => {
+const DetailsTab = ({ id, data, loading, error }: Props) => {
     const navigate = useNavigate();
     const { classes } = useGlobalStyles();
-    const { data, loading, error } = sanPhamHooks.useSanPhamByID(id);
 
     const modals = useModals();
     const openDeleteModal = (sanPham: SanPham) => {

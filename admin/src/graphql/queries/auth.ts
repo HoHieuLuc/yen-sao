@@ -1,6 +1,6 @@
-import { gql, useLazyQuery, useMutation } from '@apollo/client';
+import { gql, useApolloClient, useLazyQuery, useMutation } from '@apollo/client';
 import { showErrorNotification, showSuccessNotification } from '../../events';
-import { ChangePasswordVars, CurrentUser, LoginData, LoginVars } from '../../types';
+import { ChangePasswordVars, CurrentUser, LoginData, LoginVars, User } from '../../types';
 
 const LOGIN = gql`
     mutation Login($username: String!, $password: String!) {
@@ -35,10 +35,6 @@ const CHANGE_PASSWORD = gql`
         }
     }
 `;
-
-export const authQuery = {
-    ME,
-};
 
 const useLazyCurrentUser = () => {
     return useLazyQuery<
@@ -76,8 +72,18 @@ const useChangePassword = () => {
     });
 };
 
+const useReadCurrentUser = () => {
+    const client = useApolloClient();
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const { user: { me } } = client.readQuery<
+        { user: { me: User } }
+    >({ query: ME })!;
+    return me;
+};
+
 export const authHooks = {
     useLazyCurrentUser,
+    useReadCurrentUser,
     useChangePassword,
     useLogin,
 };

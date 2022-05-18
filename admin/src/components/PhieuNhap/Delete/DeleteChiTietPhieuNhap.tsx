@@ -12,7 +12,7 @@ interface Props {
 const DeleteChiTietPhieuNhap = ({ tenSanPham, idPhieuNhap, idChiTiet, closeModal }: Props) => {
     const [
         deleteChiTietPhieuNhap, { loading }
-    ] = chiTietPhieuNhapHooks.useDeleteChiTietPhieuNhap(tenSanPham);
+    ] = chiTietPhieuNhapHooks.useDeleteChiTietPhieuNhap(tenSanPham, idChiTiet);
 
     const handleDelete = () => {
         void deleteChiTietPhieuNhap({

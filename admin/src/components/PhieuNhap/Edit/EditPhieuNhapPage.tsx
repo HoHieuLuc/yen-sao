@@ -1,3 +1,4 @@
+import { useDocumentTitle } from '@mantine/hooks';
 import { useParams } from 'react-router-dom';
 
 import CreateChiTietPhieuNhap from '../Create/CreateChiTietPhieuNhap';
@@ -8,11 +9,17 @@ import NotFound from '../../Utils/Errors/NotFound';
 import EditPhieuNhap from './EditPhieuNhap';
 
 import { phieuNhapHooks } from '../../../graphql/queries';
-import { convertToVND } from '../../../utils/common';
+import { convertToShortDate, convertToVND } from '../../../utils/common';
 
 const EditPhieuNhapPage = () => {
     const { id } = useParams();
     const { data, loading, error } = phieuNhapHooks.usePhieuNhapByID(id || '');
+
+    useDocumentTitle(
+        data && data.phieuNhap.byID
+            ? `Phiếu nhập ngày ${convertToShortDate(data.phieuNhap.byID.ngayNhap)} | Chỉnh sửa`
+            : 'Đang tải...'
+    );
 
     if (error || !id || (data && data.phieuNhap && data.phieuNhap.byID === null)) {
         return <NotFound />;

@@ -1,3 +1,4 @@
+import { useDocumentTitle } from '@mantine/hooks';
 import {
     LazyQueryExecFunction,
     OperationVariables,
@@ -9,19 +10,21 @@ import {
     PasswordInput,
     TextInput,
     Button,
+    Center,
+    Title,
     Group,
     Grid,
-    Box,
 } from '@mantine/core';
 
-import { authHooks } from '../../graphql/queries';
 import { CurrentUser, LoginVars } from '../../types';
+import { authHooks } from '../../graphql/queries';
 
 interface Props {
     getCurrentUser: LazyQueryExecFunction<{ user: CurrentUser }, OperationVariables>;
 }
 
 const Login = ({ getCurrentUser }: Props) => {
+    useDocumentTitle('Đăng nhập');
     const client = useApolloClient();
     const loginForm = useForm({
         initialValues: {
@@ -46,32 +49,30 @@ const Login = ({ getCurrentUser }: Props) => {
     };
 
     return (
-        <Grid align='stretch' style={{ height: '100vh' }} m={0}>
-            <Grid.Col sm={12} md={4} style={{
-                display: 'table',
-                height: '100%',
-                width: '100%',
-            }}>
-                <Box p='xs' style={{
-                    display: 'table-cell',
-                    verticalAlign: 'middle'
-                }} >
-                    <form onSubmit={loginForm.onSubmit(handleLogin)}>
-                        <TextInput
-                            label='Tên đăng nhập'
-                            placeholder='Nhập tên đăng nhập'
-                            {...loginForm.getInputProps('username')}
-                        />
-                        <PasswordInput
-                            label='Mật khẩu'
-                            placeholder='Nhập mật khẩu'
-                            {...loginForm.getInputProps('password')}
-                        />
-                        <Group position='right' mt='md'>
-                            <Button type='submit' loading={loginLoading}>Đăng nhập</Button>
-                        </Group>
-                    </form>
-                </Box>
+        <Grid style={{ height: '100vh' }} m={0}>
+            <Grid.Col sm={12} md={4}>
+                <Center style={{ height: '100%', width: '100%' }}>
+                    <div style={{ width: '100%' }}>
+                        <Center mb='xs'>
+                            <Title>Đăng nhập</Title>
+                        </Center>
+                        <form onSubmit={loginForm.onSubmit(handleLogin)}>
+                            <TextInput
+                                label='Tên đăng nhập'
+                                placeholder='Nhập tên đăng nhập'
+                                {...loginForm.getInputProps('username')}
+                            />
+                            <PasswordInput
+                                label='Mật khẩu'
+                                placeholder='Nhập mật khẩu'
+                                {...loginForm.getInputProps('password')}
+                            />
+                            <Group position='right' mt='md'>
+                                <Button type='submit' loading={loginLoading}>Đăng nhập</Button>
+                            </Group>
+                        </form>
+                    </div>
+                </Center>
             </Grid.Col>
             <Grid.Col sx={(theme) => ({
                 [`@media (max-width: ${theme.breakpoints.sm}px)`]: {

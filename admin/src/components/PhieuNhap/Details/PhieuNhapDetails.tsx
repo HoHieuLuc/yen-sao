@@ -1,4 +1,5 @@
 import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useDocumentTitle } from '@mantine/hooks';
 import { useModals } from '@mantine/modals';
 
 import { Box, Button, Center, Grid, Group, Title } from '@mantine/core';
@@ -15,6 +16,11 @@ const PhieuNhapDetails = () => {
     const navigate = useNavigate();
     const { id } = useParams();
     const { data, loading, error } = phieuNhapHooks.usePhieuNhapByID(id || '');
+    useDocumentTitle(
+        data && data.phieuNhap.byID
+            ? `Phiếu nhập ngày ${convertToShortDate(data.phieuNhap.byID.ngayNhap)}`
+            : 'Đang tải...'
+    );
 
     const modals = useModals();
 

@@ -1,3 +1,5 @@
+import { useDocumentTitle } from '@mantine/hooks';
+
 import { createStyles, Title, Text, Button, Container, Group } from '@mantine/core';
 import { Link } from 'react-router-dom';
 
@@ -32,6 +34,7 @@ const useStyles = createStyles((theme) => ({
 
 const NotFound = () => {
     const { classes } = useStyles();
+    useDocumentTitle('Trang này không tồn tại');
 
     return (
         <Container>

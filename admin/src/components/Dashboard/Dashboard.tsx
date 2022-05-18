@@ -1,8 +1,14 @@
-import { Divider, Stack } from '@mantine/core';
+import { useDocumentTitle } from '@mantine/hooks';
 import ThongTinNhapHang from './ThongTinNhapHang';
 import ThongTinXuatHang from './ThongTinXuatHang';
+import { Divider, Stack } from '@mantine/core';
 
-const Dashboard = () => {
+interface Props {
+    title: string;
+}
+
+const Dashboard = ({ title }: Props) => {
+    useDocumentTitle(title);
     return (
         <Stack spacing='xs'>
             <ThongTinNhapHang />
