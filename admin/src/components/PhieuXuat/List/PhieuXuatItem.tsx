@@ -15,7 +15,7 @@ interface Props {
 const PhieuXuatItem = ({ phieuXuat, index }: Props) => {
     const modals = useModals();
 
-    const openDeleteModal = (phieuXuat: PhieuXuat) => {
+    const openDeleteModal = () => {
         const modalId = modals.openModal({
             title: <h3>Xóa phiếu xuất</h3>,
             children: <DeletePhieuXuat
@@ -50,7 +50,7 @@ const PhieuXuatItem = ({ phieuXuat, index }: Props) => {
                     <ActionIcon
                         variant='hover'
                         color='red'
-                        onClick={() => openDeleteModal(phieuXuat)}
+                        onClick={openDeleteModal}
                     >
                         <Icon label='Xóa' iconType='delete' />
                     </ActionIcon>
