@@ -1,3 +1,4 @@
+import { PageInfo, PaginateVars } from './paginate';
 import { SanPham } from './san-pham';
 import { User } from './user';
 
@@ -26,6 +27,21 @@ export interface PhieuXuat {
     updatedAt: number;
 }
 
+export interface AllPhieuXuats {
+    phieuXuat: {
+        all: {
+            docs: Array<PhieuXuat>;
+            pageInfo: PageInfo;
+        }
+    }
+}
+
+export interface AllPhieuXuatsVars extends PaginateVars {
+    from: number | null;
+    to: number | null;
+    sort?: string | null;
+}
+
 export interface PhieuXuatByID {
     phieuXuat: {
         byID: PhieuXuat;
@@ -47,8 +63,35 @@ export interface UpdatePhieuXuatInput {
     }
 }
 
-export interface PhieuXuatVars {
+export interface CreatePhieuXuatVars {
     nguoiMua: string;
     ngayXuat: Date;
     payload: Array<ChiTietPhieuXuatInput>
+}
+
+export interface ChiTietPhieuXuatBySanPhamID {
+    chiTietPhieuXuat: {
+        bySanPhamID: {
+            docs: Array<Omit<ChiTietPhieuXuat, 'sanPham'>>;
+            pageInfo: PageInfo;
+        }
+    }
+}
+
+export interface ChiTietPhieuXuatBySanPhamIDVars extends PaginateVars {
+    id: string;
+    from: number | null;
+    to: number | null;
+    sort: string | null;
+}
+
+export interface CreateChiTietPhieuXuatVars {
+    idPhieuXuat: string;
+    payload: ChiTietPhieuXuatInput
+}
+
+export interface UpdateChiTietPhieuXuatVars {
+    idPhieuXuat: string;
+    idChiTiet: string;
+    payload: ChiTietPhieuXuatInput;
 }
