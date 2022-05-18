@@ -1,6 +1,5 @@
 import { useDateRangeSearchParams } from '../../../hooks/use-date-range-search-params';
 import { usePagination, useSortParams } from '../../../hooks';
-import { useQuery } from '@apollo/client';
 
 import { Center, ScrollArea, Table, UnstyledButton } from '@mantine/core';
 import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
@@ -10,8 +9,8 @@ import ErrorPage from '../../Utils/Errors/ErrorPage';
 import { SortIcon } from '../../Utils/Icons';
 import PhieuXuatItem from './PhieuXuatItem';
 
-import { PageInfo, PaginateVars, PhieuXuat } from '../../../types';
-import { phieuXuatQuery } from '../../../graphql/queries';
+import { PageInfo, PhieuXuat } from '../../../types';
+import { phieuXuatHooks } from '../../../graphql/queries';
 
 export interface PhieuXuatsData {
     phieuXuat: {
@@ -22,12 +21,6 @@ export interface PhieuXuatsData {
     }
 }
 
-interface PhieuXuatVars extends PaginateVars {
-    from: number | null;
-    to: number | null;
-    sort: string | null;
-}
-
 const PhieuXuatList = () => {
     const { currentPage, handlePageChange, limit, handleLimitChange } = usePagination();
     const { from, to, handleSearch } = useDateRangeSearchParams();
@@ -36,17 +29,12 @@ const PhieuXuatList = () => {
         tongTien: [null, 'TONG_TIEN_ASC', 'TONG_TIEN_DESC'],
     });
 
-    const { data, loading, error } = useQuery<
-        PhieuXuatsData, PhieuXuatVars
-    >(phieuXuatQuery.ALL, {
-        variables: {
-            page: currentPage,
-            limit: limit,
-            from: from.paramValue,
-            to: to.paramValue,
-            sort: sortPhieuXuat.currentSortValue
-        },
-        fetchPolicy: 'cache-and-network'
+    const { data, loading, error } = phieuXuatHooks.useAllPhieuXuats({
+        page: currentPage,
+        limit: limit,
+        from: from.paramValue,
+        to: to.paramValue,
+        sort: sortPhieuXuat.currentSortValue
     });
 
     if (error) {
@@ -63,7 +51,7 @@ const PhieuXuatList = () => {
 
     return (
         <LoadingWrapper loading={loading}>
-            <DateRangeSearch 
+            <DateRangeSearch
                 from={from}
                 to={to}
                 handleSearch={handleSearch}

@@ -1,29 +1,13 @@
-import { useApolloClient, useMutation } from '@apollo/client';
-
 import { Box, Center, Title } from '@mantine/core';
 import PhieuNhapForm from '../Form/PhieuNhapForm';
 
-import { showErrorNotification, showSuccessNotification } from '../../../events';
-import { phieuNhapQuery } from '../../../graphql/queries';
-import { PhieuNhapVars } from '../../../types';
+import { phieuNhapHooks } from '../../../graphql/queries';
+import { CreatePhieuNhapVars } from '../../../types';
 
 const CreatePhieuNhap = () => {
-    const client = useApolloClient();
-    const [createPhieuNhap, { loading }] = useMutation<
-        never, PhieuNhapVars
-    >(phieuNhapQuery.CREATE, {
-        onCompleted: () => {
-            showSuccessNotification('Tạo phiếu nhập thành công');
-            client.cache.evict({
-                id: 'ROOT_QUERY',
-                fieldName: 'phieuNhap',
-            });
-            client.cache.gc();
-        },
-        onError: (error) => showErrorNotification(error.message)
-    });
+    const [createPhieuNhap, { loading }] = phieuNhapHooks.useCreatePhieuNhap();
 
-    const handleSubmit = (values: PhieuNhapVars, callback: () => void) => {
+    const handleSubmit = (values: CreatePhieuNhapVars, callback: () => void) => {
         void createPhieuNhap({
             variables: values,
             onCompleted: callback

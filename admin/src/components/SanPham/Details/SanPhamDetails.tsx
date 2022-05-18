@@ -36,10 +36,10 @@ const SanPhamDetails = () => {
                 <DetailsTab id={id} />
             </Tabs.Tab>
             <Tabs.Tab label="Thông tin nhập hàng" tabKey='nhap-hang'>
-                <ChiTietPhieuNhapList id={id} isOpened={activeTab === 1} />
+                <ChiTietPhieuNhapList id={id} />
             </Tabs.Tab>
             <Tabs.Tab label="Thông tin xuất hàng" tabKey='xuat-hang'>
-                <ChiTietPhieuXuatList id={id} isOpened={activeTab === 2} />
+                <ChiTietPhieuXuatList id={id} />
             </Tabs.Tab>
         </Tabs>
     );

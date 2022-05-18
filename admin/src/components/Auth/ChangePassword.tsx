@@ -1,23 +1,11 @@
-import { useMutation } from '@apollo/client';
 import { useForm } from '@mantine/form';
 
 import { Box, Button, Center, Container, Group, PasswordInput, Stack, Title } from '@mantine/core';
 
-import { showErrorNotification, showSuccessNotification } from '../../events';
-import { authQuery } from '../../graphql/queries';
-
-interface ChangePasswordVars {
-    oldPassword: string;
-    newPassword: string;
-}
+import { authHooks } from '../../graphql/queries';
 
 const ChangePassword = () => {
-    const [changePassword, { loading }] = useMutation<
-        never, ChangePasswordVars
-    >(authQuery.CHANGE_PASSWORD, {
-        onCompleted: () => showSuccessNotification('Đổi mật khẩu thành công'),
-        onError: (error) => showErrorNotification(error.message),
-    });
+    const [changePassword, { loading }] = authHooks.useChangePassword();
 
     const authForm = useForm({
         initialValues: {

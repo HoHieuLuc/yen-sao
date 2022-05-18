@@ -1,5 +1,4 @@
 import { useDateRangeSearchParams, usePagination, useSortParams } from '../../../hooks';
-import { useQuery } from '@apollo/client';
 
 import { Anchor, Box, Table, UnstyledButton } from '@mantine/core';
 import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
@@ -8,33 +7,15 @@ import MyPagination from '../../Utils/Pagination/MyPagination';
 import ErrorPage from '../../Utils/Errors/ErrorPage';
 import { Link } from 'react-router-dom';
 
-import { ChiTietPhieuXuat, PageInfo, PaginateVars } from '../../../types';
 import { convertToShortDate, convertToVND } from '../../../utils/common';
-import { chiTietPhieuXuatQuery } from '../../../graphql/queries';
 import { SortIcon } from '../../Utils/Icons';
-
-interface ChiTietData {
-    chiTietPhieuXuat: {
-        bySanPhamID: {
-            docs: Array<Omit<ChiTietPhieuXuat, 'sanPham'>>;
-            pageInfo: PageInfo;
-        }
-    }
-}
-
-interface ChiTietVars extends PaginateVars {
-    id: string;
-    from: number | null;
-    to: number | null;
-    sort: string | null;
-}
+import { chiTietPhieuXuatHooks } from '../../../graphql/queries';
 
 interface Props {
     id: string;
-    isOpened: boolean;
 }
 
-const ChiTietPhieuXuatList = ({ id, isOpened }: Props) => {
+const ChiTietPhieuXuatList = ({ id }: Props) => {
     const { currentPage, handlePageChange, limit, handleLimitChange } = usePagination();
     const { from, to, handleSearch } = useDateRangeSearchParams();
     const [sortChiTietPhieuXuat, toggleSortChiTietPhieuXuat] = useSortParams({
@@ -42,20 +23,17 @@ const ChiTietPhieuXuatList = ({ id, isOpened }: Props) => {
         soLuong: [null, 'SO_LUONG_ASC', 'SO_LUONG_DESC'],
         donGia: [null, 'DON_GIA_ASC', 'DON_GIA_DESC'],
     });
-    const { data, loading, error } = useQuery<
-        ChiTietData, ChiTietVars
-    >(chiTietPhieuXuatQuery.BY_SAN_PHAM_ID, {
-        variables: {
+
+    const { data, loading, error } = chiTietPhieuXuatHooks.useChiTietPhieuXuatBySanPhamID(
+        {
             id,
             page: currentPage,
             limit: limit,
             from: from.paramValue,
             to: to.paramValue,
             sort: sortChiTietPhieuXuat.currentSortValue
-        },
-        skip: !isOpened,
-        fetchPolicy: 'cache-and-network',
-    });
+        }
+    );
 
     if (error) {
         return <ErrorPage />;
@@ -66,12 +44,12 @@ const ChiTietPhieuXuatList = ({ id, isOpened }: Props) => {
             <td>{10 * (1 - 1) + (index + 1)}</td>
             <td>
                 <Anchor component={Link} to={`/phieu-xuat/${chiTiet.maPhieuXuat}`}>
-                    {convertToShortDate(chiTiet.createdAt)}
+                    {convertToShortDate(chiTiet.ngayXuat)}
                 </Anchor>
             </td>
             <td>{chiTiet.soLuongXuat / 1000}</td>
             <td>{convertToVND(chiTiet.donGiaXuat)}</td>
-            <td>{convertToVND(chiTiet.soLuongXuat / 100 * chiTiet.donGiaXuat)}</td>
+            <td>{convertToVND(chiTiet.thanhTien)}</td>
         </tr>
     ));
 

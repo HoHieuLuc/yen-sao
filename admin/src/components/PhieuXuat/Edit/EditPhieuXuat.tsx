@@ -1,25 +1,18 @@
-import { useMutation } from '@apollo/client';
 import { useForm } from '@mantine/form';
 
 import { Button, Grid, TextInput } from '@mantine/core';
 import { DatePicker } from '@mantine/dates';
 
-import { showErrorNotification, showSuccessNotification } from '../../../events';
-import { PhieuXuat, UpdatePhieuXuatInput } from '../../../types';
-import { phieuXuatQuery } from '../../../graphql/queries';
+import { phieuXuatHooks } from '../../../graphql/queries';
 import { convertToVND } from '../../../utils/common';
+import { PhieuXuat } from '../../../types';
 
 interface Props {
     phieuXuat: PhieuXuat;
 }
 
 const EditPhieuXuat = ({ phieuXuat }: Props) => {
-    const [updatePhieuXuat, { loading }] = useMutation<
-        never, UpdatePhieuXuatInput
-    >(phieuXuatQuery.UPDATE, {
-        onCompleted: () => showSuccessNotification('Cập nhật phiếu xuất thành công'),
-        onError: (error) => showErrorNotification(error.message)
-    });
+    const [updatePhieuXuat, { loading }] = phieuXuatHooks.useUpdatePhieuXuat();
 
     const updatePhieuXuatForm = useForm({
         initialValues: {

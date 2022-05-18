@@ -9,6 +9,8 @@ interface Props {
     onMonthChange: (month: Date) => void;
     data: Array<{
         createdAt: number;
+        ngayNhap?: number;
+        ngayXuat?: number;
     }>
 }
 
@@ -22,9 +24,13 @@ const DashboardCalendar = ({ selectedDay, setSelectedDay, month, onMonthChange, 
             renderDay={(date) => {
                 const day = date.getDate();
 
-
                 const dataToday = data.filter(item => {
-                    return convertToShortDate(item.createdAt) === convertToShortDate(date);
+                    if (item.ngayNhap) {
+                        return convertToShortDate(item.ngayNhap) === convertToShortDate(date);
+                    }
+                    if (item.ngayXuat) {
+                        return convertToShortDate(item.ngayXuat) === convertToShortDate(date);
+                    }
                 });
 
                 if (dataToday.length > 0) {

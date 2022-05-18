@@ -1,4 +1,13 @@
-import { gql } from '@apollo/client';
+import { gql, useApolloClient, useMutation, useQuery } from '@apollo/client';
+import { showErrorNotification, showSuccessNotification } from '../../events';
+import {
+    AllPhieuNhaps,
+    PhieuNhapByID,
+    AllPhieuNhapsVars,
+    CreatePhieuNhapVars,
+    UpdatePhieuNhapInput,
+} from '../../types';
+
 
 const ALL = gql`
     query AllPhieuNhaps($page: Int!, $limit: Int!, $from: Date, $to: Date, $sort: SortPhieuNhap) {
@@ -105,10 +114,77 @@ const UPDATE = gql`
     }
 `;
 
-export const phieuNhapQuery = {
-    ALL,
-    BY_ID,
-    CREATE,
-    UPDATE,
-    DELETE,
+const useAllPhieuNhap = (variables: AllPhieuNhapsVars) => {
+    return useQuery<
+        AllPhieuNhaps, AllPhieuNhapsVars
+    >(ALL, {
+        variables,
+        fetchPolicy: 'cache-and-network'
+    });
+};
+
+const usePhieuNhapByID = (id: string) => {
+    return useQuery<
+        PhieuNhapByID, { id: string }
+    >(BY_ID, {
+        variables: {
+            id
+        }
+    });
+};
+
+const useCreatePhieuNhap = () => {
+    const client = useApolloClient();
+    return useMutation<
+        never, CreatePhieuNhapVars
+    >(CREATE, {
+        onCompleted: () => {
+            showSuccessNotification('Tạo phiếu nhập thành công');
+            client.cache.evict({
+                id: 'ROOT_QUERY',
+                fieldName: 'phieuNhap',
+            });
+            client.cache.gc();
+        },
+        onError: (error) => showErrorNotification(error.message)
+    });
+};
+
+const useUpdatePhieuNhap = () => {
+    return useMutation<
+        never, UpdatePhieuNhapInput
+    >(UPDATE, {
+        onCompleted: () => showSuccessNotification('Cập nhật phiếu nhập thành công'),
+        onError: (error) => showErrorNotification(error.message)
+    });
+
+};
+
+const useDeletePhieuNhap = () => {
+    const client = useApolloClient();
+    return useMutation<
+        never, { id: string }
+    >(DELETE, {
+        onCompleted: () => {
+            showSuccessNotification(
+                `Xóa phiếu nhập thành công`
+            );
+            client.cache.evict({
+                id: 'ROOT_QUERY',
+                fieldName: 'phieuNhap',
+            });
+            client.cache.gc();
+        },
+        onError: (error) => {
+            showErrorNotification(error.message);
+        }
+    });
+};
+
+export const phieuNhapHooks = {
+    useAllPhieuNhap,
+    usePhieuNhapByID,
+    useCreatePhieuNhap,
+    useUpdatePhieuNhap,
+    useDeletePhieuNhap,
 };

@@ -6,7 +6,6 @@ import { Button, Group } from '@mantine/core';
 import RichTextEditor from '@mantine/rte';
 import { Link } from 'react-router-dom';
 
-
 interface Props {
     inititalValue: string;
     loading: boolean;

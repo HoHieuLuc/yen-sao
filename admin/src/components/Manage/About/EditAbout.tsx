@@ -1,37 +1,18 @@
-import { useMutation, useQuery } from '@apollo/client';
 
 import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
 import { Center, Title } from '@mantine/core';
 import AboutForm from './AboutForm';
 
-import { showErrorNotification, showSuccessNotification } from '../../../events';
-import { pageQuery } from '../../../graphql/queries';
-import { AboutData } from './About';
-
-interface AboutConfigVars {
-    name: 'about';
-    content: {
-        value: string;
-    }
-}
+import { pageHooks } from '../../../graphql/queries';
+import ErrorPage from '../../Utils/Errors/ErrorPage';
+import { AboutData, AboutPageVars } from '../../../types';
 
 const EditAbout = () => {
-    const { data, loading } = useQuery<
-        AboutData, { name: 'about' }
-    >(pageQuery.PAGE_BY_NAME,
-        {
-            variables: {
-                name: 'about'
-            }
-        }
-    );
+    const { data, loading, error } = pageHooks.usePageByName<AboutData>('about');
 
-    const [submitAbout, { loading: submitLoading }] = useMutation<
-        never, AboutConfigVars
-    >(pageQuery.CREATE_OR_UPDATE_PAGE, {
-        onCompleted: () => showSuccessNotification('Cập nhật thành công'),
-        onError: (error) => showErrorNotification(error.message)
-    });
+    const [
+        submitAbout, { loading: submitLoading }
+    ] = pageHooks.useCreateOrUpdatePage<never, AboutPageVars>();
 
     const handleSubmitAbout = (value: string) => {
         void submitAbout({
@@ -43,6 +24,10 @@ const EditAbout = () => {
             }
         });
     };
+
+    if (error) {
+        return <ErrorPage />;
+    }
 
     return (
         <LoadingWrapper loading={loading}>

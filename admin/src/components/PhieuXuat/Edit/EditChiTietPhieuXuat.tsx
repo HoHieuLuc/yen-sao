@@ -1,12 +1,10 @@
-import { useMutation } from '@apollo/client';
 import { useModals } from '@mantine/modals';
 
 import MyAccordionItem from '../../Utils/AccordionItem/MyAccordionItem';
 import DeleteChiTietPhieuXuat from '../Delete/DeleteChiTietPhieuXuat';
 import ChiTietPhieuXuatForm from '../Form/ChiTietPhieuXuatForm';
 
-import { showErrorNotification, showSuccessNotification } from '../../../events';
-import { chiTietPhieuXuatQuery } from '../../../graphql/queries';
+import { chiTietPhieuXuatHooks } from '../../../graphql/queries';
 import { ChiTietPhieuXuatInput } from '../../../types';
 
 interface Props {
@@ -19,17 +17,8 @@ interface Props {
     } & ChiTietPhieuXuatInput;
 }
 
-interface UpdateVars extends Omit<Props, 'initialValues' | 'label'> {
-    payload: ChiTietPhieuXuatInput;
-}
-
 const EditChiTietPhieuXuat = ({ idPhieuXuat, idChiTiet, initialValues, label }: Props) => {
-    const [updateChiTietPhieuXuat, { loading }] = useMutation<
-        never, UpdateVars
-    >(chiTietPhieuXuatQuery.UPDATE, {
-        onError: (error) => showErrorNotification(error.message),
-        onCompleted: () => showSuccessNotification('Cập nhật thành công'),
-    });
+    const [updateChiTietPhieuXuat, { loading }] = chiTietPhieuXuatHooks.useUpdateChiTietPhieuXuat();
 
     const modals = useModals();
 

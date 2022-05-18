@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useModals } from '@mantine/modals';
+import useGlobalStyles from '../../../utils/global.styles';
 
 import { Box, Button, Center, Grid, Group, Title } from '@mantine/core';
 import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
@@ -19,6 +20,7 @@ interface Props {
 
 const DetailsTab = ({ id }: Props) => {
     const navigate = useNavigate();
+    const { classes } = useGlobalStyles();
     const { data, loading, error } = sanPhamHooks.useSanPhamByID(id);
 
     const modals = useModals();
@@ -84,6 +86,8 @@ const DetailsTab = ({ id }: Props) => {
                             readOnly
                             value={data.sanPham.byID.moTa}
                             onChange={() => void (0)}
+                            placeholder='Sản phẩm này không có mô tả'
+                            className={classes.rte}
                         />
                     </Grid.Col>
                 </Grid>

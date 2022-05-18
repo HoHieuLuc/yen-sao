@@ -2,7 +2,6 @@ import {
     LazyQueryExecFunction,
     OperationVariables,
     useApolloClient,
-    useMutation,
 } from '@apollo/client';
 import { useForm } from '@mantine/form';
 
@@ -15,20 +14,8 @@ import {
     Box,
 } from '@mantine/core';
 
-import { showErrorNotification } from '../../events';
-import { authQuery } from '../../graphql/queries';
-import { CurrentUser } from '../../App';
-
-interface LoginData {
-    login: {
-        value: string;
-    }
-}
-
-interface LoginVars {
-    username: string;
-    password: string;
-}
+import { authHooks } from '../../graphql/queries';
+import { CurrentUser, LoginVars } from '../../types';
 
 interface Props {
     getCurrentUser: LazyQueryExecFunction<{ user: CurrentUser }, OperationVariables>;
@@ -47,21 +34,14 @@ const Login = ({ getCurrentUser }: Props) => {
         }
     });
 
-    const [login, { loading: loginLoading }] = useMutation<
-        { user: LoginData }, LoginVars
-    >(authQuery.LOGIN, {
-        onError: (error) => {
-            showErrorNotification(error.message);
-        },
-        onCompleted: (data) => {
-            localStorage.setItem('token', data.user.login.value);
-            client.resetStore().then(() => getCurrentUser()).catch(void (0));
-        }
-    });
+    const [login, { loading: loginLoading }] = authHooks.useLogin();
 
     const handleLogin = (values: LoginVars) => {
         void login({
-            variables: values
+            variables: values,
+            onCompleted: () => {
+                client.resetStore().then(() => getCurrentUser()).catch(void (0));
+            }
         });
     };
 

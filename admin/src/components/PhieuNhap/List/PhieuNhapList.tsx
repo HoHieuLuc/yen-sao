@@ -1,6 +1,5 @@
 import { useDateRangeSearchParams } from '../../../hooks/use-date-range-search-params';
 import { usePagination, useSortParams } from '../../../hooks';
-import { useQuery } from '@apollo/client';
 
 import { Center, ScrollArea, Table, UnstyledButton } from '@mantine/core';
 import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
@@ -10,24 +9,7 @@ import ErrorPage from '../../Utils/Errors/ErrorPage';
 import { SortIcon } from '../../Utils/Icons';
 import PhieuNhapItem from './PhieuNhapItem';
 
-import { PageInfo, PaginateVars, PhieuNhap } from '../../../types';
-import { phieuNhapQuery } from '../../../graphql/queries';
-
-
-export interface PhieuNhapsData {
-    phieuNhap: {
-        all: {
-            docs: Array<PhieuNhap>;
-            pageInfo: PageInfo;
-        }
-    }
-}
-
-interface PhieuNhapVars extends PaginateVars {
-    from: number | null;
-    to: number | null;
-    sort: string | null;
-}
+import { phieuNhapHooks } from '../../../graphql/queries';
 
 const PhieuNhapList = () => {
     const { currentPage, handlePageChange, limit, handleLimitChange } = usePagination();
@@ -37,17 +19,12 @@ const PhieuNhapList = () => {
         tongTien: [null, 'TONG_TIEN_ASC', 'TONG_TIEN_DESC'],
     });
 
-    const { data, loading, error } = useQuery<
-        PhieuNhapsData, PhieuNhapVars
-    >(phieuNhapQuery.ALL, {
-        variables: {
-            page: currentPage,
-            limit: limit,
-            from: from.paramValue,
-            to: to.paramValue,
-            sort: sortPhieuNhap.currentSortValue
-        },
-        fetchPolicy: 'cache-and-network'
+    const { data, loading, error } = phieuNhapHooks.useAllPhieuNhap({
+        page: currentPage,
+        limit: limit,
+        from: from.paramValue,
+        to: to.paramValue,
+        sort: sortPhieuNhap.currentSortValue
     });
 
     if (error) {
@@ -64,7 +41,7 @@ const PhieuNhapList = () => {
 
     return (
         <LoadingWrapper loading={loading}>
-            <DateRangeSearch 
+            <DateRangeSearch
                 from={from}
                 to={to}
                 handleSearch={handleSearch}
