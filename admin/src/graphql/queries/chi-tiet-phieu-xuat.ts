@@ -1,4 +1,7 @@
-import { gql } from '@apollo/client';
+import { gql, useMutation, useQuery } from '@apollo/client';
+import { showErrorNotification, showSuccessNotification } from '../../events';
+import { ChiTietPhieuXuatBySanPhamID, ChiTietPhieuXuatBySanPhamIDVars, CreateChiTietPhieuXuatVars, UpdateChiTietPhieuXuatVars } from '../../types';
+
 
 const BY_SAN_PHAM_ID = gql`
     query ChiTietPhieuXuatBySanPhamID(
@@ -16,8 +19,8 @@ const BY_SAN_PHAM_ID = gql`
                     maPhieuXuat
                     soLuongXuat
                     donGiaXuat
-                    createdAt
-                    updatedAt
+                    ngayXuat
+                    thanhTien
                 }
                 pageInfo {
                     page
@@ -29,7 +32,6 @@ const BY_SAN_PHAM_ID = gql`
         }
     }
 `;
-
 
 const CREATE = gql`
     mutation CreateChiTietPhieuXuat($idPhieuXuat: ID!, $payload: ChiTietPhieuXuatInput!) {
@@ -121,9 +123,48 @@ const DELETE = gql`
     }
 `;
 
-export const chiTietPhieuXuatQuery = {
-    BY_SAN_PHAM_ID,
-    CREATE,
-    UPDATE,
-    DELETE,
+const useChiTietPhieuXuatBySanPhamID = (variables: ChiTietPhieuXuatBySanPhamIDVars) => {
+    return useQuery<
+        ChiTietPhieuXuatBySanPhamID, ChiTietPhieuXuatBySanPhamIDVars
+    >(BY_SAN_PHAM_ID, {
+        variables,
+        fetchPolicy: 'cache-and-network'
+    });
+};
+
+const useCreateChiTietPhieuXuat = () => {
+    return useMutation<
+        never, CreateChiTietPhieuXuatVars
+    >(CREATE, {
+        onError: (error) => showErrorNotification(error.message),
+        onCompleted: () => showSuccessNotification('Thêm sản phẩm vào phiếu xuất thành công')
+    });
+};
+
+const useUpdateChiTietPhieuXuat = () => {
+    return useMutation<
+        never, UpdateChiTietPhieuXuatVars
+    >(UPDATE, {
+        onCompleted: () => showSuccessNotification('Cập nhật thành công'),
+        onError: (error) => showErrorNotification(error.message),
+    });
+};
+
+const useDeleteChiTietPhieuXuat = (tenSanPham: string) => {
+    return useMutation<
+        never, { idPhieuXuat: string, idChiTiet: string }
+    >(DELETE, {
+        onCompleted: () => {
+            showSuccessNotification(`Xóa sản phẩm "${tenSanPham}" khỏi phiếu xuất thành công`);
+        },
+        onError: (error) => showErrorNotification(error.message)
+    });
+};
+
+
+export const chiTietPhieuXuatHooks = {
+    useChiTietPhieuXuatBySanPhamID,
+    useCreateChiTietPhieuXuat,
+    useUpdateChiTietPhieuXuat,
+    useDeleteChiTietPhieuXuat,
 };

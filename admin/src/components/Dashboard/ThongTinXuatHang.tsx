@@ -1,37 +1,25 @@
-import { useQuery } from '@apollo/client';
 import { useState } from 'react';
 
 import { Anchor, Box, Grid, Paper, Stack, Text } from '@mantine/core';
 import LoadingWrapper from '../Utils/Wrappers/LoadingWrapper';
 import DashboardCalendar from './DashboardCalendar';
 import ErrorPage from '../Utils/Errors/ErrorPage';
+import { Calendar } from '@mantine/dates';
 import { Link } from 'react-router-dom';
 
-import { convertToShortDate, convertToVietnameseDate, convertToVND } from '../../utils/common';
-import { phieuXuatQuery } from '../../graphql/queries';
-import { PaginateVars } from '../../types';
-import { Calendar } from '@mantine/dates';
+import { convertToShortDate, convertToVND } from '../../utils/common';
+import { phieuXuatHooks } from '../../graphql/queries';
 import dayjs from 'dayjs';
-import { PhieuXuatsData } from '../PhieuXuat/List/PhieuXuatList';
-
-interface PhieuXuatVars extends PaginateVars {
-    from: number;
-    to: number;
-}
 
 const ThongTinXuatHang = () => {
     const [month, onMonthChange] = useState(new Date());
     const [selectedDay, setSelectedDay] = useState<Date | null>(null);
 
-    const { data, loading, error } = useQuery<
-        PhieuXuatsData, PhieuXuatVars
-    >(phieuXuatQuery.ALL, {
-        variables: {
-            page: 1,
-            limit: 1000,
-            from: dayjs(month).startOf('month').toDate().getTime(),
-            to: dayjs(month).endOf('month').toDate().getTime()
-        }
+    const { data, loading, error } = phieuXuatHooks.useAllPhieuXuats({
+        page: 1,
+        limit: 1000,
+        from: dayjs(month).startOf('month').toDate().getTime(),
+        to: dayjs(month).endOf('month').toDate().getTime()
     });
 
     if (error) {
@@ -41,7 +29,7 @@ const ThongTinXuatHang = () => {
     return (
         <LoadingWrapper loading={loading}>
             {loading && <Calendar initialMonth={month} />}
-            {data && <Grid gutter='xs'>
+            {!loading && data && <Grid gutter='xs'>
                 <Grid.Col md={4}>
                     <DashboardCalendar
                         selectedDay={selectedDay}
@@ -67,13 +55,13 @@ const ThongTinXuatHang = () => {
                         {selectedDay
                             ? data.phieuXuat.all.docs.filter(
                                 item => {
-                                    const shortDate = convertToShortDate(item.createdAt);
+                                    const shortDate = convertToShortDate(item.ngayXuat);
                                     return shortDate === convertToShortDate(selectedDay.getTime());
                                 }
                             ).map(item => {
                                 return <Box key={item.id}>
                                     <Anchor component={Link} to={`/phieu-xuat/${item.id}`}>
-                                        {convertToVietnameseDate(item.createdAt)}
+                                        {convertToShortDate(item.ngayXuat)}
                                     </Anchor>: xuất {item.soMatHangXuat} mặt hàng, tổng tiền {
                                         convertToVND(item.tongTien)
                                     }

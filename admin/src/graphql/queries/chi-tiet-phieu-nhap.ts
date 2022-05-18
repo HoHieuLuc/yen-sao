@@ -1,4 +1,11 @@
-import { gql } from '@apollo/client';
+import { gql, useMutation, useQuery } from '@apollo/client';
+import { showErrorNotification, showSuccessNotification } from '../../events';
+import {
+    ChiTietPhieuNhapBySanPhamID,
+    ChiTietPhieuNhapBySanPhamIDVars,
+    CreateChiTietPhieuNhapVars,
+    UpdateChiTietPhieuNhapVars
+} from '../../types';
 
 const BY_SAN_PHAM_ID = gql`
     query ChiTietPhieuNhapBySanPhamID(
@@ -120,9 +127,47 @@ const DELETE = gql`
     }
 `;
 
-export const chiTietPhieuNhapQuery = {
-    BY_SAN_PHAM_ID,
-    CREATE,
-    UPDATE,
-    DELETE,
+const useChiTietPhieuNhapBySanPhamId = (variables: ChiTietPhieuNhapBySanPhamIDVars) => {
+    return useQuery<
+        ChiTietPhieuNhapBySanPhamID, ChiTietPhieuNhapBySanPhamIDVars
+    >(BY_SAN_PHAM_ID, {
+        variables,
+        fetchPolicy: 'cache-and-network',
+    });
+};
+
+const useCreateChiTietPhieuNhap = () => {
+    return useMutation<
+        never, CreateChiTietPhieuNhapVars
+    >(CREATE, {
+        onCompleted: () => showSuccessNotification('Thêm sản phẩm vào phiếu nhập thành công'),
+        onError: (error) => showErrorNotification(error.message),
+    });
+};
+
+const useUpdateChiTietPhieuNhap = () => {
+    return useMutation<
+        never, UpdateChiTietPhieuNhapVars
+    >(UPDATE, {
+        onCompleted: () => showSuccessNotification('Cập nhật thành công'),
+        onError: (error) => showErrorNotification(error.message),
+    });
+};
+
+const useDeleteChiTietPhieuNhap = (tenSanPham: string) => {
+    return useMutation<
+        never, { idPhieuNhap: string, idChiTiet: string }
+    >(DELETE, {
+        onCompleted: () => {
+            showSuccessNotification(`Xóa sản phẩm "${tenSanPham}" khỏi phiếu nhập thành công`);
+        },
+        onError: (error) => showErrorNotification(error.message)
+    });
+};
+
+export const chiTietPhieuNhapHooks = {
+    useChiTietPhieuNhapBySanPhamId,
+    useCreateChiTietPhieuNhap,
+    useUpdateChiTietPhieuNhap,
+    useDeleteChiTietPhieuNhap,
 };

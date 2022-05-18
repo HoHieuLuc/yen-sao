@@ -1,5 +1,4 @@
 import { useParams } from 'react-router-dom';
-import { useQuery } from '@apollo/client';
 
 import CreateChiTietPhieuXuat from '../Create/CreateChiTietPhieuXuat';
 import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
@@ -8,18 +7,11 @@ import EditChiTietPhieuXuat from './EditChiTietPhieuXuat';
 import NotFound from '../../Utils/Errors/NotFound';
 import EditPhieuXuat from './EditPhieuXuat';
 
-import { phieuXuatQuery } from '../../../graphql/queries';
-import { PhieuXuatByID } from '../../../types';
+import { phieuXuatHooks } from '../../../graphql/queries';
 
 const EditPhieuXuatPage = () => {
     const { id } = useParams();
-    const { data, loading, error } = useQuery<
-        PhieuXuatByID, { id: string }
-    >(phieuXuatQuery.BY_ID, {
-        variables: {
-            id: id || ''
-        }
-    });
+    const { data, loading, error } = phieuXuatHooks.usePhieuXuatById(id || '');
 
     if (error || !id || (data && data.phieuXuat && data.phieuXuat.byID === null)) {
         return <NotFound />;

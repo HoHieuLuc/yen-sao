@@ -1,4 +1,3 @@
-import { useQuery } from '@apollo/client';
 import { useState } from 'react';
 
 import { Anchor, Box, Grid, Paper, Stack, Text } from '@mantine/core';
@@ -7,32 +6,24 @@ import DashboardCalendar from './DashboardCalendar';
 import ErrorPage from '../Utils/Errors/ErrorPage';
 import { Link } from 'react-router-dom';
 
-import { convertToShortDate, convertToVietnameseDate, convertToVND } from '../../utils/common';
-import { PhieuNhapsData } from '../PhieuNhap/List/PhieuNhapList';
-import { phieuNhapQuery } from '../../graphql/queries';
-import { PaginateVars } from '../../types';
+import { convertToShortDate, convertToVND } from '../../utils/common';
+import { phieuNhapHooks } from '../../graphql/queries';
 import { Calendar } from '@mantine/dates';
 import dayjs from 'dayjs';
 
-interface PhieuNhapVars extends PaginateVars {
-    from: number;
-    to: number;
-}
 
 const ThongTinNhapHang = () => {
     const [month, onMonthChange] = useState(new Date());
     const [selectedDay, setSelectedDay] = useState<Date | null>(null);
 
-    const { data, loading, error } = useQuery<
-        PhieuNhapsData, PhieuNhapVars
-    >(phieuNhapQuery.ALL, {
-        variables: {
+    const { data, loading, error } = phieuNhapHooks.useAllPhieuNhap(
+        {
             page: 1,
             limit: 1000,
             from: dayjs(month).startOf('month').toDate().getTime(),
             to: dayjs(month).endOf('month').toDate().getTime()
         }
-    });
+    );
 
     if (error) {
         return <ErrorPage />;
@@ -41,7 +32,7 @@ const ThongTinNhapHang = () => {
     return (
         <LoadingWrapper loading={loading}>
             {loading && <Calendar initialMonth={month} />}
-            {data && <Grid gutter='xs'>
+            {!loading && data && <Grid gutter='xs'>
                 <Grid.Col md={4}>
                     <DashboardCalendar
                         selectedDay={selectedDay}
@@ -67,13 +58,13 @@ const ThongTinNhapHang = () => {
                         {selectedDay
                             ? data.phieuNhap.all.docs.filter(
                                 item => {
-                                    const shortDate = convertToShortDate(item.createdAt);
+                                    const shortDate = convertToShortDate(item.ngayNhap);
                                     return shortDate === convertToShortDate(selectedDay.getTime());
                                 }
                             ).map(item => {
                                 return <Box key={item.id}>
                                     <Anchor component={Link} to={`/phieu-nhap/${item.id}`}>
-                                        {convertToVietnameseDate(item.createdAt)}
+                                        {convertToShortDate(item.ngayNhap)}
                                     </Anchor>: nhập {item.soMatHangNhap} mặt hàng, tổng tiền {
                                         convertToVND(item.tongTien)
                                     }

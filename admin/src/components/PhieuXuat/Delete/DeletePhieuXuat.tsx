@@ -1,10 +1,7 @@
-import { useApolloClient, useMutation } from '@apollo/client';
-
 import { Box, Button, Group, Text } from '@mantine/core';
 
-import { showErrorNotification, showSuccessNotification } from '../../../events';
-import { convertToVietnameseDate } from '../../../utils/common';
-import { phieuXuatQuery } from '../../../graphql/queries';
+import { convertToShortDate } from '../../../utils/common';
+import { phieuXuatHooks } from '../../../graphql/queries';
 import { PhieuXuat } from '../../../types';
 
 interface Props {
@@ -14,39 +11,24 @@ interface Props {
 }
 
 const DeletePhieuXuat = ({ phieuXuat, closeModal, callback }: Props) => {
-    const client = useApolloClient();
-    const [deletePhieuXuat, { loading }] = useMutation<
-        never, { id: string }
-    >(phieuXuatQuery.DELETE, {
-        onCompleted: () => {
-            showSuccessNotification(
-                `Xóa phiếu xuất thành công`
-            );
-            client.cache.evict({
-                id: 'ROOT_QUERY',
-                fieldName: 'phieuXuat',
-            });
-            client.cache.gc();
-            closeModal();
-        },
-        onError: (error) => {
-            showErrorNotification(error.message);
-        }
-    });
+    const [deletePhieuXuat, { loading }] = phieuXuatHooks.useDeletePhieuXuat();
 
     const handleDelete = () => {
         void deletePhieuXuat({
             variables: {
                 id: phieuXuat.id
             },
-            onCompleted: callback
+            onCompleted: () => {
+                closeModal();
+                callback && callback();
+            }
         });
     };
 
     return (
         <Box>
             <Text>
-                Bạn có chắc muốn xóa phiếu xuất ngày {convertToVietnameseDate(phieuXuat.createdAt)}?
+                Bạn có chắc muốn xóa phiếu xuất ngày {convertToShortDate(phieuXuat.ngayXuat)}?
             </Text>
             <Group position='right' mt='md'>
                 <Button

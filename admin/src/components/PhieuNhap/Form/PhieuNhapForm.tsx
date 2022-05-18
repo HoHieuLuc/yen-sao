@@ -5,14 +5,14 @@ import ChiTietPhieuNhapListForm from './ChiTietPhieuNhapListForm';
 import { Accordion, Button, Group, Stack } from '@mantine/core';
 import { PlusIcon } from '../../Utils/Icons';
 
-import { ChiTietPhieuNhapInput, PhieuNhapVars } from '../../../types';
+import { ChiTietPhieuNhapInput, CreatePhieuNhapVars } from '../../../types';
 import { showErrorNotification } from '../../../events';
 import { DatePicker } from '@mantine/dates';
 
 interface Props {
     loading: boolean;
     handleSubmit: (
-        values: PhieuNhapVars,
+        values: CreatePhieuNhapVars,
         callback: () => void
     ) => void;
 }
@@ -64,7 +64,7 @@ const PhieuNhapForm = ({ loading, handleSubmit }: Props) => {
         );
     });
 
-    const submit = (values: PhieuNhapVars) => {
+    const submit = (values: CreatePhieuNhapVars) => {
         if (phieuNhapForm.values.payload.length === 0) {
             return showErrorNotification('Vui lòng nhập ít nhất 1 sản phẩm');
         }

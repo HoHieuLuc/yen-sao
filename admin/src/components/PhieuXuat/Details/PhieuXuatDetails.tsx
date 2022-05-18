@@ -1,6 +1,5 @@
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useModals } from '@mantine/modals';
-import { useQuery } from '@apollo/client';
 
 import { Box, Button, Center, Grid, Group, Title } from '@mantine/core';
 import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
@@ -9,19 +8,13 @@ import DeletePhieuXuat from '../Delete/DeletePhieuXuat';
 import NotFound from '../../Utils/Errors/NotFound';
 
 import { convertToShortDate, convertToVND } from '../../../utils/common';
-import { phieuXuatQuery } from '../../../graphql/queries';
-import { PhieuXuat, PhieuXuatByID } from '../../../types';
+import { phieuXuatHooks } from '../../../graphql/queries';
+import { PhieuXuat } from '../../../types';
 
 const PhieuXuatDetails = () => {
     const navigate = useNavigate();
     const { id } = useParams();
-    const { data, loading, error } = useQuery<
-        PhieuXuatByID, { id: string }
-    >(phieuXuatQuery.BY_ID, {
-        variables: {
-            id: id || ''
-        }
-    });
+    const { data, loading, error } = phieuXuatHooks.usePhieuXuatById(id || '');
 
     const modals = useModals();
 

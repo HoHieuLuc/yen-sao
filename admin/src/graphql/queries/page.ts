@@ -1,4 +1,5 @@
-import { gql } from '@apollo/client';
+import { gql, useMutation, useQuery } from '@apollo/client';
+import { showErrorNotification, showSuccessNotification } from '../../events';
 
 const PAGE_BY_NAME = gql`
     query ConfigByName($name: String!) {
@@ -24,7 +25,28 @@ const CREATE_OR_UPDATE_PAGE = gql`
     }
 `;
 
-export const pageQuery = {
-    PAGE_BY_NAME,
-    CREATE_OR_UPDATE_PAGE
+const usePageByName = <T>(name: string) => {
+    return useQuery<
+        T, { name: string }
+    >(PAGE_BY_NAME,
+        {
+            variables: {
+                name
+            }
+        }
+    );
+};
+
+const useCreateOrUpdatePage = <T, V>() => {
+    return useMutation<
+        T, V
+    >(CREATE_OR_UPDATE_PAGE, {
+        onCompleted: () => showSuccessNotification('Cập nhật thành công'),
+        onError: (error) => showErrorNotification(error.message)
+    });
+};
+
+export const pageHooks = {
+    useCreateOrUpdatePage,
+    usePageByName,
 };

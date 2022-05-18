@@ -4,15 +4,15 @@ import { formList, useForm } from '@mantine/form';
 import { Accordion, Button, Group, Stack, TextInput } from '@mantine/core';
 import ChiTietPhieuXuatListForm from './ChiTietPhieuXuatListForm';
 import { PlusIcon } from '../../Utils/Icons';
-
-import { ChiTietPhieuXuatInput, PhieuXuatVars } from '../../../types';
-import { showErrorNotification } from '../../../events';
 import { DatePicker } from '@mantine/dates';
+
+import { ChiTietPhieuXuatInput, CreatePhieuXuatVars } from '../../../types';
+import { showErrorNotification } from '../../../events';
 
 interface Props {
     loading: boolean;
     handleSubmit: (
-        values: PhieuXuatVars,
+        values: CreatePhieuXuatVars,
         callback: () => void
     ) => void;
 }
@@ -65,7 +65,7 @@ const PhieuXuatForm = ({ loading, handleSubmit }: Props) => {
         );
     });
 
-    const submit = (values: PhieuXuatVars) => {
+    const submit = (values: CreatePhieuXuatVars) => {
         if (phieuXuatForm.values.payload.length === 0) {
             return showErrorNotification('Vui lòng xuất ít nhất 1 sẩn phẩm');
         }

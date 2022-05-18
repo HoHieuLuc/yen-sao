@@ -1,24 +1,17 @@
-import { useMutation } from '@apollo/client';
 import { useState } from 'react';
 
 import { Button, Grid } from '@mantine/core';
 import { DatePicker } from '@mantine/dates';
 
-import { showErrorNotification, showSuccessNotification } from '../../../events';
-import { PhieuNhap, UpdatePhieuNhapInput } from '../../../types';
-import { phieuNhapQuery } from '../../../graphql/queries';
+import { phieuNhapHooks } from '../../../graphql/queries';
+import { PhieuNhap } from '../../../types';
 
 interface Props {
     phieuNhap: PhieuNhap;
 }
 
 const EditPhieuNhap = ({ phieuNhap }: Props) => {
-    const [updatePhieuNhap, { loading }] = useMutation<
-        never, UpdatePhieuNhapInput
-    >(phieuNhapQuery.UPDATE, {
-        onCompleted: () => showSuccessNotification('Cập nhật phiếu nhập thành công'),
-        onError: (error) => showErrorNotification(error.message)
-    });
+    const [updatePhieuNhap, { loading }] = phieuNhapHooks.useUpdatePhieuNhap();
 
     const [ngayNhap, setNgayNhap] = useState<Date | null>(
         new Date(phieuNhap.ngayNhap)

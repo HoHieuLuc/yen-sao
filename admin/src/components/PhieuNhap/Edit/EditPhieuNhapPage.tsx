@@ -1,5 +1,4 @@
 import { useParams } from 'react-router-dom';
-import { useQuery } from '@apollo/client';
 
 import CreateChiTietPhieuNhap from '../Create/CreateChiTietPhieuNhap';
 import { Box, Center, Divider, Grid, Title } from '@mantine/core';
@@ -8,19 +7,12 @@ import EditChiTietPhieuNhap from './EditChiTietPhieuNhap';
 import NotFound from '../../Utils/Errors/NotFound';
 import EditPhieuNhap from './EditPhieuNhap';
 
-import { phieuNhapQuery } from '../../../graphql/queries';
+import { phieuNhapHooks } from '../../../graphql/queries';
 import { convertToVND } from '../../../utils/common';
-import { PhieuNhapByID } from '../../../types';
 
 const EditPhieuNhapPage = () => {
     const { id } = useParams();
-    const { data, loading, error } = useQuery<
-        PhieuNhapByID, { id: string }
-    >(phieuNhapQuery.BY_ID, {
-        variables: {
-            id: id || ''
-        }
-    });
+    const { data, loading, error } = phieuNhapHooks.usePhieuNhapByID(id || '');
 
     if (error || !id || (data && data.phieuNhap && data.phieuNhap.byID === null)) {
         return <NotFound />;

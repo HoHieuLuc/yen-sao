@@ -1,5 +1,4 @@
 import useGlobalStyles from '../../../utils/global.styles';
-import { useQuery } from '@apollo/client';
 
 import { Box, Button, Center, Group, Title } from '@mantine/core';
 import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
@@ -7,31 +6,12 @@ import ErrorPage from '../../Utils/Errors/ErrorPage';
 import RichTextEditor from '@mantine/rte';
 import { Link } from 'react-router-dom';
 
-import { pageQuery } from '../../../graphql/queries';
-
-export interface AboutData {
-    page: {
-        byName: {
-            id: string;
-            name: string;
-            content: {
-                value: string;
-            }
-        } | null
-    }
-}
+import { pageHooks } from '../../../graphql/queries';
+import { AboutData } from '../../../types';
 
 const About = () => {
     const { classes } = useGlobalStyles();
-    const { data, loading, error } = useQuery<
-        AboutData, { name: 'about' }
-    >(pageQuery.PAGE_BY_NAME,
-        {
-            variables: {
-                name: 'about'
-            }
-        }
-    );
+    const { data, loading, error } = pageHooks.usePageByName<AboutData>('about');
 
     if (error) {
         return <ErrorPage />;

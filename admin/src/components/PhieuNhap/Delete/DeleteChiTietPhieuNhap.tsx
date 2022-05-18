@@ -1,9 +1,6 @@
-import { useMutation } from '@apollo/client';
-
 import { Box, Button, Group, Text } from '@mantine/core';
 
-import { showErrorNotification, showSuccessNotification } from '../../../events';
-import { chiTietPhieuNhapQuery } from '../../../graphql/queries';
+import { chiTietPhieuNhapHooks } from '../../../graphql/queries';
 
 interface Props {
     tenSanPham: string;
@@ -13,22 +10,17 @@ interface Props {
 }
 
 const DeleteChiTietPhieuNhap = ({ tenSanPham, idPhieuNhap, idChiTiet, closeModal }: Props) => {
-    const [deleteChiTietPhieuNhap, { loading }] = useMutation<
-        never, { idPhieuNhap: string, idChiTiet: string }
-    >(chiTietPhieuNhapQuery.DELETE, {
-        onCompleted: () => {
-            showSuccessNotification(`Xóa sản phẩm "${tenSanPham}" khỏi phiếu nhập thành công`);
-            closeModal();
-        },
-        onError: (error) => showErrorNotification(error.message)
-    });
+    const [
+        deleteChiTietPhieuNhap, { loading }
+    ] = chiTietPhieuNhapHooks.useDeleteChiTietPhieuNhap(tenSanPham);
 
     const handleDelete = () => {
         void deleteChiTietPhieuNhap({
             variables: {
                 idChiTiet,
                 idPhieuNhap
-            }
+            },
+            onCompleted: closeModal
         });
     };
 

@@ -6,28 +6,10 @@ import Logout from './components/Auth/Logout';
 import Admin from './components/Admin/Admin';
 import Login from './components/Auth/Login';
 
-import { useLazyQuery } from '@apollo/client';
-import { authQuery } from './graphql/queries';
-
-import { showErrorNotification } from './events';
-import { User } from './types';
-
-export interface CurrentUser {
-    me: User;
-}
+import { authHooks } from './graphql/queries';
 
 const App = () => {
-    const [getCurrentUser, currentUser] = useLazyQuery<
-        { user: CurrentUser }
-    >(authQuery.ME, {
-        onError: (error) => {
-            if (error.networkError && error.networkError.message === 'Failed to fetch') {
-                return showErrorNotification('Không thể kết nối đến máy chủ');
-            }
-            localStorage.removeItem('token');
-            location.reload();
-        },
-    });
+    const [getCurrentUser, currentUser] = authHooks.useLazyCurrentUser();
 
     useEffect(() => {
         void getCurrentUser();
