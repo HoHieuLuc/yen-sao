@@ -1,9 +1,12 @@
+import { PaginateVars, PageInfo } from './paginate';
+
 export interface User {
     id: string;
     username: string;
     email: string;
     role: string;
     fullname: string;
+    isBanned: boolean;
 }
 
 export interface CurrentUser {
@@ -24,4 +27,22 @@ export interface LoginVars {
 export interface ChangePasswordVars {
     oldPassword: string;
     newPassword: string;
+}
+
+export interface AllUsers {
+    user: {
+        all: {
+            docs: Array<User>;
+            pageInfo: PageInfo;
+        }
+    }
+}
+
+export interface AllUsersVars extends PaginateVars {
+    search?: string;
+}
+
+export interface BanByIdVars {
+    id: string;
+    isBanned: boolean;
 }
