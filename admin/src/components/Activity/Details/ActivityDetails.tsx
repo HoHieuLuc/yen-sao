@@ -1,17 +1,17 @@
-import PhieuNhapDetails from '../../../PhieuNhap/Details/PhieuNhapDetails';
-import PhieuXuatDetails from '../../../PhieuXuat/Details/PhieuXuatDetails';
-import SanPhamDetails from '../../../SanPham/Details/SanPhamDetails';
+import PhieuNhapDetails from '../../PhieuNhap/Details/PhieuNhapDetails';
+import PhieuXuatDetails from '../../PhieuXuat/Details/PhieuXuatDetails';
+import SanPhamDetails from '../../SanPham/Details/SanPhamDetails';
 import { Box, Center, Paper, Title } from '@mantine/core';
-import ErrorPage from '../../../Utils/Errors/ErrorPage';
+import ErrorPage from '../../Utils/Errors/ErrorPage';
 
-import { ActivityById } from '../../../../types';
+import { ActivityById } from '../../../types';
 
 interface Props {
     data: ActivityById
 }
 
 const ActivityDetails = ({ data }: Props) => {
-    let content: React.ReactNode;
+    let content: React.ReactNode = null;
 
     switch (data.activityLog.byID.onCollection) {
         case 'SanPham':
@@ -24,8 +24,11 @@ const ActivityDetails = ({ data }: Props) => {
             content = <PhieuXuatDetails data={data.activityLog.byID.description.value} />;
             break;
         default:
-            content = <ErrorPage />;
             break;
+    }
+
+    if (!content) {
+        return <ErrorPage />;
     }
 
     return (
@@ -36,7 +39,7 @@ const ActivityDetails = ({ data }: Props) => {
             <Center>
                 <Box>
                     <div>
-                        Người thực hiện: {data.activityLog.byID.userId.fullname}
+                        Người thực hiện: {data.activityLog.byID.user.fullname}
                     </div>
                     <div>
                         Mô tả: {data.activityLog.byID.description.name}

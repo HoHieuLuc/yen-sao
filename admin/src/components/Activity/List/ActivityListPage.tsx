@@ -1,15 +1,15 @@
-import { usePagination } from '../../../../hooks';
+import { usePagination } from '../../../hooks';
 import { useDocumentTitle } from '@mantine/hooks';
 import { useModals } from '@mantine/modals';
 
-import LoadingWrapper from '../../../Utils/Wrappers/LoadingWrapper';
-import MyPagination from '../../../Utils/Pagination/MyPagination';
+import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
+import MyPagination from '../../Utils/Pagination/MyPagination';
 import { Button, Center, Stack, Title } from '@mantine/core';
-import ErrorPage from '../../../Utils/Errors/ErrorPage';
+import ErrorPage from '../../Utils/Errors/ErrorPage';
 import DeleteActivity from '../Delete/DeleteActivity';
 import ActivityList from './ActivityList';
 
-import { activityHooks } from '../../../../graphql/queries';
+import { activityHooks } from '../../../graphql/queries';
 
 interface Props {
     title: string;

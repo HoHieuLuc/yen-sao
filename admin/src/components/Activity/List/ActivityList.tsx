@@ -1,8 +1,8 @@
 import { Anchor, ScrollArea, Table } from '@mantine/core';
 import { Link } from 'react-router-dom';
 
-import { convertToVietnameseDate } from '../../../../utils/common';
-import { Activity } from '../../../../types';
+import { convertToVietnameseDate } from '../../../utils/common';
+import { Activity } from '../../../types';
 
 interface Props {
     data: Array<Activity>;
@@ -14,7 +14,7 @@ const ActivityList = ({ data, currentPage, limit }: Props) => {
     const activityElements = data.map((item, index) => (
         <tr key={item.id}>
             <td>{limit * (currentPage - 1) + (index + 1)}</td>
-            <td>{item.userId.fullname}</td>
+            <td>{item.user.fullname}</td>
             <td>{item.description.name}</td>
             <td>
                 {item.onCollection !== 'User'

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Box, Button, Group } from '@mantine/core';
 import { DatePicker } from '@mantine/dates';
 
-import { activityHooks } from '../../../../graphql/queries';
+import { activityHooks } from '../../../graphql/queries';
 import dayjs from 'dayjs';
 
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
 }
 
 const DeleteActivity = ({ closeModal }: Props) => {
-    const [deleteActivity, { loading }] = activityHooks.useDeleteActivites();
+    const [deleteActivity, { loading }] = activityHooks.useDeleteActivities();
     const [from, setFrom] = useState<Date | null>(null);
     const [to, setTo] = useState<Date | null>(null);
 

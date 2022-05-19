@@ -10,7 +10,6 @@ interface Props {
 }
 
 const DetailsTab = ({ data, loading }: Props) => {
-
     return (
         <LoadingWrapper loading={loading}>
             {data && (

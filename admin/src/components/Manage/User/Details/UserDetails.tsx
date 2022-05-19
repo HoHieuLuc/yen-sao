@@ -2,7 +2,7 @@ import { useDocumentTitle } from '@mantine/hooks';
 import { useParams } from 'react-router-dom';
 import { useTabs } from '../../../../hooks';
 
-import ErrorPage from '../../../Utils/Errors/ErrorPage';
+import NotFound from '../../../Utils/Errors/NotFound';
 import ActivityTab from './ActivityTab';
 import DetailsTab from './DetailsTab';
 import { Tabs } from '@mantine/core';
@@ -11,19 +11,19 @@ import { userHooks } from '../../../../graphql/queries';
 
 const UserDetails = () => {
     const { id } = useParams();
-    const userByIdResult = userHooks.useUserById(id || '');
+    const { data, loading, error } = userHooks.useUserById(id || '');
     const { activeTab, onTabChange, currentTabTitle } = useTabs(
         ['thong-tin', 'hoat-dong'],
         ['Thông tin', 'Lịch sử hoạt động']
     );
     useDocumentTitle(
-        `${userByIdResult.data && userByIdResult.data.user.byID
-            ? userByIdResult.data.user.byID.username
+        `${data && data.user.byID
+            ? data.user.byID.username
             : 'Đang tải...'} | ${currentTabTitle}`
     );
 
-    if (!id || userByIdResult.error) {
-        return <ErrorPage />;
+    if (!id || error || (data && data.user && data.user.byID === null)) {
+        return <NotFound />;
     }
 
     return (
@@ -44,7 +44,8 @@ const UserDetails = () => {
             <Tabs.Tab label="Thông tin người dùng" tabKey='thong-tin'>
                 <DetailsTab
                     id={id}
-                    {...userByIdResult}
+                    data={data}
+                    loading={loading}
                 />
             </Tabs.Tab>
             <Tabs.Tab label="Lịch sử hoạt động" tabKey='hoat-dong'>

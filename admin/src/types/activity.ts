@@ -6,7 +6,7 @@ import { User } from './user';
 
 interface BaseActivity {
     id: string;
-    userId: User;
+    user: User;
     action: 'create' | 'update' | 'delete';
     onCollection: string;
     onDocumentId: string;
@@ -71,4 +71,17 @@ export interface ActivityById {
     activityLog: {
         byID: SanPhamActivity | PhieuNhapActivity | PhieuXuatActivity;
     }
+}
+
+export interface ActivitiesByDocumentId {
+    activityLog: {
+        byDocumentID: {
+            docs: Array<Activity>;
+            pageInfo: PageInfo;
+        }
+    }
+}
+
+export interface ActivitiesByDocumentIdVars extends PaginateVars {
+    documentId: string;
 }
