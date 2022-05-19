@@ -61,6 +61,13 @@ const cache = new InMemoryCache({
                     merge: false
                 }
             }
+        },
+        ActivityLog: {
+            fields: {
+                description: {
+                    merge: true
+                }
+            }
         }
     }
 });
