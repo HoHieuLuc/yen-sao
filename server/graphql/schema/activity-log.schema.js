@@ -29,6 +29,9 @@ const typeDefs = gql`
             page: Int!,
             limit: Int!
         ): ActivityLogsByPage!
+        byID(
+            id: ID!
+        ): ActivityLog
         my(
             page: Int!,
             limit: Int!
@@ -72,19 +75,21 @@ const resolvers = {
         all: chainMiddlewares(adminRequired,
             (_, { page, limit }) => activityLogController.getAll(page, limit)
         ),
-        my: (_, { page, limit }, { currentUser }) =>
+        byID: async (_, { id }) =>
+            activityLogController.getById(id),
+        my: async (_, { page, limit }, { currentUser }) =>
             activityLogController.my(page, limit, currentUser),
         byUserID: chainMiddlewares(adminRequired, (_, { page, limit, userId }) =>
             activityLogController.getByUserId(page, limit, userId)
         ),
-        byDocumentID: (_, { page, limit, documentId }) =>
+        byDocumentID: async (_, { page, limit, documentId }) =>
             activityLogController.getByDocumentId(page, limit, documentId)
     },
     Mutation: {
         activityLog: chainMiddlewares(adminRequired, () => ({}))
     },
     ActivityLogMutations: {
-        delete: (_, { from, to }) => activityLogController.remove(from, to)
+        delete: async (_, { from, to }) => activityLogController.remove(from, to)
     }
 };
 

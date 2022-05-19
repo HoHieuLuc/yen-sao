@@ -11,6 +11,10 @@ const getAll = async (page, limit) => {
     return ActivityLog.paginate({}, paginateOptions(page, limit));
 };
 
+const getById = async (id) => { 
+    return ActivityLog.findById(id).populate('userId');
+};
+
 const getByUserId = async (page, limit, userId) => {
     return ActivityLog.paginate({
         userId
@@ -48,6 +52,7 @@ const remove = async (from, to) => {
 module.exports = {
     getByDocumentId,
     getByUserId,
+    getById,
     getAll,
     remove,
     my,
