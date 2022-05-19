@@ -48,12 +48,14 @@ const appConfig: AppConfig = {
                     title: 'Thêm mới',
                     type: 'nav',
                     to: '/san-pham/them',
+                    roles: ['admin'],
                     element: <CreateSanPham title='Thêm sản phẩm mới' />
                 },
                 {
                     title: 'Sửa',
                     type: 'hidden',
                     to: '/san-pham/:id/sua',
+                    roles: ['admin'],
                     element: <EditSanPham />
                 },
                 {
@@ -129,24 +131,25 @@ const appConfig: AppConfig = {
         {
             type: 'menu',
             title: 'Quản lý',
-            subLinksPattern: '/manage',
+            subLinksPattern: '/quan-ly',
+            roles: ['admin'],
             subLinks: [
                 {
                     type: 'nav',
                     title: 'Bài viết giới thiệu',
-                    to: '/manage/about',
+                    to: '/quan-ly/about',
                     element: <About title='Bài viết giới thiệu' />
                 },
                 {
                     type: 'hidden',
                     title: 'Chỉnh sửa bài viết giới thiệu',
-                    to: '/manage/about/sua',
+                    to: '/quan-ly/about/sua',
                     element: <EditAbout title='Bài viết giới thiệu | Chỉnh sửa' />
                 },
                 {
                     type: 'nav',
                     title: 'Người dùng',
-                    to: '/manage/users',
+                    to: '/quan-ly/users',
                     element: <UserList title='Danh sách người dùng' />
                 }
             ]

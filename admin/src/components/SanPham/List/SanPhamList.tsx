@@ -11,7 +11,7 @@ import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
 import MyPagination from '../../Utils/Pagination/MyPagination';
 import ErrorPage from '../../Utils/Errors/ErrorPage';
 
-import { sanPhamHooks } from '../../../graphql/queries';
+import { authHooks, sanPhamHooks } from '../../../graphql/queries';
 
 interface Props {
     title: string;
@@ -19,6 +19,7 @@ interface Props {
 
 const SanPhamList = ({ title }: Props) => {
     useDocumentTitle(title);
+    const me = authHooks.useReadCurrentUser();
     const { search, debouncedSearch, setSearch } = useDebouncedSearchParams(300);
     const { currentPage, handlePageChange, limit, handleLimitChange } = usePagination();
     const [sortSanPham, toggleSortSoLuong] = useSortParams(
@@ -51,12 +52,12 @@ const SanPhamList = ({ title }: Props) => {
             <td>{sanPham.soLuong / 1000}</td>
             <td>
                 <Center>
-                    <LinkIcon
+                    {me.role === 'admin' && <LinkIcon
                         to={`/san-pham/${sanPham.id}/sua`}
                         label='Sửa'
                         iconType='edit'
                         color='green'
-                    />
+                    />}
                     <LinkIcon
                         to={`/san-pham/${sanPham.id}`}
                         label='Chi tiết'

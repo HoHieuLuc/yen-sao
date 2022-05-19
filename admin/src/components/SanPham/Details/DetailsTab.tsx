@@ -12,6 +12,7 @@ import ImageDisplay from './ImageDisplay';
 import { SanPham, SanPhamByID } from '../../../types';
 import { convertToVND } from '../../../utils/common';
 import { ApolloError } from '@apollo/client';
+import { authHooks } from '../../../graphql/queries';
 
 interface Props {
     id: string;
@@ -23,6 +24,7 @@ interface Props {
 const DetailsTab = ({ id, data, loading, error }: Props) => {
     const navigate = useNavigate();
     const { classes } = useGlobalStyles();
+    const me = authHooks.useReadCurrentUser();
 
     const modals = useModals();
     const openDeleteModal = (sanPham: SanPham) => {
@@ -92,7 +94,7 @@ const DetailsTab = ({ id, data, loading, error }: Props) => {
                         />
                     </Grid.Col>
                 </Grid>
-                <Group position='right'>
+                {me.role === 'admin' && <Group position='right'>
                     <Button
                         color='red'
                         onClick={() => openDeleteModal(data.sanPham.byID)}
@@ -106,7 +108,7 @@ const DetailsTab = ({ id, data, loading, error }: Props) => {
                     >
                         Sửa
                     </Button>
-                </Group>
+                </Group>}
             </Box>}
         </LoadingWrapper>
     );

@@ -3,6 +3,7 @@ import { Button, MantineSize } from '@mantine/core';
 import LinksGroup from '../LinksGroup/LinksGroup';
 
 import { AppLink } from '../../../../config/types';
+import { authHooks } from '../../../../graphql/queries';
 
 interface Props {
     title: string;
@@ -11,15 +12,19 @@ interface Props {
     color?: string;
     subLinks?: AppLink[];
     subLinksPattern?: string;
+    roles?: Array<string>;
 }
 
-const NavLink = ({ title, to, size, color, subLinks, subLinksPattern }: Props) => {
+const NavLink = ({ title, to, size, color, subLinks, subLinksPattern, roles }: Props) => {
+    const me = authHooks.useReadCurrentUser();
     const location = useLocation();
     const style = {
         display: 'flex', alignItems: 'start'
     };
     if (subLinks) {
-        const opened = subLinksPattern ? location.pathname.includes(subLinksPattern) : false;
+        const opened = subLinksPattern
+            ? location.pathname.includes(subLinksPattern) 
+            : false;
         return (
             <LinksGroup
                 title={title}
@@ -27,6 +32,9 @@ const NavLink = ({ title, to, size, color, subLinks, subLinksPattern }: Props) =
                 links={subLinks}
             />
         );
+    }
+    if (roles && !roles.includes(me.role)) {
+        return null;
     }
     // const resolved = useResolvedPath(to || '');
     // const match = useMatch({ path: resolved.pathname, end: true });
