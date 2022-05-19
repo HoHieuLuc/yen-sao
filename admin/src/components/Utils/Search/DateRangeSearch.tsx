@@ -10,19 +10,27 @@ const DateRangeSearch = ({ from, to, handleSearch }: DateRangeSearchType) => {
             <Grid.Col md={4}>
                 <DatePicker
                     label='Từ ngày'
-                    placeholder='Chọn ngày'
+                    placeholder='Trở về trước'
                     value={from.value}
                     onChange={from.onChange}
-                    maxDate={dayjs(to.value).subtract(1, 'd').toDate() ?? undefined}
+                    maxDate={
+                        to.value
+                            ? dayjs(to.value).subtract(1, 'd').toDate()
+                            : undefined
+                    }
                 />
             </Grid.Col>
             <Grid.Col md={4}>
                 <DatePicker
                     label='Đến ngày'
-                    placeholder='Chọn ngày'
+                    placeholder='Trở về sau'
                     value={to.value}
                     onChange={to.onChange}
-                    minDate={dayjs(from.value).add(1, 'd').toDate() ?? undefined}
+                    minDate={
+                        from.value
+                            ? dayjs(from.value).add(1, 'd').toDate()
+                            : undefined
+                    }
                 />
             </Grid.Col>
             <Grid.Col md={2}>
