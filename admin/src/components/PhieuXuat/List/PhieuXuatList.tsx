@@ -41,7 +41,7 @@ const PhieuXuatList = ({ title }: Props) => {
         <PhieuXuatItem
             key={phieuXuat.id}
             phieuXuat={phieuXuat}
-            index={10 * (currentPage - 1) + (index + 1)}
+            index={limit * (currentPage - 1) + (index + 1)}
         />
     ));
 
