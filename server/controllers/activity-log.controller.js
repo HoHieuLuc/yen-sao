@@ -6,6 +6,13 @@ const getAll = async (page, limit) => {
     return activityLogService.getAll(page, limit);
 };
 
+const getById = async (id) => {
+    if(!mongoose.Types.ObjectId.isValid(id)) {
+        throw new UserInputError('Mã hoạt động không hợp lệ');
+    }
+    return activityLogService.getById(id);
+};
+
 const getByUserId = async (page, limit, userId) => {
     if (!mongoose.Types.ObjectId.isValid(userId)) {
         throw new UserInputError('Mã người dùng không hợp lệ');
@@ -34,6 +41,7 @@ const remove = async (from, to) => {
 module.exports = {
     getByDocumentId,
     getByUserId,
+    getById,
     getAll,
     remove,
     my,
