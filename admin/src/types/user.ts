@@ -46,3 +46,9 @@ export interface BanByIdVars {
     id: string;
     isBanned: boolean;
 }
+
+export interface UserById {
+    user: {
+        byID: User;
+    }
+}
