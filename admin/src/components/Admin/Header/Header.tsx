@@ -63,8 +63,17 @@ const AppHeader = ({ theme, opened, setOpened }: Props) => {
                             value: 'light',
                             label: (
                                 <Center>
-                                    <FontAwesomeIcon icon={faSun} />
-                                    <Box ml={10}>Sáng</Box>
+                                    <FontAwesomeIcon color='yellow' icon={faSun} />
+                                    <Box
+                                        ml={10}
+                                        sx={(theme) => ({
+                                            [theme.fn.smallerThan('sm')]: {
+                                                display: 'none'
+                                            }
+                                        })}
+                                    >
+                                        Sáng
+                                    </Box>
                                 </Center>
                             ),
                         },
@@ -73,7 +82,16 @@ const AppHeader = ({ theme, opened, setOpened }: Props) => {
                             label: (
                                 <Center>
                                     <FontAwesomeIcon icon={faMoon} />
-                                    <Box ml={10}>Tối</Box>
+                                    <Box
+                                        ml={10}
+                                        sx={(theme) => ({
+                                            [theme.fn.smallerThan('sm')]: {
+                                                display: 'none'
+                                            }
+                                        })}
+                                    >
+                                        Tối
+                                    </Box>
                                 </Center>
                             ),
                         },
