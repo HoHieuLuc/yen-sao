@@ -1,13 +1,13 @@
-import { useDebouncedSearchParams, usePagination } from '../../../hooks';
-import { userHooks } from '../../../graphql/queries';
+import { useDebouncedSearchParams, usePagination } from '../../../../hooks';
+import { userHooks } from '../../../../graphql/queries';
+import { useDocumentTitle } from '@mantine/hooks';
 
 import { Center, ScrollArea, Table, TextInput } from '@mantine/core';
-import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
-import MyPagination from '../../Utils/Pagination/MyPagination';
-import ErrorPage from '../../Utils/Errors/ErrorPage';
-import { SearchIcon } from '../../Utils/Icons';
+import LoadingWrapper from '../../../Utils/Wrappers/LoadingWrapper';
+import MyPagination from '../../../Utils/Pagination/MyPagination';
+import ErrorPage from '../../../Utils/Errors/ErrorPage';
+import { SearchIcon } from '../../../Utils/Icons';
 import UserItem from './UserItem';
-import { useDocumentTitle } from '@mantine/hooks';
 
 interface Props {
     title: string;
@@ -33,7 +33,7 @@ const UserList = ({ title }: Props) => {
         <UserItem
             key={u.id}
             user={u}
-            index={10 * (currentPage - 1) + (index + 1)}
+            index={limit * (currentPage - 1) + (index + 1)}
         />
     ));
 
