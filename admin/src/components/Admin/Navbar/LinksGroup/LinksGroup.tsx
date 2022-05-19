@@ -17,9 +17,8 @@ interface Props {
 const LinksGroup = ({ title, initiallyOpened, links }: Props) => {
     const { classes } = useStyles();
     const [opened, setOpened] = useState(initiallyOpened || false);
-    const hasLinks = Array.isArray(links);
 
-    const items = (hasLinks ? links : []).map((link) => {
+    const items = links.map((link) => {
         if (link.type === 'hidden') {
             return null;
         }
@@ -52,29 +51,25 @@ const LinksGroup = ({ title, initiallyOpened, links }: Props) => {
                             {title}
                         </Button>
                     </Box>
-                    {hasLinks && (
-                        <ThemeIcon sx={(theme) => ({
-                            backgroundColor: 'transparent',
-                            color: theme.colorScheme === 'dark' ? 'white' : theme.primaryColor,
-                        })}>
-                            <FontAwesomeIcon
-                                className={classes.chevron}
-                                icon={faAngleRight}
-                                style={{
-                                    transform: opened ? `rotate(${90}deg)` : 'none',
-                                }}
-                            />
-                        </ThemeIcon>
-                    )}
+                    <ThemeIcon sx={(theme) => ({
+                        backgroundColor: 'transparent',
+                        color: theme.colorScheme === 'dark' ? 'white' : theme.primaryColor,
+                    })}>
+                        <FontAwesomeIcon
+                            className={classes.chevron}
+                            icon={faAngleRight}
+                            style={{
+                                transform: opened ? `rotate(${90}deg)` : 'none',
+                            }}
+                        />
+                    </ThemeIcon>
                 </Group>
             </Box>
-            {hasLinks &&
-                <Collapse in={opened} className={classes.links}>
-                    <SimpleGrid cols={1} spacing={4}>
-                        {items}
-                    </SimpleGrid>
-                </Collapse>
-            }
+            <Collapse in={opened} className={classes.links}>
+                <SimpleGrid cols={1} spacing={4}>
+                    {items}
+                </SimpleGrid>
+            </Collapse>
         </>
     );
 };

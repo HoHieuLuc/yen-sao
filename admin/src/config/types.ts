@@ -4,6 +4,7 @@ interface BaseLink {
     title: string;
     icon?: React.ReactNode;
     type: 'nav' | 'menu' | 'hidden';
+    roles?: Array<string>;
 }
 
 export interface NavLink extends BaseLink {
