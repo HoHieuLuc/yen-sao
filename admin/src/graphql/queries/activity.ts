@@ -5,7 +5,9 @@ import {
     AllActivitiesVars,
     ActivitiesByUserIdVars,
     ActivitiesByUserId,
-    ActivityById
+    ActivityById,
+    ActivitiesByDocumentId,
+    ActivitiesByDocumentIdVars
 } from '../../types';
 
 const ALL = gql`
@@ -14,7 +16,7 @@ const ALL = gql`
             all(page: $page, limit: $limit) {
                 docs {
                     id
-                    userId {
+                    user {
                         id
                         fullname
                     }
@@ -41,7 +43,7 @@ const BY_ID = gql`
         activityLog {
             byID(id: $id) {
                 id
-                userId {
+                user {
                     id
                     fullname
                 }
@@ -64,7 +66,35 @@ const BY_USER_ID = gql`
             byUserID(page: $page, limit: $limit, userId: $userId) {
                 docs {
                     id
-                    userId {
+                    user {
+                        id
+                        fullname
+                    }
+                    action
+                    onCollection
+                    description {
+                        name
+                    }
+                    createdAt
+                }
+                pageInfo {
+                    page
+                    totalPages
+                    limit
+                    totalDocs
+                }
+            }
+        }
+    }
+`;
+
+const BY_DOCUMENT_ID = gql`
+    query ByDocumentID($page: Int!, $limit: Int!, $documentId: ID!) {
+        activityLog {
+            byDocumentID(page: $page, limit: $limit, documentId: $documentId) {
+                docs {
+                    id
+                    user {
                         id
                         fullname
                     }
@@ -113,7 +143,7 @@ const useActivityById = (id: string) => {
     });
 };
 
-const useActivitesByUserId = (variables: ActivitiesByUserIdVars) => {
+const useActivitiesByUserId = (variables: ActivitiesByUserIdVars) => {
     return useQuery<
         ActivitiesByUserId, ActivitiesByUserIdVars
     >(BY_USER_ID, {
@@ -122,7 +152,16 @@ const useActivitesByUserId = (variables: ActivitiesByUserIdVars) => {
     });
 };
 
-const useDeleteActivites = () => {
+const useActivitiesByDocumentId = (variables: ActivitiesByDocumentIdVars) => { 
+    return useQuery<
+        ActivitiesByDocumentId, ActivitiesByDocumentIdVars
+    >(BY_DOCUMENT_ID, {
+        variables,
+        fetchPolicy: 'cache-and-network'
+    });
+};
+
+const useDeleteActivities = () => {
     const client = useApolloClient();
     return useMutation<
         never, { from: Date | null, to: Date | null }
@@ -140,8 +179,9 @@ const useDeleteActivites = () => {
 };
 
 export const activityHooks = {
-    useActivitesByUserId,
-    useDeleteActivites,
+    useActivitiesByDocumentId,
+    useActivitiesByUserId,
+    useDeleteActivities,
     useAllActivities,
     useActivityById,
 };

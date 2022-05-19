@@ -65,7 +65,7 @@ const cache = new InMemoryCache({
         ActivityLog: {
             fields: {
                 description: {
-                    merge: true
+                    merge: false
                 }
             }
         }
