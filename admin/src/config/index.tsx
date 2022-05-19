@@ -20,8 +20,8 @@ import CreateSanPham from '../components/SanPham/Create/CreateSanPham';
 import EditSanPham from '../components/SanPham/Edit/EditSanPham';
 import SanPhamList from '../components/SanPham/List/SanPhamList';
 
-import ActivityDetailsPage from '../components/Manage/Activity/Details/ActivityDetailsPage';
-import ActivityListPage from '../components/Manage/Activity/List/ActivityListPage';
+import ActivityDetailsPage from '../components/Activity/Details/ActivityDetailsPage';
+import ActivityListPage from '../components/Activity/List/ActivityListPage';
 
 import UserDetails from '../components/Manage/User/Details/UserDetails';
 import UserList from '../components/Manage/User/List/UserList';
