@@ -1,7 +1,9 @@
-import { Button, Center } from '@mantine/core';
 import { useModals } from '@mantine/modals';
-import { User } from '../../../types';
-import BanUser from './BanUser';
+
+import { Anchor, Button, Center } from '@mantine/core';
+import { User } from '../../../../types';
+import { Link } from 'react-router-dom';
+import BanUser from '../BanUser';
 
 interface Props {
     index: number;
@@ -24,7 +26,14 @@ const UserItem = ({ user, index }: Props) => {
     return (
         <tr key={user.id}>
             <td>{index}</td>
-            <td>{user.username} {user.isBanned && '(Đã khóa tài khoản)'}</td>
+            <td>
+                <Anchor
+                    component={Link}
+                    to={`/quan-ly/users/${user.id}`}
+                >
+                    {user.username} {user.isBanned && '(Đã khóa tài khoản)'}
+                </Anchor>
+            </td>
             <td>{user.fullname}</td>
             <td>{user.email}</td>
             <td>{user.role}</td>

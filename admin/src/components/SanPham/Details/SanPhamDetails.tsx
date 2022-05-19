@@ -1,61 +1,67 @@
-import { useDocumentTitle } from '@mantine/hooks';
-import { useParams } from 'react-router-dom';
-import { useTabs } from '../../../hooks';
+import useGlobalStyles from '../../../utils/global.styles';
 
-import ChiTietPhieuNhapList from './ChiTietPhieuNhapList';
-import ChiTietPhieuXuatList from './ChiTietPhieuXuatList';
-import NotFound from '../../Utils/Errors/NotFound';
-import DetailsTab from './DetailsTab';
-import { Tabs } from '@mantine/core';
+import { Center, Grid } from '@mantine/core';
+import RichTextEditor from '@mantine/rte';
+import ImageDisplay from './ImageDisplay';
 
-import { sanPhamHooks } from '../../../graphql/queries';
+import { convertToVND } from '../../../utils/common';
+import { SanPham } from '../../../types';
 
-const SanPhamDetails = () => {
-    const { id } = useParams();
-    const { activeTab, onTabChange, currentTabTitle } = useTabs(
-        ['thong-tin', 'nhap-hang', 'xuat-hang'],
-        ['Chi tiết', 'Thông tin nhập hàng', 'Thông tin xuất hàng']
-    );
-    const sanPhamByIdResult = sanPhamHooks.useSanPhamByID(id || '');
+interface Props {
+    data: SanPham;
+}
 
-    useDocumentTitle(
-        `${sanPhamByIdResult.data && sanPhamByIdResult.data.sanPham.byID
-            ? sanPhamByIdResult.data.sanPham.byID.tenSanPham
-            : 'Đang tải...'} | ${currentTabTitle}`
-    );
-
-    if (!id) {
-        return <NotFound />;
-    }
-
+const SanPhamDetails = ({ data }: Props) => {
+    const { classes } = useGlobalStyles();
     return (
-        <Tabs
-            active={activeTab}
-            onTabChange={onTabChange}
-            styles={{
-                root: {
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: '100%'
-                },
-                body: {
-                    flexGrow: 1
+        <>
+            <Grid justify='center'>
+                {data.anhSanPham.map((url, index) => (
+                    <ImageDisplay
+                        key={index}
+                        anhSanPham={url}
+                    />
+                ))}
+            </Grid>
+            <Center><h3>{data.tenSanPham}</h3></Center>
+            <Grid gutter={10} mb='sm'>
+                <Grid.Col xs={6} md={2}>Số lượng tồn (kg):</Grid.Col>
+                <Grid.Col xs={6} md={10}>{data.soLuong / 1000}</Grid.Col>
+                <Grid.Col xs={6} md={2}>Giá: </Grid.Col>
+                <Grid.Col xs={6} md={10}>
+                    {data.donGiaTuyChon
+                        ? data.donGiaTuyChon
+                        : `Sỉ: ${convertToVND(data.donGiaSi)}/100gram, 
+                        Lẻ: ${convertToVND(data.donGiaLe)}/100gram
+                        `
+                    }
+                </Grid.Col>
+                {data.xuatXu &&
+                    <>
+                        <Grid.Col xs={6} md={2}>Xuất xứ:</Grid.Col>
+                        <Grid.Col xs={6} md={10}>{data.xuatXu}</Grid.Col>
+                    </>
                 }
-            }}
-        >
-            <Tabs.Tab label="Thông tin sản phẩm" tabKey='thong-tin'>
-                <DetailsTab
-                    id={id}
-                    {...sanPhamByIdResult}
-                />
-            </Tabs.Tab>
-            <Tabs.Tab label="Thông tin nhập hàng" tabKey='nhap-hang'>
-                <ChiTietPhieuNhapList id={id} />
-            </Tabs.Tab>
-            <Tabs.Tab label="Thông tin xuất hàng" tabKey='xuat-hang'>
-                <ChiTietPhieuXuatList id={id} />
-            </Tabs.Tab>
-        </Tabs>
+                {data.tags.length > 0 &&
+                    <>
+                        <Grid.Col xs={6} md={2}>Tags:</Grid.Col>
+                        <Grid.Col xs={6} md={10}>
+                            {data.tags.join(', ')}
+                        </Grid.Col>
+                    </>
+                }
+                <Grid.Col>Mô tả:</Grid.Col>
+                <Grid.Col>
+                    <RichTextEditor
+                        readOnly
+                        value={data.moTa}
+                        onChange={() => void (0)}
+                        placeholder='Sản phẩm này không có mô tả'
+                        className={classes.rte}
+                    />
+                </Grid.Col>
+            </Grid>
+        </>
     );
 };
 

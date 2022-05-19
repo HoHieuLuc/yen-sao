@@ -1,6 +1,6 @@
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { showErrorNotification, showSuccessNotification } from '../../events';
-import { AllUsers, AllUsersVars, BanByIdVars, User } from '../../types';
+import { AllUsers, AllUsersVars, BanByIdVars, User, UserById } from '../../types';
 
 const ALL = gql`
     query AllUsers($page: Int!, $limit: Int!, $search: String) {
@@ -26,11 +26,26 @@ const ALL = gql`
 `;
 
 const BAN_BY_ID = gql`
-    mutation User($id: ID!, $isBanned: Boolean!) {
+    mutation BanUser($id: ID!, $isBanned: Boolean!) {
         user {
             banByID(id: $id, isBanned: $isBanned) {
                 id
                 username
+                isBanned
+            }
+        }
+    }
+`;
+
+const BY_ID = gql`
+    query UserByID($id: ID!) {
+        user {
+            byID(id: $id) {
+                id
+                username
+                email
+                fullname
+                role
                 isBanned
             }
         }
@@ -42,6 +57,14 @@ const useAllUsers = (variables: AllUsersVars) => {
         AllUsers
     >(ALL, {
         variables
+    });
+};
+
+const useUserById = (id: string) => {
+    return useQuery<
+        UserById, { id: string }
+    >(BY_ID, {
+        variables: { id }
     });
 };
 
@@ -62,5 +85,6 @@ const useBanUser = () => {
 
 export const userHooks = {
     useAllUsers,
-    useBanUser
+    useUserById,
+    useBanUser,
 };

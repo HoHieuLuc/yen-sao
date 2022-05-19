@@ -30,7 +30,10 @@ const ChiTietPhieuXuatItem = ({ chiTietPhieuXuat, index }: Props) => {
                     Đơn giá nhập: {convertToVND(chiTietPhieuXuat.donGiaXuat)}
                 </Text>
                 <Text>
-                    Thành tiền: {convertToVND(chiTietPhieuXuat.thanhTien)}
+                    Thành tiền: {convertToVND(
+                        chiTietPhieuXuat.thanhTien ||
+                        chiTietPhieuXuat.soLuongXuat / 100 * chiTietPhieuXuat.donGiaXuat
+                    )}
                 </Text>
             </SimpleGrid>
             {chiTietPhieuXuat.ghiChu && (

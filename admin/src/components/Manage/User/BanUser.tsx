@@ -1,4 +1,5 @@
 import { Box, Button, Group, Text } from '@mantine/core';
+
 import { userHooks } from '../../../graphql/queries';
 import { User } from '../../../types';
 

@@ -1,15 +1,15 @@
-import { useDateRangeSearchParams, usePagination, useSortParams } from '../../../hooks';
+import { useDateRangeSearchParams, usePagination, useSortParams } from '../../../../hooks';
 
 import { Anchor, Box, Table, UnstyledButton } from '@mantine/core';
-import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
-import DateRangeSearch from '../../Utils/Search/DateRangeSearch';
-import MyPagination from '../../Utils/Pagination/MyPagination';
-import ErrorPage from '../../Utils/Errors/ErrorPage';
+import LoadingWrapper from '../../../Utils/Wrappers/LoadingWrapper';
+import DateRangeSearch from '../../../Utils/Search/DateRangeSearch';
+import MyPagination from '../../../Utils/Pagination/MyPagination';
+import ErrorPage from '../../../Utils/Errors/ErrorPage';
+import { SortIcon } from '../../../Utils/Icons';
 import { Link } from 'react-router-dom';
 
-import { convertToShortDate, convertToVND } from '../../../utils/common';
-import { SortIcon } from '../../Utils/Icons';
-import { chiTietPhieuXuatHooks } from '../../../graphql/queries';
+import { convertToShortDate, convertToVND } from '../../../../utils/common';
+import { chiTietPhieuXuatHooks } from '../../../../graphql/queries';
 
 interface Props {
     id: string;
@@ -39,19 +39,21 @@ const ChiTietPhieuXuatList = ({ id }: Props) => {
         return <ErrorPage />;
     }
 
-    const chiTietElements = data?.chiTietPhieuXuat.bySanPhamID.docs.map((chiTiet, index) => (
-        <tr key={chiTiet.id}>
-            <td>{10 * (1 - 1) + (index + 1)}</td>
-            <td>
-                <Anchor component={Link} to={`/phieu-xuat/${chiTiet.maPhieuXuat}`}>
-                    {convertToShortDate(chiTiet.ngayXuat)}
-                </Anchor>
-            </td>
-            <td>{chiTiet.soLuongXuat / 1000}</td>
-            <td>{convertToVND(chiTiet.donGiaXuat)}</td>
-            <td>{convertToVND(chiTiet.thanhTien)}</td>
-        </tr>
-    ));
+    const chiTietElements = data?.chiTietPhieuXuat.bySanPhamID.docs.map(
+        (chiTiet, index) => (
+            <tr key={chiTiet.id}>
+                <td>{limit * (currentPage - 1) + (index + 1)}</td>
+                <td>
+                    <Anchor component={Link} to={`/phieu-xuat/${chiTiet.maPhieuXuat}`}>
+                        {convertToShortDate(chiTiet.ngayXuat)}
+                    </Anchor>
+                </td>
+                <td>{chiTiet.soLuongXuat / 1000}</td>
+                <td>{convertToVND(chiTiet.donGiaXuat)}</td>
+                <td>{convertToVND(chiTiet.thanhTien)}</td>
+            </tr>
+        )
+    );
 
     return (
         <LoadingWrapper loading={loading}>

@@ -43,7 +43,7 @@ const SanPhamList = ({ title }: Props) => {
 
     const sanPhamElements = data?.sanPham.all.docs.map((sanPham, index) => (
         <tr key={sanPham.id}>
-            <td>{10 * (currentPage - 1) + (index + 1)}</td>
+            <td>{limit * (currentPage - 1) + (index + 1)}</td>
             <td style={{ width: '50%' }}>
                 <Text lineClamp={1}>
                     {sanPham.tenSanPham}

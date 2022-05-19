@@ -9,7 +9,7 @@ interface Props {
     index: number;
 }
 
-const ChiTietPhieuNhapItem = ({ chiTietPhieuNhap, index }: Props) => {
+const ChiTietPhieuNhapItem = ({ chiTietPhieuNhap, index }: Props) => {    
     return (
         <Paper shadow='sm' p='md' withBorder mb='xs'>
             <Box>
@@ -30,7 +30,10 @@ const ChiTietPhieuNhapItem = ({ chiTietPhieuNhap, index }: Props) => {
                     Đơn giá nhập: {convertToVND(chiTietPhieuNhap.donGiaNhap)}
                 </Text>
                 <Text>
-                    Thành tiền: {convertToVND(chiTietPhieuNhap.thanhTien)}
+                    Thành tiền: {convertToVND(
+                        chiTietPhieuNhap.thanhTien ||
+                            chiTietPhieuNhap.soLuongNhap / 100 * chiTietPhieuNhap.donGiaNhap
+                    )}
                 </Text>
             </SimpleGrid>
             {chiTietPhieuNhap.ghiChu && (

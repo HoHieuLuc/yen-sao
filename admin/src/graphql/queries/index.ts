@@ -10,3 +10,4 @@ export * from './upload';
 export * from './page';
 export * from './auth';
 export * from './user';
+export * from './activity';

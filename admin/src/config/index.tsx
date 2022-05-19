@@ -2,26 +2,31 @@ import Dashboard from '../components/Dashboard/Dashboard';
 
 import Account from '../components/Account/Account';
 
-import About from '../components/Manage/About/About';
 import EditAbout from '../components/Manage/About/EditAbout';
+import About from '../components/Manage/About/About';
 
-import CreatePhieuNhap from '../components/PhieuNhap/Create/CreatePhieuNhap';
-import PhieuNhapDetails from '../components/PhieuNhap/Details/PhieuNhapDetails';
+import PhieuNhapDetailsPage from '../components/PhieuNhap/Details/PhieuNhapDetailsPage';
 import EditPhieuNhapPage from '../components/PhieuNhap/Edit/EditPhieuNhapPage';
+import CreatePhieuNhap from '../components/PhieuNhap/Create/CreatePhieuNhap';
 import PhieuNhapList from '../components/PhieuNhap/List/PhieuNhapList';
 
-import CreatePhieuXuat from '../components/PhieuXuat/Create/CreatePhieuXuat';
-import PhieuXuatDetails from '../components/PhieuXuat/Details/PhieuXuatDetails';
+import PhieuXuatDetailsPage from '../components/PhieuXuat/Details/PhieuXuatDetailsPage';
 import EditPhieuXuatPage from '../components/PhieuXuat/Edit/EditPhieuXuatPage';
+import CreatePhieuXuat from '../components/PhieuXuat/Create/CreatePhieuXuat';
 import PhieuXuatList from '../components/PhieuXuat/List/PhieuXuatList';
 
+import SanPhamDetailsPage from '../components/SanPham/Details/SanPhamDetailsPage';
 import CreateSanPham from '../components/SanPham/Create/CreateSanPham';
-import SanPhamDetails from '../components/SanPham/Details/SanPhamDetails';
 import EditSanPham from '../components/SanPham/Edit/EditSanPham';
 import SanPhamList from '../components/SanPham/List/SanPhamList';
 
+import ActivityDetailsPage from '../components/Manage/Activity/Details/ActivityDetailsPage';
+import ActivityListPage from '../components/Manage/Activity/List/ActivityListPage';
+
+import UserDetails from '../components/Manage/User/Details/UserDetails';
+import UserList from '../components/Manage/User/List/UserList';
+
 import { AppConfig } from './types';
-import UserList from '../components/Manage/User/UserList';
 
 const appConfig: AppConfig = {
     title: 'Yến sào MS.Tưởng',
@@ -62,7 +67,7 @@ const appConfig: AppConfig = {
                     title: 'Chi tiết',
                     type: 'hidden',
                     to: '/san-pham/:id',
-                    element: <SanPhamDetails />
+                    element: <SanPhamDetailsPage />
                 }
             ]
         },
@@ -87,7 +92,7 @@ const appConfig: AppConfig = {
                     type: 'hidden',
                     title: 'Chi tiết phiếu nhập',
                     to: '/phieu-nhap/:id',
-                    element: <PhieuNhapDetails />
+                    element: <PhieuNhapDetailsPage />
                 },
                 {
                     type: 'hidden',
@@ -118,7 +123,7 @@ const appConfig: AppConfig = {
                     type: 'hidden',
                     title: 'Chi tiết phiếu xuất',
                     to: '/phieu-xuat/:id',
-                    element: <PhieuXuatDetails />
+                    element: <PhieuXuatDetailsPage />
                 },
                 {
                     type: 'hidden',
@@ -151,6 +156,18 @@ const appConfig: AppConfig = {
                     title: 'Người dùng',
                     to: '/quan-ly/users',
                     element: <UserList title='Danh sách người dùng' />
+                }, 
+                {
+                    type: 'hidden',
+                    title: 'Chi tiết người dùng',
+                    to: '/quan-ly/users/:id',
+                    element: <UserDetails />
+                }, 
+                {
+                    type: 'nav',
+                    title: 'Hoạt động',
+                    to: '/quan-ly/hoat-dong',
+                    element: <ActivityListPage title='Quản lý hoạt động' />
                 }
             ]
         },
@@ -159,6 +176,12 @@ const appConfig: AppConfig = {
             title: 'Tài khoản',
             to: '/my-account',
             element: <Account title='Tài khoản' />
+        },
+        {
+            type: 'hidden',
+            title: 'Chi tiết hoạt động',
+            to: '/hoat-dong/:id',
+            element: <ActivityDetailsPage title='Chi tiết hoạt động' />
         }
     ]
 };
