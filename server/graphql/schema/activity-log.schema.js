@@ -11,7 +11,7 @@ const typeDefs = gql`
 
     type ActivityLog {
         id: ID!
-        userId: User
+        user: User
         action: String!
         onCollection: String!
         onDocumentId: String!
@@ -65,6 +65,9 @@ const typeDefs = gql`
 `;
 
 const resolvers = {
+    ActivityLog: {
+        user: (root) => root.userId
+    },
     ActivityLogsByPage: {
         pageInfo: (root) => root
     },
