@@ -41,7 +41,7 @@ const PhieuNhapList = ({ title }: Props) => {
         <PhieuNhapItem
             key={phieuNhap.id}
             phieuNhap={phieuNhap}
-            index={10 * (currentPage - 1) + (index + 1)}
+            index={limit * (currentPage - 1) + (index + 1)}
         />
     ));
 
