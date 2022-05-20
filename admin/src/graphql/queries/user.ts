@@ -1,6 +1,6 @@
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { showErrorNotification, showSuccessNotification } from '../../events';
-import { AllUsers, AllUsersVars, BanByIdVars, User, UserById } from '../../types';
+import { AllUsers, AllUsersVars, BanByIdVars, CreateUserVars, User, UserById } from '../../types';
 
 const ALL = gql`
     query AllUsers($page: Int!, $limit: Int!, $search: String) {
@@ -52,11 +52,27 @@ const BY_ID = gql`
     }
 `;
 
+const CREATE = gql`
+    mutation Create($username: String!, $password: String!, $email: String!, $fullname: String!) {
+        user {
+            create(username: $username, password: $password, email: $email, fullname: $fullname) {
+                id
+                username
+                email
+                fullname
+                role
+                isBanned
+            }
+        }
+    }
+`;
+
 const useAllUsers = (variables: AllUsersVars) => {
     return useQuery<
         AllUsers
     >(ALL, {
-        variables
+        variables,
+        fetchPolicy: 'cache-and-network'
     });
 };
 
@@ -83,7 +99,18 @@ const useBanUser = () => {
     });
 };
 
+const useCreateUser = () => {
+    return useMutation<
+        never, CreateUserVars
+    >(CREATE, {
+        onCompleted: () => showSuccessNotification('Tạo tài khoản thành công'),
+        onError: (error) => showErrorNotification(error.message),
+        refetchQueries: [ALL],
+    });
+};
+
 export const userHooks = {
+    useCreateUser,
     useAllUsers,
     useUserById,
     useBanUser,
