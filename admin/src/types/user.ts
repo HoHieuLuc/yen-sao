@@ -52,3 +52,10 @@ export interface UserById {
         byID: User;
     }
 }
+
+export interface CreateUserVars {
+    username: string;
+    password: string;
+    fullname: string;
+    email: string;
+}

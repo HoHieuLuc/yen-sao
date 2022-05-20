@@ -18,7 +18,7 @@ const UserDetails = () => {
     );
     useDocumentTitle(
         `${data && data.user.byID
-            ? data.user.byID.username
+            ? data.user.byID.fullname
             : 'Đang tải...'} | ${currentTabTitle}`
     );
 

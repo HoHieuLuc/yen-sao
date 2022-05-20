@@ -2,12 +2,14 @@ import { useDebouncedSearchParams, usePagination } from '../../../../hooks';
 import { userHooks } from '../../../../graphql/queries';
 import { useDocumentTitle } from '@mantine/hooks';
 
-import { Center, ScrollArea, Table, TextInput } from '@mantine/core';
+import { Button, Center, ScrollArea, Table, TextInput } from '@mantine/core';
 import LoadingWrapper from '../../../Utils/Wrappers/LoadingWrapper';
 import MyPagination from '../../../Utils/Pagination/MyPagination';
 import ErrorPage from '../../../Utils/Errors/ErrorPage';
 import { SearchIcon } from '../../../Utils/Icons';
 import UserItem from './UserItem';
+import { useModals } from '@mantine/modals';
+import CreateUser from '../Create/CreateUser';
 
 interface Props {
     title: string;
@@ -24,6 +26,18 @@ const UserList = ({ title }: Props) => {
             search: debouncedSearch
         }
     );
+
+    const modals = useModals();
+
+    const openCreateUserModal = () => {
+        const modalId = modals.openModal({
+            title: <h3>Thêm nhân viên mới</h3>,
+            children: <CreateUser
+                closeModal={() => modals.closeModal(modalId)}
+            />
+        });
+    };
+
 
     if (error) {
         return <ErrorPage />;
@@ -47,6 +61,7 @@ const UserList = ({ title }: Props) => {
                 rightSection={<SearchIcon />}
                 mb='xs'
             />
+            <Button mb='xs' onClick={openCreateUserModal}>Thêm nhân viên mới</Button>
             <ScrollArea style={{ whiteSpace: 'break-spaces' }}>
                 <Table striped highlightOnHover mb='sm'>
                     <thead>
