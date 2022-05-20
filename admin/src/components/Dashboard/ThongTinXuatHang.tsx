@@ -8,19 +8,25 @@ import { Calendar } from '@mantine/dates';
 import { Link } from 'react-router-dom';
 
 import { convertToShortDate, convertToVND } from '../../utils/common';
-import { phieuXuatHooks } from '../../graphql/queries';
+import { chiTietPhieuXuatHooks } from '../../graphql/queries';
 import dayjs from 'dayjs';
 
 const ThongTinXuatHang = () => {
     const [month, onMonthChange] = useState(new Date());
     const [selectedDay, setSelectedDay] = useState<Date | null>(null);
 
-    const { data, loading, error } = phieuXuatHooks.useAllPhieuXuats({
-        page: 1,
-        limit: 1000,
-        from: dayjs(month).startOf('month').toDate().getTime(),
-        to: dayjs(month).endOf('month').toDate().getTime()
+    const { data, loading, error } = chiTietPhieuXuatHooks.useAllChiTietPhieuXuats({
+        from: dayjs(month).startOf('month').toDate(),
+        to: dayjs(month).endOf('month').toDate()
     });
+
+
+    const chiTietPhieuXuatsOnSelectedDay = selectedDay && data?.chiTietPhieuXuat.all.filter(
+        item => {
+            const shortDate = convertToShortDate(item.ngayXuat);
+            return shortDate === convertToShortDate(selectedDay.getTime());
+        }
+    );
 
     if (error) {
         return <ErrorPage />;
@@ -28,7 +34,7 @@ const ThongTinXuatHang = () => {
 
     return (
         <LoadingWrapper loading={loading}>
-            {loading && <Calendar initialMonth={month} />}
+            {loading && <Calendar hideOutsideDates initialMonth={month} />}
             {!loading && data && <Grid gutter='xs'>
                 <Grid.Col md={4}>
                     <DashboardCalendar
@@ -36,7 +42,8 @@ const ThongTinXuatHang = () => {
                         setSelectedDay={setSelectedDay}
                         onMonthChange={onMonthChange}
                         month={month}
-                        data={data.phieuXuat.all.docs}
+                        data={data.chiTietPhieuXuat.all}
+                        type='XuatHang'
                     />
                 </Grid.Col>
                 <Grid.Col md={8}>
@@ -46,24 +53,22 @@ const ThongTinXuatHang = () => {
                         </Text>
                         <Text>
                             Tổng tiền xuất hàng: {convertToVND(
-                                data.phieuXuat.all.docs.reduce(
-                                    (sum, curr) => sum + curr.tongTien, 0)
+                                data.chiTietPhieuXuat.all.reduce(
+                                    (sum, curr) => sum + curr.thanhTien, 0)
                             )}
                         </Text>
                     </Stack>
                     <Paper shadow="xl" p="sm" withBorder>
-                        {selectedDay
-                            ? data.phieuXuat.all.docs.filter(
-                                item => {
-                                    const shortDate = convertToShortDate(item.ngayXuat);
-                                    return shortDate === convertToShortDate(selectedDay.getTime());
-                                }
-                            ).map(item => {
+                        {chiTietPhieuXuatsOnSelectedDay && chiTietPhieuXuatsOnSelectedDay.length > 0
+                            ? chiTietPhieuXuatsOnSelectedDay.map(item => {
                                 return <Box key={item.id}>
                                     <Anchor component={Link} to={`/phieu-xuat/${item.id}`}>
                                         {convertToShortDate(item.ngayXuat)}
-                                    </Anchor>: xuất {item.soMatHangXuat} mặt hàng, tổng tiền {
-                                        convertToVND(item.tongTien)
+                                    </Anchor>
+                                    : xuất {item.soLuongXuat / 1000}
+                                    {' '}
+                                    kg {item.sanPham.tenSanPham}, tổng tiền {
+                                        convertToVND(item.thanhTien)
                                     }
                                 </Box>;
                             })

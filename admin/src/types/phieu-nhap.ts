@@ -92,3 +92,14 @@ export interface UpdateChiTietPhieuNhapVars {
     idChiTiet: string;
     payload: ChiTietPhieuNhapInput;
 }
+
+export interface AllChiTietPhieuNhaps {
+    chiTietPhieuNhap: {
+        all: Array<ChiTietPhieuNhap>;
+    }
+}
+
+export interface AllChiTietPhieuNhapsVars {
+    from: Date;
+    to: Date;
+}

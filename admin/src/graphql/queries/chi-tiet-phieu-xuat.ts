@@ -1,7 +1,32 @@
 import { gql, useApolloClient, useMutation, useQuery } from '@apollo/client';
 import { showErrorNotification, showSuccessNotification } from '../../events';
-import { ChiTietPhieuXuatBySanPhamID, ChiTietPhieuXuatBySanPhamIDVars, CreateChiTietPhieuXuatVars, UpdateChiTietPhieuXuatVars } from '../../types';
+import { 
+    AllChiTietPhieuXuats,
+    AllChiTietPhieuXuatsVars,
+    ChiTietPhieuXuatBySanPhamID, 
+    ChiTietPhieuXuatBySanPhamIDVars, 
+    CreateChiTietPhieuXuatVars, 
+    UpdateChiTietPhieuXuatVars 
+} from '../../types';
 
+const ALL = gql`
+    query All($from: Date!, $to: Date!) {
+        chiTietPhieuXuat {
+            all(from: $from, to: $to) {
+                id
+                maPhieuXuat
+                sanPham {
+                    id
+                    tenSanPham
+                }
+                soLuongXuat
+                donGiaXuat
+                thanhTien
+                ngayXuat
+            }
+        }
+    }
+`;
 
 const BY_SAN_PHAM_ID = gql`
     query ChiTietPhieuXuatBySanPhamID(
@@ -123,6 +148,15 @@ const DELETE = gql`
     }
 `;
 
+const useAllChiTietPhieuXuats = (variables: AllChiTietPhieuXuatsVars) => {
+    return useQuery<
+        AllChiTietPhieuXuats, AllChiTietPhieuXuatsVars  
+    >(ALL, {
+        variables,
+        fetchPolicy: 'cache-and-network'
+    });
+};
+
 const useChiTietPhieuXuatBySanPhamID = (variables: ChiTietPhieuXuatBySanPhamIDVars) => {
     return useQuery<
         ChiTietPhieuXuatBySanPhamID, ChiTietPhieuXuatBySanPhamIDVars
@@ -170,4 +204,5 @@ export const chiTietPhieuXuatHooks = {
     useCreateChiTietPhieuXuat,
     useUpdateChiTietPhieuXuat,
     useDeleteChiTietPhieuXuat,
+    useAllChiTietPhieuXuats
 };
