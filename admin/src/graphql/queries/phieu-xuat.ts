@@ -130,18 +130,10 @@ const usePhieuXuatById = (id: string) => {
 };
 
 const useCreatePhieuXuat = () => {
-    const client = useApolloClient();
     return useMutation<
         never, CreatePhieuXuatVars
     >(CREATE, {
-        onCompleted: () => {
-            showSuccessNotification('Tạo phiếu xuất thành công');
-            client.cache.evict({
-                id: 'ROOT_QUERY',
-                fieldName: 'phieuXuat',
-            });
-            client.cache.gc();
-        },
+        onCompleted: () => showSuccessNotification('Tạo phiếu xuất thành công'),
         onError: (error) => showErrorNotification(error.message)
     });
 };

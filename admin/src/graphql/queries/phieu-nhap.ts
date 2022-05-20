@@ -134,18 +134,10 @@ const usePhieuNhapByID = (id: string) => {
 };
 
 const useCreatePhieuNhap = () => {
-    const client = useApolloClient();
     return useMutation<
         never, CreatePhieuNhapVars
     >(CREATE, {
-        onCompleted: () => {
-            showSuccessNotification('Tạo phiếu nhập thành công');
-            client.cache.evict({
-                id: 'ROOT_QUERY',
-                fieldName: 'phieuNhap',
-            });
-            client.cache.gc();
-        },
+        onCompleted: () => showSuccessNotification('Tạo phiếu nhập thành công'),
         onError: (error) => showErrorNotification(error.message)
     });
 };
