@@ -53,9 +53,11 @@ const create = async (newUser) => {
         const user = await User.create(newUser);
         return user;
     } catch (error) {
-        throw new UserInputError(error.message, {
-            invalidArgs: newUser
-        });
+        let customError = '';
+        if (error.code && error.code === 11000) {
+            customError = `Lỗi: ${Object.keys(error.keyValue)} đã tồn tại`;
+        }
+        throw new UserInputError(customError || error.message);
     }
 };
 
