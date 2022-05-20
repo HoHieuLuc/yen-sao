@@ -1,9 +1,11 @@
-import { activityHooks } from '../../../graphql/queries';
 import { usePagination } from '../../../hooks';
-import ActivityList from '../List/ActivityList';
-import ErrorPage from '../../Utils/Errors/ErrorPage';
-import MyPagination from '../../Utils/Pagination/MyPagination';
+
 import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
+import MyPagination from '../../Utils/Pagination/MyPagination';
+import ErrorPage from '../../Utils/Errors/ErrorPage';
+import ActivityList from '../List/ActivityList';
+
+import { activityHooks } from '../../../graphql/queries';
 
 interface Props {
     id: string;
