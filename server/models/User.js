@@ -9,12 +9,18 @@ const UserSchema = mongoose.Schema({
         type: String,
         required: true,
         unique: true,
-        minlength: 6
+        minlength: [6, 'Tên tài khoản phải từ 6 kí tự trở lên'],
+        validate: {
+            validator: function (v) {
+                return /^[a-zA-Z0-9]+$/.test(v);
+            },
+            message: 'Tài khoản không hợp lệ'
+        }
     },
     password: {
         type: String,
         required: true,
-        minlength: 8
+        minlength: [8, 'Mật khẩu phải từ 8 kí tự trở lên']
     },
     email: {
         type: String,
