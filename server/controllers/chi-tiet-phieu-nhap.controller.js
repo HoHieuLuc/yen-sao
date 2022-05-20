@@ -8,6 +8,10 @@ const getBySanPhamID = async (idSanPham, page = 1, limit = 10, from, to, sort) =
     return chiTietPhieuNhapService.getBySanPhamID(idSanPham, page, limit, from, to, sort);
 };
 
+const all = async (from, to) => {
+    return chiTietPhieuNhapService.all(from, to);
+};
+
 const create = async (idPhieuNhap, chiTietPhieuNhap, currentUser) => {
     if (!mongoose.isValidObjectId(idPhieuNhap)) {
         throw new UserInputError('Mã phiếu nhập không hợp lệ');
@@ -59,4 +63,5 @@ module.exports = {
     create,
     update,
     remove,
+    all
 };

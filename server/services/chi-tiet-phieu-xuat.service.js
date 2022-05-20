@@ -47,6 +47,15 @@ const getBySanPhamID = async (id, page, limit, from, to, sort) => {
     }
 };
 
+const all = async (from, to) => {
+    return ChiTietPhieuXuat.find({
+        ngayXuat: {
+            $gte: from,
+            $lte: to
+        }
+    }).sort('-ngayXuat').populate('maSanPham');
+};
+
 const create = async (idPhieuXuat, chiTietPhieuXuat, currentUser) => {
     const session = await SanPham.startSession();
     session.startTransaction();
@@ -267,4 +276,5 @@ module.exports = {
     create,
     update,
     remove,
+    all
 };
