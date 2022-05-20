@@ -41,6 +41,10 @@ const typeDefs = gql`
             to: Date,
             sort: SortChiTietPhieuXuat
         ): ChiTietPhieuXuatByPage
+        all(
+            from: Date!,
+            to: Date!
+        ): [ChiTietPhieuXuat!]!
     }
 
     extend type Query {
@@ -98,7 +102,9 @@ const resolvers = {
     },
     ChiTietPhieuXuatQueries: {
         bySanPhamID: async (_, { id, page, limit, from, to, sort }) =>
-            chiTietPhieuXuatController.getBySanPhamID(id, page, limit, from, to, sort)
+            chiTietPhieuXuatController.getBySanPhamID(id, page, limit, from, to, sort),
+        all: async(_, { from, to }) =>
+            chiTietPhieuXuatController.all(from, to),
     },
     Mutation: {
         chiTietPhieuXuat: chainMiddlewares(authRequired,
