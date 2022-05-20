@@ -51,7 +51,7 @@ const DashboardCalendar = ({ selectedDay, setSelectedDay, month, onMonthChange, 
                     return <Indicator
                         size={12}
                         offset={8}
-                        label={dataToday.length}
+                        label={dataToday.length > 9 ? '9+' : dataToday.length}
                         color='teal'
                     >
                         <div>{day}</div>
