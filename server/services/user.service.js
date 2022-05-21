@@ -104,10 +104,28 @@ const banById = (id, isBanned) => {
     );
 };
 
+const update = async (payload, currentUser) => {
+    try {
+        const user = await User.findByIdAndUpdate(
+            currentUser._id,
+            payload,
+            { new: true, runValidators: true }
+        );
+        return user;
+    } catch (error) {
+        let customError = '';
+        if (error.code && error.code === 11000) {
+            customError = `Lỗi: ${Object.keys(error.keyValue)} đã tồn tại`;
+        }
+        throw new UserInputError(customError || error.message);
+    }
+};
+
 module.exports = {
     login,
     getAll,
     create,
+    update,
     getById,
     banById,
     getCurrentUser,

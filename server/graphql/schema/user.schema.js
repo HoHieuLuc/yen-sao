@@ -32,6 +32,11 @@ const typeDefs = gql`
         user: UserQueries
     }
 
+    input UpdateUserInput {
+        fullname: String
+        email: String
+    }
+
     type UserMutations {
         create(
             username: String!,
@@ -50,6 +55,9 @@ const typeDefs = gql`
         banByID(
             id: ID!,
             isBanned: Boolean!
+        ): User
+        update(
+            payload: UpdateUserInput!
         ): User
     }
 
@@ -92,7 +100,9 @@ const resolvers = {
         banByID: chainMiddlewares(adminRequired,
             (_, { id, isBanned }, { currentUser }) =>
                 userController.banById(id, isBanned, currentUser)
-        )
+        ),
+        update: (_, { payload }, { currentUser }) =>
+            userController.update(payload, currentUser),
     }
 };
 
