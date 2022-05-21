@@ -1,6 +1,6 @@
 import { useForm } from '@mantine/form';
 
-import { Box, Button, Center, Container, Group, PasswordInput, Stack, Title } from '@mantine/core';
+import { Button, Center, Container, Group, PasswordInput, Stack, Title } from '@mantine/core';
 
 import { authHooks } from '../../graphql/queries';
 
@@ -26,49 +26,48 @@ const ChangePassword = () => {
             variables: {
                 oldPassword: values.oldPassword,
                 newPassword: values.newPassword
-            }
+            },
+            onCompleted: () => authForm.reset()
         });
     };
 
     return (
-        <Box>
+        <form onSubmit={authForm.onSubmit(handleSubmit)}>
             <Center>
                 <Title>Đổi mật khẩu</Title>
             </Center>
             <Container>
-                <form onSubmit={authForm.onSubmit(handleSubmit)}>
-                    <Stack spacing='xs'>
-                        <PasswordInput
-                            label='Mật khẩu cũ'
-                            placeholder='Nhập mật khẩu cũ'
-                            {...authForm.getInputProps('oldPassword')}
-                            required
-                        />
-                        <PasswordInput
-                            label='Mật khẩu mới'
-                            placeholder='Nhập mật khẩu mới'
-                            {...authForm.getInputProps('newPassword')}
-                            description='Mật khẩu phải có ít nhất 8 ký tự'
-                            required
-                        />
-                        <PasswordInput
-                            label='Xác nhận mật khẩu'
-                            placeholder='Nhập lại mật khẩu mới'
-                            {...authForm.getInputProps('confirmPassword')}
-                            required
-                        />
-                        <Group position='right'>
-                            <Button
-                                type='submit'
-                                loading={loading}
-                            >
-                                Xác nhận
-                            </Button>
-                        </Group>
-                    </Stack>
-                </form>
+                <Stack spacing='xs'>
+                    <PasswordInput
+                        label='Mật khẩu cũ'
+                        placeholder='Nhập mật khẩu cũ'
+                        {...authForm.getInputProps('oldPassword')}
+                        required
+                    />
+                    <PasswordInput
+                        label='Mật khẩu mới'
+                        placeholder='Nhập mật khẩu mới'
+                        {...authForm.getInputProps('newPassword')}
+                        description='Mật khẩu phải có ít nhất 8 ký tự'
+                        required
+                    />
+                    <PasswordInput
+                        label='Xác nhận mật khẩu'
+                        placeholder='Nhập lại mật khẩu mới'
+                        {...authForm.getInputProps('confirmPassword')}
+                        required
+                    />
+                    <Group position='right'>
+                        <Button
+                            type='submit'
+                            loading={loading}
+                        >
+                            Xác nhận
+                        </Button>
+                    </Group>
+                </Stack>
             </Container>
-        </Box>
+        </form>
     );
 };
 
