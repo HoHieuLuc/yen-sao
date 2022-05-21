@@ -59,3 +59,10 @@ export interface CreateUserVars {
     fullname: string;
     email: string;
 }
+
+export interface UpdateUserVars {
+    payload: {
+        fullname: string;
+        email: string;
+    }
+}

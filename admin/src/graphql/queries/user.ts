@@ -1,6 +1,6 @@
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { showErrorNotification, showSuccessNotification } from '../../events';
-import { AllUsers, AllUsersVars, BanByIdVars, CreateUserVars, User, UserById } from '../../types';
+import { AllUsers, AllUsersVars, BanByIdVars, CreateUserVars, UpdateUserVars, User, UserById } from '../../types';
 
 const ALL = gql`
     query AllUsers($page: Int!, $limit: Int!, $search: String) {
@@ -53,7 +53,7 @@ const BY_ID = gql`
 `;
 
 const CREATE = gql`
-    mutation Create($username: String!, $password: String!, $email: String!, $fullname: String!) {
+    mutation CreateUser($username: String!, $password: String!, $email: String!, $fullname: String!) {
         user {
             create(username: $username, password: $password, email: $email, fullname: $fullname) {
                 id
@@ -62,6 +62,18 @@ const CREATE = gql`
                 fullname
                 role
                 isBanned
+            }
+        }
+    }
+`;
+
+const UPDATE = gql`
+    mutation UpdateUser($payload: UpdateUserInput!) {
+        user {
+            update(payload: $payload) {
+                id
+                email
+                fullname
             }
         }
     }
@@ -109,8 +121,18 @@ const useCreateUser = () => {
     });
 };
 
+const useUpdateUser = () => {
+    return useMutation<
+        never, UpdateUserVars
+    >(UPDATE, {
+        onCompleted: () => showSuccessNotification('Cập nhật thông tin thành công'),
+        onError: (error) => showErrorNotification(error.message),
+    });
+};
+
 export const userHooks = {
     useCreateUser,
+    useUpdateUser,
     useAllUsers,
     useUserById,
     useBanUser,

@@ -2,6 +2,6 @@
 *.env
 *tests
 
+/docs
 /server/public/uploads/*
-
 !/server/public/uploads/.gitkeep
