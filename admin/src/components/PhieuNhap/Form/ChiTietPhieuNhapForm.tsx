@@ -58,12 +58,7 @@ const ChiTietPhieuNhapForm = ({
     useEffect(() => {
         // khi lock phiếu đang update thì reset lại giá trị ban đầu
         if (type === 'update' && lock) {
-            chiTietPhieuNhapForm.setValues({
-                maSanPham: initialValues.maSanPham,
-                soLuongNhap: initialValues.soLuongNhap / 1000,
-                donGiaNhap: initialValues.donGiaNhap,
-                ghiChu: initialValues.ghiChu
-            });
+            chiTietPhieuNhapForm.reset();
         }
     }, [lock]);
 

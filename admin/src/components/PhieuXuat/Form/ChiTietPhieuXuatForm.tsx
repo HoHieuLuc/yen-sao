@@ -57,12 +57,7 @@ const ChiTietPhieuXuatForm = ({
 
     useEffect(() => {
         if (type === 'update' && lock) {
-            chiTietPhieuXuatForm.setValues({
-                maSanPham: initialValues.maSanPham,
-                soLuongXuat: initialValues.soLuongXuat / 1000,
-                donGiaXuat: initialValues.donGiaXuat,
-                ghiChu: initialValues.ghiChu
-            });
+            chiTietPhieuXuatForm.reset();
         }
     }, [lock]);
 
