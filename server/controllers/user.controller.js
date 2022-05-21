@@ -44,10 +44,15 @@ const banById = async (id, isBanned, currentUser) => {
     return user;
 };
 
+const update = async (payload, currentUser) => {
+    return userService.update(payload, currentUser);
+};
+
 module.exports = {
     login,
-    create,
     getAll,
+    create,
+    update,
     getById,
     banById,
     getCurrentUser,
