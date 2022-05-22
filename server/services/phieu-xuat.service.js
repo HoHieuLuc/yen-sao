@@ -24,7 +24,8 @@ const getAll = async (page, limit, from, to, sort) => {
         sort: sort || '-ngayXuat'
     };
 
-    let findOptions = {};
+    const findOptions = {};
+    
     if (from || to) {
         const ngayXuat = {};
         if (from) {
@@ -33,25 +34,14 @@ const getAll = async (page, limit, from, to, sort) => {
         if (to) {
             ngayXuat.$lte = to;
         }
-        findOptions = {
-            ngayXuat
-        };
+        findOptions.ngayXuat = ngayXuat;
     }
-    try {
-        const phieuXuats = await PhieuXuat.paginate(findOptions, paginateOptions);
-        return phieuXuats;
-    } catch (error) {
-        throw new UserInputError(error.message);
-    }
+
+    return PhieuXuat.paginate(findOptions, paginateOptions);
 };
 
 const getById = async (id) => {
-    try {
-        const phieuXuat = await PhieuXuat.findById(id).populate(populateOptions);
-        return phieuXuat;
-    } catch (error) {
-        throw new UserInputError(error.message);
-    }
+    return PhieuXuat.findById(id).populate(populateOptions);
 };
 
 const buildUpdateProductQuantityBulkOps = (chiTietPhieuXuat, isCreate = true) => {
@@ -141,8 +131,8 @@ const update = async (id, payload, currentUser) => {
         phieuXuat.set(payload);
         await phieuXuat.save();
         await ChiTietPhieuXuat.updateMany(
-            { 
-                maPhieuXuat: phieuXuat._id 
+            {
+                maPhieuXuat: phieuXuat._id
             },
             {
                 ...payload

@@ -16,23 +16,17 @@ const getAll = async (page, limit, search, sort, isGuest) => {
     if (isGuest) {
         findOptions.isPublic = true;
     }
-    const sanPhams = await SanPham.paginate(findOptions, options);
-    return sanPhams;
+    return SanPham.paginate(findOptions, options);
 };
 
 const getById = async (id, isGuest) => {
-    try {
-        const findOptions = isGuest ? { isPublic: true } : {};
-        const sanPham = await SanPham.findOne(
-            {
-                _id: id,
-                ...findOptions
-            }
-        );
-        return sanPham;
-    } catch (error) {
-        throw new UserInputError(error.message);
-    }
+    const findOptions = isGuest ? { isPublic: true } : {};
+    return SanPham.findOne(
+        {
+            _id: id,
+            ...findOptions
+        }
+    );
 };
 
 const create = async (sanPhamData) => {

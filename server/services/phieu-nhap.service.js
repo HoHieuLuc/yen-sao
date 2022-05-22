@@ -24,7 +24,7 @@ const getAll = async (page, limit, from, to, sort) => {
         sort: sort || '-ngayNhap'
     };
 
-    let findOptions = {};
+    const findOptions = {};
 
     if (from || to) {
         const ngayNhap = {};
@@ -34,26 +34,14 @@ const getAll = async (page, limit, from, to, sort) => {
         if (to) {
             ngayNhap.$lte = to;
         }
-        findOptions = {
-            ngayNhap
-        };
+        findOptions.ngayNhap = ngayNhap;
     }
-    try {
-        const phieuNhaps = await PhieuNhap.paginate(findOptions, paginateOptions);
-        return phieuNhaps;
-    } catch (error) {
-        throw new UserInputError(error.message);
-    }
+    
+    return PhieuNhap.paginate(findOptions, paginateOptions);
 };
 
-
 const getById = async (id) => {
-    try {
-        const phieuNhap = await PhieuNhap.findById(id).populate(populateOptions);
-        return phieuNhap;
-    } catch (error) {
-        throw new UserInputError(error.message);
-    }
+    return PhieuNhap.findById(id).populate(populateOptions);
 };
 
 const buildUpdateProductQuantityBulkOps = (chiTietPhieuNhap, isCreate = true) => {

@@ -22,7 +22,7 @@ const getBySanPhamID = async (id, page, limit, from, to, sort) => {
         limit,
         sort: sort || '-ngayNhap'
     };
-    let findOptions = {};
+    const findOptions = {};
 
     if (from || to) {
         const ngayNhap = {};
@@ -32,19 +32,12 @@ const getBySanPhamID = async (id, page, limit, from, to, sort) => {
         if (to) {
             ngayNhap.$lte = to;
         }
-        findOptions = {
-            ngayNhap
-        };
+        findOptions.ngayNhap = ngayNhap;
     }
-    try {
-        const chiTiets = await ChiTietPhieuNhap.paginate({
-            maSanPham: id,
-            ...findOptions
-        }, options);
-        return chiTiets;
-    } catch (error) {
-        throw new UserInputError(error.message);
-    }
+    return ChiTietPhieuNhap.paginate({
+        maSanPham: id,
+        ...findOptions
+    }, options);
 };
 
 // for dashboard page

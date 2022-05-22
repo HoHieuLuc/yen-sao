@@ -1,5 +1,3 @@
-const { UserInputError } = require('apollo-server');
-const mongoose = require('mongoose');
 const chiTietPhieuXuatService = require('../services/chi-tiet-phieu-xuat.service');
 const sanPhamService = require('../services/san-pham.service');
 const chiTietPhieuXuatLogger = require('../loggers/chi-tiet-phieu-xuat.logger');
@@ -13,12 +11,6 @@ const all = async (from, to) => {
 };
 
 const create = async (idPhieuXuat, chiTietPhieuXuat, currentUser) => {
-    if (!mongoose.isValidObjectId(idPhieuXuat)) {
-        throw new UserInputError('Mã phiếu nhập không hợp lệ');
-    }
-    if (!mongoose.isValidObjectId(chiTietPhieuXuat.maSanPham)) {
-        throw new UserInputError('Mã sản phẩm không hợp lệ');
-    }
     await sanPhamService.checkIfExist([chiTietPhieuXuat.maSanPham]);
 
     const phieuXuat = await chiTietPhieuXuatService.create(idPhieuXuat, chiTietPhieuXuat, currentUser);
@@ -27,13 +19,6 @@ const create = async (idPhieuXuat, chiTietPhieuXuat, currentUser) => {
 };
 
 const update = async (idPhieuXuat, idChiTietPhieuXuat, chiTietPhieuXuat, currentUser) => {
-    if (!mongoose.isValidObjectId(idPhieuXuat)) {
-        throw new UserInputError('Mã phiếu xuất không hợp lệ');
-    }
-    if (!mongoose.isValidObjectId(idChiTietPhieuXuat)) {
-        throw new UserInputError('Mã chi tiết phiếu xuất không hợp lệ');
-    }
-
     await sanPhamService.checkIfExist([chiTietPhieuXuat.maSanPham]);
 
     const result = await chiTietPhieuXuatService.update(
@@ -47,13 +32,6 @@ const update = async (idPhieuXuat, idChiTietPhieuXuat, chiTietPhieuXuat, current
 };
 
 const remove = async (idPhieuXuat, idChiTietPhieuXuat, currentUser) => {
-    if (!mongoose.isValidObjectId(idPhieuXuat)) {
-        throw new UserInputError('Mã phiếu nhập không hợp lệ');
-    }
-    if (!mongoose.isValidObjectId(idChiTietPhieuXuat)) {
-        throw new UserInputError('Mã chi tiết phiếu nhập không hợp lệ');
-    }
-    
     const result = await chiTietPhieuXuatService.remove(
         idPhieuXuat,
         idChiTietPhieuXuat,
