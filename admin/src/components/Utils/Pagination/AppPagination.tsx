@@ -5,7 +5,7 @@ interface Props extends PaginationProps {
     onLimitChange: (limit: string) => void;
 }
 
-const MyPagination = ({ limit, onLimitChange, ...props }: Props) => {
+const AppPagination = ({ limit, onLimitChange, ...props }: Props) => {
     return (
         <SimpleGrid
             cols={2}
@@ -37,4 +37,4 @@ const MyPagination = ({ limit, onLimitChange, ...props }: Props) => {
     );
 };
 
-export default MyPagination;
+export default AppPagination;

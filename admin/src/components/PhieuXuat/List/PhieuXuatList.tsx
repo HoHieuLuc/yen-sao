@@ -5,7 +5,7 @@ import { useDocumentTitle } from '@mantine/hooks';
 import { Center, ScrollArea, Table, UnstyledButton } from '@mantine/core';
 import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
 import DateRangeSearch from '../../Utils/Search/DateRangeSearch';
-import MyPagination from '../../Utils/Pagination/MyPagination';
+import AppPagination from '../../Utils/Pagination/AppPagination';
 import ErrorPage from '../../Utils/Errors/ErrorPage';
 import { SortIcon } from '../../Utils/Icons';
 import PhieuXuatItem from './PhieuXuatItem';
@@ -95,7 +95,7 @@ const PhieuXuatList = ({ title }: Props) => {
                 </Table>
             </ScrollArea>
             {data && (
-                <MyPagination
+                <AppPagination
                     total={data.phieuXuat.all.pageInfo.totalPages}
                     siblings={1}
                     page={currentPage}

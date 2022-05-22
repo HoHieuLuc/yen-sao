@@ -1,7 +1,7 @@
 import { usePagination } from '../../../hooks';
 
 import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
-import MyPagination from '../../Utils/Pagination/MyPagination';
+import AppPagination from '../../Utils/Pagination/AppPagination';
 import ErrorPage from '../../Utils/Errors/ErrorPage';
 import ActivityList from '../List/ActivityList';
 
@@ -31,7 +31,7 @@ const ActivityTab = ({ id }: Props) => {
                     currentPage={currentPage}
                     limit={limit}
                 />
-                <MyPagination
+                <AppPagination
                     total={data.activityLog.byDocumentID.pageInfo.totalPages}
                     page={currentPage}
                     onChange={handlePageChange}

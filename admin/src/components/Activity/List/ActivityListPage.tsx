@@ -3,7 +3,7 @@ import { useDocumentTitle } from '@mantine/hooks';
 import { useModals } from '@mantine/modals';
 
 import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
-import MyPagination from '../../Utils/Pagination/MyPagination';
+import AppPagination from '../../Utils/Pagination/AppPagination';
 import { Button, Center, Stack, Title } from '@mantine/core';
 import ErrorPage from '../../Utils/Errors/ErrorPage';
 import DeleteActivity from '../Delete/DeleteActivity';
@@ -57,7 +57,7 @@ const ActivityListPage = ({ title }: Props) => {
                     limit={limit}
                 />}
                 {data && (
-                    <MyPagination
+                    <AppPagination
                         total={data.activityLog.all.pageInfo.totalPages}
                         page={currentPage}
                         onChange={handlePageChange}
