@@ -40,7 +40,7 @@ const About = ({ title }: Props) => {
                     <Group position='right' mt='md'>
                         <Button
                             component={Link}
-                            to='/manage/about/sua'
+                            to='/quan-ly/about/sua'
                             color='teal'
                         >
                             Chỉnh sửa
