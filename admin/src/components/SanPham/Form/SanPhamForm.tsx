@@ -20,7 +20,6 @@ interface Props {
 }
 
 const SanPhamForm = ({ loading, initialValues, handleSubmit }: Props) => {
-    console.log(initialValues);
     const sanPhamForm = useForm<SanPhamFormVars>({
         initialValues: {
             tenSanPham: initialValues?.tenSanPham || '',
