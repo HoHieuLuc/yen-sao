@@ -1,6 +1,12 @@
 import { gql, useApolloClient, useMutation, useQuery } from '@apollo/client';
 import { showErrorNotification, showSuccessNotification } from '../../events';
-import { AllPhieuXuats, AllPhieuXuatsVars, CreatePhieuXuatVars, PhieuXuatByID, UpdatePhieuXuatInput } from '../../types';
+import {
+    AllPhieuXuats,
+    PhieuXuatByID,
+    AllPhieuXuatsVars,
+    CreatePhieuXuatVars,
+    UpdatePhieuXuatInput
+} from '../../types';
 
 const ALL = gql`
     query AllPhieuXuats($page: Int!, $limit: Int!, $from: Date, $to: Date, $sort: SortPhieuXuat) {
@@ -30,7 +36,7 @@ const ALL = gql`
 `;
 
 const BY_ID = gql`
-    query PhieuXuatByID($id: ID!) {
+    query PhieuXuatByID($id: ObjectID!) {
         phieuXuat {
             byID(id: $id) {
                 id
@@ -81,7 +87,7 @@ const CREATE = gql`
 `;
 
 const DELETE = gql`
-    mutation DeletePhieuXuat($id: ID!) {
+    mutation DeletePhieuXuat($id: ObjectID!) {
         phieuXuat {
             delete(id: $id) {
                 id
@@ -98,7 +104,7 @@ const DELETE = gql`
 `;
 
 const UPDATE = gql`
-    mutation UpdatePhieuXuat($id: ID!, $payload: UpdatePhieuXuatInput!) {
+    mutation UpdatePhieuXuat($id: ObjectID!, $payload: UpdatePhieuXuatInput!) {
         phieuXuat {
             update(id: $id, payload: $payload) {
                 id

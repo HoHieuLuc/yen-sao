@@ -32,7 +32,7 @@ const ALL = gql`
 `;
 
 const BY_ID = gql`
-    query SanPhamByID($id: ID!) {
+    query SanPhamByID($id: ObjectID!) {
         sanPham {
             byID(id: $id) {
                 id
@@ -64,7 +64,7 @@ const CREATE = gql`
 `;
 
 const UPDATE = gql`
-    mutation UpdateSanPham($id: ID!, $payload: UpdateSanPhamInput!) {
+    mutation UpdateSanPham($id: ObjectID!, $payload: UpdateSanPhamInput!) {
         sanPham {
             update(id: $id, payload: $payload) {
                 id
@@ -84,7 +84,7 @@ const UPDATE = gql`
 `;
 
 const DELETE = gql`
-    mutation DeleteSanPham($id: ID!) {
+    mutation DeleteSanPham($id: ObjectID!) {
         sanPham {
             delete(id: $id) {
                 id

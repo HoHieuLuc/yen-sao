@@ -30,7 +30,7 @@ const ALL = gql`
 
 const BY_SAN_PHAM_ID = gql`
     query ChiTietPhieuNhapBySanPhamID(
-        $id: ID!, 
+        $id: ObjectID!, 
         $page: Int!, 
         $limit: Int!, 
         $from: Date, 
@@ -59,7 +59,7 @@ const BY_SAN_PHAM_ID = gql`
 `;
 
 const CREATE = gql`
-    mutation CreateChiTietPhieuNhap($idPhieuNhap: ID!, $payload: ChiTietPhieuNhapInput!) {
+    mutation CreateChiTietPhieuNhap($idPhieuNhap: ObjectID!, $payload: ChiTietPhieuNhapInput!) {
         chiTietPhieuNhap {
             create(idPhieuNhap: $idPhieuNhap, payload: $payload) {
                 id
@@ -84,8 +84,8 @@ const CREATE = gql`
 
 const UPDATE = gql`
     mutation UpdateChiTietPhieuNhap(
-        $idPhieuNhap: ID!,
-        $idChiTiet: ID!, 
+        $idPhieuNhap: ObjectID!,
+        $idChiTiet: ObjectID!, 
         $payload: ChiTietPhieuNhapInput!) 
     {
         chiTietPhieuNhap {
@@ -118,7 +118,7 @@ const UPDATE = gql`
 `;
 
 const DELETE = gql`
-    mutation DeleteChiTietPhieuNhap($idPhieuNhap: ID!, $idChiTiet: ID!) {
+    mutation DeleteChiTietPhieuNhap($idPhieuNhap: ObjectID!, $idChiTiet: ObjectID!) {
         chiTietPhieuNhap {
             delete(idPhieuNhap: $idPhieuNhap, idChiTiet: $idChiTiet) {
                 phieuNhap {
