@@ -4,7 +4,7 @@ const chiTietPhieuNhapService = require('../services/chi-tiet-phieu-nhap.service
 const sanPhamService = require('../services/san-pham.service');
 const chiTietPhieuNhapLogger = require('../loggers/chi-tiet-phieu-nhap.logger');
 
-const getBySanPhamID = async (idSanPham, page = 1, limit = 10, from, to, sort) => {
+const getBySanPhamID = async (idSanPham, page, limit, from, to, sort) => {
     return chiTietPhieuNhapService.getBySanPhamID(idSanPham, page, limit, from, to, sort);
 };
 
