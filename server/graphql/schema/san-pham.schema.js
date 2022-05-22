@@ -15,6 +15,7 @@ const typeDefs = gql`
         xuatXu: String
         tags: [String]
         anhSanPham: [String!]!
+        isPublic: Boolean!
         createdAt: Date!
         updatedAt: Date!
     }
@@ -33,6 +34,7 @@ const typeDefs = gql`
         xuatXu: String
         tags: [String]
         anhSanPham: [String!]!
+        isPublic: Boolean!
     }
 
     input UpdateSanPhamInput {
@@ -44,6 +46,7 @@ const typeDefs = gql`
         xuatXu: String
         tags: [String]
         anhSanPham: [String!]
+        isPublic: Boolean
     }
 
     enum SortSanPham {
