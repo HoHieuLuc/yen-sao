@@ -22,7 +22,7 @@ const typeDefs = gql`
     }
 
     input ChiTietPhieuXuatInput {
-        maSanPham: ID!
+        maSanPham: ObjectID!
         soLuongXuat: Int!
         donGiaXuat: Int!
         ghiChu: String
@@ -49,7 +49,7 @@ const typeDefs = gql`
             sort: SortPhieuXuat
         ): PhieuXuatsByPage!
         byID(
-            id: ID!
+            id: ObjectID!
         ): PhieuXuat
     }
 
@@ -64,10 +64,10 @@ const typeDefs = gql`
             payload: [ChiTietPhieuXuatInput!]!
         ): PhieuXuat
         delete(
-            id: ID!
+            id: ObjectID!
         ): PhieuXuat
         update (
-            id: ID!,
+            id: ObjectID!,
             payload: UpdatePhieuXuatInput!
         ): PhieuXuat
     }

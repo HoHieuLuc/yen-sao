@@ -32,7 +32,7 @@ const my = async (page, limit, currentUser) => {
 };
 
 const remove = async (from, to) => {
-    let findOptions = {};
+    const findOptions = {};
 
     const createdAt = {};
     if (from) {
@@ -41,9 +41,7 @@ const remove = async (from, to) => {
     if (to) {
         createdAt.$lte = to;
     }
-    findOptions = {
-        createdAt
-    };
+    findOptions.createdAt = createdAt;
 
     await ActivityLog.deleteMany(findOptions);
     return true;

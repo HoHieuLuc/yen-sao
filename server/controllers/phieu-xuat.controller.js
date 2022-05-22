@@ -4,7 +4,7 @@ const phieuXuatService = require('../services/phieu-xuat.service');
 const sanPhamService = require('../services/san-pham.service');
 const phieuXuatLogger = require('../loggers/phieu-xuat.logger');
 
-const getAll = async (page = 1, limit = 10, from = null, to = null, sort) => {
+const getAll = async (page, limit, from = null, to = null, sort) => {
     return phieuXuatService.getAll(page, limit, from, to, sort);
 };
 

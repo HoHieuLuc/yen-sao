@@ -1,7 +1,6 @@
 const userService = require('../services/user.service');
 const { escapeRegExp } = require('../utils/functions');
-const { ForbiddenError, UserInputError } = require('apollo-server');
-const mongoose = require('mongoose');
+const { ForbiddenError } = require('apollo-server');
 const userLogger = require('../loggers/user.logger');
 
 const getAll = async (page, limit, search = '') => {
@@ -33,9 +32,6 @@ const changePassword = async (oldPassword, newPassword, currentUser) => {
 };
 
 const banById = async (id, isBanned, currentUser) => {
-    if (!mongoose.isValidObjectId(id)) {
-        throw new UserInputError('Mã người dùng không hợp lệ');
-    }
     if (currentUser._id.toString() === id.toString()) {
         throw new ForbiddenError('Bạn không thể làm điều này');
     }

@@ -34,7 +34,7 @@ const typeDefs = gql`
 
     type ChiTietPhieuNhapQueries {
         bySanPhamID(
-            id: ID!,
+            id: ObjectID!,
             page: Int!,
             limit: Int!,
             from: Date,
@@ -58,17 +58,17 @@ const typeDefs = gql`
 
     type ChiTietPhieuNhapMutations {
         create(
-            idPhieuNhap: ID!
+            idPhieuNhap: ObjectID!
             payload: ChiTietPhieuNhapInput!
         ): PhieuNhap
         update(
-            idPhieuNhap: ID!
-            idChiTiet: ID!
+            idPhieuNhap: ObjectID!
+            idChiTiet: ObjectID!
             payload: ChiTietPhieuNhapInput!
         ): ChiTietPhieuNhapMutationsResponse
         delete(
-            idPhieuNhap: ID!
-            idChiTiet: ID!
+            idPhieuNhap: ObjectID!
+            idChiTiet: ObjectID!
         ): ChiTietPhieuNhapMutationsResponse
     }
 

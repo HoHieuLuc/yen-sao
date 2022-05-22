@@ -19,12 +19,7 @@ const getAll = async (page, limit, search) => {
 };
 
 const getById = async (id) => {
-    try {
-        const user = await User.findById(id);
-        return user;
-    } catch (error) {
-        throw new UserInputError(error.message);
-    }
+    return User.findById(id);
 };
 
 const login = async (username, password) => {

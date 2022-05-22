@@ -3,13 +3,17 @@ const { merge } = require('lodash');
 const { gql } = require('apollo-server');
 
 const {
-    typeDefs: dateScalar,
+    typeDefs: DateScalar,
     resolvers: dateResolvers
-} = require('./scalar/date');
+} = require('./scalar/Date.scalar');
 const {
-    typeDefs: objectScalar,
+    typeDefs: ObjectScalar,
     resolvers: objectResolvers
-} = require('./scalar/object');
+} = require('./scalar/Object.scalar');
+const {
+    typeDefs: ObjectIDScalar,
+    resolvers: objectIDResolvers
+} = require('./scalar/ObjectID.scalar');
 const {
     typeDefs: Token
 } = require('./schema/token.schema');
@@ -66,8 +70,9 @@ const defaultSchema = gql`
 const schema = makeExecutableSchema({
     typeDefs: [
         defaultSchema,
-        dateScalar,
-        objectScalar,
+        DateScalar,
+        ObjectScalar,
+        ObjectIDScalar,
         Paginatable,
         User,
         Token,
@@ -83,6 +88,7 @@ const schema = makeExecutableSchema({
     resolvers: merge(
         dateResolvers,
         objectResolvers,
+        objectIDResolvers,
         userResolvers,
         fileResolvers,
         sanPhamResolvers,
