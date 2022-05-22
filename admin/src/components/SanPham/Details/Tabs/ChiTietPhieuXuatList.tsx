@@ -1,9 +1,9 @@
 import { useDateRangeSearchParams, usePagination, useSortParams } from '../../../../hooks';
 
-import { Anchor, Box, Table, UnstyledButton } from '@mantine/core';
 import LoadingWrapper from '../../../Utils/Wrappers/LoadingWrapper';
 import DateRangeSearch from '../../../Utils/Search/DateRangeSearch';
-import MyPagination from '../../../Utils/Pagination/MyPagination';
+import AppPagination from '../../../Utils/Pagination/AppPagination';
+import { Anchor, Box, Table, UnstyledButton } from '@mantine/core';
 import ErrorPage from '../../../Utils/Errors/ErrorPage';
 import { SortIcon } from '../../../Utils/Icons';
 import { Link } from 'react-router-dom';
@@ -107,7 +107,7 @@ const ChiTietPhieuXuatList = ({ id }: Props) => {
                         {chiTietElements}
                     </tbody>
                 </Table>
-                <MyPagination
+                <AppPagination
                     total={data.chiTietPhieuXuat.bySanPhamID.pageInfo.totalPages}
                     page={currentPage}
                     onChange={handlePageChange}

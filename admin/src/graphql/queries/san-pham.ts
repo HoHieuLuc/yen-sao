@@ -19,6 +19,7 @@ const ALL = gql`
                     donGiaSi
                     donGiaLe
                     donGiaTuyChon
+                    isPublic
                 }
                 pageInfo {
                     page
@@ -44,6 +45,7 @@ const BY_ID = gql`
                 xuatXu
                 tags
                 anhSanPham
+                isPublic
                 createdAt
                 updatedAt
             }
@@ -56,16 +58,6 @@ const CREATE = gql`
         sanPham {
             create(payload: $payload) {
                 id
-                tenSanPham
-                donGiaSi
-                donGiaLe
-                donGiaTuyChon
-                moTa
-                xuatXu
-                tags
-                anhSanPham
-                createdAt
-                updatedAt
             }
         }
     }
@@ -84,6 +76,7 @@ const UPDATE = gql`
                 xuatXu
                 tags
                 anhSanPham
+                isPublic
                 updatedAt
             }
         }
@@ -149,9 +142,7 @@ const useDeleteSanPham = () => {
             });
             client.cache.gc();
         },
-        onError: (error) => {
-            showErrorNotification(error.message);
-        }
+        onError: (error) => showErrorNotification(error.message)
     });
 };
 
