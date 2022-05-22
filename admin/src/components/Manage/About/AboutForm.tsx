@@ -42,7 +42,7 @@ const AboutForm = ({ inititalValue, loading, handleSubmit }: Props) => {
                 <Button
                     color='red'
                     component={Link}
-                    to='/manage/about'
+                    to='/quan-ly/about'
                 >
                     Quay lại
                 </Button>

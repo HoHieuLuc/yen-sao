@@ -39,7 +39,7 @@ const ALL = gql`
 `;
 
 const BY_ID = gql`
-    query ActivityByID($id: ID!) {
+    query ActivityByID($id: ObjectID!) {
         activityLog {
             byID(id: $id) {
                 id
@@ -61,7 +61,7 @@ const BY_ID = gql`
 `;
 
 const BY_USER_ID = gql`
-    query ActivitiesByUserId($page: Int!, $limit: Int!, $userId: ID!) {
+    query ActivitiesByUserId($page: Int!, $limit: Int!, $userId: ObjectID!) {
         activityLog {
             byUserID(page: $page, limit: $limit, userId: $userId) {
                 docs {
@@ -89,7 +89,7 @@ const BY_USER_ID = gql`
 `;
 
 const BY_DOCUMENT_ID = gql`
-    query ByDocumentID($page: Int!, $limit: Int!, $documentId: ID!) {
+    query ByDocumentID($page: Int!, $limit: Int!, $documentId: ObjectID!) {
         activityLog {
             byDocumentID(page: $page, limit: $limit, documentId: $documentId) {
                 docs {

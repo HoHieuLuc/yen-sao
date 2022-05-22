@@ -8,7 +8,6 @@ import {
     UpdatePhieuNhapInput,
 } from '../../types';
 
-
 const ALL = gql`
     query AllPhieuNhaps($page: Int!, $limit: Int!, $from: Date, $to: Date, $sort: SortPhieuNhap) {
         phieuNhap {
@@ -36,7 +35,7 @@ const ALL = gql`
 `;
 
 const BY_ID = gql`
-    query PhieuNhapByID($id: ID!) {
+    query PhieuNhapByID($id: ObjectID!) {
         phieuNhap {
             byID(id: $id) {
                 id
@@ -86,7 +85,7 @@ const CREATE = gql`
 `;
 
 const DELETE = gql`
-    mutation DeletePhieuNhap($id: ID!) {
+    mutation DeletePhieuNhap($id: ObjectID!) {
         phieuNhap {
             delete(id: $id) {
                 id
@@ -103,7 +102,7 @@ const DELETE = gql`
 `;
 
 const UPDATE = gql`
-    mutation UpdatePhieuNhap($id: ID!, $payload: UpdatePhieuNhapInput!) {
+    mutation UpdatePhieuNhap($id: ObjectID!, $payload: UpdatePhieuNhapInput!) {
         phieuNhap {
             update(id: $id, payload: $payload) {
                 id
