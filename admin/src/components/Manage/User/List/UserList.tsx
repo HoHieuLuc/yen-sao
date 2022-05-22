@@ -4,7 +4,7 @@ import { useDocumentTitle } from '@mantine/hooks';
 
 import { Button, Center, ScrollArea, Table, TextInput } from '@mantine/core';
 import LoadingWrapper from '../../../Utils/Wrappers/LoadingWrapper';
-import MyPagination from '../../../Utils/Pagination/MyPagination';
+import AppPagination from '../../../Utils/Pagination/AppPagination';
 import ErrorPage from '../../../Utils/Errors/ErrorPage';
 import { SearchIcon } from '../../../Utils/Icons';
 import UserItem from './UserItem';
@@ -83,7 +83,7 @@ const UserList = ({ title }: Props) => {
                     </tbody>
                 </Table>
             </ScrollArea>
-            {data && <MyPagination
+            {data && <AppPagination
                 total={data.user.all.pageInfo.totalPages}
                 limit={limit.toString()}
                 onLimitChange={handleLimitChange}

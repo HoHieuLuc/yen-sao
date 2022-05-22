@@ -1,6 +1,6 @@
 import useGlobalStyles from '../../../utils/global.styles';
 
-import { Center, Grid } from '@mantine/core';
+import { Center, Grid, Text, Title } from '@mantine/core';
 import RichTextEditor from '@mantine/rte';
 import ImageDisplay from './ImageDisplay';
 
@@ -23,7 +23,14 @@ const SanPhamDetails = ({ data }: Props) => {
                     />
                 ))}
             </Grid>
-            <Center><h3>{data.tenSanPham}</h3></Center>
+            <Center>
+                <Title>{data.tenSanPham}</Title>
+            </Center>
+            <Center>
+                <Text color='dimmed'>
+                    ({data.isPublic ? 'Công khai' : 'Không công khai'})
+                </Text>
+            </Center>
             <Grid gutter={10} mb='sm'>
                 <Grid.Col xs={6} md={2}>Số lượng tồn (kg):</Grid.Col>
                 <Grid.Col xs={6} md={10}>{data.soLuong / 1000}</Grid.Col>

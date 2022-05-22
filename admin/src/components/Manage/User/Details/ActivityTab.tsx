@@ -1,7 +1,7 @@
 import { usePagination } from '../../../../hooks';
 
 import LoadingWrapper from '../../../Utils/Wrappers/LoadingWrapper';
-import MyPagination from '../../../Utils/Pagination/MyPagination';
+import AppPagination from '../../../Utils/Pagination/AppPagination';
 import ActivityList from '../../../Activity/List/ActivityList';
 import ErrorPage from '../../../Utils/Errors/ErrorPage';
 import { Center, Stack, Title } from '@mantine/core';
@@ -36,7 +36,7 @@ const ActivityTab = ({ id }: Props) => {
                         currentPage={currentPage}
                         limit={limit}
                     />
-                    <MyPagination
+                    <AppPagination
                         total={data.activityLog.byUserID.pageInfo.totalPages}
                         page={currentPage}
                         onChange={handlePageChange}

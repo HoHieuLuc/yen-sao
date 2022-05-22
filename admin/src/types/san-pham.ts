@@ -11,6 +11,7 @@ export interface SanPham {
     xuatXu: string;
     tags: Array<string>;
     anhSanPham: Array<string>;
+    isPublic: boolean;
     createdAt: number;
     updatedAt: number;
 }
@@ -24,6 +25,7 @@ export interface SanPhamFormVars {
     xuatXu: string;
     tags: Array<string>;
     anhSanPham: Array<string>;
+    isPublic: boolean;
 }
 
 export interface UpdateSanPhamInput {

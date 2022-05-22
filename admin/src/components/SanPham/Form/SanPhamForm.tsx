@@ -6,8 +6,8 @@ import { useState } from 'react';
 import ImageDropzone from '../ImageDropzone/ImageDropzone';
 import RichTextEditor from '@mantine/rte';
 import {
-    Accordion, Box, Button, Group, MultiSelect,
-    NumberInput, Text, Textarea, TextInput
+    Accordion, Button, Group, InputWrapper, MultiSelect,
+    NumberInput, Stack, Switch, Text, Textarea, TextInput
 } from '@mantine/core';
 
 import { showErrorNotification } from '../../../events';
@@ -20,6 +20,7 @@ interface Props {
 }
 
 const SanPhamForm = ({ loading, initialValues, handleSubmit }: Props) => {
+    console.log(initialValues);
     const sanPhamForm = useForm<SanPhamFormVars>({
         initialValues: {
             tenSanPham: initialValues?.tenSanPham || '',
@@ -30,6 +31,7 @@ const SanPhamForm = ({ loading, initialValues, handleSubmit }: Props) => {
             xuatXu: initialValues?.xuatXu || '',
             tags: initialValues?.tags || [],
             anhSanPham: initialValues?.anhSanPham || [],
+            isPublic: initialValues?.isPublic || false,
         },
         validate: {
             tenSanPham: (value) => value ? null : 'Tên sản phẩm không được để trống'
@@ -64,26 +66,22 @@ const SanPhamForm = ({ loading, initialValues, handleSubmit }: Props) => {
     };
 
     return (
-        <Box>
-            <form onSubmit={sanPhamForm.onSubmit(submit)}>
+        <form onSubmit={sanPhamForm.onSubmit(submit)}>
+            <Stack spacing='xs'>
                 <TextInput
-                    mb='xs'
                     label='Tên sản phẩm'
                     placeholder='Nhập tên sản phẩm'
                     {...sanPhamForm.getInputProps('tenSanPham')}
                     required
                 />
-
                 {donGiaSwitch
                     ? <Textarea
-                        mb='xs'
                         label='Đơn giá tùy chọn (bỏ trống nếu có giá sỉ/lẻ)'
                         placeholder='Nhập đơn giá tùy chọn'
                         {...sanPhamForm.getInputProps('donGiaTuyChon')}
                     />
                     : <Group position='center' grow spacing='xs'>
                         <NumberInput
-                            mb='xs'
                             label='Đơn giá sỉ/100gram'
                             placeholder='Nhập đơn giá sỉ'
                             {...sanPhamForm.getInputProps('donGiaSi')}
@@ -102,7 +100,6 @@ const SanPhamForm = ({ loading, initialValues, handleSubmit }: Props) => {
                             hideControls
                         />
                         <NumberInput
-                            mb='xs'
                             label='Đơn giá lẻ/100gram'
                             placeholder='Nhập đơn giá lẻ'
                             {...sanPhamForm.getInputProps('donGiaLe')}
@@ -126,21 +123,20 @@ const SanPhamForm = ({ loading, initialValues, handleSubmit }: Props) => {
                     variant='link'
                     onClick={() => setDonGiaSwitch(!donGiaSwitch)}
                     style={{ cursor: 'pointer' }}
-                    mb='xs'
                 >
                     {donGiaSwitch ? 'Hoặc nhập đơn giá sỉ/lẻ' : 'Hoặc nhập đơn giá tùy chọn'}
                 </Text>
-                <RichTextEditor
-                    mb='xs'
-                    placeholder='Nhập mô tả'
-                    {...sanPhamForm.getInputProps('moTa')}
-                    onImageUpload={singleUpload}
-                    className={classes.rte}
-                    stickyOffset={50}
-                    sticky
-                />
+                <InputWrapper label='Mô tả'>
+                    <RichTextEditor
+                        placeholder='Nhập mô tả'
+                        {...sanPhamForm.getInputProps('moTa')}
+                        onImageUpload={singleUpload}
+                        className={classes.rte}
+                        stickyOffset={50}
+                        sticky
+                    />
+                </InputWrapper>
                 <TextInput
-                    mb='xs'
                     label='Xuất xứ'
                     placeholder='Nhập xuất xứ'
                     {...sanPhamForm.getInputProps('xuatXu')}
@@ -160,7 +156,12 @@ const SanPhamForm = ({ loading, initialValues, handleSubmit }: Props) => {
                     }
                     {...sanPhamForm.getInputProps('tags')}
                 />
-                <Accordion mt={'xs'}>
+                <Switch
+                    label='Công khai sản phẩm (Chỉ sản phẩm công khai mới hiện trên trang quảng bá)'
+                    {...sanPhamForm.getInputProps('isPublic')}
+                    checked={sanPhamForm.values.isPublic}
+                />
+                <Accordion>
                     <Accordion.Item label='Đăng ảnh'>
                         <ImageDropzone
                             images={sanPhamForm.values.anhSanPham}
@@ -169,7 +170,7 @@ const SanPhamForm = ({ loading, initialValues, handleSubmit }: Props) => {
                         />
                     </Accordion.Item>
                 </Accordion>
-                <Group position='right' mt='md'>
+                <Group position='right'>
                     <Button
                         type='submit'
                         loading={loading}
@@ -177,8 +178,8 @@ const SanPhamForm = ({ loading, initialValues, handleSubmit }: Props) => {
                         Xác nhận
                     </Button>
                 </Group>
-            </form>
-        </Box >
+            </Stack>
+        </form>
     );
 };
 

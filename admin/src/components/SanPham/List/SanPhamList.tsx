@@ -8,7 +8,7 @@ import {
 import { Center, ScrollArea, Table, Text, TextInput, UnstyledButton } from '@mantine/core';
 import { SortIcon, LinkIcon, SearchIcon } from '../../Utils/Icons';
 import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
-import MyPagination from '../../Utils/Pagination/MyPagination';
+import AppPagination from '../../Utils/Pagination/AppPagination';
 import ErrorPage from '../../Utils/Errors/ErrorPage';
 
 import { authHooks, sanPhamHooks } from '../../../graphql/queries';
@@ -50,6 +50,7 @@ const SanPhamList = ({ title }: Props) => {
                 </Text>
             </td>
             <td>{sanPham.soLuong / 1000}</td>
+            <td>{sanPham.isPublic ? 'Công khai' : 'Không công khai'}</td>
             <td>
                 <Center>
                     {me.role === 'admin' && <LinkIcon
@@ -95,6 +96,9 @@ const SanPhamList = ({ title }: Props) => {
                                 </UnstyledButton>
                             </th>
                             <th>
+                                Tình trạng
+                            </th>
+                            <th>
                                 <Center>
                                     Chức năng
                                 </Center>
@@ -107,7 +111,7 @@ const SanPhamList = ({ title }: Props) => {
                 </Table>
             </ScrollArea>
             {data && (
-                <MyPagination
+                <AppPagination
                     total={data.sanPham.all.pageInfo.totalPages}
                     siblings={1}
                     page={currentPage}
