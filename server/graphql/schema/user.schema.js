@@ -25,7 +25,9 @@ const typeDefs = gql`
             limit: Int!,
             search: String
         ): UsersByPage!
-        byID(id: ID!): User
+        byID(
+            id: ObjectID!
+        ): User
     }
 
     extend type Query {
@@ -53,7 +55,7 @@ const typeDefs = gql`
             newPassword: String!
         ): User
         banByID(
-            id: ID!,
+            id: ObjectID!,
             isBanned: Boolean!
         ): User
         update(

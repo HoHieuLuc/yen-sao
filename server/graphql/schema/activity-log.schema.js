@@ -30,7 +30,7 @@ const typeDefs = gql`
             limit: Int!
         ): ActivityLogsByPage!
         byID(
-            id: ID!
+            id: ObjectID!
         ): ActivityLog
         my(
             page: Int!,
@@ -39,12 +39,12 @@ const typeDefs = gql`
         byUserID(
             page: Int!,
             limit: Int!,
-            userId: ID!
+            userId: ObjectID!
         ): ActivityLogsByPage!
         byDocumentID(
             page: Int!,
             limit: Int!,
-            documentId: ID!
+            documentId: ObjectID!
         ): ActivityLogsByPage!
     }
 

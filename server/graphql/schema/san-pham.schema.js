@@ -61,7 +61,9 @@ const typeDefs = gql`
             search: String,
             sort: SortSanPham
         ): SanPhamsByPage!
-        byID(id: ID!): SanPham
+        byID(
+            id: ObjectID!
+        ): SanPham
     }
 
     extend type Query {
@@ -69,13 +71,15 @@ const typeDefs = gql`
     }
 
     type SanPhamMutations {
-        create(payload: CreateSanPhamInput!): SanPham
+        create(
+            payload: CreateSanPhamInput!
+        ): SanPham
         update(
-            id: ID!,
+            id: ObjectID!,
             payload: UpdateSanPhamInput!
         ): SanPham
         delete(
-            id: ID!
+            id: ObjectID!
         ): SanPham
     }
 
