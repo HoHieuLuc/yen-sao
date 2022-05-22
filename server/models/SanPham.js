@@ -50,6 +50,10 @@ const sanPham = mongoose.Schema(
             type: String,
             trim: true,
             default: ''
+        },
+        isPublic: {
+            type: Boolean,
+            default: false
         }
     },
     {
