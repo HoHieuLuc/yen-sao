@@ -1,24 +1,34 @@
 const { UserInputError } = require('apollo-server');
 const SanPham = require('../models/SanPham');
 
-const getAll = async (page, limit, search, sort) => {
+const getAll = async (page, limit, search, sort, isGuest) => {
     const options = {
         page,
         limit,
         sort: sort || '-createdAt',
     };
-    const sanPhams = await SanPham.paginate({
+    const findOptions = {
         tenSanPham: {
             $regex: search,
             $options: 'i'
         },
-    }, options);
+    };
+    if (isGuest) {
+        findOptions.isPublic = true;
+    }
+    const sanPhams = await SanPham.paginate(findOptions, options);
     return sanPhams;
 };
 
-const getById = async (id) => {
+const getById = async (id, isGuest) => {
     try {
-        const sanPham = await SanPham.findById(id);
+        const findOptions = isGuest ? { isPublic: true } : {};
+        const sanPham = await SanPham.findOne(
+            {
+                _id: id,
+                ...findOptions
+            }
+        );
         return sanPham;
     } catch (error) {
         throw new UserInputError(error.message);

@@ -96,9 +96,10 @@ const resolvers = {
         sanPham: () => ({})
     },
     SanPhamQueries: {
-        all: async (_, { page, limit, search, sort }) =>
-            sanPhamController.getAll(page, limit, search, sort),
-        byID: async (_, { id }) => sanPhamController.getById(id)
+        all: async (_, { page, limit, search, sort }, { currentUser }) =>
+            sanPhamController.getAll(page, limit, search, sort, currentUser),
+        byID: async (_, { id }, { currentUser }) =>
+            sanPhamController.getById(id, currentUser)
     },
     Mutation: {
         sanPham: chainMiddlewares(adminRequired,

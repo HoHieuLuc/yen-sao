@@ -5,12 +5,18 @@ const ChiTietPhieuXuat = require('../models/ChiTietPhieuXuat');
 const { escapeRegExp } = require('../utils/functions');
 const sanPhamLogger = require('../loggers/san-pham.logger');
 
-const getAll = async (page = 1, limit = 10, search = '', sort = '-createdAt') => {
-    return sanPhamService.getAll(page, limit, escapeRegExp(search), sort);
+const getAll = async (page, limit, search = '', sort = '-createdAt', currentUser) => {
+    return sanPhamService.getAll(
+        page,
+        limit,
+        escapeRegExp(search),
+        sort,
+        !currentUser
+    );
 };
 
-const getById = async (id) => {
-    return sanPhamService.getById(id);
+const getById = async (id, currentUser) => {
+    return sanPhamService.getById(id, !currentUser);
 };
 
 const create = async (sanPhamData, currentUser) => {
@@ -30,7 +36,6 @@ const update = async (id, sanPhamData, currentUser) => {
 
 const remove = async (id, currentUser) => {
     try {
-        // kiểm tra xem sản phẩm có phiếu nhập hay phiếu xuất không
         const phieuNhaps = await ChiTietPhieuNhap.exists({ maSanPham: id });
         const phieuXuats = await ChiTietPhieuXuat.exists({ maSanPham: id });
         if (phieuNhaps || phieuXuats) {
