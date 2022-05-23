@@ -1,5 +1,5 @@
 import { convertToShortDate } from '../../utils/common';
-import { Indicator } from '@mantine/core';
+import { Grid, Indicator } from '@mantine/core';
 import { Calendar } from '@mantine/dates';
 import { ChiTietPhieuNhap, ChiTietPhieuXuat } from '../../types';
 
@@ -13,8 +13,12 @@ interface XuatHang extends Base {
     data: Array<ChiTietPhieuXuat>;
 }
 
+interface Placeholder extends Partial<Base> {
+    type: 'Placeholder';
+}
+
 interface Base {
-    type: 'NhapHang' | 'XuatHang';
+    type: 'NhapHang' | 'XuatHang' | 'Placeholder';
     data: Array<unknown>;
     selectedDay: Date | null;
     setSelectedDay: (day: Date | null) => void;
@@ -22,9 +26,19 @@ interface Base {
     onMonthChange: (month: Date) => void;
 }
 
-type Props = NhapHang | XuatHang;
+type Props = NhapHang | XuatHang | Placeholder;
 
 const DashboardCalendar = ({ selectedDay, setSelectedDay, month, onMonthChange, data, type }: Props) => {
+    if (type === 'Placeholder') {
+        return (
+            <Grid gutter='xs'>
+                <Grid.Col sm={4}>
+                    <Calendar fullWidth hideOutsideDates initialMonth={month} />
+                </Grid.Col>
+                <Grid.Col sm={8}></Grid.Col>
+            </Grid>
+        );
+    }
     return (
         <Calendar
             value={selectedDay}
@@ -32,6 +46,7 @@ const DashboardCalendar = ({ selectedDay, setSelectedDay, month, onMonthChange, 
             month={month}
             onMonthChange={onMonthChange}
             hideOutsideDates
+            fullWidth
             renderDay={(date) => {
                 const day = date.getDate();
 
@@ -49,7 +64,7 @@ const DashboardCalendar = ({ selectedDay, setSelectedDay, month, onMonthChange, 
 
                 if (dataToday.length > 0) {
                     return <Indicator
-                        size={12}
+                        size={15}
                         offset={8}
                         label={dataToday.length > 9 ? '9+' : dataToday.length}
                         color='teal'
