@@ -1,9 +1,9 @@
 import { useDateRangeSearchParams, usePagination, useSortParams } from '../../../../hooks';
 
+import { Anchor, Box, ScrollArea, Table, UnstyledButton } from '@mantine/core';
 import LoadingWrapper from '../../../Utils/Wrappers/LoadingWrapper';
 import DateRangeSearch from '../../../Utils/Search/DateRangeSearch';
 import AppPagination from '../../../Utils/Pagination/AppPagination';
-import { Anchor, Box, Table, UnstyledButton } from '@mantine/core';
 import ErrorPage from '../../../Utils/Errors/ErrorPage';
 import { SortIcon } from '../../../Utils/Icons';
 import { Link } from 'react-router-dom';
@@ -62,50 +62,52 @@ const ChiTietPhieuNhapList = ({ id }: Props) => {
                 handleSearch={handleSearch}
             />
             {data && <Box>
-                <Table striped highlightOnHover mb='sm'>
-                    <thead>
-                        <tr style={{ whiteSpace: 'nowrap' }}>
-                            <th>STT</th>
-                            <th>
-                                <UnstyledButton
-                                    onClick={() => toggleSortChiTietPhieuNhap('ngayNhap')}
-                                >
-                                    Ngày nhập <SortIcon
-                                        currentSort={sortChiTietPhieuNhap.currentSortValue}
-                                        ascValue='NGAY_NHAP_ASC'
-                                        descValue='NGAY_NHAP_DESC'
-                                    />
-                                </UnstyledButton>
-                            </th>
-                            <th>
-                                <UnstyledButton
-                                    onClick={() => toggleSortChiTietPhieuNhap('soLuong')}
-                                >
-                                    Số lượng (kg) <SortIcon
-                                        currentSort={sortChiTietPhieuNhap.currentSortValue}
-                                        ascValue='SO_LUONG_ASC'
-                                        descValue='SO_LUONG_DESC'
-                                    />
-                                </UnstyledButton>
-                            </th>
-                            <th>
-                                <UnstyledButton
-                                    onClick={() => toggleSortChiTietPhieuNhap('donGia')}
-                                >
-                                    Đơn giá <SortIcon
-                                        currentSort={sortChiTietPhieuNhap.currentSortValue}
-                                        ascValue='DON_GIA_ASC'
-                                        descValue='DON_GIA_DESC'
-                                    />
-                                </UnstyledButton>
-                            </th>
-                            <th>Thành tiền</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {chiTietElements}
-                    </tbody>
-                </Table>
+                <ScrollArea style={{ whiteSpace: 'break-spaces' }}>
+                    <Table striped highlightOnHover mb='sm'>
+                        <thead>
+                            <tr style={{ whiteSpace: 'nowrap' }}>
+                                <th>STT</th>
+                                <th>
+                                    <UnstyledButton
+                                        onClick={() => toggleSortChiTietPhieuNhap('ngayNhap')}
+                                    >
+                                        Ngày nhập <SortIcon
+                                            currentSort={sortChiTietPhieuNhap.currentSortValue}
+                                            ascValue='NGAY_NHAP_ASC'
+                                            descValue='NGAY_NHAP_DESC'
+                                        />
+                                    </UnstyledButton>
+                                </th>
+                                <th>
+                                    <UnstyledButton
+                                        onClick={() => toggleSortChiTietPhieuNhap('soLuong')}
+                                    >
+                                        Số lượng nhập (kg) <SortIcon
+                                            currentSort={sortChiTietPhieuNhap.currentSortValue}
+                                            ascValue='SO_LUONG_ASC'
+                                            descValue='SO_LUONG_DESC'
+                                        />
+                                    </UnstyledButton>
+                                </th>
+                                <th>
+                                    <UnstyledButton
+                                        onClick={() => toggleSortChiTietPhieuNhap('donGia')}
+                                    >
+                                        Đơn giá nhập <SortIcon
+                                            currentSort={sortChiTietPhieuNhap.currentSortValue}
+                                            ascValue='DON_GIA_ASC'
+                                            descValue='DON_GIA_DESC'
+                                        />
+                                    </UnstyledButton>
+                                </th>
+                                <th>Thành tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {chiTietElements}
+                        </tbody>
+                    </Table>
+                </ScrollArea>
                 <AppPagination
                     total={data.chiTietPhieuNhap.bySanPhamID.pageInfo.totalPages}
                     page={currentPage}
