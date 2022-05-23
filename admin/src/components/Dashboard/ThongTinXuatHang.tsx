@@ -4,7 +4,6 @@ import { Anchor, Box, Grid, Paper, Stack, Text } from '@mantine/core';
 import LoadingWrapper from '../Utils/Wrappers/LoadingWrapper';
 import DashboardCalendar from './DashboardCalendar';
 import ErrorPage from '../Utils/Errors/ErrorPage';
-import { Calendar } from '@mantine/dates';
 import { Link } from 'react-router-dom';
 
 import { convertToShortDate, convertToVND } from '../../utils/common';
@@ -34,9 +33,14 @@ const ThongTinXuatHang = () => {
 
     return (
         <LoadingWrapper loading={loading}>
-            {loading && <Calendar hideOutsideDates initialMonth={month} />}
+            {loading && (
+                <DashboardCalendar
+                    type='Placeholder'
+                    month={month}
+                />
+            )}
             {!loading && data && <Grid gutter='xs'>
-                <Grid.Col md={4}>
+                <Grid.Col sm={4}>
                     <DashboardCalendar
                         selectedDay={selectedDay}
                         setSelectedDay={setSelectedDay}
@@ -46,7 +50,7 @@ const ThongTinXuatHang = () => {
                         type='XuatHang'
                     />
                 </Grid.Col>
-                <Grid.Col md={8}>
+                <Grid.Col sm={8}>
                     <Stack align='center' spacing={0}>
                         <Text size='lg' weight={700}>
                             Thông tin xuất hàng tháng {month.getMonth() + 1}/{month.getFullYear()}
@@ -58,7 +62,7 @@ const ThongTinXuatHang = () => {
                             )}
                         </Text>
                     </Stack>
-                    <Paper shadow="xl" p="sm" withBorder>
+                    <Paper shadow='sm' p='sm' withBorder>
                         {chiTietPhieuXuatsOnSelectedDay && chiTietPhieuXuatsOnSelectedDay.length > 0
                             ? chiTietPhieuXuatsOnSelectedDay.map(item => {
                                 return <Box key={item.id}>

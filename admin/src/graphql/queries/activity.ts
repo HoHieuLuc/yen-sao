@@ -7,7 +7,9 @@ import {
     ActivitiesByUserId,
     ActivityById,
     ActivitiesByDocumentId,
-    ActivitiesByDocumentIdVars
+    ActivitiesByDocumentIdVars,
+    MyActivitiesVars,
+    MyActivities
 } from '../../types';
 
 const ALL = gql`
@@ -22,6 +24,35 @@ const ALL = gql`
                     }
                     action
                     onCollection
+                    description {
+                        name
+                    }
+                    createdAt
+                }
+                pageInfo {
+                    page
+                    totalPages
+                    limit
+                    totalDocs
+                }
+            }
+        }
+    }
+`;
+
+const MY = gql`
+    query MyActivity($page: Int!, $limit: Int!) {
+        activityLog {
+            my(page: $page, limit: $limit) {
+                docs {
+                    id
+                    user {
+                        id
+                        fullname  
+                    }
+                    action
+                    onCollection
+                    onDocumentId
                     description {
                         name
                     }
@@ -133,6 +164,15 @@ const useAllActivities = (variables: AllActivitiesVars) => {
     });
 };
 
+const useMyActivities = (variables: MyActivitiesVars) => {
+    return useQuery<
+        MyActivities, MyActivitiesVars
+    >(MY, {
+        variables,
+        fetchPolicy: 'cache-and-network'
+    });
+};
+
 const useActivityById = (id: string) => {
     return useQuery<
         ActivityById, { id: string }
@@ -183,5 +223,6 @@ export const activityHooks = {
     useActivitiesByUserId,
     useDeleteActivities,
     useAllActivities,
+    useMyActivities,
     useActivityById,
 };

@@ -2,7 +2,7 @@ import { useForm } from '@mantine/form';
 
 import { Button, Center, Container, Group, PasswordInput, Stack, Title } from '@mantine/core';
 
-import { authHooks } from '../../graphql/queries';
+import { authHooks } from '../../../graphql/queries';
 
 const ChangePassword = () => {
     const [changePassword, { loading }] = authHooks.useChangePassword();

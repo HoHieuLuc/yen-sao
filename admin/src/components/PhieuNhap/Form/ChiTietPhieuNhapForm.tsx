@@ -141,7 +141,7 @@ const ChiTietPhieuNhapForm = ({
                         <Button
                             type='button'
                             onClick={() => setLock(prev => !prev)}
-                            color='green'
+                            color= {lock ? 'green' : 'red'}
                         >
                             {lock ? 'Sửa' : 'Hủy'}
                         </Button>

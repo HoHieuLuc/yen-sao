@@ -1,6 +1,6 @@
 import { Center, Container, Grid, Title } from '@mantine/core';
 
-import { User } from '../../types';
+import { User } from '../../../types';
 
 interface Props {
     user: User
