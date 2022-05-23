@@ -1,10 +1,9 @@
-import useGlobalStyles from '../../../utils/global.styles';
-import { useUpload } from '../../../hooks';
+import useGlobalStyles from '../../../../utils/global.styles';
+import { useUpload } from '../../../../hooks';
 import { useForm } from '@mantine/form';
 
 import { Button, Group } from '@mantine/core';
 import RichTextEditor from '@mantine/rte';
-import { Link } from 'react-router-dom';
 
 interface Props {
     inititalValue: string;
@@ -12,9 +11,10 @@ interface Props {
     handleSubmit: (
         value: string
     ) => void;
+    setEditMode: (editMode: boolean) => void;
 }
 
-const AboutForm = ({ inititalValue, loading, handleSubmit }: Props) => {
+const AboutForm = ({ inititalValue, loading, handleSubmit, setEditMode }: Props) => {
     const { classes } = useGlobalStyles();
     const { singleUpload } = useUpload();
 
@@ -41,10 +41,9 @@ const AboutForm = ({ inititalValue, loading, handleSubmit }: Props) => {
             <Group position='right' mt='md'>
                 <Button
                     color='red'
-                    component={Link}
-                    to='/quan-ly/about'
+                    onClick={() => setEditMode(false)}
                 >
-                    Quay lại
+                    Hủy
                 </Button>
                 <Button
                     type='submit'
