@@ -1,5 +1,5 @@
 import LoadingWrapper from '../../../Utils/Wrappers/LoadingWrapper';
-import AccountDetails from '../../../Account/AccountDetails';
+import AccountDetails from '../../../Account/Tab/AccountDetails';
 
 import { UserById } from '../../../../types';
 
