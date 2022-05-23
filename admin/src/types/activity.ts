@@ -30,6 +30,17 @@ export interface AllActivities {
 
 export type AllActivitiesVars = PaginateVars;
 
+export interface MyActivities {
+    activityLog: {
+        my: {
+            docs: Array<Activity>;
+            pageInfo: PageInfo;
+        }
+    }
+}
+
+export type MyActivitiesVars = PaginateVars;
+
 export interface ActivitiesByUserId {
     activityLog: {
         byUserID: {
