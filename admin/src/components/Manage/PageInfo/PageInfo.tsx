@@ -1,9 +1,10 @@
-import { Divider, Stack, Tabs } from '@mantine/core';
 import { useDocumentTitle } from '@mantine/hooks';
 import { useTabs } from '../../../hooks';
-import About from './About/About';
-import Address from './Address/Address';
+
+import { Divider, Stack, Tabs } from '@mantine/core';
 import PhoneNumber from './PhoneNumber/PhoneNumber';
+import Address from './Address/Address';
+import About from './About/About';
 
 interface Props {
     title: string;

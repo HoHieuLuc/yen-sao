@@ -1,8 +1,9 @@
+import LoadingWrapper from '../../../Utils/Wrappers/LoadingWrapper';
+import ErrorPage from '../../../Utils/Errors/ErrorPage';
+import EditPhoneNumber from './EditPhoneNumber';
+
 import { pageHooks } from '../../../../graphql/queries';
 import { PhoneNumberData } from '../../../../types';
-import ErrorPage from '../../../Utils/Errors/ErrorPage';
-import LoadingWrapper from '../../../Utils/Wrappers/LoadingWrapper';
-import EditPhoneNumber from './EditPhoneNumber';
 
 const PhoneNumber = () => {
     const { data, loading, error } = pageHooks.usePageByName<PhoneNumberData>('phone');
