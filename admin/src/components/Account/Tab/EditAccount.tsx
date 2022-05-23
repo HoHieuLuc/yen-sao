@@ -1,7 +1,9 @@
-import { Button, Center, Container, Group, Stack, TextInput, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { userHooks } from '../../graphql/queries';
-import { User } from '../../types';
+
+import { Button, Center, Container, Group, Stack, TextInput, Title } from '@mantine/core';
+
+import { userHooks } from '../../../graphql/queries';
+import { User } from '../../../types';
 
 interface Props {
     user: User
