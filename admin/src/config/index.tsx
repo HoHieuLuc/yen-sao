@@ -1,9 +1,7 @@
 import Dashboard from '../components/Dashboard/Dashboard';
 
+import PageInfo from '../components/Manage/PageInfo/PageInfo';
 import Account from '../components/Account/Account';
-
-import EditAbout from '../components/Manage/About/EditAbout';
-import About from '../components/Manage/About/About';
 
 import PhieuNhapDetailsPage from '../components/PhieuNhap/Details/PhieuNhapDetailsPage';
 import EditPhieuNhapPage from '../components/PhieuNhap/Edit/EditPhieuNhapPage';
@@ -141,15 +139,9 @@ const appConfig: AppConfig = {
             subLinks: [
                 {
                     type: 'nav',
-                    title: 'Bài viết giới thiệu',
-                    to: '/quan-ly/about',
-                    element: <About title='Bài viết giới thiệu' />
-                },
-                {
-                    type: 'hidden',
-                    title: 'Chỉnh sửa bài viết giới thiệu',
-                    to: '/quan-ly/about/sua',
-                    element: <EditAbout title='Bài viết giới thiệu | Chỉnh sửa' />
+                    title: 'Thông tin website',
+                    to: '/quan-ly/thong-tin',
+                    element: <PageInfo title='Thông tin website' />
                 },
                 {
                     type: 'nav',

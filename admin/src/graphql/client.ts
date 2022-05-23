@@ -45,6 +45,9 @@ const cache = new InMemoryCache({
                 },
                 activityLog: {
                     merge: true
+                },
+                page: {
+                    merge: true
                 }
             }
         },
