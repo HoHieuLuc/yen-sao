@@ -91,7 +91,6 @@ const ImageDropzone = ({ images, onChange, onRemoveImage }: Props) => {
                                 position: 'absolute',
                                 top: 0,
                                 right: 0,
-                                backgroundColor: 'rgba(0, 0, 0, 0.5)',
                             }}
                             onClick={() => onRemoveImage(imageUrl)}
                         >
