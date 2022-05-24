@@ -22,9 +22,6 @@ const cache = new InMemoryCache({
     typePolicies: {
         Query: {
             fields: {
-                loaiSanPham: {
-                    merge: true,
-                },
                 sanPham: {
                     merge: true,
                 },
