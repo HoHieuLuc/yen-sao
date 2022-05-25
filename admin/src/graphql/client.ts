@@ -1,14 +1,14 @@
-import { ApolloClient, InMemoryCache } from '@apollo/client';
+import { ApolloClient, ApolloLink, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { createUploadLink } from 'apollo-upload-client';
 import { OutgoingHttpHeaders } from 'http2';
 import appConfig from '../config';
 
-const httpLink = createUploadLink({
+const httpLink: ApolloLink = createUploadLink({
     uri: `${appConfig.apiURL}/gql`
 });
 
-const authLink = setContext((_, { headers }: { headers: OutgoingHttpHeaders }) => {
+const authLink: ApolloLink = setContext((_, { headers }: { headers: OutgoingHttpHeaders }) => {
     const token = localStorage.getItem('token');
     return {
         headers: {
