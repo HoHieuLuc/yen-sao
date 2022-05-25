@@ -28,7 +28,7 @@ import { AppConfig } from './types';
 
 const appConfig: AppConfig = {
     title: 'Yến sào Ms. Tưởng',
-    apiURL: process.env.NODE_ENV === 'development' ? 'http://localhost:4000' : '/',
+    apiURL: process.env.NODE_ENV === 'development' ? 'http://localhost:4000' : '',
     links: [
         {
             type: 'nav',
