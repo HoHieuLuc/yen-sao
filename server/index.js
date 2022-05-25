@@ -5,8 +5,9 @@ const express = require('express');
 const http = require('http');
 const cors = require('cors');
 const path = require('path');
+const helmet = require('helmet');
 
-const { PORT } = require('./utils/config');
+const { PORT, NODE_ENV } = require('./utils/config');
 const connectDB = require('./db/connect');
 connectDB().then(() => {
     console.log('Connected to MongoDB');
@@ -29,13 +30,23 @@ const start = async () => {
         },
         formatError: (error) => {
             console.log(error);
+            if(error.message.includes('Operation')){
+                error.message = 'Internal server error';
+            }
             return error;
         },
-        plugins: [ApolloServerPluginDrainHttpServer({ httpServer })]
+        plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+        introspection: NODE_ENV === 'development',
+        csrfPrevention: true,
     });
 
     await server.start();
+    const isDevelopment = NODE_ENV === 'development';
     app.use(cors());
+    app.use(helmet({
+        crossOriginEmbedderPolicy: !isDevelopment,
+        contentSecurityPolicy: !isDevelopment,
+    }));
     app.use(graphqlUploadExpress());
     app.use('/public', express.static(path.join(__dirname, 'public')));
     app.use(

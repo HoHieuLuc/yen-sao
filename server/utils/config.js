@@ -8,7 +8,7 @@ const NODE_ENV = process.env.NODE_ENV || 'development';
 let MONGO_URI;
 if (NODE_ENV === 'development') {
     MONGO_URI = process.env.MONGO_URI_DEV;
-} else if (MONGO_URI === 'production') {
+} else if (NODE_ENV === 'production') {
     MONGO_URI = process.env.MONGO_URI_PROD;
 } else {
     MONGO_URI = process.env.MONGO_URI_TEST;
@@ -16,7 +16,8 @@ if (NODE_ENV === 'development') {
 
 module.exports = {
     PORT,
+    NODE_ENV,
     MONGO_URI,
     JWT_SECRET,
-    JWT_LIFETIME
+    JWT_LIFETIME,
 };
