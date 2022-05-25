@@ -1,6 +1,6 @@
 import AboutForm from './AboutForm';
 
-import { AboutData, AboutPageVars } from '../../../../types';
+import { AboutPageVars, AboutData } from '../../../../types';
 import { pageHooks } from '../../../../graphql/queries';
 
 interface Props {
@@ -26,7 +26,7 @@ const EditAbout = ({ setEditMode, data }: Props) => {
 
     return (
         <AboutForm
-            inititalValue={data.page.byName ? data.page.byName.content.value : ''}
+            inititalValue={data.about ? data.about.content.value : ''}
             loading={loading}
             handleSubmit={handleSubmitAbout}
             setEditMode={setEditMode}

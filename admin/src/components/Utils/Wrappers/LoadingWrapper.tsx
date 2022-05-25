@@ -2,10 +2,10 @@ import { LoadingOverlay } from '@mantine/core';
 
 interface Props {
     children: JSX.Element | Array<JSX.Element> | React.ReactNode;
-    loading: boolean;
+    loading?: boolean;
 }
 
-const LoadingWrapper = ({ children, loading }: Props) => {
+const LoadingWrapper = ({ children, loading = false }: Props) => {
     return (
         <div style={{
             position: 'relative',

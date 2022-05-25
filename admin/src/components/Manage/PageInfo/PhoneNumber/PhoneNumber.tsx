@@ -1,25 +1,20 @@
-import LoadingWrapper from '../../../Utils/Wrappers/LoadingWrapper';
-import ErrorPage from '../../../Utils/Errors/ErrorPage';
 import EditPhoneNumber from './EditPhoneNumber';
 
-import { pageHooks } from '../../../../graphql/queries';
 import { PhoneNumberData } from '../../../../types';
 
-const PhoneNumber = () => {
-    const { data, loading, error } = pageHooks.usePageByName<PhoneNumberData>('phone');
+interface Props {
+    data: PhoneNumberData;
+}
 
-    if (error) {
-        return <ErrorPage />;
-    }
-
+const PhoneNumber = ({ data }: Props) => {
     return (
-        <LoadingWrapper loading={loading}>
+        <>
             {data && (
-                <EditPhoneNumber 
+                <EditPhoneNumber
                     data={data}
                 />
             )}
-        </LoadingWrapper>
+        </>
     );
 };
 

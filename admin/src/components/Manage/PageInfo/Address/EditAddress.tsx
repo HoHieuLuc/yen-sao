@@ -11,11 +11,11 @@ interface Props {
 
 const EditAddress = ({ data }: Props) => {
     const [updateAddress, { loading }] = pageHooks.useCreateOrUpdatePage<
-        AddressData, AddressVars
+        never, AddressVars
     >();
     const addressForm = useForm({
         initialValues: {
-            value: data.page.byName?.content.value || []
+            value: data.address?.content.value || []
         },
         validate: {
             value: (value) => value.length > 0 ? null : 'Vui lòng nhập địa chỉ'
@@ -40,7 +40,7 @@ const EditAddress = ({ data }: Props) => {
                     label='Địa chỉ'
                     placeholder='Nhập địa chỉ'
                     {...addressForm.getInputProps('value')}
-                    data={data.page.byName?.content.value || []}
+                    data={data.address?.content.value || []}
                     searchable
                     creatable
                     getCreateLabel={(query) => `+ Thêm ${query}`}
