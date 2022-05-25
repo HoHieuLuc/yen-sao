@@ -14,6 +14,7 @@ const typeDefs = gql`
         byName(
             name: String!
         ): Page
+        all: Object
     }
 
     type PageMutations {
@@ -39,6 +40,8 @@ const resolvers = {
     PageQueries: {
         byName: async (_, { name }) =>
             pageController.getByName(name),
+        all: async () => 
+            pageController.getAll()
     },
     Mutation: {
         page: chainMiddlewares(adminRequired,

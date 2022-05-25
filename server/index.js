@@ -38,6 +38,10 @@ const start = async () => {
     app.use(cors());
     app.use(graphqlUploadExpress());
     app.use('/public', express.static(path.join(__dirname, 'public')));
+    app.use(
+        '/',
+        express.static(path.join(__dirname, 'public', 'build'))
+    );
 
     server.applyMiddleware({
         app,

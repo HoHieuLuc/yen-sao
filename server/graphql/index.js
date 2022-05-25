@@ -15,7 +15,8 @@ const {
     resolvers: objectIDResolvers
 } = require('./scalar/ObjectID.scalar');
 const {
-    typeDefs: Token
+    typeDefs: Token,
+    resolvers: tokenResolvers
 } = require('./schema/token.schema');
 const {
     typeDefs: User,
@@ -90,6 +91,7 @@ const schema = makeExecutableSchema({
         objectResolvers,
         objectIDResolvers,
         userResolvers,
+        tokenResolvers,
         fileResolvers,
         sanPhamResolvers,
         phieuNhapResolvers,
