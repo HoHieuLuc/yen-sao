@@ -8,9 +8,10 @@
         "lint": "eslint server --ext .js && cd admin && eslint src --ext .tsx,.ts",
         "server": "nodemon server/index.js",
         "test:server": "jest server --verbose --runInBand --forceExit",
-        "build:ui": "rm -rf server/public/build && cd admin && npm install && npm run build && cp -r build ../server/public",
+        "build-heroku:ui": "rm -rf server/public/build && cd admin && npm install && npm run build && cp -r build ../server/public",
         "start": "node server/index.js",
-        "heroku-postbuild": "npm run build:ui && cd server && npm install"
+        "heroku-postbuild": "npm run build-heroku:ui && cd server && npm install",
+        "build:ui": "rm -rf server/public/build && cd admin && npm run build && cp -r build ../server/public"
     },
     "repository": {
         "type": "git",
