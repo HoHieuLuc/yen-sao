@@ -30,6 +30,9 @@ const start = async () => {
         },
         formatError: (error) => {
             console.log(error);
+            if(error.message.includes('Operation')){
+                error.message = 'Internal server error';
+            }
             return error;
         },
         plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
