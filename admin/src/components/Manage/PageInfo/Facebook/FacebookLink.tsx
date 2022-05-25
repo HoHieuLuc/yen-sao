@@ -1,9 +1,9 @@
-import EditAddress from './EditAddress';
+import EditFacebookLink from './EditFacebookLink';
 
-import { AddressData } from '../../../../types';
+import { FacebookLink } from '../../../../types';
 
 interface Props {
-    data: AddressData;
+    data: FacebookLink;
 }
 
 const Address = ({ data }: Props) => {
@@ -11,7 +11,7 @@ const Address = ({ data }: Props) => {
     return (
         <>
             {data && (
-                <EditAddress
+                <EditFacebookLink
                     data={data}
                 />
             )}

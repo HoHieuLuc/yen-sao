@@ -27,14 +27,14 @@ import UserList from '../components/Manage/User/List/UserList';
 import { AppConfig } from './types';
 
 const appConfig: AppConfig = {
-    title: 'Yến sào MS.Tưởng',
+    title: 'Yến sào Ms. Tưởng',
     apiURL: 'http://localhost:4000',
     links: [
         {
             type: 'nav',
             title: 'Trang chủ',
             to: '/',
-            element: <Dashboard title='Yến sào MS.Tuởng' />
+            element: <Dashboard title='Yến sào Ms. Tuởng' />
         },
         {
             type: 'menu',

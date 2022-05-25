@@ -11,11 +11,11 @@ interface Props {
 
 const EditPhoneNumber = ({ data }: Props) => {
     const [updatePhoneNumber, { loading }] = pageHooks.useCreateOrUpdatePage<
-        PhoneNumberData, PhoneNumberVars
+        never, PhoneNumberVars
     >();
     const phoneNumberForm = useForm({
         initialValues: {
-            value: data.page.byName?.content.value || []
+            value: data.phone?.content.value || []
         },
         validate: {
             value: (value) => value.length > 0 ? null : 'Vui lòng nhập số điện thoại'
@@ -40,7 +40,7 @@ const EditPhoneNumber = ({ data }: Props) => {
                     label='Số điện thoại'
                     placeholder='Nhập số điện thoại'
                     {...phoneNumberForm.getInputProps('value')}
-                    data={data.page.byName?.content.value || []}
+                    data={data.phone?.content.value || []}
                     searchable
                     creatable
                     getCreateLabel={(query) => `+ Thêm ${query}`}
