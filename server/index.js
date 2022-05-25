@@ -30,7 +30,7 @@ const start = async () => {
         },
         formatError: (error) => {
             console.log(error);
-            if(error.message.includes('Operation')){
+            if (error.message.includes('Operation')) {
                 error.message = 'Internal server error';
             }
             return error;
@@ -53,6 +53,12 @@ const start = async () => {
         '/',
         express.static(path.join(__dirname, 'public', 'build'))
     );
+    app.get('*', (req, res) => {
+        res.sendFile(
+            'index.html',
+            { root: path.join(__dirname, 'public', 'build') }
+        );
+    });
 
     server.applyMiddleware({
         app,
