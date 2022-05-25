@@ -16,7 +16,8 @@ if (NODE_ENV === 'development') {
 
 module.exports = {
     PORT,
+    NODE_ENV,
     MONGO_URI,
     JWT_SECRET,
-    JWT_LIFETIME
+    JWT_LIFETIME,
 };
