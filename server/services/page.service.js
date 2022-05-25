@@ -1,6 +1,10 @@
 const { UserInputError } = require('apollo-server');
 const Page = require('../models/Page');
 
+const getAll = async () => {
+    return Page.find({});
+};
+
 const getByName = async (name) => {
     return Page.findOne({
         name
@@ -27,6 +31,7 @@ const createOrUpdate = async (name, content) => {
 };
 
 module.exports = {
+    getAll,
     getByName,
     createOrUpdate
 };
