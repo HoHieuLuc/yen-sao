@@ -33,9 +33,6 @@ jobs:
         
       - name: lint
         run: npm run lint
-
-      - name: build client
-        run: npm run build:ui
       
       - name: Deploy to Heroku
         uses: AkhileshNS/heroku-deploy@v3.12.12
