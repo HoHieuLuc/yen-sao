@@ -42,7 +42,7 @@ const AppHeader = ({ theme, opened, setOpened }: Props) => {
                         <h2>{appConfig.title}</h2>
                     </Text>
                 </MediaQuery>
-                <Text
+                {/* <Text
                     ml='auto'
                     color='white'
                     component='a'
@@ -51,7 +51,7 @@ const AppHeader = ({ theme, opened, setOpened }: Props) => {
                     target='_blank'
                 >
                     <h2>Studio (REMOVE IN PROD)</h2>
-                </Text>
+                </Text> */}
                 <SegmentedControl
                     ml='auto'
                     value={colorScheme}
