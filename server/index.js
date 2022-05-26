@@ -21,6 +21,7 @@ const { getCurrentUser } = require('./controllers/user.controller');
 const start = async () => {
     const app = express();
     const httpServer = http.createServer(app);
+    const isDevelopment = NODE_ENV === 'development';
 
     const server = new ApolloServer({
         schema,
@@ -36,29 +37,34 @@ const start = async () => {
             return error;
         },
         plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
-        introspection: NODE_ENV === 'development',
+        introspection: isDevelopment,
         csrfPrevention: true,
     });
 
     await server.start();
-    const isDevelopment = NODE_ENV === 'development';
     app.use(cors());
     app.use(helmet({
         crossOriginEmbedderPolicy: !isDevelopment,
         contentSecurityPolicy: !isDevelopment,
     }));
     app.use(graphqlUploadExpress());
-    app.use('/public', express.static(path.join(__dirname, 'public')));
     app.use(
-        '/',
-        express.static(path.join(__dirname, 'public', 'build'))
+        '/public',
+        express.static(path.join(__dirname, 'public'))
     );
-    app.get('*', (req, res) => {
-        res.sendFile(
-            'index.html',
-            { root: path.join(__dirname, 'public', 'build') }
+
+    if (!isDevelopment) {
+        app.use(
+            '/',
+            express.static(path.join(__dirname, 'public', 'build'))
         );
-    });
+        app.get('*', (req, res) => {
+            res.sendFile(
+                'index.html',
+                { root: path.join(__dirname, 'public', 'build') }
+            );
+        });
+    }
 
     server.applyMiddleware({
         app,
