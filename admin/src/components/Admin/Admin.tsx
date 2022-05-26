@@ -10,10 +10,12 @@ const Admin = () => {
     const [opened, setOpened] = useState(false);
     return (
         <AppShell
-            navbarOffsetBreakpoint="md"
+            navbarOffsetBreakpoint='md'
             fixed
             navbar={
-                <AppNavbar opened={opened} />
+                <AppNavbar
+                    opened={opened}
+                />
             }
             header={
                 <AppHeader theme={theme} opened={opened} setOpened={setOpened} />

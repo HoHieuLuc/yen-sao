@@ -12,12 +12,12 @@ const AppNavbar = ({ opened }: Props) => {
     const me = authHooks.useReadCurrentUser();
     return (
         <Navbar
-            p="sm"
-            hiddenBreakpoint="md"
+            p='sm'
+            hiddenBreakpoint='md'
             hidden={!opened}
             width={{ sm: 300, md: 300 }}
             style={{
-                zIndex: opened ? 100 : 0
+                zIndex: opened ? 1000 : 0
             }}
         >
             <Navbar.Section>
@@ -26,7 +26,7 @@ const AppNavbar = ({ opened }: Props) => {
                 </Text>
             </Navbar.Section>
             <Divider my='xs' />
-            <Navbar.Section grow component={ScrollArea} mx="-xs" px="xs">
+            <Navbar.Section grow component={ScrollArea} mx='-xs' px='xs'>
                 <NavLinks />
             </Navbar.Section>
             <Divider my='xs' />
