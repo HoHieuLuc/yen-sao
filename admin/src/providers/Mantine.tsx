@@ -30,6 +30,17 @@ const MyMantineProvider = ({ children }: Props) => {
                         input: {
                             textTransform: 'capitalize'
                         },
+                    },
+                    Table: {
+                        root: {
+                            tbody: {
+                                tr: {
+                                    td: {
+                                        whiteSpace: 'nowrap',
+                                    }
+                                }
+                            },
+                        }
                     }
                 }}
                 withGlobalStyles

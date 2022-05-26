@@ -26,22 +26,22 @@ const AppHeader = ({ theme, opened, setOpened }: Props) => {
     const { colorScheme, toggleColorScheme } = useMantineColorScheme();
 
     return (
-        <Header sx={{ background: theme.colors.blue[5], zIndex: 500 }} height={50} p="sm">
+        <Header sx={{ background: theme.colors.blue[5], zIndex: 500 }} height={50} p='sm'>
             <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
-                <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
+                <MediaQuery largerThan='md' styles={{ display: 'none' }}>
                     <Burger
                         opened={opened}
                         onClick={() => setOpened(!opened)}
-                        size="sm"
-                        color={theme.colors.gray[6]}
-                        mr="xl"
+                        size='sm'
+                        color='white'
+                        mr='xl'
                     />
                 </MediaQuery>
-                <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
-                    <Text color='white' component={Link} to='/'>
-                        <h2>{appConfig.title}</h2>
-                    </Text>
-                </MediaQuery>
+
+                <Text color='white' component={Link} to='/'>
+                    <h2>{appConfig.title}</h2>
+                </Text>
+
                 {/* <Text
                     ml='auto'
                     color='white'
