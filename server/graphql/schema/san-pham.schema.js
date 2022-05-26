@@ -16,6 +16,7 @@ const typeDefs = gql`
         tags: [String]
         anhSanPham: [String!]!
         isPublic: Boolean!
+        slug: String!
         createdAt: Date!
         updatedAt: Date!
     }
@@ -64,6 +65,9 @@ const typeDefs = gql`
         byID(
             id: ObjectID!
         ): SanPham
+        bySlug(
+            slug: String!
+        ): SanPham
     }
 
     extend type Query {
@@ -103,7 +107,9 @@ const resolvers = {
         all: async (_, { page, limit, search, sort }, { currentUser }) =>
             sanPhamController.getAll(page, limit, search, sort, currentUser),
         byID: async (_, { id }, { currentUser }) =>
-            sanPhamController.getById(id, currentUser)
+            sanPhamController.getById(id, currentUser),
+        bySlug: async (_, { slug }, { currentUser }) =>
+            sanPhamController.getBySlug(slug, currentUser)
     },
     Mutation: {
         sanPham: chainMiddlewares(adminRequired,

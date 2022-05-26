@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate-v2');
+const slugify = require('slugify');
+const { nanoid } = require('nanoid');
 
 const sanPham = mongoose.Schema(
     {
@@ -54,6 +56,9 @@ const sanPham = mongoose.Schema(
         isPublic: {
             type: Boolean,
             default: false
+        },
+        slug: {
+            type: String
         }
     },
     {
@@ -62,5 +67,30 @@ const sanPham = mongoose.Schema(
 );
 
 sanPham.plugin(mongoosePaginate);
+
+sanPham.pre('save', function (next) {
+    const slug = slugify(
+        this.tenSanPham,
+        {
+            lower: true,
+            locale: 'vi'
+        }
+    );
+    this.slug = `${slug}-${nanoid(5)}`;
+    next();
+});
+
+
+sanPham.pre('findOneAndUpdate', function (next) {
+    const slug = slugify(
+        this._update.tenSanPham,
+        {
+            lower: true,
+            locale: 'vi'
+        }
+    );
+    this._update.slug = `${slug}-${nanoid(5)}`;
+    next();
+});
 
 module.exports = mongoose.model('SanPham', sanPham);

@@ -19,6 +19,10 @@ const getById = async (id, currentUser) => {
     return sanPhamService.getById(id, !currentUser);
 };
 
+const getBySlug = async (slug, currentUser) => {
+    return sanPhamService.getBySlug(slug, !currentUser);
+};
+
 const create = async (sanPhamData, currentUser) => {
     const sanPham = await sanPhamService.create(sanPhamData);
     await sanPhamLogger.create(sanPham, currentUser);
@@ -53,9 +57,10 @@ const remove = async (id, currentUser) => {
 };
 
 module.exports = {
-    getById,
     getAll,
     create,
     update,
-    remove
+    remove,
+    getById,
+    getBySlug,
 };

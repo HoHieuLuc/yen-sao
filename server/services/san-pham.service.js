@@ -29,6 +29,14 @@ const getById = async (id, isGuest) => {
     );
 };
 
+const getBySlug = async (slug, isGuest) => {
+    const findOptions = isGuest ? { isPublic: true } : {};
+    return SanPham.findOne({
+        slug,
+        ...findOptions
+    });
+};
+
 const create = async (sanPhamData) => {
     try {
         const sanPham = await SanPham.create(sanPhamData);
@@ -67,10 +75,11 @@ const checkIfExist = async (arrayOfIds = []) => {
 };
 
 module.exports = {
-    getById,
     getAll,
     create,
     update,
     remove,
-    checkIfExist
+    getById,
+    getBySlug,
+    checkIfExist,
 };
