@@ -5,6 +5,7 @@ import { Button, NumberInput, Select, SimpleGrid, Textarea } from '@mantine/core
 import SanPhamSelect from '../../SanPham/Form/SanPhamSelect';
 
 import { ChiTietPhieuNhapInput } from '../../../types';
+import CurrencyInput from '../../Utils/Input/CurrencyInput';
 
 interface BaseProps {
     type: 'create' | 'update';
@@ -92,22 +93,12 @@ const ChiTietPhieuNhapForm = ({
                         }
                     />
                 }
-                <NumberInput
+                <CurrencyInput
                     label='Đơn giá nhập/100gram'
                     placeholder='Đơn giá nhập'
                     {...chiTietPhieuNhapForm.getInputProps('donGiaNhap')}
-                    parser={(value) => value?.replace(/\$\s?|(,*)/g, '')}
-                    formatter={(value) =>
-                        !Number.isNaN(parseFloat(value || 'a'))
-                            ? (value || '').replace(
-                                /\B(?=(\d{3})+(?!\d))/g,
-                                ','
-                            )
-                            : ''
-                    }
                     disabled={lock}
                     required
-                    min={0}
                 />
                 <NumberInput
                     label='Số lượng nhập (kg)'

@@ -4,6 +4,7 @@ import SanPhamSelect from '../../SanPham/Form/SanPhamSelect';
 import { FormList } from '@mantine/form/lib/form-list/form-list';
 import { UseFormReturnType } from '@mantine/form/lib/use-form';
 import { ChiTietPhieuNhapInput } from '../../../types';
+import CurrencyInput from '../../Utils/Input/CurrencyInput';
 
 interface Props {
     phieuNhapForm: UseFormReturnType<{
@@ -35,18 +36,11 @@ const ChiTietPhieuNhapListForm = ({ phieuNhapForm, index }: Props) => {
                     ).onChange(maSanPham)
                 }
             />
-            <NumberInput
+            <CurrencyInput
                 label='Đơn giá nhập/100gram'
                 placeholder='Đơn giá nhập'
                 {...phieuNhapForm.getListInputProps('payload', index, 'donGiaNhap')}
-                parser={(value) => value?.replace(/\$\s?|(,*)/g, '')}
-                formatter={(value) =>
-                    !Number.isNaN(parseFloat(value || 'a'))
-                        ? (value || '').replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                        : '0'
-                }
                 required
-                min={0}
             />
             <NumberInput
                 label='Số lượng nhập (kg)'
