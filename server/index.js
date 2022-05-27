@@ -42,12 +42,21 @@ const start = async () => {
     });
 
     await server.start();
+
     app.use(cors());
     app.use(helmet({
         crossOriginEmbedderPolicy: !isDevelopment,
         contentSecurityPolicy: !isDevelopment,
     }));
+    app.use(helmet.contentSecurityPolicy({
+        useDefaults: true,
+        directives: {
+            'img-src': [`'*'`, `data:`, `http://res.cloudinary.com`, `https://cdn.discordapp.com`],
+        }
+    }));
+
     app.use(graphqlUploadExpress());
+
     app.use(
         '/public',
         express.static(path.join(__dirname, 'public'))
