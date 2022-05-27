@@ -59,6 +59,10 @@ const sanPham = mongoose.Schema(
         },
         slug: {
             type: String
+        },
+        isFeatured: {
+            type: Boolean,
+            default: false
         }
     },
     {
@@ -81,7 +85,13 @@ sanPham.pre('save', function (next) {
 });
 
 
-sanPham.pre('findOneAndUpdate', function (next) {
+sanPham.pre('findOneAndUpdate', async function (next) {
+    const sanPhamToUpdate = await this.model.findById(this.getQuery()._id);
+    
+    if(sanPhamToUpdate.tenSanPham === this.getUpdate().tenSanPham) {
+        return next();
+    }
+
     const slug = slugify(
         this._update.tenSanPham,
         {
@@ -89,7 +99,7 @@ sanPham.pre('findOneAndUpdate', function (next) {
             locale: 'vi'
         }
     );
-    this._update.slug = `${slug}-${nanoid(5)}`;
+    this.getUpdate().slug = `${slug}-${nanoid(5)}`;
     next();
 });
 
