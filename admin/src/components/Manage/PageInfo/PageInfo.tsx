@@ -1,7 +1,6 @@
 import { useDocumentTitle } from '@mantine/hooks';
 import { useTabs } from '../../../hooks';
 
-import FeaturedProducts from './FeaturedProducts/FeaturedProducts';
 import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
 import { Divider, Stack, Tabs } from '@mantine/core';
 import PhoneNumber from './PhoneNumber/PhoneNumber';
@@ -49,8 +48,6 @@ const PageInfo = ({ title }: Props) => {
                         <PhoneNumber data={data.page} />
                         <Divider />
                         <FacebookLink data={data.page} />
-                        <Divider />
-                        <FeaturedProducts data={data.page} />
                     </Stack>
                 </Tabs.Tab>
             </Tabs>}
