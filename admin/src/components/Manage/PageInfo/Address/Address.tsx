@@ -7,7 +7,6 @@ interface Props {
 }
 
 const Address = ({ data }: Props) => {
-
     return (
         <>
             {data && (
