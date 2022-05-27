@@ -1,16 +1,16 @@
 import { gql, useApolloClient, useMutation, useQuery } from '@apollo/client';
 import { showErrorNotification, showSuccessNotification } from '../../events';
-import { 
+import {
     AllChiTietPhieuXuats,
     AllChiTietPhieuXuatsVars,
-    ChiTietPhieuXuatBySanPhamID, 
-    ChiTietPhieuXuatBySanPhamIDVars, 
-    CreateChiTietPhieuXuatVars, 
-    UpdateChiTietPhieuXuatVars 
+    CreateChiTietPhieuXuatVars,
+    UpdateChiTietPhieuXuatVars,
+    ChiTietPhieuXuatsBySanPhamID,
+    ChiTietPhieuXuatsBySanPhamIDVars,
 } from '../../types';
 
 const ALL = gql`
-    query All($from: Date!, $to: Date!) {
+    query AllChiTietPhieuXuats($from: Date!, $to: Date!) {
         chiTietPhieuXuat {
             all(from: $from, to: $to) {
                 id
@@ -29,7 +29,7 @@ const ALL = gql`
 `;
 
 const BY_SAN_PHAM_ID = gql`
-    query ChiTietPhieuXuatBySanPhamID(
+    query ChiTietPhieuXuatsBySanPhamID(
         $id: ObjectID!, 
         $page: Int!, 
         $limit: Int!,
@@ -150,16 +150,16 @@ const DELETE = gql`
 
 const useAllChiTietPhieuXuats = (variables: AllChiTietPhieuXuatsVars) => {
     return useQuery<
-        AllChiTietPhieuXuats, AllChiTietPhieuXuatsVars  
+        AllChiTietPhieuXuats, AllChiTietPhieuXuatsVars
     >(ALL, {
         variables,
         fetchPolicy: 'cache-and-network'
     });
 };
 
-const useChiTietPhieuXuatBySanPhamID = (variables: ChiTietPhieuXuatBySanPhamIDVars) => {
+const useChiTietPhieuXuatsBySanPhamID = (variables: ChiTietPhieuXuatsBySanPhamIDVars) => {
     return useQuery<
-        ChiTietPhieuXuatBySanPhamID, ChiTietPhieuXuatBySanPhamIDVars
+        ChiTietPhieuXuatsBySanPhamID, ChiTietPhieuXuatsBySanPhamIDVars
     >(BY_SAN_PHAM_ID, {
         variables,
         fetchPolicy: 'cache-and-network'
@@ -200,7 +200,7 @@ const useDeleteChiTietPhieuXuat = (tenSanPham: string, idChiTiet: string) => {
 
 
 export const chiTietPhieuXuatHooks = {
-    useChiTietPhieuXuatBySanPhamID,
+    useChiTietPhieuXuatsBySanPhamID,
     useCreateChiTietPhieuXuat,
     useUpdateChiTietPhieuXuat,
     useDeleteChiTietPhieuXuat,

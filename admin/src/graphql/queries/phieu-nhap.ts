@@ -113,7 +113,7 @@ const UPDATE = gql`
     }
 `;
 
-const useAllPhieuNhap = (variables: AllPhieuNhapsVars) => {
+const useAllPhieuNhaps = (variables: AllPhieuNhapsVars) => {
     return useQuery<
         AllPhieuNhaps, AllPhieuNhapsVars
     >(ALL, {
@@ -173,7 +173,7 @@ const useDeletePhieuNhap = () => {
 };
 
 export const phieuNhapHooks = {
-    useAllPhieuNhap,
+    useAllPhieuNhaps,
     usePhieuNhapByID,
     useCreatePhieuNhap,
     useUpdatePhieuNhap,

@@ -3,10 +3,10 @@ import { showErrorNotification, showSuccessNotification } from '../../events';
 import {
     AllChiTietPhieuNhaps,
     AllChiTietPhieuNhapsVars,
-    ChiTietPhieuNhapBySanPhamID,
-    ChiTietPhieuNhapBySanPhamIDVars,
     CreateChiTietPhieuNhapVars,
-    UpdateChiTietPhieuNhapVars
+    UpdateChiTietPhieuNhapVars,
+    ChiTietPhieuNhapsBySanPhamID,
+    ChiTietPhieuNhapsBySanPhamIDVars,
 } from '../../types';
 
 const ALL = gql`
@@ -29,7 +29,7 @@ const ALL = gql`
 `;
 
 const BY_SAN_PHAM_ID = gql`
-    query ChiTietPhieuNhapBySanPhamID(
+    query ChiTietPhieuNhapsBySanPhamID(
         $id: ObjectID!, 
         $page: Int!, 
         $limit: Int!, 
@@ -157,9 +157,9 @@ const useAllChiTietPhieuNhaps = (variables: AllChiTietPhieuNhapsVars) => {
     });
 };
 
-const useChiTietPhieuNhapBySanPhamId = (variables: ChiTietPhieuNhapBySanPhamIDVars) => {
+const useChiTietPhieuNhapsBySanPhamId = (variables: ChiTietPhieuNhapsBySanPhamIDVars) => {
     return useQuery<
-        ChiTietPhieuNhapBySanPhamID, ChiTietPhieuNhapBySanPhamIDVars
+        ChiTietPhieuNhapsBySanPhamID, ChiTietPhieuNhapsBySanPhamIDVars
     >(BY_SAN_PHAM_ID, {
         variables,
         fetchPolicy: 'cache-and-network',
@@ -199,7 +199,7 @@ const useDeleteChiTietPhieuNhap = (tenSanPham: string, idChiTiet: string) => {
 };
 
 export const chiTietPhieuNhapHooks = {
-    useChiTietPhieuNhapBySanPhamId,
+    useChiTietPhieuNhapsBySanPhamId,
     useCreateChiTietPhieuNhap,
     useUpdateChiTietPhieuNhap,
     useDeleteChiTietPhieuNhap,
