@@ -1,8 +1,9 @@
 import { useQuery, gql } from '@apollo/client';
 
 import { Loader, MultiSelect } from '@mantine/core';
-import { GetInputPropsPayload } from '@mantine/form/lib/types';
+
 import { AllSanPhams, SearchSanPhamVars } from '../../../types';
+import { GetInputPropsPayload } from '@mantine/form/lib/types';
 
 type Props = GetInputPropsPayload & {
     label: string;
