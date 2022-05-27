@@ -45,13 +45,13 @@ const start = async () => {
 
     app.use(cors());
     app.use(helmet({
-        crossOriginEmbedderPolicy: !isDevelopment,
+        crossOriginEmbedderPolicy: false,
         contentSecurityPolicy: !isDevelopment,
     }));
     app.use(helmet.contentSecurityPolicy({
         useDefaults: true,
         directives: {
-            'img-src': [`'*'`, `data:`, `http://res.cloudinary.com`, `https://cdn.discordapp.com`],
+            'img-src': [`'self'`, 'https:', 'data:', 'blob:']
         }
     }));
 
