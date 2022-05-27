@@ -45,7 +45,7 @@ const start = async () => {
 
     app.use(cors());
     app.use(helmet({
-        crossOriginEmbedderPolicy: !isDevelopment,
+        crossOriginEmbedderPolicy: false,
         contentSecurityPolicy: !isDevelopment,
     }));
     app.use(helmet.contentSecurityPolicy({
