@@ -1,13 +1,12 @@
 import EditFacebookLink from './EditFacebookLink';
 
-import { FacebookLink } from '../../../../types';
+import { FacebookLinkData } from '../../../../types';
 
 interface Props {
-    data: FacebookLink;
+    data: FacebookLinkData;
 }
 
-const Address = ({ data }: Props) => {
-
+const FacebookLink = ({ data }: Props) => {
     return (
         <>
             {data && (
@@ -19,4 +18,4 @@ const Address = ({ data }: Props) => {
     );
 };
 
-export default Address;
+export default FacebookLink;
