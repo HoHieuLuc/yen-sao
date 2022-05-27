@@ -46,7 +46,12 @@ const start = async () => {
     app.use(cors());
     app.use(helmet({
         crossOriginEmbedderPolicy: false,
-        contentSecurityPolicy: !isDevelopment,
+    }));
+    app.use(helmet.contentSecurityPolicy({
+        useDefaults: true,
+        directives: {
+            'img-src': [`'self'`, `https: blob: data:`]
+        }
     }));
 
     app.use(graphqlUploadExpress());
