@@ -5,12 +5,13 @@ const ChiTietPhieuXuat = require('../models/ChiTietPhieuXuat');
 const { escapeRegExp } = require('../utils/functions');
 const sanPhamLogger = require('../loggers/san-pham.logger');
 
-const getAll = async (page, limit, search = '', sort = '-createdAt', currentUser) => {
+const getAll = async (page, limit, search = '', sort = '-createdAt', isFeatured, currentUser) => {
     return sanPhamService.getAll(
         page,
         limit,
         escapeRegExp(search),
         sort,
+        isFeatured,
         !currentUser
     );
 };

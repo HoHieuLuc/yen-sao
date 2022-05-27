@@ -112,8 +112,8 @@ const resolvers = {
         sanPham: () => ({})
     },
     SanPhamQueries: {
-        all: async (_, { page, limit, search, sort }, { currentUser }) =>
-            sanPhamController.getAll(page, limit, search, sort, currentUser),
+        all: async (_, { page, limit, search, sort, isFeatured }, { currentUser }) =>
+            sanPhamController.getAll(page, limit, search, sort, isFeatured, currentUser),
         byID: async (_, { id }, { currentUser }) =>
             sanPhamController.getById(id, currentUser),
         bySlug: async (_, { slug }, { currentUser }) =>
