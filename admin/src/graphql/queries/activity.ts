@@ -1,15 +1,15 @@
 import { gql, useApolloClient, useMutation, useQuery } from '@apollo/client';
 import { showErrorNotification, showSuccessNotification } from '../../events';
 import {
-    AllActivities,
-    AllActivitiesVars,
-    ActivitiesByUserIdVars,
-    ActivitiesByUserId,
     ActivityById,
+    MyActivities,
+    AllActivities,
+    MyActivitiesVars,
+    AllActivitiesVars,
+    ActivitiesByUserId,
+    ActivitiesByUserIdVars,
     ActivitiesByDocumentId,
     ActivitiesByDocumentIdVars,
-    MyActivitiesVars,
-    MyActivities
 } from '../../types';
 
 const ALL = gql`
@@ -120,7 +120,7 @@ const BY_USER_ID = gql`
 `;
 
 const BY_DOCUMENT_ID = gql`
-    query ByDocumentID($page: Int!, $limit: Int!, $documentId: ObjectID!) {
+    query ActivitiesByDocumentID($page: Int!, $limit: Int!, $documentId: ObjectID!) {
         activityLog {
             byDocumentID(page: $page, limit: $limit, documentId: $documentId) {
                 docs {

@@ -25,7 +25,7 @@ const PhieuNhapList = ({ title }: Props) => {
         tongTien: [null, 'TONG_TIEN_ASC', 'TONG_TIEN_DESC'],
     });
 
-    const { data, loading, error } = phieuNhapHooks.useAllPhieuNhap({
+    const { data, loading, error } = phieuNhapHooks.useAllPhieuNhaps({
         page: currentPage,
         limit: limit,
         from: from.paramValue,

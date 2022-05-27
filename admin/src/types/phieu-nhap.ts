@@ -66,7 +66,7 @@ export interface CreatePhieuNhapVars {
     payload: Array<ChiTietPhieuNhapInput>;
 }
 
-export interface ChiTietPhieuNhapBySanPhamID {
+export interface ChiTietPhieuNhapsBySanPhamID {
     chiTietPhieuNhap: {
         bySanPhamID: {
             docs: Array<Omit<ChiTietPhieuNhap, 'sanPham'>>;
@@ -75,7 +75,7 @@ export interface ChiTietPhieuNhapBySanPhamID {
     }
 }
 
-export interface ChiTietPhieuNhapBySanPhamIDVars extends PaginateVars {
+export interface ChiTietPhieuNhapsBySanPhamIDVars extends PaginateVars {
     id: string;
     from: number | null;
     to: number | null;

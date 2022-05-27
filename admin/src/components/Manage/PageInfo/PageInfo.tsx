@@ -1,6 +1,7 @@
 import { useDocumentTitle } from '@mantine/hooks';
 import { useTabs } from '../../../hooks';
 
+import FeaturedProducts from './FeaturedProducts/FeaturedProducts';
 import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
 import { Divider, Stack, Tabs } from '@mantine/core';
 import PhoneNumber from './PhoneNumber/PhoneNumber';
@@ -16,8 +17,8 @@ interface Props {
 
 const PageInfo = ({ title }: Props) => {
     const { activeTab, onTabChange, currentTabTitle } = useTabs(
-        ['gioi-thieu', 'lien-he'],
-        ['Giới thiệu', 'Liên hệ']
+        ['gioi-thieu', 'thong-tin-website'],
+        ['Giới thiệu', 'Thông tin Website']
     );
     useDocumentTitle(`${title} | ${currentTabTitle}`);
     const { data, loading } = pageHooks.useAllPages();
@@ -41,13 +42,15 @@ const PageInfo = ({ title }: Props) => {
                 <Tabs.Tab label='Giới thiệu' tabKey='gioi-thieu'>
                     <About data={data.page} />
                 </Tabs.Tab>
-                <Tabs.Tab label='Thông tin liên hệ' tabKey='lien-he'>
+                <Tabs.Tab label='Thông tin Website' tabKey='thong-tin-website'>
                     <Stack spacing='xs'>
                         <Address data={data.page} />
                         <Divider />
                         <PhoneNumber data={data.page} />
                         <Divider />
                         <FacebookLink data={data.page} />
+                        <Divider />
+                        <FeaturedProducts data={data.page} />
                     </Stack>
                 </Tabs.Tab>
             </Tabs>}

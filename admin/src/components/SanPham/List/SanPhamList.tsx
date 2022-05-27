@@ -28,7 +28,7 @@ const SanPhamList = ({ title }: Props) => {
         }
     );
 
-    const { data, loading, error } = sanPhamHooks.useAllSanPham(
+    const { data, loading, error } = sanPhamHooks.useAllSanPhams(
         {
             page: currentPage,
             limit: limit,

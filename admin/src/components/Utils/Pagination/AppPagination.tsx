@@ -10,29 +10,41 @@ const AppPagination = ({ limit, onLimitChange, ...props }: Props) => {
         <SimpleGrid
             cols={2}
             spacing='xs'
-            breakpoints={[{ maxWidth: 'xs', cols: 1 }]}
-            style={{
+            breakpoints={[{ maxWidth: 500, cols: 1 }]}
+            sx={(theme) => ({
                 display: 'flex',
-                justifyContent: 'center'
-            }}
+                justifyContent: 'center',
+                [theme.fn.smallerThan('sm')]: {
+                    flexDirection: 'column',
+                }
+            })}
         >
             <Center>
                 <Pagination
                     {...props}
+                    styles={(theme) => ({
+                        item: {
+                            [theme.fn.smallerThan('sm')]: {
+                                fontSize: '0.8rem'
+                            }
+                        },
+                    })}
                 />
             </Center>
-            <Select
-                style={{
-                    width: 'fit-content'
-                }}
-                data={[
-                    { value: '10', label: '10 dòng mỗi trang' },
-                    { value: '20', label: '20 dòng mỗi trang' },
-                    { value: '50', label: '50 dòng mỗi trang' },
-                ]}
-                value={limit}
-                onChange={onLimitChange}
-            />
+            <Center>
+                <Select
+                    style={{
+                        width: 'fit-content'
+                    }}
+                    data={[
+                        { value: '10', label: '10 dòng mỗi trang' },
+                        { value: '20', label: '20 dòng mỗi trang' },
+                        { value: '50', label: '50 dòng mỗi trang' },
+                    ]}
+                    value={limit}
+                    onChange={onLimitChange}
+                />
+            </Center>
         </SimpleGrid>
     );
 };

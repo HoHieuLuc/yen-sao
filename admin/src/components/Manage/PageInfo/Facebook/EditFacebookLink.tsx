@@ -2,14 +2,14 @@ import { useForm } from '@mantine/form';
 
 import { Button, Group, Stack, TextInput } from '@mantine/core';
 
-import { FacebookLink, FacebookLinkVars } from '../../../../types';
+import { FacebookLinkData, FacebookLinkVars } from '../../../../types';
 import { pageHooks } from '../../../../graphql/queries';
 
 interface Props {
-    data: FacebookLink;
+    data: FacebookLinkData;
 }
 
-const EditAddress = ({ data }: Props) => {
+const EditFacebookLink = ({ data }: Props) => {
     const [updateFacebookLink, { loading }] = pageHooks.useCreateOrUpdatePage<
         never, FacebookLinkVars
     >();
@@ -51,4 +51,4 @@ const EditAddress = ({ data }: Props) => {
     );
 };
 
-export default EditAddress;
+export default EditFacebookLink;

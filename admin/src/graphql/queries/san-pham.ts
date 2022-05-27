@@ -3,9 +3,9 @@ import { showErrorNotification, showSuccessNotification } from '../../events';
 import {
     AllSanPhams,
     SanPhamByID,
+    AllSanPhamVars,
     SanPhamFormVars,
-    SearchSanPhamVars,
-    UpdateSanPhamInput
+    UpdateSanPhamInput,
 } from '../../types';
 
 const ALL = gql`
@@ -94,9 +94,9 @@ const DELETE = gql`
     }
 `;
 
-const useAllSanPham = (variables: SearchSanPhamVars) => {
+const useAllSanPhams = (variables: AllSanPhamVars) => {
     return useQuery<
-        AllSanPhams, SearchSanPhamVars
+        AllSanPhams, AllSanPhamVars
     >(ALL, {
         variables
     });
@@ -160,5 +160,5 @@ export const sanPhamHooks = {
     useDeleteSanPham,
     useUpdateSanPham,
     useSanPhamByID,
-    useAllSanPham,
+    useAllSanPhams,
 };
