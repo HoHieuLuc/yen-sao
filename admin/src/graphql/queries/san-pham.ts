@@ -20,6 +20,7 @@ const ALL = gql`
                     donGiaLe
                     donGiaTuyChon
                     isPublic
+                    isFeatured
                 }
                 pageInfo {
                     page
@@ -46,6 +47,7 @@ const BY_ID = gql`
                 tags
                 anhSanPham
                 isPublic
+                isFeatured
                 createdAt
                 updatedAt
             }
@@ -77,6 +79,7 @@ const UPDATE = gql`
                 tags
                 anhSanPham
                 isPublic
+                isFeatured
                 updatedAt
             }
         }

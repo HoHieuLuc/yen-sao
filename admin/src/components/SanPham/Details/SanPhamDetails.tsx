@@ -28,14 +28,17 @@ const SanPhamDetails = ({ data }: Props) => {
             </Center>
             <Center>
                 <Text color='dimmed'>
-                    ({data.isPublic ? 'Công khai' : 'Không công khai'})
+                    (
+                    {data.isPublic ? 'Công khai' : 'Không công khai'}
+                    {data.isFeatured ? ' - Đầu trang' : ''}
+                    )
                 </Text>
             </Center>
             <Grid gutter={10} mb='sm'>
-                <Grid.Col xs={6} md={2}>Số lượng tồn (kg):</Grid.Col>
-                <Grid.Col xs={6} md={10}>{data.soLuong / 1000}</Grid.Col>
-                <Grid.Col xs={6} md={2}>Giá: </Grid.Col>
-                <Grid.Col xs={6} md={10}>
+                <Grid.Col span={3} sm={2}>Số lượng tồn:</Grid.Col>
+                <Grid.Col span={9} sm={10}>{data.soLuong / 1000} kg</Grid.Col>
+                <Grid.Col span={3} sm={2}>Giá: </Grid.Col>
+                <Grid.Col span={9} sm={10}>
                     {data.donGiaTuyChon
                         ? data.donGiaTuyChon
                         : `Sỉ: ${convertToVND(data.donGiaSi)}/100gram, 
@@ -45,14 +48,14 @@ const SanPhamDetails = ({ data }: Props) => {
                 </Grid.Col>
                 {data.xuatXu &&
                     <>
-                        <Grid.Col xs={6} md={2}>Xuất xứ:</Grid.Col>
-                        <Grid.Col xs={6} md={10}>{data.xuatXu}</Grid.Col>
+                        <Grid.Col span={3} sm={2}>Xuất xứ:</Grid.Col>
+                        <Grid.Col span={9} xs={9} sm={10}>{data.xuatXu}</Grid.Col>
                     </>
                 }
                 {data.tags.length > 0 &&
                     <>
-                        <Grid.Col xs={6} md={2}>Tags:</Grid.Col>
-                        <Grid.Col xs={6} md={10}>
+                        <Grid.Col span={3} sm={2}>Tags:</Grid.Col>
+                        <Grid.Col span={9} sm={10}>
                             {data.tags.join(', ')}
                         </Grid.Col>
                     </>

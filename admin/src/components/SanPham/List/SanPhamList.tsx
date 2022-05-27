@@ -24,7 +24,8 @@ const SanPhamList = ({ title }: Props) => {
     const { currentPage, handlePageChange, limit, handleLimitChange } = usePagination();
     const [sortSanPham, toggleSortSoLuong] = useSortParams(
         {
-            soLuong: [null, 'SO_LUONG_ASC', 'SO_LUONG_DESC']
+            soLuong: [null, 'SO_LUONG_ASC', 'SO_LUONG_DESC'],
+            isFeatured: [null, 'FEATURED_ASC', 'FEATURED_DESC'],
         }
     );
 
@@ -50,7 +51,10 @@ const SanPhamList = ({ title }: Props) => {
                 </Text>
             </td>
             <td>{sanPham.soLuong / 1000}</td>
-            <td>{sanPham.isPublic ? 'Công khai' : 'Không công khai'}</td>
+            <td>
+                {sanPham.isPublic ? 'Công khai' : 'Không công khai'}
+                {sanPham.isFeatured ? ' - Đầu trang' : ''}
+            </td>
             <td>
                 <Center>
                     {me.role === 'admin' && <LinkIcon
@@ -96,7 +100,13 @@ const SanPhamList = ({ title }: Props) => {
                                 </UnstyledButton>
                             </th>
                             <th>
-                                Tình trạng
+                                <UnstyledButton onClick={() => toggleSortSoLuong('isFeatured')}>
+                                    Tình trạng <SortIcon
+                                        currentSort={sortSanPham.currentSortValue}
+                                        ascValue='FEATURED_ASC'
+                                        descValue='FEATURED_DESC'
+                                    />
+                                </UnstyledButton>
                             </th>
                             <th>
                                 <Center>

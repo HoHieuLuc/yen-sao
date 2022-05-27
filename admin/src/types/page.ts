@@ -22,12 +22,8 @@ export interface FacebookLinkData {
     facebook?: BasePage<string>;
 }
 
-export interface FeaturedProductsData {
-    featuredProducts?: BasePage<Array<string>>;
-}
-
 export interface AllPages {
-    page: AboutData & AddressData & PhoneNumberData & FacebookLinkData & FeaturedProductsData;
+    page: AboutData & AddressData & PhoneNumberData & FacebookLinkData;
 }
 
 export type PageVars<T> = Omit<BasePage<T>, 'id'>;
@@ -46,10 +42,6 @@ export interface PhoneNumberVars extends PageVars<Array<string>> {
 
 export interface FacebookLinkVars extends PageVars<string> {
     name: 'facebook';
-}
-
-export interface FeaturedProductsVars extends PageVars<Array<string>> {
-    name: 'featuredProducts';
 }
 
 export interface CreateOrUpdatePage<T> {

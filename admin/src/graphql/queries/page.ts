@@ -25,11 +25,6 @@ const ALL = gql`
                 name
                 content
             }
-            featuredProducts: byName(name: "featuredProducts") {
-                id
-                name
-                content
-            }
         }
     }
 `;

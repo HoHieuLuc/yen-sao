@@ -6,12 +6,13 @@ import { useState } from 'react';
 import ImageDropzone from '../ImageDropzone/ImageDropzone';
 import RichTextEditor from '@mantine/rte';
 import {
+    Stack, Switch, Text, Textarea, TextInput,
     Accordion, Button, Group, InputWrapper, MultiSelect,
-    NumberInput, Stack, Switch, Text, Textarea, TextInput
 } from '@mantine/core';
 
 import { showErrorNotification } from '../../../events';
 import { SanPhamFormVars } from '../../../types';
+import CurrencyInput from '../../Utils/Input/CurrencyInput';
 
 interface Props {
     loading: boolean;
@@ -31,6 +32,7 @@ const SanPhamForm = ({ loading, initialValues, handleSubmit }: Props) => {
             tags: initialValues?.tags || [],
             anhSanPham: initialValues?.anhSanPham || [],
             isPublic: initialValues?.isPublic || false,
+            isFeatured: initialValues?.isFeatured || false,
         },
         validate: {
             tenSanPham: (value) => value ? null : 'Tên sản phẩm không được để trống'
@@ -80,40 +82,16 @@ const SanPhamForm = ({ loading, initialValues, handleSubmit }: Props) => {
                         {...sanPhamForm.getInputProps('donGiaTuyChon')}
                     />
                     : <Group position='center' grow spacing='xs'>
-                        <NumberInput
+                        <CurrencyInput
                             label='Đơn giá sỉ/100gram'
                             placeholder='Nhập đơn giá sỉ'
                             {...sanPhamForm.getInputProps('donGiaSi')}
-                            min={0}
-                            parser={(value) =>
-                                value?.replace(/\$\s?|(,*)/g, '')
-                            }
-                            formatter={(value) =>
-                                !Number.isNaN(parseFloat(value || 'a'))
-                                    ? (value || '').replace(
-                                        /\B(?=(\d{3})+(?!\d))/g,
-                                        ','
-                                    )
-                                    : ''
-                            }
                             hideControls
                         />
-                        <NumberInput
+                        <CurrencyInput
                             label='Đơn giá lẻ/100gram'
                             placeholder='Nhập đơn giá lẻ'
                             {...sanPhamForm.getInputProps('donGiaLe')}
-                            min={0}
-                            parser={(value) =>
-                                value?.replace(/\$\s?|(,*)/g, '')
-                            }
-                            formatter={(value) =>
-                                !Number.isNaN(parseFloat(value || 'a'))
-                                    ? (value || '').replace(
-                                        /\B(?=(\d{3})+(?!\d))/g,
-                                        ','
-                                    )
-                                    : ''
-                            }
                             hideControls
                         />
                     </Group>
@@ -144,8 +122,7 @@ const SanPhamForm = ({ loading, initialValues, handleSubmit }: Props) => {
                     label='Nhập tags'
                     data={sanPhamForm.values.tags}
                     placeholder='Nhập tags'
-                    searchable
-                    creatable
+                    {...sanPhamForm.getInputProps('tags')}
                     getCreateLabel={(query) => `+ Thêm tag ${query}`}
                     onCreate={(query) =>
                         sanPhamForm.setFieldValue(
@@ -153,13 +130,25 @@ const SanPhamForm = ({ loading, initialValues, handleSubmit }: Props) => {
                             [...sanPhamForm.values.tags, query]
                         )
                     }
-                    {...sanPhamForm.getInputProps('tags')}
+                    searchable
+                    creatable
                 />
                 <Switch
                     label='Công khai sản phẩm (Chỉ sản phẩm công khai mới hiện trên trang quảng bá)'
                     {...sanPhamForm.getInputProps('isPublic')}
                     checked={sanPhamForm.values.isPublic}
                 />
+                {sanPhamForm.values.isPublic && <Switch
+                    label={
+                        <div>
+                            Đưa sản phẩm lên đầu trang
+                            {' '}
+                            (Sản phẩm này sẽ được ưu tiên đưa lên đầu trang, chỉ hiện tối đa 3 sản phẩm)
+                        </div>
+                    }
+                    {...sanPhamForm.getInputProps('isFeatured')}
+                    checked={sanPhamForm.values.isFeatured}
+                />}
                 <Accordion>
                     <Accordion.Item label='Đăng ảnh'>
                         <ImageDropzone
