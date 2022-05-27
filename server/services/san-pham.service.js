@@ -1,7 +1,7 @@
 const { UserInputError } = require('apollo-server');
 const SanPham = require('../models/SanPham');
 
-const getAll = async (page, limit, search, sort, isGuest) => {
+const getAll = async (page, limit, search, sort, isFeatured, isGuest) => {
     const options = {
         page,
         limit,
@@ -15,6 +15,9 @@ const getAll = async (page, limit, search, sort, isGuest) => {
     };
     if (isGuest) {
         findOptions.isPublic = true;
+    }
+    if (isFeatured) {
+        findOptions.isFeatured = true;
     }
     return SanPham.paginate(findOptions, options);
 };
