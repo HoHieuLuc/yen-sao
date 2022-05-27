@@ -72,6 +72,13 @@ const cache = new InMemoryCache({
                     merge: false
                 }
             }
+        },
+        Page: {
+            fields: {
+                content: {
+                    merge: false
+                }
+            }
         }
     }
 });

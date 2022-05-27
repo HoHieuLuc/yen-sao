@@ -1,6 +1,6 @@
-import { gql, useMutation, useQuery } from '@apollo/client';
+import { gql, useApolloClient, useMutation, useQuery } from '@apollo/client';
 import { showErrorNotification, showSuccessNotification } from '../../events';
-import { AllPages } from '../../types';
+import { AllPages, CreateOrUpdatePage } from '../../types';
 
 const ALL = gql`
     query AllPages {
@@ -25,12 +25,17 @@ const ALL = gql`
                 name
                 content
             }
+            featuredProducts: byName(name: "featuredProducts") {
+                id
+                name
+                content
+            }
         }
     }
 `;
 
 const BY_NAME = gql`
-    query ConfigByName($name: String!) {
+    query PageByName($name: String!) {
         page {
             byName(name: $name) {
                 id
@@ -42,7 +47,7 @@ const BY_NAME = gql`
 `;
 
 const CREATE_OR_UPDATE = gql`
-    mutation CreateOrUpdateConfig($name: String!, $content: Object!) {
+    mutation CreateOrUpdatePage($name: String!, $content: Object!) {
         page {
             createOrUpdate(name: $name, content: $content) {
                 id
@@ -70,10 +75,27 @@ const usePageByName = <T>(name: string) => {
 };
 
 const useCreateOrUpdatePage = <T, V>() => {
+    const client = useApolloClient();
     return useMutation<
-        T, V
+        CreateOrUpdatePage<T>, V
     >(CREATE_OR_UPDATE, {
-        onCompleted: () => showSuccessNotification('Cập nhật thành công'),
+        onCompleted: (data) => {
+            showSuccessNotification('Cập nhật thành công');
+            client.writeQuery({
+                query: BY_NAME,
+                data: {
+                    page: {
+                        byName: {
+                            __typename: 'Page',
+                            ...data.page.createOrUpdate
+                        }
+                    }
+                },
+                variables: {
+                    name: data.page.createOrUpdate.name
+                }
+            });
+        },
         onError: (error) => showErrorNotification(error.message)
     });
 };
