@@ -50,7 +50,7 @@ const start = async () => {
     app.use(helmet.contentSecurityPolicy({
         useDefaults: true,
         directives: {
-            'img-src': [`'self'`, `https: blob: data:`]
+            'img-src': [`'self'`, 'https:', 'data:', 'blob:']
         }
     }));
 
