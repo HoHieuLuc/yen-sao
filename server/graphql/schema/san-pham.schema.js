@@ -17,6 +17,7 @@ const typeDefs = gql`
         anhSanPham: [String!]!
         isPublic: Boolean!
         slug: String!
+        isFeatured: Boolean!
         createdAt: Date!
         updatedAt: Date!
     }
@@ -35,7 +36,8 @@ const typeDefs = gql`
         xuatXu: String
         tags: [String]
         anhSanPham: [String!]!
-        isPublic: Boolean!
+        isPublic: Boolean
+        isFeatured: Boolean
     }
 
     input UpdateSanPhamInput {
@@ -48,11 +50,14 @@ const typeDefs = gql`
         tags: [String]
         anhSanPham: [String!]
         isPublic: Boolean
+        isFeatured: Boolean
     }
 
     enum SortSanPham {
         SO_LUONG_ASC
         SO_LUONG_DESC
+        FEATURED_ASC
+        FEATURED_DESC
     }
     
     type SanPhamQueries {
@@ -60,7 +65,8 @@ const typeDefs = gql`
             page: Int!,
             limit: Int!,
             search: String,
-            sort: SortSanPham
+            sort: SortSanPham,
+            isFeatured: Boolean
         ): SanPhamsByPage!
         byID(
             id: ObjectID!
@@ -95,7 +101,9 @@ const typeDefs = gql`
 const resolvers = {
     SortSanPham: {
         SO_LUONG_ASC: 'soLuong',
-        SO_LUONG_DESC: '-soLuong'
+        SO_LUONG_DESC: '-soLuong',
+        FEATURED_ASC: 'isFeatured',
+        FEATURED_DESC: '-isFeatured'
     },
     SanPhamsByPage: {
         pageInfo: (root) => root
