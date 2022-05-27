@@ -23,7 +23,7 @@ const ChiTietPhieuNhapList = ({ id }: Props) => {
         soLuong: [null, 'SO_LUONG_ASC', 'SO_LUONG_DESC'],
         donGia: [null, 'DON_GIA_ASC', 'DON_GIA_DESC'],
     });
-    const { data, loading, error } = chiTietPhieuNhapHooks.useChiTietPhieuNhapBySanPhamId(
+    const { data, loading, error } = chiTietPhieuNhapHooks.useChiTietPhieuNhapsBySanPhamId(
         {
             id,
             page: currentPage,

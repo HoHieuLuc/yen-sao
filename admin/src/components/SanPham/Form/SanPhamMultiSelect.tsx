@@ -2,8 +2,8 @@ import { useQuery, gql } from '@apollo/client';
 
 import { Loader, MultiSelect } from '@mantine/core';
 
-import { AllSanPhams, SearchSanPhamVars } from '../../../types';
 import { GetInputPropsPayload } from '@mantine/form/lib/types';
+import { AllSanPhams, AllSanPhamVars } from '../../../types';
 
 type Props = GetInputPropsPayload & {
     label: string;
@@ -12,7 +12,7 @@ type Props = GetInputPropsPayload & {
 };
 
 const SanPhamMultiSelect = (props: Props) => {
-    const { data, loading } = useQuery<AllSanPhams, SearchSanPhamVars>(
+    const { data, loading } = useQuery<AllSanPhams, AllSanPhamVars>(
         gql`
             query AllSanPhams($page: Int!, $limit: Int!, $search: String) {
                 sanPham {

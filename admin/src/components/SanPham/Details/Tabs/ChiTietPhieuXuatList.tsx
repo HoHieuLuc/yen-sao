@@ -24,7 +24,7 @@ const ChiTietPhieuXuatList = ({ id }: Props) => {
         donGia: [null, 'DON_GIA_ASC', 'DON_GIA_DESC'],
     });
 
-    const { data, loading, error } = chiTietPhieuXuatHooks.useChiTietPhieuXuatBySanPhamID(
+    const { data, loading, error } = chiTietPhieuXuatHooks.useChiTietPhieuXuatsBySanPhamID(
         {
             id,
             page: currentPage,

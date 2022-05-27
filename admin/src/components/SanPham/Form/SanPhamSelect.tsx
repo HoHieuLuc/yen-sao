@@ -16,7 +16,7 @@ const SanPhamSelect = ({ maSanPham, setMaSanPham, error }: Props) => {
     const { debouncedSeach, setSearch } = useDebouncedSearch('', 300);
     const client = useApolloClient();
 
-    const { data, loading } = sanPhamHooks.useAllSanPham(
+    const { data, loading } = sanPhamHooks.useAllSanPhams(
         {
             page: 1,
             limit: 50,
