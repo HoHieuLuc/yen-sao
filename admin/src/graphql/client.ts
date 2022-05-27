@@ -9,7 +9,10 @@ import { OutgoingHttpHeaders } from 'http2';
 import appConfig from '../config';
 
 const httpLink: ApolloLink = createUploadLink({
-    uri: `${appConfig.apiURL}/gql`
+    uri: `${appConfig.apiURL}/gql`,
+    headers: {
+        'Apollo-Require-Preflight': 'true',
+    }
 });
 
 const authLink: ApolloLink = setContext((_, { headers }: { headers: OutgoingHttpHeaders }) => {
