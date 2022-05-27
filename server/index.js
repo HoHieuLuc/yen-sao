@@ -51,7 +51,7 @@ const start = async () => {
     app.use(helmet.contentSecurityPolicy({
         useDefaults: true,
         directives: {
-            'img-src': [`'*'`, `data:`, `http://res.cloudinary.com`, `https://cdn.discordapp.com`],
+            'img-src': [`'self'`, `https: data: blob:`]
         }
     }));
 
