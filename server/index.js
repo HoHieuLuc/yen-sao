@@ -44,16 +44,6 @@ const start = async () => {
     await server.start();
 
     app.use(cors());
-    app.use(helmet({
-        crossOriginEmbedderPolicy: false,
-        contentSecurityPolicy: !isDevelopment,
-    }));
-    app.use(helmet.contentSecurityPolicy({
-        useDefaults: true,
-        directives: {
-            'img-src': [`'self'`, 'https:', 'data:', 'blob:']
-        }
-    }));
 
     app.use(graphqlUploadExpress());
 
@@ -63,6 +53,17 @@ const start = async () => {
     );
 
     if (!isDevelopment) {
+        app.use(helmet({
+            crossOriginEmbedderPolicy: false,
+            contentSecurityPolicy: !isDevelopment,
+        }));
+        app.use(helmet.contentSecurityPolicy({
+            useDefaults: true,
+            directives: {
+                'img-src': [`'self'`, 'https:', 'data:', 'blob:']
+            }
+        }));
+
         app.use(
             '/',
             express.static(path.join(__dirname, 'public', 'build'))
