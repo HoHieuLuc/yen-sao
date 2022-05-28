@@ -12,9 +12,10 @@ interface Props {
     title: string;
     initiallyOpened?: boolean;
     links: Array<AppLink>;
+    icon?: React.ReactNode;
 }
 
-const LinksGroup = ({ title, initiallyOpened, links }: Props) => {
+const LinksGroup = ({ title, initiallyOpened, links, icon }: Props) => {
     const { classes } = useStyles();
     const [opened, setOpened] = useState(initiallyOpened || false);
 
@@ -33,7 +34,10 @@ const LinksGroup = ({ title, initiallyOpened, links }: Props) => {
 
     return (
         <>
-            <Box onClick={() => setOpened((o) => !o)} className={classes.control}>
+            <Box
+                onClick={() => setOpened((o) => !o)}
+                className={classes.control}
+            >
                 <Group position="apart" spacing={1}>
                     <Box
                         sx={(theme) => ({
@@ -47,6 +51,7 @@ const LinksGroup = ({ title, initiallyOpened, links }: Props) => {
                             fullWidth
                             size='md'
                             variant='subtle'
+                            leftIcon={icon && icon}
                         >
                             {title}
                         </Button>

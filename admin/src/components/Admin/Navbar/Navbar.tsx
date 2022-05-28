@@ -3,6 +3,8 @@ import NavLinks from './NavLinks/NavLinks';
 import NavLink from './NavLinks/NavLink';
 
 import { authHooks } from '../../../graphql/queries';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSignOut } from '@fortawesome/free-solid-svg-icons';
 
 interface Props {
     opened: boolean;
@@ -36,6 +38,7 @@ const AppNavbar = ({ opened }: Props) => {
                     to='/logout'
                     size='md'
                     color='red'
+                    icon={<FontAwesomeIcon icon={faSignOut} />}
                 />
             </Navbar.Section>
         </Navbar>
