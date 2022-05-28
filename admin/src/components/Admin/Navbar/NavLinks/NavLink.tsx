@@ -2,8 +2,8 @@ import { Link, useLocation } from 'react-router-dom';
 import { Button, MantineSize } from '@mantine/core';
 import LinksGroup from '../LinksGroup/LinksGroup';
 
-import { AppLink } from '../../../../config/types';
 import { authHooks } from '../../../../graphql/queries';
+import { AppLink } from '../../../../config/types';
 
 interface Props {
     title: string;

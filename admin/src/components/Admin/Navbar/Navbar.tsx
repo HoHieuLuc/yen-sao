@@ -1,10 +1,10 @@
 import { Navbar, ScrollArea, Divider, Text } from '@mantine/core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSignOut } from '@fortawesome/free-solid-svg-icons';
 import NavLinks from './NavLinks/NavLinks';
 import NavLink from './NavLinks/NavLink';
 
 import { authHooks } from '../../../graphql/queries';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSignOut } from '@fortawesome/free-solid-svg-icons';
 
 interface Props {
     opened: boolean;
