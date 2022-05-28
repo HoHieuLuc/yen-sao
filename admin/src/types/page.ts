@@ -1,47 +1,37 @@
 export interface BasePage<T> {
     id: string;
     name: string;
-    content: {
-        value: T;
-    }
+    content: T;
 }
 
 export interface AboutData {
-    about?: BasePage<string>;
+    about?: BasePage<{
+        value: string;
+    }>;
 }
 
-export interface AddressData {
-    address?: BasePage<Array<string>>;
+export interface WebsiteInfo {
+    address: Array<string>;
+    phone: Array<string>;
+    facebook: string;
 }
 
-export interface PhoneNumberData {
-    phone?: BasePage<Array<string>>;
-}
-
-export interface FacebookLinkData {
-    facebook?: BasePage<string>;
+export interface WebsiteInfoData {
+    websiteInfo?: BasePage<Partial<WebsiteInfo>>
 }
 
 export interface AllPages {
-    page: AboutData & AddressData & PhoneNumberData & FacebookLinkData;
+    page: AboutData & WebsiteInfoData;
 }
 
 export type PageVars<T> = Omit<BasePage<T>, 'id'>;
 
-export interface AboutPageVars extends PageVars<string> {
+export interface AboutPageVars extends PageVars<{value: string}> {
     name: 'about';
 }
 
-export interface AddressVars extends PageVars<Array<string>> {
-    name: 'address';
-}
-
-export interface PhoneNumberVars extends PageVars<Array<string>> {
-    name: 'phone';
-}
-
-export interface FacebookLinkVars extends PageVars<string> {
-    name: 'facebook';
+export interface WebsiteInfoVars extends PageVars<WebsiteInfo> {
+    name: 'websiteInfo';
 }
 
 export interface CreateOrUpdatePage<T> {

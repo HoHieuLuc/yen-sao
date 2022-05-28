@@ -10,17 +10,7 @@ const ALL = gql`
                 name
                 content
             }
-            address: byName(name: "address") {
-                id
-                name
-                content
-            }
-            phone: byName(name: "phone") {
-                id
-                name
-                content
-            }
-            facebook: byName(name: "facebook") {
+            websiteInfo: byName(name: "websiteInfo") {
                 id
                 name
                 content

@@ -2,13 +2,11 @@ import { useDocumentTitle } from '@mantine/hooks';
 import { useTabs } from '../../../hooks';
 
 import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
-import { Divider, Stack, Tabs } from '@mantine/core';
-import PhoneNumber from './PhoneNumber/PhoneNumber';
-import FacebookLink from './Facebook/FacebookLink';
-import Address from './Address/Address';
+import { Tabs } from '@mantine/core';
 import About from './About/About';
 
 import { pageHooks } from '../../../graphql/queries';
+import WebsiteInfo from './WebsiteInfo/WebsiteInfo';
 
 interface Props {
     title: string;
@@ -42,13 +40,7 @@ const PageInfo = ({ title }: Props) => {
                     <About data={data.page} />
                 </Tabs.Tab>
                 <Tabs.Tab label='Thông tin Website' tabKey='thong-tin-website'>
-                    <Stack spacing='xs'>
-                        <Address data={data.page} />
-                        <Divider />
-                        <PhoneNumber data={data.page} />
-                        <Divider />
-                        <FacebookLink data={data.page} />
-                    </Stack>
+                    <WebsiteInfo data={data.page} />
                 </Tabs.Tab>
             </Tabs>}
         </LoadingWrapper>
