@@ -2,11 +2,11 @@ import { useDocumentTitle } from '@mantine/hooks';
 import { useTabs } from '../../../hooks';
 
 import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
+import WebsiteInfo from './WebsiteInfo/WebsiteInfo';
 import { Tabs } from '@mantine/core';
 import About from './About/About';
 
 import { pageHooks } from '../../../graphql/queries';
-import WebsiteInfo from './WebsiteInfo/WebsiteInfo';
 
 interface Props {
     title: string;
