@@ -4,7 +4,6 @@ import DeleteIcon from './DeleteIcon';
 import EditIcon from './EditIcon';
 import InfoIcon from './InfoIcon';
 
-
 interface Props {
     label: string;
     to: string;

@@ -2,8 +2,8 @@ import { Link, useLocation } from 'react-router-dom';
 import { Button, MantineSize } from '@mantine/core';
 import LinksGroup from '../LinksGroup/LinksGroup';
 
-import { AppLink } from '../../../../config/types';
 import { authHooks } from '../../../../graphql/queries';
+import { AppLink } from '../../../../config/types';
 
 interface Props {
     title: string;
@@ -13,9 +13,10 @@ interface Props {
     subLinks?: AppLink[];
     subLinksPattern?: string;
     roles?: Array<string>;
+    icon?: React.ReactNode;
 }
 
-const NavLink = ({ title, to, size, color, subLinks, subLinksPattern, roles }: Props) => {
+const NavLink = ({ title, to, size, color, subLinks, subLinksPattern, roles, icon }: Props) => {
     const me = authHooks.useReadCurrentUser();
     const location = useLocation();
     const style = {
@@ -23,13 +24,14 @@ const NavLink = ({ title, to, size, color, subLinks, subLinksPattern, roles }: P
     };
     if (subLinks) {
         const opened = subLinksPattern
-            ? location.pathname.includes(subLinksPattern) 
+            ? location.pathname.includes(subLinksPattern)
             : false;
         return (
             <LinksGroup
                 title={title}
                 initiallyOpened={opened}
                 links={subLinks}
+                icon={icon}
             />
         );
     }
@@ -48,6 +50,7 @@ const NavLink = ({ title, to, size, color, subLinks, subLinksPattern, roles }: P
             size={size}
             style={style}
             color={color}
+            leftIcon={icon && icon}
         >
             {title}
         </Button>
