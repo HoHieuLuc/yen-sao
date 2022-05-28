@@ -1,7 +1,9 @@
-import { Button, Group, MultiSelect, Stack, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { pageHooks } from '../../../../graphql/queries';
+
+import { Button, Group, MultiSelect, Stack, TextInput } from '@mantine/core';
+
 import { WebsiteInfo, WebsiteInfoData, WebsiteInfoVars } from '../../../../types';
+import { pageHooks } from '../../../../graphql/queries';
 
 interface Props {
     data: WebsiteInfoData;

@@ -1,6 +1,7 @@
-import { Stack } from '@mantine/core';
-import { WebsiteInfoData } from '../../../../types';
 import EditWebsiteInfo from './EditWebsiteInfo';
+import { Stack } from '@mantine/core';
+
+import { WebsiteInfoData } from '../../../../types';
 
 interface Props {
     data: WebsiteInfoData;
