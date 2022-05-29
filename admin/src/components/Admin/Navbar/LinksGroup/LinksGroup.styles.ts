@@ -8,7 +8,7 @@ export default createStyles(
             color: theme.colorScheme === 'dark' ? theme.colors.indigo[7] : theme.black,
             fontSize: theme.fontSizes.md,
             '&:hover': {
-                backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
+                backgroundColor: theme.colorScheme === 'dark' ? theme.colors.gray[9] : theme.colors.gray[0],
                 color: theme.colorScheme === 'dark' ? theme.white : theme.black,
                 borderRadius: theme.radius.sm,
             },
