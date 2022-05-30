@@ -37,7 +37,6 @@ const AppHeader = ({ theme, opened, setOpened }: Props) => {
                         mr='xl'
                     />
                 </MediaQuery>
-
                 <Text
                     color='white'
                     component={Link} to='/'
@@ -46,7 +45,6 @@ const AppHeader = ({ theme, opened, setOpened }: Props) => {
                 >
                     {appConfig.title}
                 </Text>
-
                 <SegmentedControl
                     ml='auto'
                     value={colorScheme}
