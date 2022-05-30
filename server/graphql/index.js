@@ -16,7 +16,6 @@ const {
 } = require('./scalar/ObjectID.scalar');
 const {
     typeDefs: Token,
-    resolvers: tokenResolvers
 } = require('./schema/token.schema');
 const {
     typeDefs: User,
@@ -57,6 +56,10 @@ const {
     typeDefs: ActivityLog,
     resolvers: activityLogResolvers
 } = require('./schema/activity-log.schema');
+const {
+    typeDefs: ThongKe,
+    resolvers: thongKeResolvers
+} = require('./schema/thong-ke.schema');
 
 const defaultSchema = gql`
     type Query {
@@ -84,14 +87,14 @@ const schema = makeExecutableSchema({
         PhieuXuat,
         ChiTietPhieuXuat,
         Page,
-        ActivityLog
+        ActivityLog,
+        ThongKe
     ],
     resolvers: merge(
         dateResolvers,
         objectResolvers,
         objectIDResolvers,
         userResolvers,
-        tokenResolvers,
         fileResolvers,
         sanPhamResolvers,
         phieuNhapResolvers,
@@ -99,7 +102,8 @@ const schema = makeExecutableSchema({
         phieuXuatResolvers,
         chiTietPhieuXuatResolvers,
         pageResolvers,
-        activityLogResolvers
+        activityLogResolvers,
+        thongKeResolvers
     )
 });
 

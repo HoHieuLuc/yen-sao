@@ -37,21 +37,14 @@ const AppHeader = ({ theme, opened, setOpened }: Props) => {
                         mr='xl'
                     />
                 </MediaQuery>
-
-                <Text color='white' component={Link} to='/'>
-                    <h2>{appConfig.title}</h2>
-                </Text>
-
-                {/* <Text
-                    ml='auto'
+                <Text
                     color='white'
-                    component='a'
-                    rel='noreferrer'
-                    href='https://studio.apollographql.com/sandbox/explorer?endpoint=http%3A%2F%2Flocalhost%3A4000%2Fgql'
-                    target='_blank'
+                    component={Link} to='/'
+                    weight={700}
+                    size='xl'
                 >
-                    <h2>Studio (REMOVE IN PROD)</h2>
-                </Text> */}
+                    {appConfig.title}
+                </Text>
                 <SegmentedControl
                     ml='auto'
                     value={colorScheme}
