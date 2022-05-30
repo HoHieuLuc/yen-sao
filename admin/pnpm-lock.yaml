@@ -1657,7 +1657,7 @@ packages:
       '@emotion/memoize': 0.7.5
       '@emotion/unitless': 0.7.5
       '@emotion/utils': 1.0.0
-      csstype: 3.0.9
+      csstype: 3.1.0
     dev: false
 
   /@emotion/sheet/1.1.0:
@@ -4008,7 +4008,7 @@ packages:
     dev: false
 
   /clone/2.1.2:
-    resolution: {integrity: sha1-G39Ln1kfHo+DZwQBYANFoCiHQ18=}
+    resolution: {integrity: sha512-3Pe/CF1Nn94hyhIYpjtiLhdCoEoz0DqQ+988E9gmeEdQZlojxnOb74wctFyuwWQHzqyf9X7C7MG8juUpqBJT8w==}
     engines: {node: '>=0.8'}
     dev: false
 
@@ -5216,7 +5216,7 @@ packages:
     dev: false
 
   /eventemitter3/2.0.3:
-    resolution: {integrity: sha1-teEHm1n7XhuidxwKmTvgYKWMmbo=}
+    resolution: {integrity: sha512-jLN68Dx5kyFHaePoXWPsCGW5qdyZQtLYHkxkg02/Mz6g0kYpDx4FyP6XfArhQdlOC4b8Mv+EMxPo/8La7Tzghg==}
     dev: false
 
   /eventemitter3/4.0.7:
