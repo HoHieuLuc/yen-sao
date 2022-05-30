@@ -7,7 +7,7 @@ import {
     Burger,
     Center,
     Text,
-    Box,
+    Box
 } from '@mantine/core';
 import { faSun, faMoon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
