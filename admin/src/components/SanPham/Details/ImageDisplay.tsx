@@ -30,7 +30,14 @@ const ImageDisplay = ({ anhSanPham }: Props) => {
                 overlayOpacity={0.55}
                 overlayBlur={3}
                 withCloseButton={false}
-                size='50%'
+                styles={(theme) => ({
+                    modal: {
+                        width: '50%',
+                        [theme.fn.smallerThan('sm')]: {
+                            width: '100%',
+                        }
+                    }
+                })}
             >
                 <Image
                     src={anhSanPham}
