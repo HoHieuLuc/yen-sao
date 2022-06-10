@@ -18,6 +18,7 @@
         "@testing-library/jest-dom": "^5.16.4",
         "@testing-library/react": "^13.3.0",
         "@testing-library/user-event": "^13.5.0",
+        "@types/apollo-upload-client": "^17.0.0",
         "apollo-upload-client": "^17.0.0",
         "dayjs": "^1.11.2",
         "graphql": "^16.5.0",
@@ -25,8 +26,8 @@
         "react-dom": "^18.1.0",
         "react-router-dom": "^6.3.0",
         "react-scripts": "5.0.1",
-        "web-vitals": "^2.1.4",
-        "@types/apollo-upload-client": "^17.0.0"
+        "sanitize-html": "^2.7.0",
+        "web-vitals": "^2.1.4"
     },
     "scripts": {
         "start": "react-scripts start",
@@ -54,6 +55,7 @@
         "@types/react": "^18.0.9",
         "@types/react-dom": "^18.0.5",
         "@types/react-router-dom": "^5.3.3",
+        "@types/sanitize-html": "^2.6.2",
         "@typescript-eslint/eslint-plugin": "^5.26.0",
         "@typescript-eslint/parser": "^5.26.0",
         "eslint-config-react": "^1.1.7",
