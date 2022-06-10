@@ -6,6 +6,7 @@ import RichTextEditor from '@mantine/rte';
 import EditAbout from './EditAbout';
 
 import { AboutData } from '../../../../types';
+import sanitizeHtml from 'sanitize-html';
 
 interface Props {
     data: AboutData;
@@ -28,7 +29,15 @@ const About = ({ data }: Props) => {
                     />
                     : <>
                         <RichTextEditor
-                            value={data.about ? data.about.content.value : ''}
+                            value={data.about
+                                ? sanitizeHtml(data.about.content.value, {
+                                    allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']),
+                                    allowedClasses: {
+                                        '*': ['*']
+                                    }
+                                })
+                                : ''
+                            }
                             readOnly
                             onChange={() => void (0)}
                             placeholder='Nhập nội dung bài viết giới thiệu'

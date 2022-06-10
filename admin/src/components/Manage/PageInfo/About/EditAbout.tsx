@@ -2,6 +2,7 @@ import AboutForm from './AboutForm';
 
 import { AboutPageVars, AboutData } from '../../../../types';
 import { pageHooks } from '../../../../graphql/queries';
+import sanitizeHtml from 'sanitize-html';
 
 interface Props {
     data: AboutData;
@@ -26,7 +27,15 @@ const EditAbout = ({ setEditMode, data }: Props) => {
 
     return (
         <AboutForm
-            inititalValue={data.about ? data.about.content.value : ''}
+            inititalValue={data.about
+                ? sanitizeHtml(data.about.content.value, {
+                    allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']),
+                    allowedClasses: {
+                        '*': ['*']
+                    }
+                })
+                : ''
+            }
             loading={loading}
             handleSubmit={handleSubmitAbout}
             setEditMode={setEditMode}
