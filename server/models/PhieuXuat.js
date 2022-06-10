@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate-v2');
 const ChiTietPhieuXuat = require('./ChiTietPhieuXuat');
 
-const phieuXuat = mongoose.Schema(
+const phieuXuatSchema = mongoose.Schema(
     {
         nguoiXuat: {
             type: mongoose.Schema.Types.ObjectId,
@@ -34,7 +34,7 @@ const phieuXuat = mongoose.Schema(
     }
 );
 
-phieuXuat.pre('save', async function () {
+phieuXuatSchema.pre('save', async function () {
     const allChiTiets = await ChiTietPhieuXuat.find({
         _id: {
             $in: this.chiTiet
@@ -47,6 +47,6 @@ phieuXuat.pre('save', async function () {
     );
 });
 
-phieuXuat.plugin(mongoosePaginate);
+phieuXuatSchema.plugin(mongoosePaginate);
 
-module.exports = mongoose.model('PhieuXuat', phieuXuat);
+module.exports = mongoose.model('PhieuXuat', phieuXuatSchema);

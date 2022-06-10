@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const { JWT_SECRET, JWT_LIFETIME } = require('../utils/config');
 const mongoosePaginate = require('mongoose-paginate-v2');
 
-const UserSchema = mongoose.Schema({
+const userSchema = mongoose.Schema({
     username: {
         type: String,
         required: true,
@@ -46,16 +46,16 @@ const UserSchema = mongoose.Schema({
     }
 });
 
-UserSchema.pre('save', async function () {
+userSchema.pre('save', async function () {
     const salt = await bscrypt.genSalt(10);
     this.password = await bscrypt.hash(this.password, salt);
 });
 
-UserSchema.methods.comparePassword = async function (candidatePassword) {
+userSchema.methods.comparePassword = async function (candidatePassword) {
     return bscrypt.compare(candidatePassword, this.password);
 };
 
-UserSchema.methods.createJWT = function () {
+userSchema.methods.createJWT = function () {
     return jwt.sign(
         {
             id: this._id
@@ -67,6 +67,6 @@ UserSchema.methods.createJWT = function () {
     );
 };
 
-UserSchema.plugin(mongoosePaginate);
+userSchema.plugin(mongoosePaginate);
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model('User', userSchema);

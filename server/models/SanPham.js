@@ -1,9 +1,10 @@
-const mongoose = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate-v2');
-const slugify = require('slugify');
+const sanitizeHtml = require('sanitize-html');
 const { nanoid } = require('nanoid');
+const mongoose = require('mongoose');
+const slugify = require('slugify');
 
-const sanPham = mongoose.Schema(
+const sanPhamSchema = mongoose.Schema(
     {
         tenSanPham: {
             type: String,
@@ -70,9 +71,9 @@ const sanPham = mongoose.Schema(
     }
 );
 
-sanPham.plugin(mongoosePaginate);
+sanPhamSchema.plugin(mongoosePaginate);
 
-sanPham.pre('save', function (next) {
+sanPhamSchema.pre('save', function (next) {
     const slug = slugify(
         this.tenSanPham,
         {
@@ -81,11 +82,17 @@ sanPham.pre('save', function (next) {
         }
     );
     this.slug = `${slug}-${nanoid(5)}`;
+    this.moTa = sanitizeHtml(this.moTa, {
+        allowedTags: sanitizeHtml.defaults.allowedTags.concat([ 'img' ]),
+        allowedClasses: {
+            '*': ['*']
+        }
+    });
     next();
 });
 
 
-sanPham.pre('findOneAndUpdate', async function (next) {
+sanPhamSchema.pre('findOneAndUpdate', async function (next) {
     const sanPhamToUpdate = await this.model.findById(this.getQuery()._id);
     
     if(sanPhamToUpdate.tenSanPham === this.getUpdate().tenSanPham) {
@@ -100,7 +107,15 @@ sanPham.pre('findOneAndUpdate', async function (next) {
         }
     );
     this.getUpdate().slug = `${slug}-${nanoid(5)}`;
+
+    this.getUpdate().moTa = sanitizeHtml(this.getUpdate().moTa, {
+        allowedTags: sanitizeHtml.defaults.allowedTags.concat([ 'img' ]),
+        allowedClasses: {
+            '*': ['*']
+        }
+    });
+
     next();
 });
 
-module.exports = mongoose.model('SanPham', sanPham);
+module.exports = mongoose.model('SanPham', sanPhamSchema);
