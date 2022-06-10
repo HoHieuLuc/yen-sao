@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate-v2');
 
-const chiTietPhieuXuat = mongoose.Schema(
+const chiTietPhieuXuatSchema = mongoose.Schema(
     {
         maPhieuXuat: {
             type: mongoose.Schema.Types.ObjectId,
@@ -38,6 +38,6 @@ const chiTietPhieuXuat = mongoose.Schema(
     }
 );
 
-chiTietPhieuXuat.plugin(mongoosePaginate);
+chiTietPhieuXuatSchema.plugin(mongoosePaginate);
 
-module.exports = mongoose.model('ChiTietPhieuXuat', chiTietPhieuXuat);
+module.exports = mongoose.model('ChiTietPhieuXuat', chiTietPhieuXuatSchema);
