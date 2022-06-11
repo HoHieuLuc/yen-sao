@@ -3,6 +3,7 @@ const bscrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET, JWT_LIFETIME } = require('../utils/config');
 const mongoosePaginate = require('mongoose-paginate-v2');
+const { nanoid } = require('nanoid');
 
 const userSchema = mongoose.Schema({
     username: {
@@ -43,6 +44,10 @@ const userSchema = mongoose.Schema({
     isBanned: {
         type: Boolean,
         default: false
+    },
+    secret: {
+        type: String,
+        default: nanoid(10)
     }
 });
 
@@ -58,7 +63,8 @@ userSchema.methods.comparePassword = async function (candidatePassword) {
 userSchema.methods.createJWT = function () {
     return jwt.sign(
         {
-            id: this._id
+            id: this._id,
+            secret: this.secret
         },
         JWT_SECRET,
         {
