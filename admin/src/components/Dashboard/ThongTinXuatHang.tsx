@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { Anchor, Box, Grid, Paper, Stack, Text } from '@mantine/core';
 import LoadingWrapper from '../Utils/Wrappers/LoadingWrapper';
 import DashboardCalendar from './DashboardCalendar';
-import ErrorPage from '../Utils/Errors/ErrorPage';
 import { Link } from 'react-router-dom';
 
 import { convertToShortDate, convertToVND } from '../../utils/common';
@@ -14,7 +13,7 @@ const ThongTinXuatHang = () => {
     const [month, onMonthChange] = useState(new Date());
     const [selectedDay, setSelectedDay] = useState<Date | null>(null);
 
-    const { data, loading, error } = chiTietPhieuXuatHooks.useAllChiTietPhieuXuats({
+    const { data, loading } = chiTietPhieuXuatHooks.useAllChiTietPhieuXuats({
         from: dayjs(month).startOf('month').toDate(),
         to: dayjs(month).endOf('month').toDate()
     });
@@ -26,10 +25,6 @@ const ThongTinXuatHang = () => {
             return shortDate === convertToShortDate(selectedDay.getTime());
         }
     );
-
-    if (error) {
-        return <ErrorPage />;
-    }
 
     return (
         <LoadingWrapper loading={loading}>
