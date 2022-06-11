@@ -2,6 +2,7 @@ const { UserInputError, AuthenticationError } = require('apollo-server');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = require('../utils/config');
+const { nanoid } = require('nanoid');
 
 const getAll = async (page, limit, search) => {
     const options = {
@@ -65,6 +66,9 @@ const getCurrentUser = async (authHeader) => {
             if (currentUser.isBanned) {
                 throw new AuthenticationError('Tài khoản của bạn đã bị khóa');
             }
+            if (currentUser.secret !== payload.secret) {
+                throw new AuthenticationError('Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại');
+            }
             return { currentUser };
         } catch (error) {
             throw new AuthenticationError(error.message);
@@ -86,6 +90,7 @@ const changePassword = async (oldPassword, newPassword, currentUser) => {
     }
 
     user.password = newPassword;
+    user.secret = nanoid(10);
     await user.save();
 
     return user;
