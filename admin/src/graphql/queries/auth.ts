@@ -67,7 +67,13 @@ const useChangePassword = () => {
     return useMutation<
         never, ChangePasswordVars
     >(CHANGE_PASSWORD, {
-        onCompleted: () => showSuccessNotification('Đổi mật khẩu thành công'),
+        onCompleted: () => {
+            showSuccessNotification(`
+                Đổi mật khẩu thành công, bạn sẽ được chuyển hướng trong 2 giây
+            `);
+            localStorage.removeItem('token');
+            setTimeout(() => location.replace('/'), 2000);
+        },
         onError: (error) => showErrorNotification(error.message),
     });
 };
