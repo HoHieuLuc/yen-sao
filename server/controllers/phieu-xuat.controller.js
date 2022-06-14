@@ -1,8 +1,8 @@
-const { UserInputError } = require('apollo-server');
-const { checkIfDuplicateExists } = require('../utils/functions');
 const phieuXuatService = require('../services/phieu-xuat.service');
-const sanPhamService = require('../services/san-pham.service');
+const { checkIfDuplicateExists } = require('../utils/functions');
 const phieuXuatLogger = require('../loggers/phieu-xuat.logger');
+const sanPhamService = require('../services/san-pham.service');
+const { UserInputError } = require('apollo-server');
 
 const getAll = async (page, limit, from = null, to = null, sort) => {
     return phieuXuatService.getAll(page, limit, from, to, sort);

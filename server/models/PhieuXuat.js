@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate-v2');
 const ChiTietPhieuXuat = require('./ChiTietPhieuXuat');
+const mongoose = require('mongoose');
 
 const phieuXuatSchema = mongoose.Schema(
     {

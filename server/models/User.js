@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
-const bscrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const { JWT_SECRET, JWT_LIFETIME } = require('../utils/config');
 const mongoosePaginate = require('mongoose-paginate-v2');
 const { nanoid } = require('nanoid');
+const mongoose = require('mongoose');
+const bscrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const userSchema = mongoose.Schema({
     username: {

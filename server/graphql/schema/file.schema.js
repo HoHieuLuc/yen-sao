@@ -1,8 +1,8 @@
-const { gql } = require('apollo-server-express');
-const { GraphQLUpload } = require('graphql-upload');
-const chainMiddlewares = require('../../middlewares/index');
-const { adminRequired } = require('../../middlewares/authentication');
+const { authRequired } = require('../../middlewares/authentication');
 const uploadController = require('../../controllers/upload.controller');
+const chainMiddlewares = require('../../middlewares');
+const { GraphQLUpload } = require('graphql-upload');
+const { gql } = require('apollo-server-express');
 
 const typeDefs = gql`
     scalar Upload
@@ -26,7 +26,7 @@ const typeDefs = gql`
 const resolvers = {
     Upload: GraphQLUpload,
     Mutation: {
-        upload: chainMiddlewares(adminRequired,
+        upload: chainMiddlewares(authRequired,
             () => ({})
         ),
     },

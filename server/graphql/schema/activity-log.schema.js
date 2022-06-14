@@ -1,7 +1,7 @@
-const { gql } = require('apollo-server-express');
-const chainMiddlewares = require('../../middlewares/index');
 const { adminRequired, authRequired } = require('../../middlewares/authentication');
 const activityLogController = require('../../controllers/activity-log.controller');
+const chainMiddlewares = require('../../middlewares');
+const { gql } = require('apollo-server-express');
 
 const typeDefs = gql`
     type ActivityDescription {

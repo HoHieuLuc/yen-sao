@@ -1,11 +1,11 @@
-const { ApolloServer } = require('apollo-server-express');
 const { ApolloServerPluginDrainHttpServer } = require('apollo-server-core');
 const { graphqlUploadExpress } = require('graphql-upload');
+const { ApolloServer } = require('apollo-server-express');
 const express = require('express');
+const helmet = require('helmet');
 const http = require('http');
 const cors = require('cors');
 const path = require('path');
-const helmet = require('helmet');
 
 const { PORT, NODE_ENV } = require('./utils/config');
 const connectDB = require('./db/connect');

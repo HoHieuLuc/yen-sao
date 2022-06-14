@@ -1,5 +1,5 @@
-const { UserInputError } = require('apollo-server');
 const uploadService = require('../services/upload.service');
+const { UserInputError } = require('apollo-server');
 
 const singleUpload = async (file) => {
     return uploadService.singleUpload(file);

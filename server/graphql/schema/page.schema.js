@@ -1,7 +1,7 @@
-const { gql } = require('apollo-server-express');
-const chainMiddlewares = require('../../middlewares/index');
 const { adminRequired } = require('../../middlewares/authentication');
 const pageController = require('../../controllers/page.controller');
+const chainMiddlewares = require('../../middlewares');
+const { gql } = require('apollo-server-express');
 
 const typeDefs = gql`
     type Page {

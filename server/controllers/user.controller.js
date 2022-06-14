@@ -1,7 +1,7 @@
 const userService = require('../services/user.service');
 const { escapeRegExp } = require('../utils/functions');
-const { ForbiddenError } = require('apollo-server');
 const userLogger = require('../loggers/user.logger');
+const { ForbiddenError } = require('apollo-server');
 
 const getAll = async (page, limit, search = '') => {
     return userService.getAll(page, limit, escapeRegExp(search));
