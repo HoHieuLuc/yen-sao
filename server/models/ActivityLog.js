@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate-v2');
+const mongoose = require('mongoose');
 
 const activityLogSchema = new mongoose.Schema(
     {
@@ -19,7 +19,7 @@ const activityLogSchema = new mongoose.Schema(
             type: String,
             required: true,
             enum: {
-                values: ['PhieuNhap', 'PhieuXuat', 'SanPham', 'User'],
+                values: ['PhieuNhap', 'PhieuXuat', 'SanPham', 'User', 'CamNang'],
             }
         },
         onDocumentId: {
