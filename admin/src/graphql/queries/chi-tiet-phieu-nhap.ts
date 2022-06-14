@@ -1,12 +1,8 @@
 import { gql, useApolloClient, useMutation, useQuery } from '@apollo/client';
 import { showErrorNotification, showSuccessNotification } from '../../events';
 import {
-    AllChiTietPhieuNhaps,
-    AllChiTietPhieuNhapsVars,
-    CreateChiTietPhieuNhapVars,
-    UpdateChiTietPhieuNhapVars,
-    ChiTietPhieuNhapsBySanPhamID,
-    ChiTietPhieuNhapsBySanPhamIDVars,
+    UpdateChiTietPhieuNhapVars, ChiTietPhieuNhapsBySanPhamID, ChiTietPhieuNhapsBySanPhamIDVars,
+    AllChiTietPhieuNhaps, AllChiTietPhieuNhapsVars, CreateChiTietPhieuNhapVars
 } from '../../types';
 
 const ALL = gql`

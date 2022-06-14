@@ -4,6 +4,7 @@ export * from './phieu-nhap';
 export * from './phieu-xuat';
 export * from './san-pham';
 export * from './activity';
+export * from './cam-nang';
 export * from './upload';
 export * from './page';
 export * from './auth';
