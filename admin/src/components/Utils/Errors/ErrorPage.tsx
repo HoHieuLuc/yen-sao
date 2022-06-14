@@ -1,3 +1,5 @@
+import { useDocumentTitle } from '@mantine/hooks';
+
 import { createStyles, Title, Text, Button, Container, Group } from '@mantine/core';
 import { Link } from 'react-router-dom';
 
@@ -39,6 +41,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 const ErrorPage = () => {
+    useDocumentTitle('Có lỗi xảy ra');
     const { classes } = useStyles();
 
     return (
