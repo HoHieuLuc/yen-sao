@@ -4,10 +4,10 @@ import { formList, useForm } from '@mantine/form';
 import ChiTietPhieuNhapListForm from './ChiTietPhieuNhapListForm';
 import { Accordion, Button, Group, Stack } from '@mantine/core';
 import { PlusIcon } from '../../Utils/Icons';
+import { DatePicker } from '@mantine/dates';
 
 import { ChiTietPhieuNhapInput, CreatePhieuNhapVars } from '../../../types';
 import { showErrorNotification } from '../../../events';
-import { DatePicker } from '@mantine/dates';
 
 interface Props {
     loading: boolean;
@@ -78,7 +78,7 @@ const PhieuNhapForm = ({ loading, handleSubmit }: Props) => {
     };
 
     return (
-        <form onSubmit={phieuNhapForm.onSubmit(submit)}>
+        <form onSubmit={phieuNhapForm.onSubmit(submit)} spellCheck={false}>
             <Stack spacing='xs'>
                 <DatePicker
                     label='Ngày nhập'

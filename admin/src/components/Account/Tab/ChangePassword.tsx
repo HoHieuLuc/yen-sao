@@ -32,7 +32,7 @@ const ChangePassword = () => {
     };
 
     return (
-        <form onSubmit={authForm.onSubmit(handleSubmit)}>
+        <form onSubmit={authForm.onSubmit(handleSubmit)} spellCheck={false}>
             <Center>
                 <Title>Đổi mật khẩu</Title>
             </Center>
