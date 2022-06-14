@@ -4,7 +4,6 @@ import AccountDetails from '../../../Account/Tab/AccountDetails';
 import { UserById } from '../../../../types';
 
 interface Props {
-    id: string;
     data: UserById | undefined;
     loading: boolean;
 }
