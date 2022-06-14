@@ -12,11 +12,14 @@ interface Props {
 }
 
 const ActivityDetailsPage = ({ title }: Props) => {
-    useDocumentTitle(title);
     const { id } = useParams();
     const { data, loading, error } = activityHooks.useActivityById(id || '');
-
-    if (error || (data && data.activityLog && data.activityLog.byID === null)) {
+    useDocumentTitle(
+        `${title} | ${data && data.activityLog.byID 
+            ? data.activityLog.byID.description.name
+            : 'Đang tải...'}`
+    );
+    if (error || (data && !data.activityLog.byID)) {
         return <NotFound />;
     }
 
