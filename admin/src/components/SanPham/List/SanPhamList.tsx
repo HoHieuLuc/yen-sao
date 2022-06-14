@@ -5,7 +5,7 @@ import {
     useSortParams,
 } from '../../../hooks';
 
-import { Center, ScrollArea, Table, Text, TextInput, UnstyledButton } from '@mantine/core';
+import { Center, ScrollArea, Stack, Table, Text, TextInput, UnstyledButton } from '@mantine/core';
 import { SortIcon, LinkIcon, SearchIcon } from '../../Utils/Icons';
 import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
 import AppPagination from '../../Utils/Pagination/AppPagination';
@@ -76,60 +76,61 @@ const SanPhamList = ({ title }: Props) => {
 
     return (
         <LoadingWrapper loading={loading}>
-            <TextInput
-                label='Tìm kiếm'
-                placeholder='Tìm kiếm sản phẩm'
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                rightSection={<SearchIcon />}
-                mb='xs'
-            />
-            <ScrollArea style={{ whiteSpace: 'break-spaces' }}>
-                <Table striped highlightOnHover mb='sm'>
-                    <thead>
-                        <tr style={{ whiteSpace: 'nowrap' }}>
-                            <th>STT</th>
-                            <th style={{ width: '50%' }}>Tên sản phẩm</th>
-                            <th>
-                                <UnstyledButton onClick={() => toggleSortSoLuong('soLuong')}>
-                                    Số lượng tồn (kg) <SortIcon
-                                        currentSort={sortSanPham.currentSortValue}
-                                        ascValue='SO_LUONG_ASC'
-                                        descValue='SO_LUONG_DESC'
-                                    />
-                                </UnstyledButton>
-                            </th>
-                            <th>
-                                <UnstyledButton onClick={() => toggleSortSoLuong('isFeatured')}>
-                                    Tình trạng <SortIcon
-                                        currentSort={sortSanPham.currentSortValue}
-                                        ascValue='FEATURED_ASC'
-                                        descValue='FEATURED_DESC'
-                                    />
-                                </UnstyledButton>
-                            </th>
-                            <th>
-                                <Center>
-                                    Chức năng
-                                </Center>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {sanPhamElements}
-                    </tbody>
-                </Table>
-            </ScrollArea>
-            {data && (
-                <AppPagination
-                    total={data.sanPham.all.pageInfo.totalPages}
-                    siblings={1}
-                    page={currentPage}
-                    onChange={handlePageChange}
-                    limit={limit.toString()}
-                    onLimitChange={handleLimitChange}
+            <Stack spacing='xs'>
+                <TextInput
+                    label='Tìm kiếm'
+                    placeholder='Tìm kiếm sản phẩm'
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    rightSection={<SearchIcon />}
                 />
-            )}
+                <ScrollArea style={{ whiteSpace: 'break-spaces' }}>
+                    <Table striped highlightOnHover>
+                        <thead>
+                            <tr style={{ whiteSpace: 'nowrap' }}>
+                                <th>STT</th>
+                                <th style={{ width: '50%' }}>Tên sản phẩm</th>
+                                <th>
+                                    <UnstyledButton onClick={() => toggleSortSoLuong('soLuong')}>
+                                        Số lượng tồn (kg) <SortIcon
+                                            currentSort={sortSanPham.currentSortValue}
+                                            ascValue='SO_LUONG_ASC'
+                                            descValue='SO_LUONG_DESC'
+                                        />
+                                    </UnstyledButton>
+                                </th>
+                                <th>
+                                    <UnstyledButton onClick={() => toggleSortSoLuong('isFeatured')}>
+                                        Tình trạng <SortIcon
+                                            currentSort={sortSanPham.currentSortValue}
+                                            ascValue='FEATURED_ASC'
+                                            descValue='FEATURED_DESC'
+                                        />
+                                    </UnstyledButton>
+                                </th>
+                                <th>
+                                    <Center>
+                                        Chức năng
+                                    </Center>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {sanPhamElements}
+                        </tbody>
+                    </Table>
+                </ScrollArea>
+                {data && (
+                    <AppPagination
+                        total={data.sanPham.all.pageInfo.totalPages}
+                        siblings={1}
+                        page={currentPage}
+                        onChange={handlePageChange}
+                        limit={limit.toString()}
+                        onLimitChange={handleLimitChange}
+                    />
+                )}
+            </Stack>
         </LoadingWrapper>
     );
 };
