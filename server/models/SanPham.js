@@ -73,7 +73,7 @@ const sanPhamSchema = mongoose.Schema(
 
 sanPhamSchema.plugin(mongoosePaginate);
 
-sanPhamSchema.pre('save', function (next) {
+sanPhamSchema.pre('save', function () {
     const slug = slugify(
         this.tenSanPham,
         {
@@ -83,19 +83,24 @@ sanPhamSchema.pre('save', function (next) {
     );
     this.slug = `${slug}-${nanoid(5)}`;
     this.moTa = sanitizeHtml(this.moTa, {
-        allowedTags: sanitizeHtml.defaults.allowedTags.concat([ 'img' ]),
+        allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']),
         allowedClasses: {
             '*': ['*']
         }
     });
-    next();
 });
 
-
 sanPhamSchema.pre('findOneAndUpdate', async function (next) {
+    this.getUpdate().moTa = sanitizeHtml(this.getUpdate().moTa, {
+        allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']),
+        allowedClasses: {
+            '*': ['*']
+        }
+    });
+
     const sanPhamToUpdate = await this.model.findById(this.getQuery()._id);
-    
-    if(sanPhamToUpdate.tenSanPham === this.getUpdate().tenSanPham) {
+
+    if (!this.getUpdate().tenSanPham || sanPhamToUpdate.tenSanPham === this.getUpdate().tenSanPham) {
         return next();
     }
 
@@ -107,15 +112,6 @@ sanPhamSchema.pre('findOneAndUpdate', async function (next) {
         }
     );
     this.getUpdate().slug = `${slug}-${nanoid(5)}`;
-
-    this.getUpdate().moTa = sanitizeHtml(this.getUpdate().moTa, {
-        allowedTags: sanitizeHtml.defaults.allowedTags.concat([ 'img' ]),
-        allowedClasses: {
-            '*': ['*']
-        }
-    });
-
-    next();
 });
 
 module.exports = mongoose.model('SanPham', sanPhamSchema);
