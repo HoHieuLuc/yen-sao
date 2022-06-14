@@ -24,13 +24,19 @@ import ActivityListPage from '../components/Activity/List/ActivityListPage';
 import UserDetails from '../components/Manage/User/Details/UserDetails';
 import UserList from '../components/Manage/User/List/UserList';
 
-import { AppConfig } from './types';
+import CamNangDetailsPage from '../components/CamNang/Details/CamNangDetailsPage';
+import CreateCamNang from '../components/CamNang/Create/CreateCamNang';
+import EditCamNang from '../components/CamNang/Edit/EditCamNang';
+import CamNangList from '../components/CamNang/List/CamNangList';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
+    faBook,
     faBox, faCircleInfo, faHistory, faHouse, faHouseLock, faList, faPlus,
     faTruckMedical, faTruckRampBox, faUser, faUserGear
 } from '@fortawesome/free-solid-svg-icons';
+
+import { AppConfig } from './types';
 
 const appConfig: AppConfig = {
     title: 'Yến sào Ms. Tưởng',
@@ -61,7 +67,7 @@ const appConfig: AppConfig = {
                     type: 'nav',
                     to: '/san-pham/them',
                     roles: ['admin'],
-                    element: <CreateSanPham title='Thêm sản phẩm mới' />,
+                    element: <CreateSanPham title='Thêm sản phẩm' />,
                     icon: <FontAwesomeIcon icon={faPlus} />
                 },
                 {
@@ -144,6 +150,40 @@ const appConfig: AppConfig = {
                     title: 'Sửa phiếu xuất',
                     to: '/phieu-xuat/:id/sua',
                     element: <EditPhieuXuatPage />
+                }
+            ]
+        },
+        {
+            type: 'menu',
+            title: 'Cẩm nang',
+            subLinksPattern: '/cam-nang',
+            icon: <FontAwesomeIcon icon={faBook} />,
+            subLinks: [
+                {
+                    type: 'nav',
+                    title: 'Danh sách',
+                    to: '/cam-nang',
+                    element: <CamNangList title='Danh sách cẩm nang' />,
+                    icon: <FontAwesomeIcon icon={faList} />
+                },
+                {
+                    type: 'nav',
+                    title: 'Thêm mới',
+                    to: '/cam-nang/them',
+                    element: <CreateCamNang title='Thêm cẩm nang' />,
+                    icon: <FontAwesomeIcon icon={faPlus} />
+                },
+                {
+                    type: 'hidden',
+                    title: 'Chi tiết cẩm nang',
+                    to: '/cam-nang/:id',
+                    element: <CamNangDetailsPage />
+                },
+                {
+                    type: 'hidden',
+                    title: 'Chỉnh sửa cẩm nang',
+                    to: '/cam-nang/:id/sua',
+                    element: <EditCamNang />
                 }
             ]
         },
