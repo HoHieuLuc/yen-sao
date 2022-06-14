@@ -4,18 +4,18 @@ import { sanPhamHooks } from '../../../graphql/queries';
 import { SanPham } from '../../../types';
 
 interface Props {
-    sanPham: SanPham;
+    data: SanPham;
     closeModal: () => void;
     callback: () => void;
 }
 
-const DeleteSanPham = ({ sanPham, closeModal, callback }: Props) => {
+const DeleteSanPham = ({ data, closeModal, callback }: Props) => {
     const [deleteSanPham, { loading }] = sanPhamHooks.useDeleteSanPham();
 
     const handleDelete = () => {
         void deleteSanPham({
             variables: {
-                id: sanPham.id
+                id: data.id
             },
             onCompleted: () => {
                 callback();
@@ -27,7 +27,7 @@ const DeleteSanPham = ({ sanPham, closeModal, callback }: Props) => {
     return (
         <Box>
             <Text>
-                Bạn có chắc muốn xóa sản phẩm {sanPham.tenSanPham}?
+                Bạn có chắc muốn xóa sản phẩm {data.tenSanPham}?
             </Text>
             <Group position='right' mt='md'>
                 <Button
