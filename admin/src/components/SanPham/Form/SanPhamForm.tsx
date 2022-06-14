@@ -3,25 +3,25 @@ import { useUpload } from '../../../hooks';
 import { useForm } from '@mantine/form';
 import { useState } from 'react';
 
+import CurrencyInput from '../../Utils/Input/CurrencyInput';
 import ImageDropzone from '../ImageDropzone/ImageDropzone';
 import RichTextEditor from '@mantine/rte';
 import {
-    Stack, Switch, Text, Textarea, TextInput,
     Accordion, Button, Group, InputWrapper, MultiSelect,
+    Stack, Switch, Text, Textarea, TextInput
 } from '@mantine/core';
 
 import { showErrorNotification } from '../../../events';
-import { SanPhamFormVars } from '../../../types';
-import CurrencyInput from '../../Utils/Input/CurrencyInput';
+import { SanPhamFormData } from '../../../types';
 
 interface Props {
     loading: boolean;
-    initialValues?: SanPhamFormVars;
-    handleSubmit: (values: SanPhamFormVars, callback: () => void) => void;
+    initialValues?: SanPhamFormData;
+    handleSubmit: (values: SanPhamFormData, callback: () => void) => void;
 }
 
 const SanPhamForm = ({ loading, initialValues, handleSubmit }: Props) => {
-    const sanPhamForm = useForm<SanPhamFormVars>({
+    const sanPhamForm = useForm<SanPhamFormData>({
         initialValues: {
             tenSanPham: initialValues?.tenSanPham || '',
             donGiaSi: initialValues?.donGiaSi || 0,
@@ -45,10 +45,10 @@ const SanPhamForm = ({ loading, initialValues, handleSubmit }: Props) => {
         sanPhamForm.values.donGiaTuyChon !== ''
     );
 
-    const handleOnChangeImages = (images: Array<string>) => {
+    const handleOnChangeImages = (imageUrls: Array<string>) => {
         sanPhamForm.setFieldValue(
             'anhSanPham',
-            [...sanPhamForm.values.anhSanPham, ...images]
+            [...sanPhamForm.values.anhSanPham, ...imageUrls]
         );
     };
 
@@ -59,7 +59,7 @@ const SanPhamForm = ({ loading, initialValues, handleSubmit }: Props) => {
         );
     };
 
-    const submit = (values: SanPhamFormVars) => {
+    const submit = (values: SanPhamFormData) => {
         if (values.anhSanPham.length === 0) {
             return showErrorNotification('Vui lòng chọn ít nhất 1 ảnh');
         }
@@ -67,7 +67,7 @@ const SanPhamForm = ({ loading, initialValues, handleSubmit }: Props) => {
     };
 
     return (
-        <form onSubmit={sanPhamForm.onSubmit(submit)}>
+        <form onSubmit={sanPhamForm.onSubmit(submit)} spellCheck={false}>
             <Stack spacing='xs'>
                 <TextInput
                     label='Tên sản phẩm'
@@ -155,6 +155,7 @@ const SanPhamForm = ({ loading, initialValues, handleSubmit }: Props) => {
                             images={sanPhamForm.values.anhSanPham}
                             onChange={handleOnChangeImages}
                             onRemoveImage={handleRemoveImage}
+                            maxLength={5}
                         />
                     </Accordion.Item>
                 </Accordion>

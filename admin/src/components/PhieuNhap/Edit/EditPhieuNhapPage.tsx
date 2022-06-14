@@ -8,8 +8,8 @@ import EditChiTietPhieuNhap from './EditChiTietPhieuNhap';
 import NotFound from '../../Utils/Errors/NotFound';
 import EditPhieuNhap from './EditPhieuNhap';
 
-import { phieuNhapHooks } from '../../../graphql/queries';
 import { convertToShortDate, convertToVND } from '../../../utils/common';
+import { phieuNhapHooks } from '../../../graphql/queries';
 
 const EditPhieuNhapPage = () => {
     const { id } = useParams();
@@ -21,7 +21,7 @@ const EditPhieuNhapPage = () => {
             : 'Đang tải...'
     );
 
-    if (error || !id || (data && data.phieuNhap && data.phieuNhap.byID === null)) {
+    if (error || !id || (data && !data.phieuNhap.byID)) {
         return <NotFound />;
     }
 

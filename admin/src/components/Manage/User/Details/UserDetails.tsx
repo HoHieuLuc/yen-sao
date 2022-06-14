@@ -22,7 +22,7 @@ const UserDetails = () => {
             : 'Đang tải...'} | ${currentTabTitle}`
     );
 
-    if (!id || error || (data && data.user && data.user.byID === null)) {
+    if (!id || error || (data && !data.user.byID)) {
         return <NotFound />;
     }
 
@@ -43,7 +43,6 @@ const UserDetails = () => {
         >
             <Tabs.Tab label="Thông tin người dùng" tabKey='thong-tin'>
                 <DetailsTab
-                    id={id}
                     data={data}
                     loading={loading}
                 />

@@ -1,5 +1,7 @@
-import { Button, Group, PasswordInput, Stack, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
+
+import { Button, Group, PasswordInput, Stack, TextInput } from '@mantine/core';
+
 import { CreateUserVars } from '../../../../types';
 
 interface Props {
@@ -43,7 +45,7 @@ const UserForm = ({ onSubmit, loading }: Props) => {
     };
 
     return (
-        <form onSubmit={userForm.onSubmit(handleSubmit)}>
+        <form onSubmit={userForm.onSubmit(handleSubmit)} spellCheck={false}>
             <Stack spacing='xs'>
                 <TextInput
                     label='Tài khoản'

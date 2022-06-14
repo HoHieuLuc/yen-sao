@@ -1,13 +1,8 @@
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { showErrorNotification, showSuccessNotification } from '../../events';
 import {
-    User, 
-    AllUsers, 
-    UserById,
-    BanByIdVars, 
-    AllUsersVars, 
-    CreateUserVars, 
-    UpdateUserVars, 
+    AllUsersVars, CreateUserVars, UpdateUserVars,
+    User, AllUsers, UserById, BanByIdVars
 } from '../../types';
 
 const ALL = gql`

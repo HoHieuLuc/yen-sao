@@ -1,11 +1,8 @@
 import { gql, useApolloClient, useMutation, useQuery } from '@apollo/client';
 import { showErrorNotification, showSuccessNotification } from '../../events';
 import {
-    AllPhieuNhaps,
-    PhieuNhapByID,
-    AllPhieuNhapsVars,
-    CreatePhieuNhapVars,
-    UpdatePhieuNhapInput,
+    AllPhieuNhaps, PhieuNhapByID, AllPhieuNhapsVars,
+    CreatePhieuNhapVars, UpdatePhieuNhapVars
 } from '../../types';
 
 const ALL = gql`
@@ -143,7 +140,7 @@ const useCreatePhieuNhap = () => {
 
 const useUpdatePhieuNhap = () => {
     return useMutation<
-        never, UpdatePhieuNhapInput
+        never, UpdatePhieuNhapVars
     >(UPDATE, {
         onCompleted: () => showSuccessNotification('Cập nhật phiếu nhập thành công'),
         onError: (error) => showErrorNotification(error.message)

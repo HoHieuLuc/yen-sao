@@ -71,7 +71,7 @@ const Login = ({ getCurrentUser }: Props) => {
                     <Center mb='xs'>
                         <Title>Đăng nhập</Title>
                     </Center>
-                    <form onSubmit={loginForm.onSubmit(handleLogin)}>
+                    <form onSubmit={loginForm.onSubmit(handleLogin)} spellCheck={false}>
                         <TextInput
                             label='Tên đăng nhập'
                             placeholder='Nhập tên đăng nhập'

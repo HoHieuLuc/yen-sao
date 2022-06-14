@@ -1,15 +1,8 @@
 import { gql, useApolloClient, useMutation, useQuery } from '@apollo/client';
 import { showErrorNotification, showSuccessNotification } from '../../events';
 import {
-    ActivityById,
-    MyActivities,
-    AllActivities,
-    MyActivitiesVars,
-    AllActivitiesVars,
-    ActivitiesByUserId,
-    ActivitiesByUserIdVars,
-    ActivitiesByDocumentId,
-    ActivitiesByDocumentIdVars,
+    ActivitiesByUserId, ActivitiesByUserIdVars, ActivitiesByDocumentId, ActivitiesByDocumentIdVars,
+    ActivityById, MyActivities, AllActivities, MyActivitiesVars, AllActivitiesVars
 } from '../../types';
 
 const ALL = gql`
@@ -192,7 +185,7 @@ const useActivitiesByUserId = (variables: ActivitiesByUserIdVars) => {
     });
 };
 
-const useActivitiesByDocumentId = (variables: ActivitiesByDocumentIdVars) => { 
+const useActivitiesByDocumentId = (variables: ActivitiesByDocumentIdVars) => {
     return useQuery<
         ActivitiesByDocumentId, ActivitiesByDocumentIdVars
     >(BY_DOCUMENT_ID, {

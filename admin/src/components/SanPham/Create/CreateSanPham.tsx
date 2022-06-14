@@ -1,9 +1,10 @@
 import { useDocumentTitle } from '@mantine/hooks';
 
+import { Center, Stack, Title } from '@mantine/core';
 import SanPhamForm from '../Form/SanPhamForm';
 
 import { sanPhamHooks } from '../../../graphql/queries';
-import { SanPhamFormVars } from '../../../types';
+import { SanPhamFormData } from '../../../types';
 
 interface Props {
     title: string;
@@ -13,7 +14,7 @@ const CreateSanPham = ({ title }: Props) => {
     useDocumentTitle(title);
     const [createSanPham, { loading }] = sanPhamHooks.useCreateSanPham();
 
-    const handleCreateSanPham = (values: SanPhamFormVars) => {
+    const handleCreateSanPham = (values: SanPhamFormData) => {
         void createSanPham({
             variables: {
                 payload: values
@@ -22,10 +23,15 @@ const CreateSanPham = ({ title }: Props) => {
     };
 
     return (
-        <SanPhamForm
-            loading={loading}
-            handleSubmit={handleCreateSanPham}
-        />
+        <Stack spacing='xs'>
+            <Center>
+                <Title>Thêm sản phẩm mới</Title>
+            </Center>
+            <SanPhamForm
+                loading={loading}
+                handleSubmit={handleCreateSanPham}
+            />
+        </Stack>
     );
 };
 

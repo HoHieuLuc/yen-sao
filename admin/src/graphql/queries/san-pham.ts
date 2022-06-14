@@ -1,11 +1,8 @@
 import { gql, useApolloClient, useMutation, useQuery } from '@apollo/client';
 import { showErrorNotification, showSuccessNotification } from '../../events';
 import {
-    AllSanPhams,
-    SanPhamByID,
-    AllSanPhamVars,
-    SanPhamFormVars,
-    UpdateSanPhamInput,
+    AllSanPhams, SanPhamByID, AllSanPhamVars,
+    UpdateSanPhamVars, CreateSanPhamVars,
 } from '../../types';
 
 const ALL = gql`
@@ -118,7 +115,7 @@ const useSanPhamByID = (id: string) => {
 const useCreateSanPham = () => {
     const client = useApolloClient();
     return useMutation<
-        never, { payload: SanPhamFormVars }
+        never, CreateSanPhamVars
     >(CREATE, {
         onCompleted: () => {
             showSuccessNotification('Thêm sản phẩm thành công');
@@ -151,7 +148,7 @@ const useDeleteSanPham = () => {
 
 const useUpdateSanPham = () => {
     return useMutation<
-        never, UpdateSanPhamInput
+        never, UpdateSanPhamVars
     >(UPDATE, {
         onCompleted: () => showSuccessNotification('Cập nhật sản phẩm thành công'),
         onError: (error) => showErrorNotification(error.message)

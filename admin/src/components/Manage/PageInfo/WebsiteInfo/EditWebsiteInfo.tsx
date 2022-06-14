@@ -32,7 +32,7 @@ const EditWebsiteInfo = ({ data }: Props) => {
     };
 
     return (
-        <form onSubmit={websiteInfoForm.onSubmit(handleSubmit)}>
+        <form onSubmit={websiteInfoForm.onSubmit(handleSubmit)} spellCheck={false}>
             <Stack spacing='xs'>
                 <MultiSelect
                     label='Địa chỉ'

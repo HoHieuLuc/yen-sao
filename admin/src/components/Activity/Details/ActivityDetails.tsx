@@ -1,9 +1,11 @@
 import PhieuNhapDetails from '../../PhieuNhap/Details/PhieuNhapDetails';
 import PhieuXuatDetails from '../../PhieuXuat/Details/PhieuXuatDetails';
 import SanPhamDetails from '../../SanPham/Details/SanPhamDetails';
+import CamNangDetails from '../../CamNang/Details/CamNangDetails';
 import { Box, Center, Paper, Title } from '@mantine/core';
 import ErrorPage from '../../Utils/Errors/ErrorPage';
 
+import { convertToVietnameseDate } from '../../../utils/common';
 import { ActivityById } from '../../../types';
 
 interface Props {
@@ -22,6 +24,9 @@ const ActivityDetails = ({ data }: Props) => {
             break;
         case 'PhieuXuat' :
             content = <PhieuXuatDetails data={data.activityLog.byID.description.value} />;
+            break;
+        case 'CamNang':
+            content = <CamNangDetails data={data.activityLog.byID.description.value} />;
             break;
         default:
             break;
@@ -43,6 +48,9 @@ const ActivityDetails = ({ data }: Props) => {
                     </div>
                     <div>
                         Mô tả: {data.activityLog.byID.description.name}
+                    </div>
+                    <div>
+                        Ngày thực hiện: {convertToVietnameseDate(data.activityLog.byID.createdAt)}
                     </div>
                 </Box>
             </Center>

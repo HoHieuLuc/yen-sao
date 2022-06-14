@@ -32,7 +32,7 @@ const EditAccount = ({ user }: Props) => {
     };
 
     return (
-        <form onSubmit={userForm.onSubmit(handleSubmit)}>
+        <form onSubmit={userForm.onSubmit(handleSubmit)} spellCheck={false}>
             <Center>
                 <Title>Cập nhật tài khoản</Title>
             </Center>

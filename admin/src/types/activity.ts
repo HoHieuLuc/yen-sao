@@ -1,6 +1,7 @@
 import { PageInfo, PaginateVars } from './paginate';
 import { PhieuNhap } from './phieu-nhap';
 import { PhieuXuat } from './phieu-xuat';
+import { CamNang } from './cam-nang';
 import { SanPham } from './san-pham';
 import { User } from './user';
 
@@ -78,9 +79,17 @@ export interface PhieuXuatActivity extends BaseActivity {
     }
 }
 
+export interface CamNangActivity extends BaseActivity {
+    onCollection: 'CamNang';
+    description: {
+        name: string;
+        value: CamNang;
+    }
+}
+
 export interface ActivityById {
     activityLog: {
-        byID: SanPhamActivity | PhieuNhapActivity | PhieuXuatActivity;
+        byID: SanPhamActivity | PhieuNhapActivity | PhieuXuatActivity | CamNangActivity;
     }
 }
 

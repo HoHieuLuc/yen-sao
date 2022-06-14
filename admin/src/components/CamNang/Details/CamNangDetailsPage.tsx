@@ -7,24 +7,23 @@ import NotFound from '../../Utils/Errors/NotFound';
 import DetailsTab from './Tabs/DetailsTab';
 import { Tabs } from '@mantine/core';
 
-import { convertToShortDate } from '../../../utils/common';
-import { phieuXuatHooks } from '../../../graphql/queries';
+import { camNangHooks } from '../../../graphql/queries';
 
-const PhieuXuatDetailsPage = () => {
+const CamNangDetailsPage = () => {
     const { id } = useParams();
+    const { data, loading, error } = camNangHooks.useCamNangByID(id || '');
     const { activeTab, onTabChange, currentTabTitle } = useTabs(
         ['chi-tiet', 'lich-su'],
         ['Chi tiết', 'Lịch sử chỉnh sửa']
     );
-    const { data, loading, error } = phieuXuatHooks.usePhieuXuatById(id || '');
+
     useDocumentTitle(
-        `${data && data.phieuXuat.byID
-            ? `Phiếu xuất ngày ${convertToShortDate(data.phieuXuat.byID.ngayXuat)}`
+        `${data && data.camNang.byID 
+            ? `Cẩm nang ${data.camNang.byID.tieuDe}`
             : 'Đang tải...'} | ${currentTabTitle}`
     );
 
-
-    if (!id || error || (data && !data.phieuXuat.byID)) {
+    if (!id || error || (data && !data.camNang.byID)) {
         return <NotFound />;
     }
 
@@ -43,9 +42,8 @@ const PhieuXuatDetailsPage = () => {
                 }
             }}
         >
-            <Tabs.Tab label='Thông tin phiếu xuất' tabKey='chi-tiet'>
+            <Tabs.Tab label='Thông tin cẩm nang' tabKey='chi-tiet'>
                 <DetailsTab
-                    id={id}
                     data={data}
                     loading={loading}
                 />
@@ -57,4 +55,4 @@ const PhieuXuatDetailsPage = () => {
     );
 };
 
-export default PhieuXuatDetailsPage;
+export default CamNangDetailsPage;

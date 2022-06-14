@@ -20,7 +20,7 @@ const EditPhieuXuatPage = () => {
             : 'Đang tải...'
     );
 
-    if (error || !id || (data && data.phieuXuat && data.phieuXuat.byID === null)) {
+    if (error || !id || (data && !data.phieuXuat.byID)) {
         return <NotFound />;
     }
 

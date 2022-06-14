@@ -3,9 +3,9 @@ import { useForm } from '@mantine/form';
 
 import { Button, NumberInput, Select, SimpleGrid, Textarea } from '@mantine/core';
 import SanPhamSelect from '../../SanPham/Form/SanPhamSelect';
+import CurrencyInput from '../../Utils/Input/CurrencyInput';
 
 import { ChiTietPhieuXuatInput } from '../../../types';
-import CurrencyInput from '../../Utils/Input/CurrencyInput';
 
 interface BaseProps {
     type: 'create' | 'update';
@@ -70,7 +70,7 @@ const ChiTietPhieuXuatForm = ({
     };
 
     return (
-        <form onSubmit={chiTietPhieuXuatForm.onSubmit(submit)}>
+        <form onSubmit={chiTietPhieuXuatForm.onSubmit(submit)} spellCheck={false}>
             <SimpleGrid cols={1} spacing='xs'>
                 {(lock && type === 'update')
                     ? <Select

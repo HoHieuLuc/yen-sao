@@ -1,19 +1,19 @@
 import { Box, Button, Group, Text } from '@mantine/core';
 
-import { sanPhamHooks } from '../../../graphql/queries';
-import { SanPham } from '../../../types';
+import { camNangHooks } from '../../../graphql/queries';
+import { CamNang } from '../../../types';
 
 interface Props {
-    data: SanPham;
+    data: CamNang;
     closeModal: () => void;
     callback: () => void;
 }
 
-const DeleteSanPham = ({ data, closeModal, callback }: Props) => {
-    const [deleteSanPham, { loading }] = sanPhamHooks.useDeleteSanPham();
+const DeleteCamNang = ({ data, closeModal, callback }: Props) => {
+    const [DeleteCamNang, { loading }] = camNangHooks.useDeleteCamNang();
 
     const handleDelete = () => {
-        void deleteSanPham({
+        void DeleteCamNang({
             variables: {
                 id: data.id
             },
@@ -27,7 +27,7 @@ const DeleteSanPham = ({ data, closeModal, callback }: Props) => {
     return (
         <Box>
             <Text>
-                Bạn có chắc muốn xóa sản phẩm {data.tenSanPham}?
+                Bạn có chắc muốn xóa cẩm nang <b>{data.tieuDe}</b>?
             </Text>
             <Group position='right' mt='md'>
                 <Button
@@ -48,4 +48,4 @@ const DeleteSanPham = ({ data, closeModal, callback }: Props) => {
     );
 };
 
-export default DeleteSanPham;
+export default DeleteCamNang;

@@ -79,7 +79,7 @@ const PhieuXuatForm = ({ loading, handleSubmit }: Props) => {
     };
 
     return (
-        <form onSubmit={phieuXuatForm.onSubmit(submit)}>
+        <form onSubmit={phieuXuatForm.onSubmit(submit)} spellCheck={false}>
             <Stack spacing='xs'>
                 <TextInput
                     label='Người mua'

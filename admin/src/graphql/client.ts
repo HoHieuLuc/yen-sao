@@ -48,6 +48,9 @@ const cache = new InMemoryCache({
                 },
                 page: {
                     merge: true
+                },
+                camNang: {
+                    merge: true
                 }
             }
         },
@@ -68,9 +71,12 @@ const cache = new InMemoryCache({
         ActivityLog: {
             fields: {
                 description: {
-                    merge: false
+                    merge: true
                 }
             }
+        },
+        ActivityDescription: {
+            keyFields: false
         },
         Page: {
             fields: {

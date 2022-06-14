@@ -17,7 +17,7 @@ export interface SanPham {
     updatedAt: number;
 }
 
-export interface SanPhamFormVars {
+export interface SanPhamFormData {
     tenSanPham: string;
     donGiaSi: number;
     donGiaLe: number;
@@ -30,9 +30,13 @@ export interface SanPhamFormVars {
     isFeatured: boolean;
 }
 
-export interface UpdateSanPhamInput {
+export interface CreateSanPhamVars {
+    payload: SanPhamFormData;
+}
+
+export interface UpdateSanPhamVars {
     id: string;
-    payload: SanPhamFormVars;
+    payload: SanPhamFormData;
 }
 
 export interface SanPhamByID {
