@@ -1,7 +1,7 @@
-const { gql } = require('apollo-server');
-const chainMiddlewares = require('../../middlewares');
-const { authRequired } = require('../../middlewares/authentication');
 const phieuXuatController = require('../../controllers/phieu-xuat.controller');
+const { authRequired } = require('../../middlewares/authentication');
+const chainMiddlewares = require('../../middlewares');
+const { gql } = require('apollo-server');
 
 const typeDefs = gql`
     type PhieuXuat {
