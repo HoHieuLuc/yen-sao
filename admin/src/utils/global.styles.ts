@@ -15,7 +15,8 @@ export default createStyles(
         rte: {
             '.ql-align-center': {
                 img: {
-                    margin: 'auto'
+                    margin: 'auto',
+                    maxWidth: '50%'
                 }
             },
             '.ql-align-right': {
