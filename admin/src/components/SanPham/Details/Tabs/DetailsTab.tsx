@@ -24,7 +24,7 @@ const DetailsTab = ({ id, data, loading }: Props) => {
         const modalId = modals.openModal({
             title: <h3>Xóa sản phẩm</h3>,
             children: <DeleteSanPham
-                sanPham={sanPham}
+                data={sanPham}
                 closeModal={() => modals.closeModal(modalId)}
                 callback={() => navigate('/san-pham')}
             />

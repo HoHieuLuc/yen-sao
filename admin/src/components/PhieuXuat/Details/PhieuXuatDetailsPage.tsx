@@ -24,7 +24,7 @@ const PhieuXuatDetailsPage = () => {
     );
 
 
-    if (!id || error || (data && data.phieuXuat && data.phieuXuat.byID === null)) {
+    if (!id || error || (data && !data.phieuXuat.byID)) {
         return <NotFound />;
     }
 

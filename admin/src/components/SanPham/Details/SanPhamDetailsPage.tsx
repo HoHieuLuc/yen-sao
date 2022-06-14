@@ -25,7 +25,7 @@ const SanPhamDetailsPage = () => {
             : 'Đang tải...'} | ${currentTabTitle}`
     );
 
-    if (!id || error || (data && data.sanPham && data.sanPham.byID === null)) {
+    if (!id || error || (data && !data.sanPham.byID)) {
         return <NotFound />;
     }
 

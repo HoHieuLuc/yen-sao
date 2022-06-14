@@ -25,7 +25,7 @@ const PhieuNhapDetailsPage = () => {
     );
 
 
-    if (!id || error || (data && data.phieuNhap && data.phieuNhap.byID === null)) {
+    if (!id || error || (data && !data.phieuNhap.byID)) {
         return <NotFound />;
     }
 
