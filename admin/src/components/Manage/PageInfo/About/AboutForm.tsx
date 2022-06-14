@@ -29,7 +29,7 @@ const AboutForm = ({ inititalValue, loading, handleSubmit, setEditMode }: Props)
     };
 
     return (
-        <form onSubmit={aboutForm.onSubmit(onSubmit)}>
+        <form onSubmit={aboutForm.onSubmit(onSubmit)} spellCheck={false}>
             <RichTextEditor
                 sticky
                 stickyOffset={50}
