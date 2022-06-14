@@ -55,7 +55,7 @@ export interface ChiTietPhieuXuatInput {
     ghiChu: string;
 }
 
-export interface UpdatePhieuXuatInput {
+export interface UpdatePhieuXuatVars {
     id: string;
     payload: {
         ngayXuat: Date;
