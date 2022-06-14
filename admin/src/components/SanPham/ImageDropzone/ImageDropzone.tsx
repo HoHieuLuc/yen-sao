@@ -7,15 +7,15 @@ import { CloseIcon } from '../../Utils/Icons';
 import { showErrorNotification } from '../../../events';
 import { uploadQuery } from '../../../graphql/queries';
 
-const dropzoneChildren = () => {
+const dropzoneChildren = (maxLength: number) => {
     return (
-        <Group position="center" spacing="xl" style={{ minHeight: 220, pointerEvents: 'none' }}>
+        <Group position='center' spacing='xl' style={{ minHeight: 220, pointerEvents: 'none' }}>
             <div>
-                <Text size="xl" inline>
+                <Text size='xl' inline>
                     Kéo ảnh vào hoặc click chuột để tải lên
                 </Text>
-                <Text size="sm" color="dimmed" inline mt={7}>
-                    Chỉ được đăng tối đa 5 ảnh
+                <Text size='sm' color='dimmed' inline mt={7}>
+                    Chỉ được đăng tối đa {maxLength} ảnh
                 </Text>
             </div>
         </Group>
@@ -30,9 +30,10 @@ interface Props {
     images: Array<string>;
     onChange: (imageUrls: Array<string>) => void;
     onRemoveImage: (imageUrl: string) => void;
+    maxLength: number;
 }
 
-const ImageDropzone = ({ images, onChange, onRemoveImage }: Props) => {
+const ImageDropzone = ({ images, onChange, onRemoveImage, maxLength }: Props) => {
     const [multiUpload, { loading }] = useMutation<
         { upload: MultiUpload }, { files: Array<File> }
     >(uploadQuery.MULTI_UPLOAD, {
@@ -43,8 +44,8 @@ const ImageDropzone = ({ images, onChange, onRemoveImage }: Props) => {
     });
 
     const handleMultiUpload = (files: Array<File>) => {
-        if (files.length + images.length > 5) {
-            return showErrorNotification('Chỉ được đăng tối đa 5 ảnh');
+        if (files.length + images.length > maxLength) {
+            return showErrorNotification(`Chỉ được đăng tối đa ${maxLength} ảnh`);
         }
         void multiUpload({
             variables: {
@@ -65,9 +66,9 @@ const ImageDropzone = ({ images, onChange, onRemoveImage }: Props) => {
                 accept={IMAGE_MIME_TYPE}
                 loading={loading}
             >
-                {() => dropzoneChildren()}
+                {() => dropzoneChildren(maxLength)}
             </Dropzone>
-            <Group position="center" spacing="sm" mt='sm'>
+            <Group position='center' spacing='sm' mt='sm'>
                 {images.map((imageUrl, index) => (
                     <Box
                         key={`${index}${imageUrl}`}
@@ -81,7 +82,7 @@ const ImageDropzone = ({ images, onChange, onRemoveImage }: Props) => {
                         <Image
                             src={imageUrl}
                             height={300}
-                            alt="ảnh"
+                            alt='ảnh'
                             fit='contain'
                             withPlaceholder
                         />
