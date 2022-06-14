@@ -1,6 +1,6 @@
 const { makeExecutableSchema } = require('@graphql-tools/schema');
-const { merge } = require('lodash');
 const { gql } = require('apollo-server');
+const { merge } = require('lodash');
 
 const {
     typeDefs: DateScalar,
@@ -60,6 +60,10 @@ const {
     typeDefs: ThongKe,
     resolvers: thongKeResolvers
 } = require('./schema/thong-ke.schema');
+const {
+    typeDefs: CamNang,
+    resolvers: camNangResolvers
+} = require('./schema/cam-nang.schema');
 
 const defaultSchema = gql`
     type Query {
@@ -88,7 +92,8 @@ const schema = makeExecutableSchema({
         ChiTietPhieuXuat,
         Page,
         ActivityLog,
-        ThongKe
+        ThongKe,
+        CamNang
     ],
     resolvers: merge(
         dateResolvers,
@@ -103,7 +108,8 @@ const schema = makeExecutableSchema({
         chiTietPhieuXuatResolvers,
         pageResolvers,
         activityLogResolvers,
-        thongKeResolvers
+        thongKeResolvers,
+        camNangResolvers
     )
 });
 
