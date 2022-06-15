@@ -97,6 +97,7 @@ const CamNangForm = ({ loading, onSubmit, inititalValues }: Props) => {
                     <Button
                         type='submit'
                         loading={loading}
+                        disabled={me.role !== 'admin' && camNangForm.values.isPublic}
                     >
                         Xác nhận
                     </Button>
