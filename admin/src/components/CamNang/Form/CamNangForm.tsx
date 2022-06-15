@@ -71,8 +71,7 @@ const CamNangForm = ({ loading, onSubmit, inititalValues }: Props) => {
                                     fit='contain'
                                 />
                             </Center>
-                            :
-                            <ImageDropzone
+                            : <ImageDropzone
                                 images={camNangForm.values.anhDaiDien
                                     ? [camNangForm.values.anhDaiDien]
                                     : []
