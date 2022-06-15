@@ -11,13 +11,13 @@ import { showErrorNotification } from '../../../events';
 
 interface Props {
     loading: boolean;
-    handleSubmit: (
+    onSubmit: (
         values: CreatePhieuNhapVars,
         callback: () => void
     ) => void;
 }
 
-const PhieuNhapForm = ({ loading, handleSubmit }: Props) => {
+const PhieuNhapForm = ({ loading, onSubmit }: Props) => {
     const client = useApolloClient();
     const phieuNhapForm = useForm({
         initialValues: {
@@ -68,7 +68,7 @@ const PhieuNhapForm = ({ loading, handleSubmit }: Props) => {
         if (phieuNhapForm.values.payload.length === 0) {
             return showErrorNotification('Vui lòng nhập ít nhất 1 sản phẩm');
         }
-        handleSubmit({
+        onSubmit({
             ...values,
             payload: values.payload.map(item => ({
                 ...item,

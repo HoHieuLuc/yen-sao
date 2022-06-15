@@ -37,7 +37,7 @@ const EditAbout = ({ setEditMode, data }: Props) => {
                 : ''
             }
             loading={loading}
-            handleSubmit={handleSubmitAbout}
+            onSubmit={handleSubmitAbout}
             setEditMode={setEditMode}
         />
     );

@@ -37,7 +37,7 @@ const EditSanPham = () => {
         <LoadingWrapper loading={loading}>
             {data && <SanPhamForm
                 loading={updateLoading}
-                handleSubmit={handleUpdate}
+                onSubmit={handleUpdate}
                 initialValues={data.sanPham.byID}
             />}
         </LoadingWrapper>
