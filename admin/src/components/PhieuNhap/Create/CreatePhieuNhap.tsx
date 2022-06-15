@@ -26,7 +26,7 @@ const CreatePhieuNhap = ({ title }: Props) => {
             <Center mb='sm'><Title>Tạo phiếu nhập</Title></Center>
             <PhieuNhapForm
                 loading={loading}
-                handleSubmit={handleSubmit}
+                onSubmit={handleSubmit}
             />
         </Box>
     );

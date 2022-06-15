@@ -31,7 +31,7 @@ const camNangSchema = mongoose.Schema(
     }
 );
 
-camNangSchema.pre('save', async function () {
+camNangSchema.pre('save', function (next) {
     const slug = slugify(
         this.tieuDe,
         {
@@ -46,6 +46,7 @@ camNangSchema.pre('save', async function () {
             '*': ['*']
         }
     });
+    next();
 });
 
 camNangSchema.pre('findOneAndUpdate', async function (next) {

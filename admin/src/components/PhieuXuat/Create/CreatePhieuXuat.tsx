@@ -25,7 +25,7 @@ const CreatePhieuXuat = ({ title }: Props) => {
             <Center mb='sm'><Title>Tạo phiếu xuất</Title></Center>
             <PhieuXuatForm
                 loading={loading}
-                handleSubmit={handleCreatePhieuXuat}
+                onSubmit={handleCreatePhieuXuat}
             />
         </Box>
     );

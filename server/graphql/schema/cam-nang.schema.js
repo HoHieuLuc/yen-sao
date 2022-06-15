@@ -30,7 +30,7 @@ const typeDefs = gql`
             id: ObjectID!
         ): CamNang
         bySlug(
-            slug: String
+            slug: String!
         ): CamNang
     }
 

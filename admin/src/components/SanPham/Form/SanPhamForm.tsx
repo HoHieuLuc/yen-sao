@@ -17,10 +17,10 @@ import { SanPhamFormData } from '../../../types';
 interface Props {
     loading: boolean;
     initialValues?: SanPhamFormData;
-    handleSubmit: (values: SanPhamFormData, callback: () => void) => void;
+    onSubmit: (values: SanPhamFormData, callback: () => void) => void;
 }
 
-const SanPhamForm = ({ loading, initialValues, handleSubmit }: Props) => {
+const SanPhamForm = ({ loading, initialValues, onSubmit }: Props) => {
     const sanPhamForm = useForm<SanPhamFormData>({
         initialValues: {
             tenSanPham: initialValues?.tenSanPham || '',
@@ -63,7 +63,7 @@ const SanPhamForm = ({ loading, initialValues, handleSubmit }: Props) => {
         if (values.anhSanPham.length === 0) {
             return showErrorNotification('Vui lòng chọn ít nhất 1 ảnh');
         }
-        handleSubmit(values, () => sanPhamForm.reset());
+        onSubmit(values, () => sanPhamForm.reset());
     };
 
     return (

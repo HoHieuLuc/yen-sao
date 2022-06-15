@@ -11,13 +11,13 @@ import { showErrorNotification } from '../../../events';
 
 interface Props {
     loading: boolean;
-    handleSubmit: (
+    onSubmit: (
         values: CreatePhieuXuatVars,
         callback: () => void
     ) => void;
 }
 
-const PhieuXuatForm = ({ loading, handleSubmit }: Props) => {
+const PhieuXuatForm = ({ loading, onSubmit }: Props) => {
     const phieuXuatForm = useForm({
         initialValues: {
             ngayXuat: new Date(),
@@ -69,7 +69,7 @@ const PhieuXuatForm = ({ loading, handleSubmit }: Props) => {
         if (phieuXuatForm.values.payload.length === 0) {
             return showErrorNotification('Vui lòng xuất ít nhất 1 sẩn phẩm');
         }
-        handleSubmit({
+        onSubmit({
             ...values,
             payload: values.payload.map(item => ({
                 ...item,

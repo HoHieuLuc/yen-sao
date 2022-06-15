@@ -29,7 +29,7 @@ const CreateSanPham = ({ title }: Props) => {
             </Center>
             <SanPhamForm
                 loading={loading}
-                handleSubmit={handleCreateSanPham}
+                onSubmit={handleCreateSanPham}
             />
         </Stack>
     );

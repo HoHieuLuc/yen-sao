@@ -71,8 +71,7 @@ const CamNangForm = ({ loading, onSubmit, inititalValues }: Props) => {
                                     fit='contain'
                                 />
                             </Center>
-                            :
-                            <ImageDropzone
+                            : <ImageDropzone
                                 images={camNangForm.values.anhDaiDien
                                     ? [camNangForm.values.anhDaiDien]
                                     : []
@@ -98,6 +97,7 @@ const CamNangForm = ({ loading, onSubmit, inititalValues }: Props) => {
                     <Button
                         type='submit'
                         loading={loading}
+                        disabled={me.role !== 'admin' && camNangForm.values.isPublic}
                     >
                         Xác nhận
                     </Button>

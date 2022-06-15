@@ -8,13 +8,13 @@ import RichTextEditor from '@mantine/rte';
 interface Props {
     inititalValue: string;
     loading: boolean;
-    handleSubmit: (
+    onSubmit: (
         value: string
     ) => void;
     setEditMode: (editMode: boolean) => void;
 }
 
-const AboutForm = ({ inititalValue, loading, handleSubmit, setEditMode }: Props) => {
+const AboutForm = ({ inititalValue, loading, onSubmit, setEditMode }: Props) => {
     const { classes } = useGlobalStyles();
     const { singleUpload } = useUpload();
 
@@ -24,12 +24,12 @@ const AboutForm = ({ inititalValue, loading, handleSubmit, setEditMode }: Props)
         }
     });
 
-    const onSubmit = (values: typeof aboutForm.values) => {
-        handleSubmit(values.value);
+    const submit = (values: typeof aboutForm.values) => {
+        onSubmit(values.value);
     };
 
     return (
-        <form onSubmit={aboutForm.onSubmit(onSubmit)} spellCheck={false}>
+        <form onSubmit={aboutForm.onSubmit(submit)} spellCheck={false}>
             <RichTextEditor
                 sticky
                 stickyOffset={50}
