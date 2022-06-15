@@ -16,7 +16,9 @@ export default createStyles(
             '.ql-align-center': {
                 img: {
                     margin: 'auto',
-                    maxWidth: '50%'
+                    [theme.fn.largerThan('sm')]: {
+                        maxWidth: '50%',
+                    }
                 }
             },
             '.ql-align-right': {
