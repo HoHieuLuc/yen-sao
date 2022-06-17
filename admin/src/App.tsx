@@ -15,34 +15,33 @@ const App = () => {
         void getCurrentUser();
     }, []);
 
-    return loading || !data ?
-        (
-            <LoadingOverlay
-                loaderProps={{ size: 'sm', color: 'pink', variant: 'bars' }}
-                overlayOpacity={1}
-                visible={loading}
-                zIndex={999}
+    return loading || !data
+        ? <LoadingOverlay
+            loaderProps={{ size: 'sm', color: 'pink', variant: 'bars' }}
+            overlayOpacity={1}
+            visible={loading}
+            zIndex={999}
+        />
+        : <Routes>
+            <Route
+                path='/*'
+                element={data.user.me
+                    ? <Admin />
+                    : <Navigate replace to='/login' />}
             />
-        ) : (
-            <Routes>
-                <Route
-                    path='/*'
-                    element={data.user.me ?
-                        <Admin /> :
-                        <Navigate replace to='/login' />}
-                />
-                <Route
-                    path='/login'
-                    element={!data.user.me ?
-                        <Login getCurrentUser={getCurrentUser} /> :
-                        <Navigate replace to='/' />}
-                />
-                <Route
-                    path='/logout'
-                    element={data.user.me ? <Logout /> : <Navigate replace to='/login' />}
-                />
-            </Routes>
-        );
+            <Route
+                path='/login'
+                element={!data.user.me
+                    ? <Login getCurrentUser={getCurrentUser} />
+                    : <Navigate replace to='/' />}
+            />
+            <Route
+                path='/logout'
+                element={data.user.me
+                    ? <Logout />
+                    : <Navigate replace to='/login' />}
+            />
+        </Routes>;
 };
 
 export default App;
