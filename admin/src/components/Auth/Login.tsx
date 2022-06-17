@@ -18,13 +18,14 @@ import {
 
 import { CurrentUser, LoginVars } from '../../types';
 import { authHooks } from '../../graphql/queries';
+import appConfig from '../../config';
 
 interface Props {
     getCurrentUser: LazyQueryExecFunction<{ user: CurrentUser }, OperationVariables>;
 }
 
 const Login = ({ getCurrentUser }: Props) => {
-    useDocumentTitle('Đăng nhập');
+    useDocumentTitle(`Đăng nhập - ${appConfig.title}`);
     const client = useApolloClient();
     const loginForm = useForm({
         initialValues: {
@@ -63,10 +64,9 @@ const Login = ({ getCurrentUser }: Props) => {
                 <Box sx={(theme) => ({
                     width: theme.breakpoints.xs,
                     padding: theme.spacing.xs,
-                    backgroundColor: theme.colors.white,
+                    backgroundColor: theme.colorScheme === 'light' ? 'white' : 'none',
                     borderRadius: theme.radius.md,
-                    boxShadow: theme.shadows.md,
-                    border: theme.colorScheme === 'light' ? 'none' : theme.colors.dark[5],
+                    boxShadow: theme.shadows.md
                 })}>
                     <Center mb='xs'>
                         <Title>Đăng nhập</Title>
