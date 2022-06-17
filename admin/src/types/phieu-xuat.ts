@@ -44,7 +44,7 @@ export interface AllPhieuXuatsVars extends PaginateVars {
 
 export interface PhieuXuatByID {
     phieuXuat: {
-        byID: PhieuXuat;
+        byID?: PhieuXuat;
     }
 }
 

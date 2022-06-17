@@ -19,7 +19,10 @@ const DetailsTab = ({ data, loading }: Props) => {
     const me = authHooks.useReadCurrentUser();
 
     const modals = useModals();
-    const openDeleteModal = (camNang: CamNang) => {
+    const openDeleteModal = (camNang: CamNang | undefined) => {
+        if (!camNang) {
+            return;
+        }
         const modalId = modals.openModal({
             title: <h3>Xóa cẩm nang</h3>,
             children: <DeleteCamNang
@@ -32,7 +35,7 @@ const DetailsTab = ({ data, loading }: Props) => {
 
     return (
         <LoadingWrapper loading={loading}>
-            {data &&
+            {data && data.camNang.byID &&
                 <Stack spacing='xs'>
                     <CamNangDetails
                         data={data.camNang.byID}

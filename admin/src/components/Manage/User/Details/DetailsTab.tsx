@@ -11,7 +11,7 @@ interface Props {
 const DetailsTab = ({ data, loading }: Props) => {
     return (
         <LoadingWrapper loading={loading}>
-            {data && (
+            {data && data.user.byID && (
                 <AccountDetails 
                     user={data.user.byID}
                 />

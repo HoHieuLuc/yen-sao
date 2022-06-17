@@ -25,7 +25,7 @@ const ActivityDetailsPage = ({ title }: Props) => {
 
     return (
         <LoadingWrapper loading={loading}>
-            {data && <ActivityDetails data={data} />}
+            {data && data.activityLog.byID && <ActivityDetails data={data.activityLog.byID} />}
         </LoadingWrapper>
     );
 };

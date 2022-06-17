@@ -16,7 +16,10 @@ const DetailsTab = ({ id, data, loading }: Props) => {
     const navigate = useNavigate();
     const modals = useModals();
 
-    const openDeleteModal = (phieuNhap: PhieuNhap) => {
+    const openDeleteModal = (phieuNhap: PhieuNhap | undefined) => {
+        if (!phieuNhap) {
+            return;
+        }
         const modalId = modals.openModal({
             title: <h3>Xóa phiếu nhập</h3>,
             children: <DeletePhieuNhap
@@ -29,7 +32,7 @@ const DetailsTab = ({ id, data, loading }: Props) => {
 
     return (
         <LoadingWrapper loading={loading}>
-            {data && <Box>
+            {data && data.phieuNhap.byID && <Box>
                 <Center mb='md'>
                     <Title>Chi tiết phiếu nhập</Title>
                 </Center>

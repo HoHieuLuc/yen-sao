@@ -10,7 +10,7 @@ export interface User {
 }
 
 export interface CurrentUser {
-    me: User;
+    me?: User;
 }
 
 export interface LoginData {
@@ -49,7 +49,7 @@ export interface BanByIdVars {
 
 export interface UserById {
     user: {
-        byID: User;
+        byID?: User;
     }
 }
 
