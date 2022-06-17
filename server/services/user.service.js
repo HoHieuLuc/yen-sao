@@ -1,8 +1,8 @@
 const { UserInputError, AuthenticationError } = require('apollo-server');
-const User = require('../models/User');
-const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = require('../utils/config');
+const User = require('../models/User');
 const { nanoid } = require('nanoid');
+const jwt = require('jsonwebtoken');
 
 const getAll = async (page, limit, search) => {
     const options = {
@@ -44,6 +44,13 @@ const login = async (username, password) => {
     };
 };
 
+const logout = async (currentUser) => {
+    await User.findByIdAndUpdate(currentUser._id, {
+        secret: nanoid(10) 
+    });
+    return true;
+};
+
 const create = async (newUser) => {
     try {
         const user = await User.create(newUser);
@@ -63,11 +70,11 @@ const getCurrentUser = async (authHeader) => {
         try {
             const payload = jwt.verify(token, JWT_SECRET);
             const currentUser = await User.findById(payload.id, '-password');
-            if (currentUser.isBanned) {
-                throw new AuthenticationError('Tài khoản của bạn đã bị khóa');
-            }
             if (currentUser.secret !== payload.secret) {
                 throw new AuthenticationError('Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại');
+            }
+            if (currentUser.isBanned) {
+                throw new AuthenticationError('Tài khoản của bạn đã bị khóa');
             }
             return { currentUser };
         } catch (error) {
@@ -90,7 +97,6 @@ const changePassword = async (oldPassword, newPassword, currentUser) => {
     }
 
     user.password = newPassword;
-    user.secret = nanoid(10);
     await user.save();
 
     return user;
@@ -123,6 +129,7 @@ const update = async (payload, currentUser) => {
 
 module.exports = {
     login,
+    logout,
     getAll,
     create,
     update,

@@ -10,7 +10,11 @@ import { Tabs } from '@mantine/core';
 import { convertToShortDate } from '../../../utils/common';
 import { phieuXuatHooks } from '../../../graphql/queries';
 
-const PhieuXuatDetailsPage = () => {
+interface Props {
+    title: string;
+}
+
+const PhieuXuatDetailsPage = ({ title }: Props) => {
     const { id } = useParams();
     const { activeTab, onTabChange, currentTabTitle } = useTabs(
         ['chi-tiet', 'lich-su'],
@@ -20,7 +24,7 @@ const PhieuXuatDetailsPage = () => {
     useDocumentTitle(
         `${data && data.phieuXuat.byID
             ? `Phiếu xuất ngày ${convertToShortDate(data.phieuXuat.byID.ngayXuat)}`
-            : 'Đang tải...'} | ${currentTabTitle}`
+            : 'Đang tải...'} | ${currentTabTitle} - ${title}`
     );
 
 

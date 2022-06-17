@@ -1,5 +1,6 @@
 const phieuNhapController = require('../../controllers/phieu-nhap.controller');
 const { authRequired } = require('../../middlewares/authentication');
+const { generateDeletedUser } = require('../../utils/functions');
 const chainMiddlewares = require('../../middlewares');
 const { gql } = require('apollo-server');
 
@@ -76,7 +77,8 @@ const typeDefs = gql`
 
 const resolvers = {
     PhieuNhap: {
-        soMatHangNhap: (root) => root.chiTiet.length
+        soMatHangNhap: (root) => root.chiTiet.length,
+        nguoiNhap: (root) => root.nguoiNhap ? root.nguoiNhap : generateDeletedUser(),
     },
     SortPhieuNhap: {
         NGAY_NHAP_ASC: 'ngayNhap',

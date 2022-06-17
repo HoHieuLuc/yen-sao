@@ -3,6 +3,8 @@ import { useDocumentTitle } from '@mantine/hooks';
 import { createStyles, Title, Text, Button, Container, Group } from '@mantine/core';
 import { Link } from 'react-router-dom';
 
+import appConfig from '../../../config';
+
 const useStyles = createStyles((theme) => ({
     label: {
         textAlign: 'center',
@@ -34,7 +36,7 @@ const useStyles = createStyles((theme) => ({
 
 const NotFound = () => {
     const { classes } = useStyles();
-    useDocumentTitle('Trang này không tồn tại');
+    useDocumentTitle(`Trang này không tồn tại - ${appConfig.title}`);
 
     return (
         <Container>

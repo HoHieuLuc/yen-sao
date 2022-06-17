@@ -1,20 +1,24 @@
-import { useApolloClient } from '@apollo/client';
+import { useDocumentTitle } from '@mantine/hooks';
 import { useEffect } from 'react';
 
 import { LoadingOverlay } from '@mantine/core';
 
+import { authHooks } from '../../graphql/queries';
+import appConfig from '../../config';
+
 const Logout = () => {
-    const client = useApolloClient();
+    useDocumentTitle(`Đăng xuất - ${appConfig.title}`);
+    const [logout, { loading }] = authHooks.useLogout();
+    
     useEffect(() => {
-        localStorage.removeItem('token');
-        void client.resetStore();
+        void logout();
     }, []);
+
     return (
         <LoadingOverlay
             loaderProps={{ size: 'sm', color: 'pink', variant: 'bars' }}
-            overlayOpacity={0.5}
-            overlayColor="#c5c5c5"
-            visible={true}
+            overlayOpacity={1}
+            visible={loading}
             zIndex={999}
         />
     );

@@ -22,9 +22,19 @@ const throwIfUserCantMutate = (role, createdAt, message) => {
     }
 };
 
+const generateDeletedUser = () => ({
+    id: 'deleted',
+    username: 'Deleted',
+    email: '',
+    fullname: 'N/A',
+    role: 'deleted',
+    isBanned: false
+});
+
 module.exports = {
     checkIfDuplicateExists,
     throwIfUserCantMutate,
+    generateDeletedUser,
     isMongooseModel,
     escapeRegExp,
 };

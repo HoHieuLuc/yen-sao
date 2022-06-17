@@ -11,15 +11,20 @@ import EditPhieuNhap from './EditPhieuNhap';
 import { convertToShortDate, convertToVND } from '../../../utils/common';
 import { phieuNhapHooks } from '../../../graphql/queries';
 
-const EditPhieuNhapPage = () => {
+interface Props {
+    title: string;
+}
+
+const EditPhieuNhapPage = ({ title }: Props) => {
     const { id } = useParams();
     const { data, loading, error } = phieuNhapHooks.usePhieuNhapByID(id || '');
 
     useDocumentTitle(
-        data && data.phieuNhap.byID
-            ? `Phiếu nhập ngày ${convertToShortDate(data.phieuNhap.byID.ngayNhap)} | Chỉnh sửa`
-            : 'Đang tải...'
+        `${data && data.phieuNhap.byID
+            ? `Phiếu nhập ngày ${convertToShortDate(data.phieuNhap.byID.ngayNhap)}`
+            : 'Đang tải...'} | Chỉnh sửa - ${title}`
     );
+
 
     if (error || !id || (data && !data.phieuNhap.byID)) {
         return <NotFound />;
@@ -40,7 +45,7 @@ const EditPhieuNhapPage = () => {
                     </Grid.Col>
                     <Grid.Col span={4}>Người nhập:</Grid.Col>
                     <Grid.Col span={8}>
-                        {data.phieuNhap.byID.nguoiNhap.username}
+                        {data.phieuNhap.byID.nguoiNhap.fullname}
                     </Grid.Col>
                     <Grid.Col span={4}>Số mặt hàng nhập:</Grid.Col>
                     <Grid.Col span={8}>

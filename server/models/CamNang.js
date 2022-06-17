@@ -8,11 +8,13 @@ const camNangSchema = mongoose.Schema(
     {
         tieuDe: {
             type: String,
-            required: true
+            required: true,
+            trim: true
         },
         noiDung: {
             type: String,
-            required: true
+            required: true,
+            trim: true
         },
         isPublic: {
             type: Boolean,

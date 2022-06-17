@@ -38,15 +38,17 @@ import {
 
 import { AppConfig } from './types';
 
+const title = 'Yến Sào Ms. Tưởng';
+
 const appConfig: AppConfig = {
-    title: 'Yến sào Ms. Tưởng',
+    title: title,
     apiURL: process.env.NODE_ENV === 'development' ? 'http://localhost:4000' : '',
     links: [
         {
             type: 'nav',
             title: 'Trang chủ',
             to: '/',
-            element: <Dashboard title='Yến sào Ms. Tuởng' />,
+            element: <Dashboard title={title} />,
             icon: <FontAwesomeIcon icon={faHouse} />
         },
         {
@@ -59,7 +61,7 @@ const appConfig: AppConfig = {
                     title: 'Danh sách',
                     type: 'nav',
                     to: '/san-pham',
-                    element: <SanPhamList title='Danh sách sản phẩm' />,
+                    element: <SanPhamList title={`Danh sách sản phẩm - ${title}`} />,
                     icon: <FontAwesomeIcon icon={faList} />
                 },
                 {
@@ -67,7 +69,7 @@ const appConfig: AppConfig = {
                     type: 'nav',
                     to: '/san-pham/them',
                     roles: ['admin'],
-                    element: <CreateSanPham title='Thêm sản phẩm' />,
+                    element: <CreateSanPham title={`Thêm sản phẩm - ${title}`} />,
                     icon: <FontAwesomeIcon icon={faPlus} />
                 },
                 {
@@ -75,13 +77,13 @@ const appConfig: AppConfig = {
                     type: 'hidden',
                     to: '/san-pham/:id/sua',
                     roles: ['admin'],
-                    element: <EditSanPham />
+                    element: <EditSanPham title={title} />
                 },
                 {
                     title: 'Chi tiết',
                     type: 'hidden',
                     to: '/san-pham/:id',
-                    element: <SanPhamDetailsPage />
+                    element: <SanPhamDetailsPage title={title} />
                 }
             ]
         },
@@ -95,27 +97,27 @@ const appConfig: AppConfig = {
                     type: 'nav',
                     title: 'Danh sách',
                     to: '/phieu-nhap',
-                    element: <PhieuNhapList title='Danh sách phiếu nhập' />,
+                    element: <PhieuNhapList title={`Danh sách phiếu nhập - ${title}`} />,
                     icon: <FontAwesomeIcon icon={faList} />
                 },
                 {
                     type: 'nav',
                     title: 'Tạo phiếu nhập',
                     to: '/phieu-nhap/them',
-                    element: <CreatePhieuNhap title='Tạo phiếu nhập' />,
+                    element: <CreatePhieuNhap title={`Tạo phiếu nhập - ${title}`} />,
                     icon: <FontAwesomeIcon icon={faPlus} />
                 },
                 {
                     type: 'hidden',
                     title: 'Chi tiết phiếu nhập',
                     to: '/phieu-nhap/:id',
-                    element: <PhieuNhapDetailsPage />
+                    element: <PhieuNhapDetailsPage title={title} />
                 },
                 {
                     type: 'hidden',
                     title: 'Chỉnh sửa phiếu nhập',
                     to: '/phieu-nhap/:id/sua',
-                    element: <EditPhieuNhapPage />
+                    element: <EditPhieuNhapPage title={title} />
                 }
             ]
         },
@@ -129,27 +131,27 @@ const appConfig: AppConfig = {
                     type: 'nav',
                     title: 'Danh sách',
                     to: '/phieu-xuat',
-                    element: <PhieuXuatList title='Danh sách phiếu xuất' />,
+                    element: <PhieuXuatList title={`Danh sách phiếu xuất - ${title}`} />,
                     icon: <FontAwesomeIcon icon={faList} />
                 },
                 {
                     type: 'nav',
                     title: 'Tạo phiếu xuất',
                     to: '/phieu-xuat/them',
-                    element: <CreatePhieuXuat title='Tạo phiếu xuất' />,
+                    element: <CreatePhieuXuat title={`Tạo phiếu xuất - ${title}`} />,
                     icon: <FontAwesomeIcon icon={faPlus} />
                 },
                 {
                     type: 'hidden',
                     title: 'Chi tiết phiếu xuất',
                     to: '/phieu-xuat/:id',
-                    element: <PhieuXuatDetailsPage />
+                    element: <PhieuXuatDetailsPage title={title} />
                 },
                 {
                     type: 'hidden',
                     title: 'Sửa phiếu xuất',
                     to: '/phieu-xuat/:id/sua',
-                    element: <EditPhieuXuatPage />
+                    element: <EditPhieuXuatPage title={title} />
                 }
             ]
         },
@@ -163,27 +165,27 @@ const appConfig: AppConfig = {
                     type: 'nav',
                     title: 'Danh sách',
                     to: '/cam-nang',
-                    element: <CamNangList title='Danh sách cẩm nang' />,
+                    element: <CamNangList title={`Danh sách cẩm nang - ${title}`} />,
                     icon: <FontAwesomeIcon icon={faList} />
                 },
                 {
                     type: 'nav',
                     title: 'Thêm mới',
                     to: '/cam-nang/them',
-                    element: <CreateCamNang title='Thêm cẩm nang' />,
+                    element: <CreateCamNang title={`Thêm cẩm nang - ${title}`} />,
                     icon: <FontAwesomeIcon icon={faPlus} />
                 },
                 {
                     type: 'hidden',
                     title: 'Chi tiết cẩm nang',
                     to: '/cam-nang/:id',
-                    element: <CamNangDetailsPage />
+                    element: <CamNangDetailsPage title={title} />
                 },
                 {
                     type: 'hidden',
                     title: 'Chỉnh sửa cẩm nang',
                     to: '/cam-nang/:id/sua',
-                    element: <EditCamNang />
+                    element: <EditCamNang title={title} />
                 }
             ]
         },
@@ -198,27 +200,27 @@ const appConfig: AppConfig = {
                     type: 'nav',
                     title: 'Thông tin website',
                     to: '/quan-ly/thong-tin',
-                    element: <PageInfo title='Thông tin website' />,
+                    element: <PageInfo title={`Thông tin website - ${title}`} />,
                     icon: <FontAwesomeIcon icon={faCircleInfo} />
                 },
                 {
                     type: 'nav',
                     title: 'Người dùng',
                     to: '/quan-ly/users',
-                    element: <UserList title='Danh sách người dùng' />,
+                    element: <UserList title={`Danh sách người dùng - ${title}`} />,
                     icon: <FontAwesomeIcon icon={faUser} />
                 },
                 {
                     type: 'hidden',
                     title: 'Chi tiết người dùng',
                     to: '/quan-ly/users/:id',
-                    element: <UserDetails />
+                    element: <UserDetails title={title} />
                 },
                 {
                     type: 'nav',
                     title: 'Hoạt động',
                     to: '/quan-ly/hoat-dong',
-                    element: <ActivityListPage title='Quản lý hoạt động' />,
+                    element: <ActivityListPage title={`Quản lý hoạt động - ${title}`} />,
                     icon: <FontAwesomeIcon icon={faHistory} />
                 }
             ]
@@ -227,14 +229,14 @@ const appConfig: AppConfig = {
             type: 'nav',
             title: 'Tài khoản',
             to: '/my-account',
-            element: <Account title='Tài khoản' />,
+            element: <Account title={`Tài khoản - ${title}`} />,
             icon: <FontAwesomeIcon icon={faUserGear} />
         },
         {
             type: 'hidden',
             title: 'Chi tiết hoạt động',
             to: '/hoat-dong/:id',
-            element: <ActivityDetailsPage title='Chi tiết hoạt động' />
+            element: <ActivityDetailsPage title={title} />
         }
     ]
 };

@@ -1,6 +1,6 @@
+import { ChangePasswordVars, CurrentUser, LoginData, LoginVars, User } from '../../types';
 import { gql, useApolloClient, useLazyQuery, useMutation } from '@apollo/client';
 import { showErrorNotification, showSuccessNotification } from '../../events';
-import { ChangePasswordVars, CurrentUser, LoginData, LoginVars, User } from '../../types';
 
 const LOGIN = gql`
     mutation Login($username: String!, $password: String!) {
@@ -8,6 +8,14 @@ const LOGIN = gql`
             login(username: $username, password: $password) {
                 value
             }
+        }
+    }
+`;
+
+const LOGOUT = gql`
+    mutation Logout {
+        user {
+            logout
         }
     }
 `;
@@ -63,6 +71,17 @@ const useLogin = () => {
     });
 };
 
+const useLogout = () => {
+    const client = useApolloClient();
+    return useMutation(LOGOUT, {
+        onCompleted: () => {
+            localStorage.removeItem('token');
+            void client.resetStore();
+        },
+        onError: (error) => showErrorNotification(error.message),
+    });
+};
+
 const useChangePassword = () => {
     return useMutation<
         never, ChangePasswordVars
@@ -91,5 +110,6 @@ export const authHooks = {
     useLazyCurrentUser,
     useReadCurrentUser,
     useChangePassword,
+    useLogout,
     useLogin,
 };

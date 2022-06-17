@@ -10,16 +10,20 @@ import { showErrorNotification } from '../../../events';
 import { camNangHooks } from '../../../graphql/queries';
 import { CamNangFormData } from '../../../types';
 
-const EditCamNang = () => {
+interface Props {
+    title: string;
+}
+
+const EditCamNang = ({ title }: Props) => {
     const { id } = useParams();
     const { data, loading, error } = camNangHooks.useCamNangByID(id || '');
 
     const [updateCamNang, { loading: updateLoading }] = camNangHooks.useUpdateCamNang();
 
     useDocumentTitle(
-        `Cẩm nang ${data && data.camNang.byID 
+        `Cẩm nang: ${data && data.camNang.byID
             ? data.camNang.byID.tieuDe
-            : 'Đang tải...'} | Chỉnh sửa`
+            : 'Đang tải...'} | Chỉnh sửa - ${title}`
     );
 
     if (error || !id || (data && data.camNang.byID === null)) {

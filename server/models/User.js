@@ -46,14 +46,14 @@ const userSchema = mongoose.Schema({
         default: false
     },
     secret: {
-        type: String,
-        default: nanoid(10)
+        type: String
     }
 });
 
 userSchema.pre('save', async function () {
     const salt = await bscrypt.genSalt(10);
     this.password = await bscrypt.hash(this.password, salt);
+    this.secret = nanoid(10);
 });
 
 userSchema.methods.comparePassword = async function (candidatePassword) {
