@@ -50,6 +50,7 @@ const typeDefs = gql`
             username: String!,
             password: String!
         ): Token
+        logout: Boolean!
         changePassword (
             oldPassword: String!,
             newPassword: String!
@@ -95,6 +96,9 @@ const resolvers = {
         ),
         login: async (_, { username, password }) =>
             userController.login(username, password),
+        logout: chainMiddlewares(authRequired,
+            (_, __, { currentUser }) =>
+                userController.logout(currentUser)),
         changePassword: chainMiddlewares(authRequired,
             (_, { oldPassword, newPassword }, { currentUser }) =>
                 userController.changePassword(oldPassword, newPassword, currentUser)
