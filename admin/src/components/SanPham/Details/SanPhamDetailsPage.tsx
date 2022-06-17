@@ -11,7 +11,11 @@ import { Tabs } from '@mantine/core';
 
 import { sanPhamHooks } from '../../../graphql/queries';
 
-const SanPhamDetailsPage = () => {
+interface Props {
+    title: string;
+}
+
+const SanPhamDetailsPage = ({ title }: Props) => {
     const { id } = useParams();
     const { activeTab, onTabChange, currentTabTitle } = useTabs(
         ['chi-tiet', 'nhap-hang', 'xuat-hang', 'lich-su'],
@@ -22,7 +26,7 @@ const SanPhamDetailsPage = () => {
     useDocumentTitle(
         `${data && data.sanPham.byID
             ? data.sanPham.byID.tenSanPham
-            : 'Đang tải...'} | ${currentTabTitle}`
+            : 'Đang tải...'} | ${currentTabTitle} - ${title}`
     );
 
     if (!id || error || (data && !data.sanPham.byID)) {

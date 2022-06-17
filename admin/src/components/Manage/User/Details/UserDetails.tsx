@@ -9,7 +9,11 @@ import { Tabs } from '@mantine/core';
 
 import { userHooks } from '../../../../graphql/queries';
 
-const UserDetails = () => {
+interface Props {
+    title: string;
+}
+
+const UserDetails = ({ title }: Props) => {
     const { id } = useParams();
     const { data, loading, error } = userHooks.useUserById(id || '');
     const { activeTab, onTabChange, currentTabTitle } = useTabs(
@@ -17,9 +21,9 @@ const UserDetails = () => {
         ['Thông tin', 'Lịch sử hoạt động']
     );
     useDocumentTitle(
-        `${data && data.user.byID
+        `Người dùng: ${data && data.user.byID
             ? data.user.byID.fullname
-            : 'Đang tải...'} | ${currentTabTitle}`
+            : 'Đang tải...'} | ${currentTabTitle} - ${title}`
     );
 
     if (!id || error || (data && !data.user.byID)) {

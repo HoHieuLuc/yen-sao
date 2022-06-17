@@ -8,14 +8,18 @@ import SanPhamForm from '../Form/SanPhamForm';
 import { sanPhamHooks } from '../../../graphql/queries';
 import { SanPhamFormData } from '../../../types';
 
-const EditSanPham = () => {
+interface Props {
+    title: string;
+}
+
+const EditSanPham = ({ title }: Props) => {
     const { id } = useParams();
     const { data, loading, error } = sanPhamHooks.useSanPhamByID(id || '');
 
     useDocumentTitle(
         `${data && data.sanPham.byID
             ? `${data.sanPham.byID.tenSanPham}`
-            : 'Đang tải...'} | Chỉnh sửa`
+            : 'Đang tải...'} | Chỉnh sửa - ${title}`
     );
 
     const [updateSanPham, { loading: updateLoading }] = sanPhamHooks.useUpdateSanPham();

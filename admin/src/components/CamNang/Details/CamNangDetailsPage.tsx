@@ -9,7 +9,11 @@ import { Tabs } from '@mantine/core';
 
 import { camNangHooks } from '../../../graphql/queries';
 
-const CamNangDetailsPage = () => {
+interface Props {
+    title: string;
+}
+
+const CamNangDetailsPage = ({ title }: Props) => {
     const { id } = useParams();
     const { data, loading, error } = camNangHooks.useCamNangByID(id || '');
     const { activeTab, onTabChange, currentTabTitle } = useTabs(
@@ -18,9 +22,9 @@ const CamNangDetailsPage = () => {
     );
 
     useDocumentTitle(
-        `${data && data.camNang.byID 
-            ? `Cẩm nang ${data.camNang.byID.tieuDe}`
-            : 'Đang tải...'} | ${currentTabTitle}`
+        `${data && data.camNang.byID
+            ? `Cẩm nang: ${data.camNang.byID.tieuDe}`
+            : 'Đang tải...'} | ${currentTabTitle} - ${title}`
     );
 
     if (!id || error || (data && !data.camNang.byID)) {

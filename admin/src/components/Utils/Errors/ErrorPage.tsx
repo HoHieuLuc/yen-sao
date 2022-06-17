@@ -3,6 +3,8 @@ import { useDocumentTitle } from '@mantine/hooks';
 import { createStyles, Title, Text, Button, Container, Group } from '@mantine/core';
 import { Link } from 'react-router-dom';
 
+import appConfig from '../../../config';
+
 const useStyles = createStyles((theme) => ({
     root: {
         backgroundColor: theme.colorScheme
@@ -41,7 +43,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 const ErrorPage = () => {
-    useDocumentTitle('Có lỗi xảy ra');
+    useDocumentTitle(`Có lỗi xảy ra - ${appConfig.title}`);
     const { classes } = useStyles();
 
     return (

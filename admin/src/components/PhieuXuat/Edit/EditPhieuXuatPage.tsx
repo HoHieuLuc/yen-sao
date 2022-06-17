@@ -11,13 +11,17 @@ import EditPhieuXuat from './EditPhieuXuat';
 import { convertToShortDate } from '../../../utils/common';
 import { phieuXuatHooks } from '../../../graphql/queries';
 
-const EditPhieuXuatPage = () => {
+interface Props {
+    title: string;
+}
+
+const EditPhieuXuatPage = ({ title }: Props) => {
     const { id } = useParams();
     const { data, loading, error } = phieuXuatHooks.usePhieuXuatById(id || '');
     useDocumentTitle(
-        data && data.phieuXuat.byID
-            ? `Phiếu xuất ngày ${convertToShortDate(data.phieuXuat.byID.ngayXuat)} | Chỉnh sửa`
-            : 'Đang tải...'
+        `${data && data.phieuXuat.byID
+            ? `Phiếu xuất ngày ${convertToShortDate(data.phieuXuat.byID.ngayXuat)}`
+            : 'Đang tải...'} | Chỉnh sửa - ${title}`
     );
 
     if (error || !id || (data && !data.phieuXuat.byID)) {
