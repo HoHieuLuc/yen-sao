@@ -32,7 +32,7 @@ const EditPhieuNhapPage = ({ title }: Props) => {
 
     return (
         <LoadingWrapper loading={loading}>
-            {data && <Box>
+            {data && data.phieuNhap.byID && <Box>
                 <Center mb='md'>
                     <Title>Chỉnh sửa phiếu nhập</Title>
                 </Center>

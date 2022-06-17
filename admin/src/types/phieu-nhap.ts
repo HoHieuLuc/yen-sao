@@ -43,7 +43,7 @@ export interface AllPhieuNhapsVars extends PaginateVars {
 
 export interface PhieuNhapByID {
     phieuNhap: {
-        byID: PhieuNhap;
+        byID?: PhieuNhap;
     }
 }
 

@@ -87,9 +87,11 @@ export interface CamNangActivity extends BaseActivity {
     }
 }
 
+export type ActivityKind = SanPhamActivity | PhieuNhapActivity | PhieuXuatActivity | CamNangActivity;
+
 export interface ActivityById {
     activityLog: {
-        byID: SanPhamActivity | PhieuNhapActivity | PhieuXuatActivity | CamNangActivity;
+        byID?: ActivityKind;
     }
 }
 

@@ -20,7 +20,10 @@ const DetailsTab = ({ id, data, loading }: Props) => {
     const navigate = useNavigate();
 
     const modals = useModals();
-    const openDeleteModal = (sanPham: SanPham) => {
+    const openDeleteModal = (sanPham: SanPham | undefined) => {
+        if (!sanPham) {
+            return;
+        }
         const modalId = modals.openModal({
             title: <h3>Xóa sản phẩm</h3>,
             children: <DeleteSanPham
@@ -33,7 +36,7 @@ const DetailsTab = ({ id, data, loading }: Props) => {
 
     return (
         <LoadingWrapper loading={loading}>
-            {data && <Box>
+            {data && data.sanPham.byID && <Box>
                 <Center>
                     <Title>Chi tiết sản phẩm</Title>
                 </Center>

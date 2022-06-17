@@ -41,7 +41,7 @@ export interface UpdateSanPhamVars {
 
 export interface SanPhamByID {
     sanPham: {
-        byID: SanPham
+        byID?: SanPham
     }
 }
 

@@ -6,27 +6,27 @@ import { Box, Center, Paper, Title } from '@mantine/core';
 import ErrorPage from '../../Utils/Errors/ErrorPage';
 
 import { convertToVietnameseDate } from '../../../utils/common';
-import { ActivityById } from '../../../types';
+import { ActivityKind } from '../../../types';
 
 interface Props {
-    data: ActivityById
+    data: ActivityKind
 }
 
 const ActivityDetails = ({ data }: Props) => {
     let content: React.ReactNode = null;
 
-    switch (data.activityLog.byID.onCollection) {
+    switch (data.onCollection) {
         case 'SanPham':
-            content = <SanPhamDetails data={data.activityLog.byID.description.value} />;
+            content = <SanPhamDetails data={data.description.value} />;
             break;
         case 'PhieuNhap':
-            content = <PhieuNhapDetails data={data.activityLog.byID.description.value} />;
+            content = <PhieuNhapDetails data={data.description.value} />;
             break;
         case 'PhieuXuat' :
-            content = <PhieuXuatDetails data={data.activityLog.byID.description.value} />;
+            content = <PhieuXuatDetails data={data.description.value} />;
             break;
         case 'CamNang':
-            content = <CamNangDetails data={data.activityLog.byID.description.value} />;
+            content = <CamNangDetails data={data.description.value} />;
             break;
         default:
             break;
@@ -44,13 +44,13 @@ const ActivityDetails = ({ data }: Props) => {
             <Center>
                 <Box>
                     <div>
-                        Người thực hiện: {data.activityLog.byID.user.fullname}
+                        Người thực hiện: {data.user.fullname}
                     </div>
                     <div>
-                        Mô tả: {data.activityLog.byID.description.name}
+                        Mô tả: {data.description.name}
                     </div>
                     <div>
-                        Ngày thực hiện: {convertToVietnameseDate(data.activityLog.byID.createdAt)}
+                        Ngày thực hiện: {convertToVietnameseDate(data.createdAt)}
                     </div>
                 </Box>
             </Center>

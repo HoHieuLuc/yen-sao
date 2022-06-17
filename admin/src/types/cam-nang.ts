@@ -26,7 +26,7 @@ export interface AllCamNangsVars extends PaginateVars {
 
 export interface CamNangByID {
     camNang: {
-        byID: CamNang;
+        byID?: CamNang;
     }
 }
 

@@ -19,7 +19,10 @@ const DetailsTab = ({ id, data, loading }: Props) => {
 
     const modals = useModals();
 
-    const openDeleteModal = (phieuXuat: PhieuXuat) => {
+    const openDeleteModal = (phieuXuat: PhieuXuat | undefined) => {
+        if (!phieuXuat) {
+            return;
+        }
         const modalId = modals.openModal({
             title: <h3>Xóa phiếu xuất</h3>,
             children: <DeletePhieuXuat
@@ -32,7 +35,7 @@ const DetailsTab = ({ id, data, loading }: Props) => {
 
     return (
         <LoadingWrapper loading={loading}>
-            {data && <Box>
+            {data && data.phieuXuat.byID && <Box>
                 <Center mb='md'>
                     <Title>Chi tiết phiếu xuất</Title>
                 </Center>
