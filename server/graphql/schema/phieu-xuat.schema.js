@@ -1,5 +1,6 @@
 const phieuXuatController = require('../../controllers/phieu-xuat.controller');
 const { authRequired } = require('../../middlewares/authentication');
+const { generateDeletedUser } = require('../../utils/functions');
 const chainMiddlewares = require('../../middlewares');
 const { gql } = require('apollo-server');
 
@@ -79,7 +80,8 @@ const typeDefs = gql`
 
 const resolvers = {
     PhieuXuat: {
-        soMatHangXuat: (root) => root.chiTiet.length
+        soMatHangXuat: (root) => root.chiTiet.length,
+        nguoiXuat: (root) => root.nguoiXuat ? root.nguoiXuat : generateDeletedUser(),
     },
     SortPhieuXuat: {
         NGAY_XUAT_ASC: 'ngayXuat',

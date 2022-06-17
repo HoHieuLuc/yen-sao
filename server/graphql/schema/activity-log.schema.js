@@ -1,5 +1,6 @@
 const { adminRequired, authRequired } = require('../../middlewares/authentication');
 const activityLogController = require('../../controllers/activity-log.controller');
+const { generateDeletedUser } = require('../../utils/functions');
 const chainMiddlewares = require('../../middlewares');
 const { gql } = require('apollo-server-express');
 
@@ -66,7 +67,7 @@ const typeDefs = gql`
 
 const resolvers = {
     ActivityLog: {
-        user: (root) => root.userId
+        user: (root) => root.userId ? root.userId : generateDeletedUser(),
     },
     ActivityLogsByPage: {
         pageInfo: (root) => root
