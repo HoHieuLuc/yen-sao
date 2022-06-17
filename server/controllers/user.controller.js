@@ -15,6 +15,10 @@ const login = async (username, password) => {
     return userService.login(username, password);
 };
 
+const logout = async (currentUser) => {
+    return userService.logout(currentUser);
+};
+
 const create = async (newUser, currentUser) => {
     const user = await userService.create(newUser);
     await userLogger.create(user, currentUser);
@@ -46,6 +50,7 @@ const update = async (payload, currentUser) => {
 
 module.exports = {
     login,
+    logout,
     getAll,
     create,
     update,
