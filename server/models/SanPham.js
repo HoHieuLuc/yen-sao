@@ -29,7 +29,8 @@ const sanPhamSchema = mongoose.Schema(
         },
         donGiaTuyChon: {
             type: String,
-            default: ''
+            default: '',
+            trim: true
         },
         moTa: {
             type: String,
