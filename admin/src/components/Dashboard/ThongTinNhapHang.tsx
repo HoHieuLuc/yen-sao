@@ -62,7 +62,7 @@ const ThongTinNhapHang = () => {
                         {chiTietPhieuNhapsOnSelectedDay && chiTietPhieuNhapsOnSelectedDay.length > 0
                             ? chiTietPhieuNhapsOnSelectedDay.map(item => {
                                 return <Box key={item.id}>
-                                    <Anchor component={Link} to={`/phieu-nhap/${item.id}`}>
+                                    <Anchor component={Link} to={`/phieu-nhap/${item.maPhieuNhap}`}>
                                         {convertToShortDate(item.ngayNhap)}
                                     </Anchor>
                                     : nhập {item.soLuongNhap / 1000} kg

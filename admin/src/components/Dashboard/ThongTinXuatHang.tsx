@@ -61,12 +61,15 @@ const ThongTinXuatHang = () => {
                         {chiTietPhieuXuatsOnSelectedDay && chiTietPhieuXuatsOnSelectedDay.length > 0
                             ? chiTietPhieuXuatsOnSelectedDay.map(item => {
                                 return <Box key={item.id}>
-                                    <Anchor component={Link} to={`/phieu-xuat/${item.id}`}>
+                                    <Anchor component={Link} to={`/phieu-xuat/${item.maPhieuXuat}`}>
                                         {convertToShortDate(item.ngayXuat)}
                                     </Anchor>
-                                    : xuất {item.soLuongXuat / 1000}
+                                    : xuất {item.soLuongXuat / 1000} kg
                                     {' '}
-                                    kg {item.sanPham.tenSanPham}, tổng tiền {
+                                    <Anchor component={Link} to={`/san-pham/${item.sanPham.id}`}>
+                                        {item.sanPham.tenSanPham}
+                                    </Anchor>
+                                    , thành tiền {
                                         convertToVND(item.thanhTien)
                                     }
                                 </Box>;
