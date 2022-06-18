@@ -2,11 +2,11 @@ import useGlobalStyles from '../../../utils/global.styles';
 import { useUpload } from '../../../hooks';
 import { useForm } from '@mantine/form';
 
+import ImageDropzone from '../../Utils/ImageDropzone/ImageDropzone';
 import {
     InputWrapper, Stack, Switch, TextInput, Image,
     Accordion, Button, Center, Group
 } from '@mantine/core';
-import ImageDropzone from '../../SanPham/ImageDropzone/ImageDropzone';
 import RichTextEditor from '@mantine/rte';
 
 import { authHooks } from '../../../graphql/queries';

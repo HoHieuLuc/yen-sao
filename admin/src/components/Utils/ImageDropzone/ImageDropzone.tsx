@@ -2,7 +2,7 @@ import { useMutation } from '@apollo/client';
 
 import { Group, Text, Image, ActionIcon, Box } from '@mantine/core';
 import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone';
-import { CloseIcon } from '../../Utils/Icons';
+import { CloseIcon } from '../Icons';
 
 import { showErrorNotification } from '../../../events';
 import { uploadQuery } from '../../../graphql/queries';

@@ -3,8 +3,8 @@ import { useUpload } from '../../../hooks';
 import { useForm } from '@mantine/form';
 import { useState } from 'react';
 
+import ImageDropzone from '../../Utils/ImageDropzone/ImageDropzone';
 import CurrencyInput from '../../Utils/Input/CurrencyInput';
-import ImageDropzone from '../ImageDropzone/ImageDropzone';
 import RichTextEditor from '@mantine/rte';
 import {
     Accordion, Button, Group, InputWrapper, MultiSelect,
