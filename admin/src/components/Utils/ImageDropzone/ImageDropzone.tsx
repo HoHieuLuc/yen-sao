@@ -1,8 +1,9 @@
 import { useMutation } from '@apollo/client';
+import { useState } from 'react';
 
-import { Group, Text, Image, ActionIcon, Box } from '@mantine/core';
+import { Group, Text, Image, ActionIcon, Box, TextInput, Stack, Button } from '@mantine/core';
 import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone';
-import { CloseIcon } from '../../Utils/Icons';
+import { CloseIcon } from '../Icons';
 
 import { showErrorNotification } from '../../../events';
 import { uploadQuery } from '../../../graphql/queries';
@@ -34,6 +35,8 @@ interface Props {
 }
 
 const ImageDropzone = ({ images, onChange, onRemoveImage, maxLength }: Props) => {
+    const [imageAsUrl, setImageAsUrl] = useState('');
+
     const [multiUpload, { loading }] = useMutation<
         { upload: MultiUpload }, { files: Array<File> }
     >(uploadQuery.MULTI_UPLOAD, {
@@ -54,8 +57,38 @@ const ImageDropzone = ({ images, onChange, onRemoveImage, maxLength }: Props) =>
         });
     };
 
+    const handleSubmitImageUrl = () => {
+        if (imageAsUrl.length === 0) {
+            return showErrorNotification('Vui lòng nhập đường dẫn ảnh');
+        }
+        if (images.length + 1 > maxLength) {
+            return showErrorNotification(`Chỉ được đăng tối đa ${maxLength} ảnh`);
+        }
+
+        if (imageAsUrl.match(/\.(jpeg|jpg|gif|png)$/) !== null) {
+            onChange([imageAsUrl]);
+            setImageAsUrl('');
+        } else {
+            showErrorNotification('Đường dẫn ảnh không hợp lệ');
+        }
+    };
+
     return (
-        <>
+        <Stack spacing='xs'>
+            <TextInput
+                label='Đường dẫn ảnh'
+                placeholder='Nhập đường dẫn ảnh'
+                value={imageAsUrl}
+                onChange={(e) => setImageAsUrl(e.target.value)}
+                rightSection={
+                    <Button
+                        onClick={handleSubmitImageUrl}
+                    >
+                        Xác nhận
+                    </Button>
+                }
+            />
+            Hoặc
             <Dropzone
                 onDrop={(files) => handleMultiUpload(files)}
                 onReject={() =>
@@ -68,7 +101,7 @@ const ImageDropzone = ({ images, onChange, onRemoveImage, maxLength }: Props) =>
             >
                 {() => dropzoneChildren(maxLength)}
             </Dropzone>
-            <Group position='center' spacing='sm' mt='sm'>
+            <Group position='center' spacing='sm'>
                 {images.map((imageUrl, index) => (
                     <Box
                         key={`${index}${imageUrl}`}
@@ -100,7 +133,7 @@ const ImageDropzone = ({ images, onChange, onRemoveImage, maxLength }: Props) =>
                     </Box>
                 ))}
             </Group>
-        </>
+        </Stack>
     );
 };
 
