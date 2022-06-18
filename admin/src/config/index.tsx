@@ -229,7 +229,7 @@ const appConfig: AppConfig = {
             type: 'nav',
             title: 'Tài khoản',
             to: '/my-account',
-            element: <Account title={`Tài khoản - ${title}`} />,
+            element: <Account title={title} />,
             icon: <FontAwesomeIcon icon={faUserGear} />
         },
         {

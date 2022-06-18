@@ -18,7 +18,7 @@ const Account = ({ title }: Props) => {
         ['thong-tin', 'cap-nhat', 'lich-su-hoat-dong'],
         ['Thông tin', 'Cập nhật tài khoản', 'Lịch sử hoạt động']
     );
-    useDocumentTitle(`${title} | ${currentTabTitle}`);
+    useDocumentTitle(`Tài khoản | ${currentTabTitle} - ${title}`);
     const me = authHooks.useReadCurrentUser();
     return (
         <Tabs
