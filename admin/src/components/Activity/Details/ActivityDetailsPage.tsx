@@ -15,7 +15,7 @@ const ActivityDetailsPage = ({ title }: Props) => {
     const { id } = useParams();
     const { data, loading, error } = activityHooks.useActivityById(id || '');
     useDocumentTitle(
-        `Hoạt động | ${data && data.activityLog.byID 
+        `Hoạt động: ${data && data.activityLog.byID 
             ? data.activityLog.byID.description.name
             : 'Đang tải...'} - ${title}`
     );
