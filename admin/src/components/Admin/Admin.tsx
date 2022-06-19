@@ -21,7 +21,13 @@ const Admin = () => {
                 <AppHeader theme={theme} opened={opened} setOpened={setOpened} />
             }
         >
-            <Container size='xl' p={0}>
+            <Container
+                size='xl'
+                p={0}
+                sx={{
+                    height: '100%'
+                }}
+            >
                 <AppSection />
             </Container>
         </AppShell>
