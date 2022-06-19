@@ -78,7 +78,7 @@ const useLogout = () => {
             localStorage.removeItem('token');
             void client.resetStore();
         },
-        onError: (error) => showErrorNotification(error.message),
+        onError: () => location.reload(),
     });
 };
 
