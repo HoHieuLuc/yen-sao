@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { AppShell, useMantineTheme } from '@mantine/core';
+import { AppShell, Container, useMantineTheme } from '@mantine/core';
 import AppSection from './Routes/Routes';
 import AppNavbar from './Navbar/Navbar';
 import AppHeader from './Header/Header';
@@ -21,7 +21,9 @@ const Admin = () => {
                 <AppHeader theme={theme} opened={opened} setOpened={setOpened} />
             }
         >
-            <AppSection />
+            <Container size='xl' p={0}>
+                <AppSection />
+            </Container>
         </AppShell>
     );
 };
