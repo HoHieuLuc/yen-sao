@@ -1,7 +1,6 @@
 import { useMutation } from '@apollo/client';
-import { useState } from 'react';
 
-import { Group, Text, Image, ActionIcon, Box, TextInput, Stack, Button } from '@mantine/core';
+import { Group, Text, Image, ActionIcon, Box, Stack, ScrollArea } from '@mantine/core';
 import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 import { CloseIcon } from '../Icons';
 
@@ -35,8 +34,6 @@ interface Props {
 }
 
 const ImageDropzone = ({ images, onChange, onRemoveImage, maxLength }: Props) => {
-    const [imageAsUrl, setImageAsUrl] = useState('');
-
     const [multiUpload, { loading }] = useMutation<
         { upload: MultiUpload }, { files: Array<File> }
     >(uploadQuery.MULTI_UPLOAD, {
@@ -57,38 +54,8 @@ const ImageDropzone = ({ images, onChange, onRemoveImage, maxLength }: Props) =>
         });
     };
 
-    const handleSubmitImageUrl = () => {
-        if (imageAsUrl.length === 0) {
-            return showErrorNotification('Vui lòng nhập đường dẫn ảnh');
-        }
-        if (images.length + 1 > maxLength) {
-            return showErrorNotification(`Chỉ được đăng tối đa ${maxLength} ảnh`);
-        }
-
-        if (imageAsUrl.match(/\.(jpeg|jpg|gif|png)$/) !== null) {
-            onChange([imageAsUrl]);
-            setImageAsUrl('');
-        } else {
-            showErrorNotification('Đường dẫn ảnh không hợp lệ');
-        }
-    };
-
     return (
         <Stack spacing='xs'>
-            <TextInput
-                label='Đường dẫn ảnh'
-                placeholder='Nhập đường dẫn ảnh'
-                value={imageAsUrl}
-                onChange={(e) => setImageAsUrl(e.target.value)}
-                rightSection={
-                    <Button
-                        onClick={handleSubmitImageUrl}
-                    >
-                        Xác nhận
-                    </Button>
-                }
-            />
-            Hoặc
             <Dropzone
                 onDrop={(files) => handleMultiUpload(files)}
                 onReject={() =>
@@ -101,38 +68,56 @@ const ImageDropzone = ({ images, onChange, onRemoveImage, maxLength }: Props) =>
             >
                 {() => dropzoneChildren(maxLength)}
             </Dropzone>
-            <Group position='center' spacing='sm'>
-                {images.map((imageUrl, index) => (
-                    <Box
-                        key={`${index}${imageUrl}`}
-                        sx={(theme) => ({
-                            borderRadius: theme.radius.sm,
-                            maxWidth: '25%',
-                            position: 'relative',
-                            border: '1px solid #eaeaea',
-                        })}
-                    >
-                        <Image
-                            src={imageUrl}
-                            height={300}
-                            alt='ảnh'
-                            fit='contain'
-                            withPlaceholder
-                        />
-                        <ActionIcon
-                            color='red'
-                            style={{
-                                position: 'absolute',
-                                top: 0,
-                                right: 0,
-                            }}
-                            onClick={() => onRemoveImage(imageUrl)}
+            <ScrollArea
+                sx={{
+                    whiteSpace: 'nowrap',
+                    position: 'relative',
+                }}
+            >
+                <Box
+                    sx={{
+                        textAlign: 'center',
+                    }}
+                >
+                    {images.map((imageUrl, index) => (
+                        <Box
+                            key={`${index}${imageUrl}`}
+                            m={10}
+                            sx={(theme) => ({
+                                borderRadius: theme.radius.sm,
+                                display: 'inline-block',
+                                position: 'relative',
+                                border: '1px solid #eaeaea',
+                                [theme.fn.largerThan('sm')]: {
+                                    width: '25%',
+                                },
+                                [theme.fn.smallerThan('sm')]: {
+                                    width: '70%',
+                                },
+                            })}
                         >
-                            <CloseIcon />
-                        </ActionIcon>
-                    </Box>
-                ))}
-            </Group>
+                            <Image
+                                src={imageUrl}
+                                height={300}
+                                alt='ảnh'
+                                fit='contain'
+                                withPlaceholder
+                            />
+                            <ActionIcon
+                                color='red'
+                                style={{
+                                    position: 'absolute',
+                                    top: 0,
+                                    right: 0,
+                                }}
+                                onClick={() => onRemoveImage(imageUrl)}
+                            >
+                                <CloseIcon />
+                            </ActionIcon>
+                        </Box>
+                    ))}
+                </Box>
+            </ScrollArea>
         </Stack>
     );
 };
