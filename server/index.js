@@ -39,6 +39,7 @@ const start = async () => {
         plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
         introspection: isDevelopment,
         csrfPrevention: true,
+        cache: 'bounded'
     });
 
     await server.start();
