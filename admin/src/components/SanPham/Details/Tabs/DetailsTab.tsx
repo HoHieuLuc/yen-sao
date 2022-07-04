@@ -37,9 +37,6 @@ const DetailsTab = ({ id, data, loading }: Props) => {
     return (
         <LoadingWrapper loading={loading}>
             {data && data.sanPham.byID && <Box>
-                <Center>
-                    <Title>Chi tiết sản phẩm</Title>
-                </Center>
                 <SanPhamDetails 
                     data={data.sanPham.byID}
                 />
