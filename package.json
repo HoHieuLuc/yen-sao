@@ -11,7 +11,8 @@
         "build-heroku:ui": "rm -rf server/public/build && cd admin && npm install && npm run build && cp -r build ../server/public",
         "start": "node server/index.js",
         "heroku-postbuild": "npm run build-heroku:ui && cd server && npm install",
-        "build:ui": "rm -rf server/public/build && cd admin && npm run build && cp -r build ../server/public"
+        "build:ui": "rm -rf server/public/build && cd admin && npm run build && cp -r build ../server/public",
+        "build": "npm run heroku-postbuild"
     },
     "repository": {
         "type": "git",

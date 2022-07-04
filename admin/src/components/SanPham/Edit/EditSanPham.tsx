@@ -7,6 +7,7 @@ import SanPhamForm from '../Form/SanPhamForm';
 
 import { sanPhamHooks } from '../../../graphql/queries';
 import { SanPhamFormData } from '../../../types';
+import { Box, Center, Title } from '@mantine/core';
 
 interface Props {
     title: string;
@@ -39,11 +40,18 @@ const EditSanPham = ({ title }: Props) => {
 
     return (
         <LoadingWrapper loading={loading}>
-            {data && <SanPhamForm
-                loading={updateLoading}
-                onSubmit={handleUpdate}
-                initialValues={data.sanPham.byID}
-            />}
+            {data && data.sanPham.byID &&
+                <Box>
+                    <Center mb='md'>
+                        <Title>Chỉnh sửa sản phẩm</Title>
+                    </Center>
+                    <SanPhamForm
+                        loading={updateLoading}
+                        onSubmit={handleUpdate}
+                        initialValues={data.sanPham.byID}
+                    />
+                </Box>
+            }
         </LoadingWrapper>
     );
 };
