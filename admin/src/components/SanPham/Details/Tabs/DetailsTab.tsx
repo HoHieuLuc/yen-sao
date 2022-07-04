@@ -2,8 +2,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useModals } from '@mantine/modals';
 
 import LoadingWrapper from '../../../Utils/Wrappers/LoadingWrapper';
-import { Box, Button, Center, Group, Title } from '@mantine/core';
 import DeleteSanPham from '../../Delete/DeleteSanPham';
+import { Box, Button, Group } from '@mantine/core';
 import SanPhamDetails from '../SanPhamDetails';
 
 import { SanPham, SanPhamByID } from '../../../../types';
