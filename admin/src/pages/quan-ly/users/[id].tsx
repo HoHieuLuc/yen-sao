@@ -2,34 +2,31 @@ import { useDocumentTitle } from '@mantine/hooks';
 import { useParams } from 'react-router-dom';
 import { useTabs } from '../../../hooks';
 
-import ActivityTab from '../../Activity/Tab/ActivityTab';
-import NotFound from '../../Utils/Errors/NotFound';
-import DetailsTab from './Tabs/DetailsTab';
+import ActivityTab from '../../../components/Manage/User/Details/ActivityTab';
+import DetailsTab from '../../../components/Manage/User/Details/DetailsTab';
+import NotFound from '../../../components/Utils/Errors/NotFound';
 import { Tabs } from '@mantine/core';
 
-import { convertToShortDate } from '../../../utils/common';
-import { phieuNhapHooks } from '../../../graphql/queries';
+import { userHooks } from '../../../graphql/queries';
 
 interface Props {
     title: string;
 }
 
-const PhieuNhapDetailsPage = ({ title }: Props) => {
+const ManageUserDetailsPage = ({ title }: Props) => {
     const { id } = useParams();
+    const { data, loading, error } = userHooks.useUserById(id || '');
     const { activeTab, onTabChange, currentTabTitle } = useTabs(
-        ['chi-tiet', 'lich-su'],
-        ['Chi tiết', 'Lịch sử chỉnh sửa']
+        ['thong-tin', 'hoat-dong'],
+        ['Thông tin', 'Lịch sử hoạt động']
     );
-
-    const { data, loading, error } = phieuNhapHooks.usePhieuNhapByID(id || '');
     useDocumentTitle(
-        `${data && data.phieuNhap.byID
-            ? `Phiếu nhập ngày ${convertToShortDate(data.phieuNhap.byID.ngayNhap)}`
+        `Người dùng: ${data && data.user.byID
+            ? data.user.byID.fullname
             : 'Đang tải...'} | ${currentTabTitle} - ${title}`
     );
 
-
-    if (!id || error || (data && !data.phieuNhap.byID)) {
+    if (!id || error || (data && !data.user.byID)) {
         return <NotFound />;
     }
 
@@ -48,18 +45,19 @@ const PhieuNhapDetailsPage = ({ title }: Props) => {
                 }
             }}
         >
-            <Tabs.Tab label='Thông tin phiếu nhập' tabKey='chi-tiet'>
+            <Tabs.Tab label="Thông tin người dùng" tabKey='thong-tin'>
                 <DetailsTab
-                    id={id}
                     data={data}
                     loading={loading}
                 />
             </Tabs.Tab>
-            <Tabs.Tab label='Lịch sử chỉnh sửa' tabKey='lich-su'>
-                <ActivityTab id={id} />
+            <Tabs.Tab label="Lịch sử hoạt động" tabKey='hoat-dong'>
+                <ActivityTab
+                    id={id}
+                />
             </Tabs.Tab>
         </Tabs>
     );
 };
 
-export default PhieuNhapDetailsPage;
+export default ManageUserDetailsPage;

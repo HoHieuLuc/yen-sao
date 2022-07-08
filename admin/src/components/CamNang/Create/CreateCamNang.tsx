@@ -1,5 +1,3 @@
-import { useDocumentTitle } from '@mantine/hooks';
-
 import { Center, Stack, Title } from '@mantine/core';
 import CamNangForm from '../Form/CamNangForm';
 
@@ -7,12 +5,7 @@ import { showErrorNotification } from '../../../events';
 import { camNangHooks } from '../../../graphql/queries';
 import { CamNangFormData } from '../../../types';
 
-interface Props {
-    title: string;
-}
-
-const CreateCamNang = ({ title }: Props) => {
-    useDocumentTitle(title);
+const CreateCamNang = () => {
     const [createCamNang, { loading }] = camNangHooks.useCreateCamNang();
 
     const handleCreateCamNang = (values: CamNangFormData) => {

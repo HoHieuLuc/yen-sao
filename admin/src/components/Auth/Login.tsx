@@ -6,15 +6,7 @@ import {
 } from '@apollo/client';
 import { useForm } from '@mantine/form';
 
-import {
-    PasswordInput,
-    TextInput,
-    Button,
-    Center,
-    Title,
-    Group,
-    Box,
-} from '@mantine/core';
+import { PasswordInput, TextInput, Button, Center, Title, Group, Box } from '@mantine/core';
 
 import { CurrentUser, LoginVars } from '../../types';
 import { authHooks } from '../../graphql/queries';

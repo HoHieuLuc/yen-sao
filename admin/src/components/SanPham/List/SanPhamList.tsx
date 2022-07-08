@@ -1,4 +1,3 @@
-import { useDocumentTitle } from '@mantine/hooks';
 import {
     useDebouncedSearchParams,
     usePagination,
@@ -13,12 +12,7 @@ import ErrorPage from '../../Utils/Errors/ErrorPage';
 
 import { authHooks, sanPhamHooks } from '../../../graphql/queries';
 
-interface Props {
-    title: string;
-}
-
-const SanPhamList = ({ title }: Props) => {
-    useDocumentTitle(title);
+const SanPhamList = () => {
     const me = authHooks.useReadCurrentUser();
     const { search, debouncedSearch, setSearch } = useDebouncedSearchParams(300);
     const { currentPage, handlePageChange, limit, handleLimitChange } = usePagination();

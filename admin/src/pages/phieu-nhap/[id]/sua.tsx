@@ -1,12 +1,12 @@
 import { useDocumentTitle } from '@mantine/hooks';
 import { useParams } from 'react-router-dom';
 
-import CreateChiTietPhieuNhap from '../Create/CreateChiTietPhieuNhap';
+import CreateChiTietPhieuNhap from '../../../components/PhieuNhap/Create/CreateChiTietPhieuNhap';
+import EditChiTietPhieuNhap from '../../../components/PhieuNhap/Edit/EditChiTietPhieuNhap';
+import LoadingWrapper from '../../../components/Utils/Wrappers/LoadingWrapper';
+import EditPhieuNhap from '../../../components/PhieuNhap/Edit/EditPhieuNhap';
 import { Box, Center, Divider, Grid, Title } from '@mantine/core';
-import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
-import EditChiTietPhieuNhap from './EditChiTietPhieuNhap';
-import NotFound from '../../Utils/Errors/NotFound';
-import EditPhieuNhap from './EditPhieuNhap';
+import NotFound from '../../../components/Utils/Errors/NotFound';
 
 import { convertToShortDate, convertToVND } from '../../../utils/common';
 import { phieuNhapHooks } from '../../../graphql/queries';
@@ -24,7 +24,6 @@ const EditPhieuNhapPage = ({ title }: Props) => {
             ? `Phiếu nhập ngày ${convertToShortDate(data.phieuNhap.byID.ngayNhap)}`
             : 'Đang tải...'} | Chỉnh sửa - ${title}`
     );
-
 
     if (error || !id || (data && !data.phieuNhap.byID)) {
         return <NotFound />;

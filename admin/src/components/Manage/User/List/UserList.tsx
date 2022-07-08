@@ -1,22 +1,16 @@
 import { useDebouncedSearchParams, usePagination } from '../../../../hooks';
 import { userHooks } from '../../../../graphql/queries';
-import { useDocumentTitle } from '@mantine/hooks';
+import { useModals } from '@mantine/modals';
 
 import { Button, Center, ScrollArea, Table, TextInput } from '@mantine/core';
 import LoadingWrapper from '../../../Utils/Wrappers/LoadingWrapper';
 import AppPagination from '../../../Utils/Pagination/AppPagination';
 import ErrorPage from '../../../Utils/Errors/ErrorPage';
 import { SearchIcon } from '../../../Utils/Icons';
-import UserItem from './UserItem';
-import { useModals } from '@mantine/modals';
 import CreateUser from '../Create/CreateUser';
+import UserItem from './UserItem';
 
-interface Props {
-    title: string;
-}
-
-const UserList = ({ title }: Props) => {
-    useDocumentTitle(title);
+const UserList = () => {
     const { search, setSearch, debouncedSearch } = useDebouncedSearchParams(300);
     const { currentPage, handlePageChange, limit, handleLimitChange } = usePagination();
     const { data, loading, error } = userHooks.useAllUsers(
@@ -37,7 +31,6 @@ const UserList = ({ title }: Props) => {
             />
         });
     };
-
 
     if (error) {
         return <ErrorPage />;

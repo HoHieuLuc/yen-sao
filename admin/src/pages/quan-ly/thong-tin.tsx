@@ -1,18 +1,18 @@
 import { useDocumentTitle } from '@mantine/hooks';
-import { useTabs } from '../../../hooks';
 
-import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
-import WebsiteInfo from './WebsiteInfo/WebsiteInfo';
+import WebsiteInfo from '../../components/Manage/PageInfo/WebsiteInfo/WebsiteInfo';
+import LoadingWrapper from '../../components/Utils/Wrappers/LoadingWrapper';
+import About from '../../components/Manage/PageInfo/About/About';
 import { Tabs } from '@mantine/core';
-import About from './About/About';
 
-import { pageHooks } from '../../../graphql/queries';
+import { useTabs } from '../../hooks';
+import { pageHooks } from '../../graphql/queries';
 
 interface Props {
     title: string;
 }
 
-const PageInfo = ({ title }: Props) => {
+const ManageWebsiteInfoPage = ({ title }: Props) => {
     const { activeTab, onTabChange, currentTabTitle } = useTabs(
         ['gioi-thieu', 'thong-tin-website'],
         ['Giới thiệu', 'Thông tin Website']
@@ -47,4 +47,4 @@ const PageInfo = ({ title }: Props) => {
     );
 };
 
-export default PageInfo;
+export default ManageWebsiteInfoPage;

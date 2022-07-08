@@ -1,21 +1,21 @@
-import { usePagination } from '../../../hooks';
 import { useDocumentTitle } from '@mantine/hooks';
+import { usePagination } from '../../hooks';
 import { useModals } from '@mantine/modals';
 
-import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
-import AppPagination from '../../Utils/Pagination/AppPagination';
+import DeleteActivity from '../../components/Activity/Delete/DeleteActivity';
+import AppPagination from '../../components/Utils/Pagination/AppPagination';
+import LoadingWrapper from '../../components/Utils/Wrappers/LoadingWrapper';
+import ActivityList from '../../components/Activity/List/ActivityList';
+import ErrorPage from '../../components/Utils/Errors/ErrorPage';
 import { Button, Center, Stack, Title } from '@mantine/core';
-import ErrorPage from '../../Utils/Errors/ErrorPage';
-import DeleteActivity from '../Delete/DeleteActivity';
-import ActivityList from './ActivityList';
 
-import { activityHooks } from '../../../graphql/queries';
+import { activityHooks } from '../../graphql/queries';
 
 interface Props {
     title: string;
 }
 
-const ActivityListPage = ({ title }: Props) => {
+const ManageActivitiesPage = ({ title }: Props) => {
     useDocumentTitle(title);
     const { currentPage, handlePageChange, limit, handleLimitChange } = usePagination();
     const { data, loading, error } = activityHooks.useAllActivities({
@@ -70,4 +70,4 @@ const ActivityListPage = ({ title }: Props) => {
     );
 };
 
-export default ActivityListPage;
+export default ManageActivitiesPage;

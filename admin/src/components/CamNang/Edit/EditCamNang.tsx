@@ -1,34 +1,17 @@
-import { useDocumentTitle } from '@mantine/hooks';
-import { useParams } from 'react-router-dom';
 
-import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
 import { Center, Stack, Title } from '@mantine/core';
-import NotFound from '../../Utils/Errors/NotFound';
 import CamNangForm from '../Form/CamNangForm';
 
 import { showErrorNotification } from '../../../events';
 import { camNangHooks } from '../../../graphql/queries';
-import { CamNangFormData } from '../../../types';
+import { CamNang, CamNangFormData } from '../../../types';
 
 interface Props {
-    title: string;
+    data: CamNang;
 }
 
-const EditCamNang = ({ title }: Props) => {
-    const { id } = useParams();
-    const { data, loading, error } = camNangHooks.useCamNangByID(id || '');
-
-    const [updateCamNang, { loading: updateLoading }] = camNangHooks.useUpdateCamNang();
-
-    useDocumentTitle(
-        `Cẩm nang: ${data && data.camNang.byID
-            ? data.camNang.byID.tieuDe
-            : 'Đang tải...'} | Chỉnh sửa - ${title}`
-    );
-
-    if (error || !id || (data && data.camNang.byID === null)) {
-        return <NotFound />;
-    }
+const EditCamNang = ({ data }: Props) => {
+    const [updateCamNang, { loading }] = camNangHooks.useUpdateCamNang();
 
     const handleUpdate = (values: CamNangFormData) => {
         if (!values.anhDaiDien) {
@@ -36,25 +19,23 @@ const EditCamNang = ({ title }: Props) => {
         }
         void updateCamNang({
             variables: {
-                id,
+                id: data.id,
                 payload: values
             }
         });
     };
 
     return (
-        <LoadingWrapper loading={loading}>
-            <Stack spacing='xs'>
-                <Center>
-                    <Title>Chỉnh sửa cẩm nang</Title>
-                </Center>
-                {data && <CamNangForm
-                    loading={updateLoading}
-                    inititalValues={data.camNang.byID}
-                    onSubmit={handleUpdate}
-                />}
-            </Stack>
-        </LoadingWrapper>
+        <Stack spacing='xs'>
+            <Center>
+                <Title>Chỉnh sửa cẩm nang</Title>
+            </Center>
+            <CamNangForm
+                loading={loading}
+                inititalValues={data}
+                onSubmit={handleUpdate}
+            />
+        </Stack>
     );
 };
 
