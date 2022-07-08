@@ -1,12 +1,12 @@
-import { usePagination } from '../../../hooks';
+import { usePagination } from '../../hooks';
 
-import AppPagination from '../../Utils/Pagination/AppPagination';
-import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
-import ActivityList from '../../Activity/List/ActivityList';
+import AppPagination from '../Utils/Pagination/AppPagination';
+import LoadingWrapper from '../Utils/Wrappers/LoadingWrapper';
+import ActivityList from '../Activity/List/ActivityList';
 import { Center, Stack, Title } from '@mantine/core';
-import ErrorPage from '../../Utils/Errors/ErrorPage';
+import ErrorPage from '../Utils/Errors/ErrorPage';
 
-import { activityHooks } from '../../../graphql/queries';
+import { activityHooks } from '../../graphql/queries';
 
 const AccountActivity = () => {
     const { currentPage, handlePageChange, limit, handleLimitChange } = usePagination();

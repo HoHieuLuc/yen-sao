@@ -1,39 +1,38 @@
-import Dashboard from '../components/Dashboard/Dashboard';
+import HomePage from '../pages';
 
-import PageInfo from '../components/Manage/PageInfo/PageInfo';
-import Account from '../components/Account/Account';
+import EditSanPhamPage from '../pages/san-pham/[id]/sua';
+import SanPhamDetailsPage from '../pages/san-pham/[id]';
+import CreateSanPhamPage from '../pages/san-pham/them';
+import SanPhamPage from '../pages/san-pham';
 
-import PhieuNhapDetailsPage from '../components/PhieuNhap/Details/PhieuNhapDetailsPage';
-import EditPhieuNhapPage from '../components/PhieuNhap/Edit/EditPhieuNhapPage';
-import CreatePhieuNhap from '../components/PhieuNhap/Create/CreatePhieuNhap';
-import PhieuNhapList from '../components/PhieuNhap/List/PhieuNhapList';
+import EditPhieuNhapPage from '../pages/phieu-nhap/[id]/sua';
+import PhieuNhapDetailsPage from '../pages/phieu-nhap/[id]';
+import CreatePhieuNhapPage from '../pages/phieu-nhap/them';
+import PhieuNhapPage from '../pages/phieu-nhap';
 
-import PhieuXuatDetailsPage from '../components/PhieuXuat/Details/PhieuXuatDetailsPage';
-import EditPhieuXuatPage from '../components/PhieuXuat/Edit/EditPhieuXuatPage';
-import CreatePhieuXuat from '../components/PhieuXuat/Create/CreatePhieuXuat';
-import PhieuXuatList from '../components/PhieuXuat/List/PhieuXuatList';
+import EditPhieuXuatPage from '../pages/phieu-xuat/[id]/sua';
+import PhieuXuatDetailsPage from '../pages/phieu-xuat/[id]';
+import CreatePhieuXuatPage from '../pages/phieu-xuat/them';
+import PhieuXuatPage from '../pages/phieu-xuat';
 
-import SanPhamDetailsPage from '../components/SanPham/Details/SanPhamDetailsPage';
-import CreateSanPham from '../components/SanPham/Create/CreateSanPham';
-import EditSanPham from '../components/SanPham/Edit/EditSanPham';
-import SanPhamList from '../components/SanPham/List/SanPhamList';
+import EditCamNangPage from '../pages/cam-nang/[id]/sua';
+import CamNangDetailsPage from '../pages/cam-nang/[id]';
+import CreateCamNangPage from '../pages/cam-nang/them';
+import CamNangPage from '../pages/cam-nang';
 
-import ActivityDetailsPage from '../components/Activity/Details/ActivityDetailsPage';
-import ActivityListPage from '../components/Activity/List/ActivityListPage';
+import ManageUserDetailsPage from '../pages/quan-ly/users/[id]';
+import ManageWebsiteInfoPage from '../pages/quan-ly/thong-tin';
+import ManageActivitiesPage from '../pages/quan-ly/hoat-dong';
+import ManageUsersPage from '../pages/quan-ly/users';
 
-import UserDetails from '../components/Manage/User/Details/UserDetails';
-import UserList from '../components/Manage/User/List/UserList';
+import AccountPage from '../pages/my-account';
 
-import CamNangDetailsPage from '../components/CamNang/Details/CamNangDetailsPage';
-import CreateCamNang from '../components/CamNang/Create/CreateCamNang';
-import EditCamNang from '../components/CamNang/Edit/EditCamNang';
-import CamNangList from '../components/CamNang/List/CamNangList';
+import ActivityDetailsPage from '../pages/hoat-dong/[id]';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-    faBook,
-    faBox, faCircleInfo, faHistory, faHouse, faHouseLock, faList, faPlus,
-    faTruckMedical, faTruckRampBox, faUser, faUserGear
+    faBook, faBox, faCircleInfo, faHistory, faHouse, faHouseLock, faList,
+    faPlus, faTruckMedical, faTruckRampBox, faUser, faUserGear
 } from '@fortawesome/free-solid-svg-icons';
 
 import { AppConfig } from './types';
@@ -48,7 +47,7 @@ const appConfig: AppConfig = {
             type: 'nav',
             title: 'Trang chủ',
             to: '/',
-            element: <Dashboard title={title} />,
+            element: <HomePage title={title} />,
             icon: <FontAwesomeIcon icon={faHouse} />
         },
         {
@@ -61,7 +60,7 @@ const appConfig: AppConfig = {
                     title: 'Danh sách',
                     type: 'nav',
                     to: '/san-pham',
-                    element: <SanPhamList title={`Danh sách sản phẩm - ${title}`} />,
+                    element: <SanPhamPage title={`Danh sách sản phẩm - ${title}`} />,
                     icon: <FontAwesomeIcon icon={faList} />
                 },
                 {
@@ -69,7 +68,7 @@ const appConfig: AppConfig = {
                     type: 'nav',
                     to: '/san-pham/them',
                     roles: ['admin'],
-                    element: <CreateSanPham title={`Thêm sản phẩm - ${title}`} />,
+                    element: <CreateSanPhamPage title={`Thêm sản phẩm - ${title}`} />,
                     icon: <FontAwesomeIcon icon={faPlus} />
                 },
                 {
@@ -77,7 +76,7 @@ const appConfig: AppConfig = {
                     type: 'hidden',
                     to: '/san-pham/:id/sua',
                     roles: ['admin'],
-                    element: <EditSanPham title={title} />
+                    element: <EditSanPhamPage title={title} />
                 },
                 {
                     title: 'Chi tiết',
@@ -97,14 +96,14 @@ const appConfig: AppConfig = {
                     type: 'nav',
                     title: 'Danh sách',
                     to: '/phieu-nhap',
-                    element: <PhieuNhapList title={`Danh sách phiếu nhập - ${title}`} />,
+                    element: <PhieuNhapPage title={`Danh sách phiếu nhập - ${title}`} />,
                     icon: <FontAwesomeIcon icon={faList} />
                 },
                 {
                     type: 'nav',
                     title: 'Tạo phiếu nhập',
                     to: '/phieu-nhap/them',
-                    element: <CreatePhieuNhap title={`Tạo phiếu nhập - ${title}`} />,
+                    element: <CreatePhieuNhapPage title={`Tạo phiếu nhập - ${title}`} />,
                     icon: <FontAwesomeIcon icon={faPlus} />
                 },
                 {
@@ -131,14 +130,14 @@ const appConfig: AppConfig = {
                     type: 'nav',
                     title: 'Danh sách',
                     to: '/phieu-xuat',
-                    element: <PhieuXuatList title={`Danh sách phiếu xuất - ${title}`} />,
+                    element: <PhieuXuatPage title={`Danh sách phiếu xuất - ${title}`} />,
                     icon: <FontAwesomeIcon icon={faList} />
                 },
                 {
                     type: 'nav',
                     title: 'Tạo phiếu xuất',
                     to: '/phieu-xuat/them',
-                    element: <CreatePhieuXuat title={`Tạo phiếu xuất - ${title}`} />,
+                    element: <CreatePhieuXuatPage title={`Tạo phiếu xuất - ${title}`} />,
                     icon: <FontAwesomeIcon icon={faPlus} />
                 },
                 {
@@ -165,14 +164,14 @@ const appConfig: AppConfig = {
                     type: 'nav',
                     title: 'Danh sách',
                     to: '/cam-nang',
-                    element: <CamNangList title={`Danh sách cẩm nang - ${title}`} />,
+                    element: <CamNangPage title={`Danh sách cẩm nang - ${title}`} />,
                     icon: <FontAwesomeIcon icon={faList} />
                 },
                 {
                     type: 'nav',
                     title: 'Thêm mới',
                     to: '/cam-nang/them',
-                    element: <CreateCamNang title={`Thêm cẩm nang - ${title}`} />,
+                    element: <CreateCamNangPage title={`Thêm cẩm nang - ${title}`} />,
                     icon: <FontAwesomeIcon icon={faPlus} />
                 },
                 {
@@ -185,7 +184,7 @@ const appConfig: AppConfig = {
                     type: 'hidden',
                     title: 'Chỉnh sửa cẩm nang',
                     to: '/cam-nang/:id/sua',
-                    element: <EditCamNang title={title} />
+                    element: <EditCamNangPage title={title} />
                 }
             ]
         },
@@ -200,27 +199,27 @@ const appConfig: AppConfig = {
                     type: 'nav',
                     title: 'Thông tin website',
                     to: '/quan-ly/thong-tin',
-                    element: <PageInfo title={`Thông tin website - ${title}`} />,
+                    element: <ManageWebsiteInfoPage title={`Thông tin website - ${title}`} />,
                     icon: <FontAwesomeIcon icon={faCircleInfo} />
                 },
                 {
                     type: 'nav',
                     title: 'Người dùng',
                     to: '/quan-ly/users',
-                    element: <UserList title={`Danh sách người dùng - ${title}`} />,
+                    element: <ManageUsersPage title={`Danh sách người dùng - ${title}`} />,
                     icon: <FontAwesomeIcon icon={faUser} />
                 },
                 {
                     type: 'hidden',
                     title: 'Chi tiết người dùng',
                     to: '/quan-ly/users/:id',
-                    element: <UserDetails title={title} />
+                    element: <ManageUserDetailsPage title={title} />
                 },
                 {
                     type: 'nav',
                     title: 'Hoạt động',
                     to: '/quan-ly/hoat-dong',
-                    element: <ActivityListPage title={`Quản lý hoạt động - ${title}`} />,
+                    element: <ManageActivitiesPage title={`Quản lý hoạt động - ${title}`} />,
                     icon: <FontAwesomeIcon icon={faHistory} />
                 }
             ]
@@ -229,7 +228,7 @@ const appConfig: AppConfig = {
             type: 'nav',
             title: 'Tài khoản',
             to: '/my-account',
-            element: <Account title={title} />,
+            element: <AccountPage title={title} />,
             icon: <FontAwesomeIcon icon={faUserGear} />
         },
         {

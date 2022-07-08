@@ -1,17 +1,10 @@
-import { useDocumentTitle } from '@mantine/hooks';
-
 import { Center, Stack, Title } from '@mantine/core';
 import SanPhamForm from '../Form/SanPhamForm';
 
 import { sanPhamHooks } from '../../../graphql/queries';
 import { SanPhamFormData } from '../../../types';
 
-interface Props {
-    title: string;
-}
-
-const CreateSanPham = ({ title }: Props) => {
-    useDocumentTitle(title);
+const CreateSanPham = () => {
     const [createSanPham, { loading }] = sanPhamHooks.useCreateSanPham();
 
     const handleCreateSanPham = (values: SanPhamFormData) => {

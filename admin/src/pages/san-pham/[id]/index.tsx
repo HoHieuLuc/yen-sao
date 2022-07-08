@@ -2,11 +2,11 @@ import { useDocumentTitle } from '@mantine/hooks';
 import { useParams } from 'react-router-dom';
 import { useTabs } from '../../../hooks';
 
-import ChiTietPhieuNhapList from './Tabs/ChiTietPhieuNhapList';
-import ChiTietPhieuXuatList from './Tabs/ChiTietPhieuXuatList';
-import ActivityTab from '../../Activity/Tab/ActivityTab';
-import NotFound from '../../Utils/Errors/NotFound';
-import DetailsTab from './Tabs/DetailsTab';
+import ChiTietPhieuXuatList from '../../../components/SanPham/Details/Tabs/ChiTietPhieuXuatList';
+import ChiTietPhieuNhapList from '../../../components/SanPham/Details/Tabs/ChiTietPhieuNhapList';
+import DetailsTab from '../../../components/SanPham/Details/Tabs/DetailsTab';
+import ActivityTab from '../../../components/Activity/Tab/ActivityTab';
+import NotFound from '../../../components/Utils/Errors/NotFound';
 import { Tabs } from '@mantine/core';
 
 import { sanPhamHooks } from '../../../graphql/queries';

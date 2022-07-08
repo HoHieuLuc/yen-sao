@@ -1,12 +1,12 @@
 import { useDocumentTitle } from '@mantine/hooks';
 import { useParams } from 'react-router-dom';
 
-import CreateChiTietPhieuXuat from '../Create/CreateChiTietPhieuXuat';
-import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
+import CreateChiTietPhieuXuat from '../../../components/PhieuXuat/Create/CreateChiTietPhieuXuat';
+import EditChiTietPhieuXuat from '../../../components/PhieuXuat/Edit/EditChiTietPhieuXuat';
+import LoadingWrapper from '../../../components/Utils/Wrappers/LoadingWrapper';
+import EditPhieuXuat from '../../../components/PhieuXuat/Edit/EditPhieuXuat';
+import NotFound from '../../../components/Utils/Errors/NotFound';
 import { Box, Center, Divider, Title } from '@mantine/core';
-import EditChiTietPhieuXuat from './EditChiTietPhieuXuat';
-import NotFound from '../../Utils/Errors/NotFound';
-import EditPhieuXuat from './EditPhieuXuat';
 
 import { convertToShortDate } from '../../../utils/common';
 import { phieuXuatHooks } from '../../../graphql/queries';

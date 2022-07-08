@@ -2,9 +2,9 @@ import { useDocumentTitle } from '@mantine/hooks';
 import { useParams } from 'react-router-dom';
 import { useTabs } from '../../../hooks';
 
-import ActivityTab from '../../Activity/Tab/ActivityTab';
-import NotFound from '../../Utils/Errors/NotFound';
-import DetailsTab from './Tabs/DetailsTab';
+import DetailsTab from '../../../components/CamNang/Details/Tabs/DetailsTab';
+import ActivityTab from '../../../components/Activity/Tab/ActivityTab';
+import NotFound from '../../../components/Utils/Errors/NotFound';
 import { Tabs } from '@mantine/core';
 
 import { camNangHooks } from '../../../graphql/queries';

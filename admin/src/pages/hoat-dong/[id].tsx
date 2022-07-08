@@ -1,11 +1,11 @@
 import { useDocumentTitle } from '@mantine/hooks';
 import { useParams } from 'react-router-dom';
 
-import LoadingWrapper from '../../Utils/Wrappers/LoadingWrapper';
-import NotFound from '../../Utils/Errors/NotFound';
-import ActivityDetails from './ActivityDetails';
+import ActivityDetails from '../../components/Activity/Details/ActivityDetails';
+import LoadingWrapper from '../../components/Utils/Wrappers/LoadingWrapper';
+import NotFound from '../../components/Utils/Errors/NotFound';
 
-import { activityHooks } from '../../../graphql/queries';
+import { activityHooks } from '../../graphql/queries';
 
 interface Props {
     title: string;
@@ -15,7 +15,7 @@ const ActivityDetailsPage = ({ title }: Props) => {
     const { id } = useParams();
     const { data, loading, error } = activityHooks.useActivityById(id || '');
     useDocumentTitle(
-        `Hoạt động: ${data && data.activityLog.byID 
+        `Hoạt động: ${data && data.activityLog.byID
             ? data.activityLog.byID.description.name
             : 'Đang tải...'} - ${title}`
     );

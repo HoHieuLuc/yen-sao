@@ -1,17 +1,11 @@
-import { useDocumentTitle } from '@mantine/hooks';
-
 import { Box, Center, Title } from '@mantine/core';
 import PhieuNhapForm from '../Form/PhieuNhapForm';
 
 import { phieuNhapHooks } from '../../../graphql/queries';
 import { CreatePhieuNhapVars } from '../../../types';
 
-interface Props {
-    title: string;
-}
 
-const CreatePhieuNhap = ({ title }: Props) => {
-    useDocumentTitle(title);
+const CreatePhieuNhap = () => {
     const [createPhieuNhap, { loading }] = phieuNhapHooks.useCreatePhieuNhap();
 
     const handleSubmit = (values: CreatePhieuNhapVars, callback: () => void) => {

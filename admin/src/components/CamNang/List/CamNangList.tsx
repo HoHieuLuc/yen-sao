@@ -1,5 +1,4 @@
 import { useDebouncedSearchParams, usePagination } from '../../../hooks';
-import { useDocumentTitle } from '@mantine/hooks';
 
 import { Center, ScrollArea, Stack, Table, TextInput } from '@mantine/core';
 import AppPagination from '../../Utils/Pagination/AppPagination';
@@ -10,12 +9,7 @@ import CamNangItem from './CamNangItem';
 
 import { camNangHooks } from '../../../graphql/queries';
 
-interface Props {
-    title: string;
-}
-
-const CamNangList = ({ title }: Props) => {
-    useDocumentTitle(title);
+const CamNangList = () => {
     const { currentPage, handlePageChange, limit, handleLimitChange } = usePagination();
     const { search, setSearch, debouncedSearch } = useDebouncedSearchParams(300);
     const { data, loading, error } = camNangHooks.useAllCamNangs({

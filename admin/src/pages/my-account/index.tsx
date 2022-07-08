@@ -1,25 +1,26 @@
 import { useDocumentTitle } from '@mantine/hooks';
 import { useTabs } from '../../hooks';
 
+import AccountActivity from '../../components/Account/AccountActivity';
+import ChangePassword from '../../components/Account/ChangePassword';
+import AccountDetails from '../../components/Account/AccountDetails';
+import EditAccount from '../../components/Account/EditAccount';
 import { Divider, Stack, Tabs } from '@mantine/core';
-import AccountActivity from './Tab/AccountActivity';
-import ChangePassword from './Tab/ChangePassword';
-import AccountDetails from './Tab/AccountDetails';
 
 import { authHooks } from '../../graphql/queries';
-import EditAccount from './Tab/EditAccount';
 
 interface Props {
     title: string;
 }
 
-const Account = ({ title }: Props) => {
+const AccountPage = ({ title }: Props) => {
     const { activeTab, onTabChange, currentTabTitle } = useTabs(
         ['thong-tin', 'cap-nhat', 'lich-su-hoat-dong'],
         ['Thông tin', 'Cập nhật tài khoản', 'Lịch sử hoạt động']
     );
     useDocumentTitle(`Tài khoản | ${currentTabTitle} - ${title}`);
     const me = authHooks.useReadCurrentUser();
+
     return (
         <Tabs
             active={activeTab}
@@ -52,4 +53,4 @@ const Account = ({ title }: Props) => {
     );
 };
 
-export default Account;
+export default AccountPage;
