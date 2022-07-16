@@ -24,10 +24,10 @@ const ChiTietPhieuXuatItem = ({ chiTietPhieuXuat, index }: Props) => {
             </Box>
             <SimpleGrid cols={3}>
                 <Text>
-                    Số lượng nhập: {chiTietPhieuXuat.soLuongXuat / 1000} kg
+                    Số lượng xuất: {chiTietPhieuXuat.soLuongXuat / 1000} kg
                 </Text>
                 <Text>
-                    Đơn giá nhập: {convertToVND(chiTietPhieuXuat.donGiaXuat)}
+                    Đơn giá xuất: {convertToVND(chiTietPhieuXuat.donGiaXuat)}
                 </Text>
                 <Text>
                     Thành tiền: {convertToVND(
