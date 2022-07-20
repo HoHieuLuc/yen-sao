@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useForm } from '@mantine/form';
 
-import { Button, NumberInput, Select, SimpleGrid, Textarea } from '@mantine/core';
+import { Button, NumberInput, Select, SimpleGrid, Switch, Textarea } from '@mantine/core';
 import SanPhamSelect from '../../SanPham/Form/SanPhamSelect';
 import CurrencyInput from '../../Utils/Input/CurrencyInput';
 
@@ -45,7 +45,8 @@ const ChiTietPhieuXuatForm = ({
             maSanPham: type === 'update' ? initialValues.maSanPham : '',
             soLuongXuat: type === 'update' ? initialValues.soLuongXuat / 1000 : 0,
             donGiaXuat: type === 'update' ? initialValues.donGiaXuat : 0,
-            ghiChu: type === 'update' ? initialValues.ghiChu : ''
+            ghiChu: type === 'update' ? initialValues.ghiChu : '',
+            isCompleted: type === 'update' ? initialValues.isCompleted : false
         },
         validate: {
             maSanPham: (value) => value ? null : 'Vui lòng chọn sản phẩm',
@@ -118,6 +119,12 @@ const ChiTietPhieuXuatForm = ({
                     disabled={lock}
                     autosize
                 />
+                <Switch
+                    label='Đã xuất? (chỉ những sản phẩm đã xuất thì số lượng tồn mới được cập nhật)'
+                    {...chiTietPhieuXuatForm.getInputProps('isCompleted')}
+                    checked={chiTietPhieuXuatForm.values.isCompleted}
+                    disabled={lock}
+                />
                 <SimpleGrid cols={type === 'update' ? 3 : 2}>
                     {type === 'update' && <>
                         <Button
@@ -131,7 +138,7 @@ const ChiTietPhieuXuatForm = ({
                         <Button
                             type='button'
                             onClick={() => setLock(prev => !prev)}
-                            color= {lock ? 'green' : 'red'}
+                            color={lock ? 'green' : 'red'}
                         >
                             {lock ? 'Sửa' : 'Hủy'}
                         </Button>

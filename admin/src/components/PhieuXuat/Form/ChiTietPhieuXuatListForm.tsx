@@ -1,4 +1,4 @@
-import { Button, NumberInput, SimpleGrid, Textarea } from '@mantine/core';
+import { Button, NumberInput, SimpleGrid, Switch, Textarea } from '@mantine/core';
 import SanPhamSelect from '../../SanPham/Form/SanPhamSelect';
 
 import { FormList } from '@mantine/form/lib/form-list/form-list';
@@ -55,6 +55,11 @@ const ChiTietPhieuXuatListForm = ({ phieuXuatForm, index }: Props) => {
                 placeholder='Nhập ghi chú'
                 {...phieuXuatForm.getListInputProps('payload', index, 'ghiChu')}
                 autosize
+            />
+            <Switch
+                label='Đã xuất? (chỉ những sản phẩm đã xuất thì số lượng tồn mới được cập nhật)'
+                {...phieuXuatForm.getListInputProps('payload', index, 'isCompleted')}
+                checked={phieuXuatForm.values.payload[index].isCompleted}
             />
             <Button
                 color='red'
