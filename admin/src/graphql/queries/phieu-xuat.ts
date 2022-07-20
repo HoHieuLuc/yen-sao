@@ -20,6 +20,10 @@ const ALL = gql`
                     ngayXuat
                     soMatHangXuat
                     tongTien
+                    chiTiet {
+                        id
+                        isCompleted
+                    }
                     createdAt
                 }
                 pageInfo {
