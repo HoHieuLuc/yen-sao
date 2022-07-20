@@ -63,7 +63,8 @@ const EditPhieuNhapPage = ({ title }: Props) => {
                             <EditChiTietPhieuNhap
                                 label={
                                     `${item.sanPham.tenSanPham} - 
-                                    Số lượng nhập: ${item.soLuongNhap / 1000} kg`
+                                    Số lượng nhập: ${item.soLuongNhap / 1000} kg - 
+                                    ${item.isCompleted ? 'Đã nhập' : 'Chưa nhập'}`
                                 }
                                 idPhieuNhap={id}
                                 idChiTiet={item.id}
