@@ -72,7 +72,7 @@ const ThongTinNhapHang = () => {
                                     </Anchor>
                                     , thành tiền {
                                         convertToVND(item.thanhTien)
-                                    }
+                                    }, tình trạng: {item.isCompleted ? 'đã nhập' : 'chưa nhập'}
                                 </Box>;
                             })
                             : <Text>Chọn 1 ngày để xem chi tiết</Text>

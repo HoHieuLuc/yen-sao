@@ -71,7 +71,7 @@ const ThongTinXuatHang = () => {
                                     </Anchor>
                                     , thành tiền {
                                         convertToVND(item.thanhTien)
-                                    }
+                                    }, tình trạng: {item.isCompleted ? 'đã xuất' : 'chưa xuất'}
                                 </Box>;
                             })
                             : <Text>Chọn 1 ngày để xem chi tiết</Text>
