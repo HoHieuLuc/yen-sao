@@ -82,9 +82,12 @@ const create = async (ngayNhap, chiTietPhieuNhap, nguoiNhap) => {
             { session }
         );
 
-        // Update số lượng cho từng sản phẩm sau khi nhập
+        // lấy ra chi tiết phiếu nhập đã hoàn thành
+        const completedChiTietPhieuNhaps = chiTietPhieuNhap.filter((chiTiet) => chiTiet.isCompleted);
+
+        // Tăng số lượng cho từng sản phẩm sau khi nhập
         const updateProductQuantityBulkOps = buildUpdateProductQuantityBulkOps(
-            chiTietPhieuNhap,
+            completedChiTietPhieuNhaps,
             true
         );
         await SanPham.bulkWrite(updateProductQuantityBulkOps, { session });
@@ -147,9 +150,11 @@ const remove = async (phieuNhapId, currentUser) => {
             'Nhân viên không thể xóa phiếu nhập đã được tạo quá 24 giờ'
         );
 
-        //cập nhật lại số lượng sản phẩm khi xóa phiếu nhập
+        const completedChiTietPhieuNhaps = phieuNhap.chiTiet.filter((chiTiet) => chiTiet.isCompleted);
+
+        //cập nhật lại số lượng sản phẩm khi xóa phiếu nhập đối với sản phẩm đã nhập thành công
         const sanPhamsBulkOps = buildUpdateProductQuantityBulkOps(
-            phieuNhap.chiTiet,
+            completedChiTietPhieuNhaps,
             false
         );
         const bulkResult = await SanPham.bulkWrite(
@@ -157,7 +162,7 @@ const remove = async (phieuNhapId, currentUser) => {
             { session }
         );
 
-        if (bulkResult.result.nModified !== phieuNhap.chiTiet.length) {
+        if (bulkResult.result.nModified !== completedChiTietPhieuNhaps.length) {
             throw new UserInputError('Số lượng sản phẩm không đủ để xóa phiếu nhập');
         }
 

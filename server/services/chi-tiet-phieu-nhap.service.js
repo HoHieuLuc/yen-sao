@@ -77,16 +77,18 @@ const create = async (idPhieuNhap, chiTietPhieuNhap, currentUser) => {
         throw new UserInputError('Sản phẩm trong 1 phiếu nhập không được trùng nhau');
     }
     try {
-        // cập nhật số lượng sản phẩm
-        await SanPham.findByIdAndUpdate(
-            chiTietPhieuNhap.maSanPham,
-            {
-                $inc: {
-                    soLuong: chiTietPhieuNhap.soLuongNhap
-                }
-            },
-            { runValidators: true, session }
-        );
+        // tăng số lượng sản phẩm khi sản phẩm nhập thành công
+        if (chiTietPhieuNhap.isCompleted) {
+            await SanPham.findByIdAndUpdate(
+                chiTietPhieuNhap.maSanPham,
+                {
+                    $inc: {
+                        soLuong: chiTietPhieuNhap.soLuongNhap
+                    }
+                },
+                { runValidators: true, session }
+            );
+        }
 
         const createdChiTietPhieuNhap = new ChiTietPhieuNhap({
             maPhieuNhap: idPhieuNhap,
@@ -146,39 +148,43 @@ const update = async (idPhieuNhap, idChiTietPhieuNhap, chiTietPhieuNhap, current
     try {
         // cập nhật chi tiết phiếu nhập
         // options không có new để lấy lại chi tiết trước khi cập nhật
-        // chi tiết này sẽ có mã sản phẩm cũ để cập nhật lại số lượng sản phẩm
+        // chi tiết này sẽ trả về mã sản phẩm cũ để cập nhật lại số lượng sản phẩm
         const chiTietToBeUpdated = await ChiTietPhieuNhap.findByIdAndUpdate(
             idChiTietPhieuNhap,
             chiTietPhieuNhap,
             { runValidators: true, session }
         );
 
-        // tăng số lượng sản phẩm trong kho
-        await SanPham.findByIdAndUpdate(
-            chiTietPhieuNhap.maSanPham,
-            {
-                $inc: {
-                    soLuong: chiTietPhieuNhap.soLuongNhap
-                }
-            },
-            { runValidators: true, session }
-        );
+        // tăng số lượng sản phẩm trong kho khi sản phẩm nhập thành công
+        if (chiTietPhieuNhap.isCompleted) {
+            await SanPham.findByIdAndUpdate(
+                chiTietPhieuNhap.maSanPham,
+                {
+                    $inc: {
+                        soLuong: chiTietPhieuNhap.soLuongNhap
+                    }
+                },
+                { runValidators: true, session }
+            );
+        }
 
-        // phục hồi (giảm) số lượng sản phẩm trong kho
+        // phục hồi (giảm) số lượng sản phẩm trong kho đối với sản phẩm đã nhập thành công
         // đối với sản phẩm trong chi tiết bị cập nhật
-        const updatedSanPham = await SanPham.findByIdAndUpdate(
-            chiTietToBeUpdated.maSanPham,
-            {
-                $inc: {
-                    soLuong: -chiTietToBeUpdated.soLuongNhap
-                }
-            },
-            { new: true, runValidators: true, session }
-        );
-
-        // sau khi giảm số lượng nếu thấy sản phẩm < 0 thì hủy transaction
-        if (updatedSanPham.soLuong < 0) {
-            throw new UserInputError('Số lượng sản phẩm trong kho không đủ');
+        let updatedSanPham;
+        if (chiTietToBeUpdated.isCompleted) {
+            updatedSanPham = await SanPham.findByIdAndUpdate(
+                chiTietToBeUpdated.maSanPham,
+                {
+                    $inc: {
+                        soLuong: -chiTietToBeUpdated.soLuongNhap
+                    }
+                },
+                { new: true, runValidators: true, session }
+            );
+            // sau khi giảm số lượng nếu thấy sản phẩm < 0 thì hủy transaction
+            if (updatedSanPham.soLuong < 0) {
+                throw new UserInputError('Số lượng sản phẩm trong kho không đủ');
+            }
         }
 
         await session.commitTransaction();
@@ -219,24 +225,27 @@ const remove = async (idPhieuNhap, idChiTietPhieuNhap, currentUser) => {
     );
 
     try {
-        const sanPhamCanUpdate = phieuNhap.chiTiet.find(
+        const chiTietToBeUpdated = phieuNhap.chiTiet.find(
             ({ _id }) => _id.toString() === idChiTietPhieuNhap
         );
 
-        // giảm số lượng sản phẩm trong kho
-        const updatedSanPham = await SanPham.findByIdAndUpdate(
-            sanPhamCanUpdate.maSanPham,
-            {
-                $inc: {
-                    soLuong: -sanPhamCanUpdate.soLuongNhap
-                }
-            },
-            { new: true, runValidators: true, session }
-        );
+        // giảm số lượng sản phẩm trong kho đối với sản phẩm đã nhập thành công
+        let updatedSanPham;
+        if (chiTietToBeUpdated.isCompleted) {
+            updatedSanPham = await SanPham.findByIdAndUpdate(
+                chiTietToBeUpdated.maSanPham,
+                {
+                    $inc: {
+                        soLuong: -chiTietToBeUpdated.soLuongNhap
+                    }
+                },
+                { new: true, runValidators: true, session }
+            );
 
-        // sau khi giảm số lượng nếu thấy sản phẩm < 0 thì hủy transaction
-        if (updatedSanPham.soLuong < 0) {
-            throw new UserInputError('Số lượng sản phẩm trong kho không đủ');
+            // sau khi giảm số lượng nếu thấy số lượng sản phẩm < 0 thì hủy transaction
+            if (updatedSanPham.soLuong < 0) {
+                throw new UserInputError('Số lượng sản phẩm trong kho không đủ');
+            }
         }
 
         await ChiTietPhieuNhap.findByIdAndDelete(idChiTietPhieuNhap);

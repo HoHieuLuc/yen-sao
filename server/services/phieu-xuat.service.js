@@ -25,7 +25,7 @@ const getAll = async (page, limit, from, to, sort) => {
     };
 
     const findOptions = {};
-    
+
     if (from || to) {
         const ngayXuat = {};
         if (from) {
@@ -86,9 +86,12 @@ const create = async (nguoiMua, nguoiXuat, ngayXuat, chiTietPhieuXuat) => {
             { session }
         );
 
-        // Update số lượng cho từng sản phẩm sau khi xuất
+        // lấy ra chi tiết phiếu xuất đã hoàn thành
+        const completedChiTietPhieuXuats = chiTietPhieuXuat.filter((chiTiet) => chiTiet.isCompleted);
+
+        // Giảm số lượng cho từng sản phẩm sau khi xuất
         const updateProductQuantityBulkOps = buildUpdateProductQuantityBulkOps(
-            chiTietPhieuXuat,
+            completedChiTietPhieuXuats,
             true
         );
 
@@ -99,7 +102,7 @@ const create = async (nguoiMua, nguoiXuat, ngayXuat, chiTietPhieuXuat) => {
 
         // số lượng sản phẩm bị chỉnh sửa phải bằng số lượng sản phẩm được xuất
         // thì mới không bị lỗi hết hàng
-        if (bulkResult.result.nModified !== chiTietPhieuXuat.length) {
+        if (bulkResult.result.nModified !== completedChiTietPhieuXuats.length) {
             throw new UserInputError('Số lượng sản phẩm không đủ để xuất');
         }
         await session.commitTransaction();
@@ -160,9 +163,12 @@ const remove = async (phieuXuatId, currentUser) => {
             'Nhân viên không thể xóa phiếu xuất đã được tạo quá 24 giờ'
         );
 
+        // lấy ra chi tiết phiếu xuất đã hoàn thành
+        const completedChiTietPhieuXuats = phieuXuat.chiTiet.filter((chiTiet) => chiTiet.isCompleted);
+
         // cập nhật lại số lượng sản phẩm khi xóa phiếu xuất
         const sanPhamsBulkOps = buildUpdateProductQuantityBulkOps(
-            phieuXuat.chiTiet,
+            completedChiTietPhieuXuats,
             false
         );
         await SanPham.bulkWrite(sanPhamsBulkOps, { session });
