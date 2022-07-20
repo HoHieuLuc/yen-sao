@@ -60,6 +60,7 @@ const BY_ID = gql`
                     donGiaXuat
                     thanhTien
                     ghiChu
+                    isCompleted
                 }
             }
         }
