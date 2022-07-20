@@ -51,6 +51,7 @@ const ChiTietPhieuXuatList = ({ id }: Props) => {
                 <td>{chiTiet.soLuongXuat / 1000}</td>
                 <td>{convertToVND(chiTiet.donGiaXuat)}</td>
                 <td>{convertToVND(chiTiet.thanhTien)}</td>
+                <td>{chiTiet.isCompleted ? 'Đã xuất' : 'Chưa xuất'}</td>
             </tr>
         )
     );
@@ -102,6 +103,7 @@ const ChiTietPhieuXuatList = ({ id }: Props) => {
                                     </UnstyledButton>
                                 </th>
                                 <th>Thành tiền</th>
+                                <th>Tình trạng</th>
                             </tr>
                         </thead>
                         <tbody>

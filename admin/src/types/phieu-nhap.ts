@@ -11,6 +11,7 @@ export interface ChiTietPhieuNhap {
     donGiaNhap: number;
     thanhTien: number;
     ghiChu: string;
+    isCompleted: boolean;
     createdAt: number;
     updatedAt: number;
 }
@@ -52,6 +53,7 @@ export interface ChiTietPhieuNhapInput {
     soLuongNhap: number;
     donGiaNhap: number;
     ghiChu: string;
+    isCompleted: boolean;
 }
 
 export interface UpdatePhieuNhapVars {

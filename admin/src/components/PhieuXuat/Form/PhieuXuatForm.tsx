@@ -26,7 +26,8 @@ const PhieuXuatForm = ({ loading, onSubmit }: Props) => {
                 maSanPham: '',
                 soLuongXuat: 0,
                 donGiaXuat: 0,
-                ghiChu: ''
+                ghiChu: '',
+                isCompleted: false
             }]),
         },
         validate: {
@@ -104,7 +105,8 @@ const PhieuXuatForm = ({ loading, onSubmit }: Props) => {
                                 maSanPham: '',
                                 soLuongXuat: 0,
                                 donGiaXuat: 0,
-                                ghiChu: ''
+                                ghiChu: '',
+                                isCompleted: false
                             })}
                         rightIcon={<PlusIcon />}
                     >

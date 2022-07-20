@@ -11,6 +11,7 @@ export interface ChiTietPhieuXuat {
     donGiaXuat: number;
     thanhTien: number;
     ghiChu: string;
+    isCompleted: boolean;
     createdAt: number;
     updatedAt: number;
 }
@@ -53,6 +54,7 @@ export interface ChiTietPhieuXuatInput {
     soLuongXuat: number;
     donGiaXuat: number;
     ghiChu: string;
+    isCompleted: boolean;
 }
 
 export interface UpdatePhieuXuatVars {

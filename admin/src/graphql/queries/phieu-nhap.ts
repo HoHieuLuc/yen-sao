@@ -19,6 +19,10 @@ const ALL = gql`
                     ngayNhap
                     soMatHangNhap
                     tongTien
+                    chiTiet {
+                        id
+                        isCompleted
+                    }
                     createdAt
                 }
                 pageInfo {
@@ -58,6 +62,7 @@ const BY_ID = gql`
                     donGiaNhap
                     thanhTien
                     ghiChu
+                    isCompleted
                 }
             }
         }

@@ -32,6 +32,9 @@ const PhieuNhapItem = ({ phieuNhap, index }: Props) => {
             <td>{convertToShortDate(phieuNhap.ngayNhap)}</td>
             <td>{phieuNhap.soMatHangNhap}</td>
             <td>{convertToVND(phieuNhap.tongTien)}</td>
+            <td>{phieuNhap.chiTiet.filter(
+                (item) => item.isCompleted).length}/{phieuNhap.soMatHangNhap} sản phẩm đã nhập
+            </td>
             <td>
                 <Center>
                     <LinkIcon

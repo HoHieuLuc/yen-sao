@@ -27,6 +27,7 @@ const typeDefs = gql`
         soLuongXuat: Int!
         donGiaXuat: Int!
         ghiChu: String
+        isCompleted: Boolean
     }
 
     input UpdatePhieuXuatInput {

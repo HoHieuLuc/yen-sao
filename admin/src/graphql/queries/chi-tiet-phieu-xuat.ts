@@ -19,6 +19,7 @@ const ALL = gql`
                 donGiaXuat
                 thanhTien
                 ngayXuat
+                isCompleted
             }
         }
     }
@@ -42,6 +43,7 @@ const BY_SAN_PHAM_ID = gql`
                     donGiaXuat
                     ngayXuat
                     thanhTien
+                    isCompleted
                 }
                 pageInfo {
                     page
@@ -72,6 +74,7 @@ const CREATE = gql`
                     thanhTien
                     ngayXuat
                     ghiChu
+                    isCompleted
                 }
             }
         }
@@ -101,6 +104,7 @@ const UPDATE = gql`
                         thanhTien
                         ngayXuat
                         ghiChu
+                        isCompleted
                     }
                 }
                 sanPhamBiThayDoi {

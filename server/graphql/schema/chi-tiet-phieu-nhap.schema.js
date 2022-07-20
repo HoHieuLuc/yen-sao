@@ -14,6 +14,7 @@ const typeDefs = gql`
         thanhTien: Int!
         ngayNhap: Date!
         ghiChu: String
+        isCompleted: Boolean!
         createdAt: Date!
         updatedAt: Date!
     }
@@ -53,7 +54,7 @@ const typeDefs = gql`
 
     type ChiTietPhieuNhapMutationsResponse {
         phieuNhap: PhieuNhap!
-        sanPhamBiThayDoi: SanPham!
+        sanPhamBiThayDoi: SanPham
     }
 
     type ChiTietPhieuNhapMutations {

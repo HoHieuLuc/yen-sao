@@ -43,7 +43,8 @@ const EditPhieuXuatPage = ({ title }: Props) => {
                             <EditChiTietPhieuXuat
                                 label={
                                     `${item.sanPham.tenSanPham} - 
-                                    Số lượng xuất: ${item.soLuongXuat / 1000} kg`
+                                    Số lượng xuất: ${item.soLuongXuat / 1000} kg -
+                                    ${item.isCompleted ? 'Đã xuất' : 'Chưa xuất'}`
                                 }
                                 idPhieuXuat={id}
                                 idChiTiet={item.id}

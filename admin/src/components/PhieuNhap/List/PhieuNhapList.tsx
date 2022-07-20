@@ -75,6 +75,7 @@ const PhieuNhapList = () => {
                                     />
                                 </UnstyledButton>
                             </th>
+                            <th>Tình trạng</th>
                             <th>
                                 <Center>
                                     Chức năng
