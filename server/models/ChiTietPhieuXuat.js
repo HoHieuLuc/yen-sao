@@ -32,6 +32,10 @@ const chiTietPhieuXuatSchema = mongoose.Schema(
             trim: true,
             default: ''
         },
+        isCompleted: {
+            type: Boolean,
+            default: false
+        }
     },
     {
         timestamps: true

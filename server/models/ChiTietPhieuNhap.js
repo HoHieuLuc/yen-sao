@@ -31,6 +31,10 @@ const chiTietPhieuNhapSchema = mongoose.Schema(
             type: String,
             trim: true,
             default: ''
+        },
+        isCompleted: {
+            type: Boolean,
+            default: false
         }
     },
     {
