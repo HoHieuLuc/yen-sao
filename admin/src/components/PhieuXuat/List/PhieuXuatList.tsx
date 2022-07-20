@@ -76,6 +76,7 @@ const PhieuXuatList = () => {
                                     />
                                 </UnstyledButton>
                             </th>
+                            <th>Tình trạng</th>
                             <th>
                                 <Center>
                                     Chức năng

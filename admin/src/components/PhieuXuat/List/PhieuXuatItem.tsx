@@ -33,6 +33,9 @@ const PhieuXuatItem = ({ phieuXuat, index }: Props) => {
             <td>{convertToShortDate(phieuXuat.ngayXuat)}</td>
             <td>{phieuXuat.soMatHangXuat}</td>
             <td>{convertToVND(phieuXuat.tongTien)}</td>
+            <td>{phieuXuat.chiTiet.filter(
+                (item) => item.isCompleted).length}/{phieuXuat.soMatHangXuat} sản phẩm đã xuất
+            </td>
             <td>
                 <Center>
                     <LinkIcon
