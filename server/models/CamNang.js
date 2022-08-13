@@ -38,7 +38,8 @@ camNangSchema.pre('save', function (next) {
         this.tieuDe,
         {
             lower: true,
-            locale: 'vi'
+            locale: 'vi',
+            remove: /[*+~.()'"!:@]/g
         }
     );
     this.slug = `${slug}-${nanoid(5)}`;
@@ -69,7 +70,8 @@ camNangSchema.pre('findOneAndUpdate', async function (next) {
         this._update.tieuDe,
         {
             lower: true,
-            locale: 'vi'
+            locale: 'vi',
+            remove: /[*+~.()'"!:@]/g
         }
     );
     this.getUpdate().slug = `${slug}-${nanoid(5)}`;

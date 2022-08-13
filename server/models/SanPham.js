@@ -79,7 +79,8 @@ sanPhamSchema.pre('save', function () {
         this.tenSanPham,
         {
             lower: true,
-            locale: 'vi'
+            locale: 'vi',
+            remove: /[*+~.()'"!:@]/g
         }
     );
     this.slug = `${slug}-${nanoid(5)}`;
@@ -109,7 +110,8 @@ sanPhamSchema.pre('findOneAndUpdate', async function (next) {
         this._update.tenSanPham,
         {
             lower: true,
-            locale: 'vi'
+            locale: 'vi',
+            remove: /[*+~.()'"!:@]/g
         }
     );
     this.getUpdate().slug = `${slug}-${nanoid(5)}`;
